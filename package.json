@@ -15,11 +15,17 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "autoprefixer": "^10.4.27",
+    "lucide-react": "^0.577.0",
+    "motion": "^12.38.0",
     "next": "15.4.3",
     "next-auth": "^4.24.11",
     "next-runtime-env": "^3.2.2",
+    "postcss": "^8.5.8",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
