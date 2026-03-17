@@ -2,7 +2,12 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { FileText, Edit, Copy, Trash2, Plus, Calendar, Layers } from "lucide-react"
+import {
+  FileText, Edit, Copy, Trash2, Plus, Calendar, Layers, Eye,
+  Type, AlignLeft, TextCursorInput, ChevronDown, Circle, CheckSquare,
+  GitFork, ExternalLink, Zap, CreditCard, Award as IdCard, Building2, Phone,
+  AlertTriangle, ArrowDown,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
@@ -15,12 +20,86 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { getFormsIndex, deleteForm, duplicateForm } from "@/lib/form-wizard/forms-storage"
-import type { FormIndexEntry } from "@/lib/form-wizard/types"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Badge } from "@/components/ui/badge"
+import { getFormsIndex, getFormBySlug, deleteForm, duplicateForm } from "@/lib/form-wizard/forms-storage"
+import type { FormIndexEntry, Form, ElementType } from "@/lib/form-wizard/types"
+import { cn } from "@/lib/utils"
+
+const elementIcons: Record<string, React.ElementType> = {
+  TITLE: Type,
+  PARAGRAPH: AlignLeft,
+  TEXT_INPUT: TextCursorInput,
+  SELECT: ChevronDown,
+  RADIO: Circle,
+  CHECKBOX: CheckSquare,
+  SUCCESS_SCREEN: AlertTriangle,
+  GO_TO_CHECKOUT: AlertTriangle,
+  CONDITIONAL_ROUTE: GitFork,
+  NAVIGATION: ExternalLink,
+  SERVICE_CALL: Zap,
+  PLANS: CreditCard,
+  CPF_INPUT: IdCard,
+  CNPJ_INPUT: Building2,
+  PHONE_INPUT: Phone,
+}
+
+const elementLabels: Record<string, string> = {
+  TITLE: "Título",
+  PARAGRAPH: "Parágrafo",
+  TEXT_INPUT: "Campo de Texto",
+  SELECT: "Select",
+  RADIO: "Radio",
+  CHECKBOX: "Checkbox",
+  CONDITIONAL_ROUTE: "Rota Condicional",
+  NAVIGATION: "Navegação",
+  SERVICE_CALL: "Chamada de Serviço",
+  PLANS: "Planos",
+  CPF_INPUT: "CPF",
+  CNPJ_INPUT: "CNPJ",
+  PHONE_INPUT: "Telefone",
+}
+
+const categoryColors: Record<string, string> = {
+  content: "bg-blue-100 text-blue-700 border-blue-200",
+  fields: "bg-emerald-100 text-emerald-700 border-emerald-200",
+  "special-fields": "bg-violet-100 text-violet-700 border-violet-200",
+  actions: "bg-amber-100 text-amber-700 border-amber-200",
+  plans: "bg-pink-100 text-pink-700 border-pink-200",
+}
+
+function getElementCategory(type: ElementType): string {
+  if (["TITLE", "PARAGRAPH"].includes(type)) return "content"
+  if (["TEXT_INPUT", "SELECT", "RADIO", "CHECKBOX"].includes(type)) return "fields"
+  if (["CPF_INPUT", "CNPJ_INPUT", "PHONE_INPUT"].includes(type)) return "special-fields"
+  if (["CONDITIONAL_ROUTE", "NAVIGATION", "SERVICE_CALL"].includes(type)) return "actions"
+  if (type === "PLANS") return "plans"
+  return "content"
+}
+
+function getElementPreview(element: { type: ElementType; config: unknown }): string {
+  const config = element.config as Record<string, unknown>
+  if (element.type === "TITLE" || element.type === "PARAGRAPH") return (config.text as string) || ""
+  if (element.type === "CONDITIONAL_ROUTE") {
+    const field = (config.fieldName as string) || "?"
+    const target = (config.targetStepSlug as string) || "?"
+    return `${field} → /${target}`
+  }
+  if (element.type === "NAVIGATION") return (config.label as string) || ""
+  if (element.type === "SERVICE_CALL") return (config.service as string) || ""
+  if ("label" in config) return (config.label as string) || ""
+  return ""
+}
 
 export default function FormWizardListPage() {
   const [forms, setForms] = useState<FormIndexEntry[]>([])
   const [deleteSlug, setDeleteSlug] = useState<string | null>(null)
+  const [previewForm, setPreviewForm] = useState<Form | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -46,6 +125,11 @@ export default function FormWizardListPage() {
       loadForms()
       setDeleteSlug(null)
     }
+  }
+
+  const handlePreview = (slug: string) => {
+    const form = getFormBySlug(slug)
+    if (form) setPreviewForm(form)
   }
 
   const formatDate = (dateStr: string) => {
@@ -125,7 +209,10 @@ export default function FormWizardListPage() {
                   </div>
 
                   <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                    <Button variant="ghost" size="sm" asChild title="Edit">
+                    <Button variant="ghost" size="sm" onClick={() => handlePreview(form.slug)} title="Visualizar Jornada">
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild title="Editar">
                       <Link href={`/form-wizard/${form.slug}`}>
                         <Edit className="h-4 w-4" />
                       </Link>
@@ -169,6 +256,84 @@ export default function FormWizardListPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Dialog open={!!previewForm} onOpenChange={() => setPreviewForm(null)}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Eye className="h-5 w-5" />
+              Jornada: {previewForm?.name}
+            </DialogTitle>
+          </DialogHeader>
+
+          {previewForm && (
+            <div className="space-y-1 py-2">
+              <div className="mb-4 flex items-center gap-2 text-xs text-muted-foreground">
+                <span className="font-mono rounded bg-muted px-2 py-0.5">/{previewForm.slug}</span>
+                <span>•</span>
+                <span>{previewForm.steps.length} etapa{previewForm.steps.length !== 1 ? "s" : ""}</span>
+              </div>
+
+              {previewForm.steps.map((step, stepIndex) => (
+                <div key={step.id}>
+                  <div className="rounded-lg border bg-card shadow-sm">
+                    <div className="flex items-center gap-3 border-b bg-muted/50 px-4 py-3 rounded-t-lg">
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                        {stepIndex + 1}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold">{step.name}</p>
+                        <p className="text-xs text-muted-foreground font-mono">/{step.slug}</p>
+                      </div>
+                      {step.backStepSlug && (
+                        <Badge variant="outline" className="text-xs">
+                          ← /{step.backStepSlug}
+                        </Badge>
+                      )}
+                    </div>
+
+                    {step.elements.length > 0 ? (
+                      <div className="divide-y">
+                        {step.elements.map((element) => {
+                          const Icon = elementIcons[element.type]
+                          const category = getElementCategory(element.type)
+                          const preview = getElementPreview(element)
+                          return (
+                            <div key={element.id} className="flex items-center gap-3 px-4 py-2.5">
+                              <div className={cn("flex h-6 w-6 items-center justify-center rounded", categoryColors[category])}>
+                                {Icon && <Icon className="h-3.5 w-3.5" />}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <span className="text-xs font-medium">{elementLabels[element.type] || element.type}</span>
+                                {preview && (
+                                  <p className="text-xs text-muted-foreground truncate">{preview}</p>
+                                )}
+                              </div>
+                              <Badge variant="secondary" className={cn("text-[10px] shrink-0", categoryColors[category])}>
+                                {category === "special-fields" ? "campo especial" : category === "fields" ? "campo" : category === "content" ? "conteúdo" : category === "actions" ? "ação" : category}
+                              </Badge>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    ) : (
+                      <div className="px-4 py-3 text-xs text-muted-foreground italic">
+                        Nenhum elemento nesta etapa
+                      </div>
+                    )}
+                  </div>
+
+                  {stepIndex < previewForm.steps.length - 1 && (
+                    <div className="flex justify-center py-1">
+                      <ArrowDown className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

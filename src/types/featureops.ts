@@ -1,4 +1,4 @@
-export type View = 'dashboard' | 'feature-flags' | 'pilots' | 'promotions' | 'rec-engine' | 'form-builder' | 'regras';
+export type View = 'dashboard' | 'feature-flags' | 'pilots' | 'promotions' | 'rec-engine' | 'form-wizard' | 'regras';
 
 export interface FeatureFlag {
   id: string;
