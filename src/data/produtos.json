@@ -1,0 +1,197 @@
+[
+  {
+    "id": 1,
+    "nome": "Smartphone Galaxy Ultra 256GB",
+    "categoria": "eletronicos",
+    "preco": 5499.90,
+    "precoPromocional": 4674.92,
+    "imagem": "https://picsum.photos/seed/phone1/400/400",
+    "tags": ["smartphone", "samsung", "celular", "acessorios-celular"],
+    "vendas": 1520
+  },
+  {
+    "id": 2,
+    "nome": "Fone Bluetooth Noise Cancelling Pro",
+    "categoria": "eletronicos",
+    "preco": 899.90,
+    "precoPromocional": 699.90,
+    "imagem": "https://picsum.photos/seed/fone2/400/400",
+    "tags": ["fone", "bluetooth", "audio", "acessorios-celular"],
+    "vendas": 3200
+  },
+  {
+    "id": 3,
+    "nome": "Notebook Gamer RTX 4060 16GB",
+    "categoria": "eletronicos",
+    "preco": 7999.00,
+    "imagem": "https://picsum.photos/seed/notebook3/400/400",
+    "tags": ["notebook", "gamer", "computador", "acessorios-pc"],
+    "vendas": 890
+  },
+  {
+    "id": 4,
+    "nome": "Carregador Turbo USB-C 65W",
+    "categoria": "acessorios",
+    "preco": 149.90,
+    "precoPromocional": 119.90,
+    "imagem": "https://picsum.photos/seed/charger4/400/400",
+    "tags": ["carregador", "usb-c", "acessorios-celular"],
+    "vendas": 5800
+  },
+  {
+    "id": 5,
+    "nome": "Smart TV 55\" 4K OLED",
+    "categoria": "eletronicos",
+    "preco": 4299.00,
+    "precoPromocional": 3869.10,
+    "imagem": "https://picsum.photos/seed/tv5/400/400",
+    "tags": ["tv", "smart-tv", "oled", "entretenimento"],
+    "vendas": 2100
+  },
+  {
+    "id": 6,
+    "nome": "Câmera de Segurança Wi-Fi 360°",
+    "categoria": "casa-inteligente",
+    "preco": 299.90,
+    "precoPromocional": 239.90,
+    "imagem": "https://picsum.photos/seed/camera6/400/400",
+    "tags": ["camera", "seguranca", "wifi", "casa-inteligente"],
+    "vendas": 4300
+  },
+  {
+    "id": 7,
+    "nome": "Teclado Mecânico RGB Switches Blue",
+    "categoria": "acessorios",
+    "preco": 349.90,
+    "imagem": "https://picsum.photos/seed/teclado7/400/400",
+    "tags": ["teclado", "mecanico", "gamer", "acessorios-pc"],
+    "vendas": 1750
+  },
+  {
+    "id": 8,
+    "nome": "Mouse Gamer 12000 DPI Wireless",
+    "categoria": "acessorios",
+    "preco": 279.90,
+    "precoPromocional": 223.92,
+    "imagem": "https://picsum.photos/seed/mouse8/400/400",
+    "tags": ["mouse", "gamer", "wireless", "acessorios-pc"],
+    "vendas": 2900
+  },
+  {
+    "id": 9,
+    "nome": "Caixa de Som Portátil 30W IP67",
+    "categoria": "eletronicos",
+    "preco": 599.90,
+    "precoPromocional": 479.92,
+    "imagem": "https://picsum.photos/seed/speaker9/400/400",
+    "tags": ["caixa-de-som", "bluetooth", "audio", "portatil"],
+    "vendas": 3600
+  },
+  {
+    "id": 10,
+    "nome": "Smartwatch Fitness GPS Integrado",
+    "categoria": "eletronicos",
+    "preco": 1299.00,
+    "precoPromocional": 1039.20,
+    "imagem": "https://picsum.photos/seed/watch10/400/400",
+    "tags": ["smartwatch", "fitness", "gps", "acessorios-celular"],
+    "vendas": 1980
+  },
+  {
+    "id": 11,
+    "nome": "Tablet 10\" 128GB Wi-Fi + 5G",
+    "categoria": "eletronicos",
+    "preco": 2799.00,
+    "imagem": "https://picsum.photos/seed/tablet11/400/400",
+    "tags": ["tablet", "celular", "portatil"],
+    "vendas": 1100
+  },
+  {
+    "id": 12,
+    "nome": "Webcam Full HD 1080p Autofoco",
+    "categoria": "acessorios",
+    "preco": 249.90,
+    "precoPromocional": 199.90,
+    "imagem": "https://picsum.photos/seed/webcam12/400/400",
+    "tags": ["webcam", "camera", "acessorios-pc", "home-office"],
+    "vendas": 2400
+  },
+  {
+    "id": 13,
+    "nome": "Hub USB-C 7 em 1 HDMI 4K",
+    "categoria": "acessorios",
+    "preco": 199.90,
+    "imagem": "https://picsum.photos/seed/hub13/400/400",
+    "tags": ["hub", "usb-c", "acessorios-pc", "home-office"],
+    "vendas": 3100
+  },
+  {
+    "id": 14,
+    "nome": "Ring Light Profissional 18\"",
+    "categoria": "acessorios",
+    "preco": 189.90,
+    "precoPromocional": 151.92,
+    "imagem": "https://picsum.photos/seed/ring14/400/400",
+    "tags": ["ring-light", "iluminacao", "home-office"],
+    "vendas": 1600
+  },
+  {
+    "id": 15,
+    "nome": "Drone 4K GPS Retorno Automático",
+    "categoria": "eletronicos",
+    "preco": 3499.00,
+    "precoPromocional": 2799.20,
+    "imagem": "https://picsum.photos/seed/drone15/400/400",
+    "tags": ["drone", "camera", "gps", "portatil"],
+    "vendas": 670
+  },
+  {
+    "id": 16,
+    "nome": "SSD NVMe 1TB Gen4 7000MB/s",
+    "categoria": "componentes",
+    "preco": 499.90,
+    "precoPromocional": 399.90,
+    "imagem": "https://picsum.photos/seed/ssd16/400/400",
+    "tags": ["ssd", "armazenamento", "acessorios-pc", "gamer"],
+    "vendas": 4100
+  },
+  {
+    "id": 17,
+    "nome": "Cadeira Gamer Ergonômica Reclinável",
+    "categoria": "moveis",
+    "preco": 1899.00,
+    "precoPromocional": 1519.20,
+    "imagem": "https://picsum.photos/seed/chair17/400/400",
+    "tags": ["cadeira", "gamer", "ergonomica", "home-office"],
+    "vendas": 2200
+  },
+  {
+    "id": 18,
+    "nome": "Power Bank 20000mAh USB-C PD",
+    "categoria": "acessorios",
+    "preco": 179.90,
+    "imagem": "https://picsum.photos/seed/power18/400/400",
+    "tags": ["power-bank", "carregador", "portatil", "acessorios-celular"],
+    "vendas": 5200
+  },
+  {
+    "id": 19,
+    "nome": "Monitor Ultrawide 34\" 144Hz",
+    "categoria": "eletronicos",
+    "preco": 3199.00,
+    "precoPromocional": 2719.15,
+    "imagem": "https://picsum.photos/seed/monitor19/400/400",
+    "tags": ["monitor", "ultrawide", "gamer", "acessorios-pc"],
+    "vendas": 980
+  },
+  {
+    "id": 20,
+    "nome": "Lâmpada Inteligente RGB Wi-Fi",
+    "categoria": "casa-inteligente",
+    "preco": 79.90,
+    "precoPromocional": 59.90,
+    "imagem": "https://picsum.photos/seed/lamp20/400/400",
+    "tags": ["lampada", "smart", "wifi", "casa-inteligente"],
+    "vendas": 6800
+  }
+]
