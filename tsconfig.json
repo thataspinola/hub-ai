@@ -36,6 +36,7 @@
     "/dist/react-ssr-corp-hubv-painel-administrativo/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "v0-form-wizard-builder-main"
   ]
 }

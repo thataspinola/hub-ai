@@ -13,7 +13,8 @@ import {
   LogOut,
   Code,
   ShoppingCart,
-  Sparkles
+  Sparkles,
+  Wand2
 } from 'lucide-react';
 
 export const PortalSidebar: React.FC = () => {
@@ -28,6 +29,7 @@ export const PortalSidebar: React.FC = () => {
     { id: 'promotions', label: 'Promoções', icon: Percent, href: '/promotions' },
     { id: 'rec-engine', label: 'RecEngine', icon: Settings, href: '/rec-engine' },
     { id: 'form-builder', label: 'DataStore', icon: FileText, href: '/form-builder' },
+    { id: 'form-wizard', label: 'Form Wizard', icon: Wand2, href: '/form-wizard' },
     { id: 'regras', label: 'Regras', icon: Code, href: '/regras' },
   ];
 

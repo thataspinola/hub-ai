@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Plus, MoreVertical, Percent, DollarSign, Repeat, Search, X, Trash2, Edit2, Code, Check, AlertCircle, Calendar } from 'lucide-react';
+import { Plus, Percent, DollarSign, Repeat, Search, X, Trash2, Code, Check, AlertCircle } from 'lucide-react';
 import { PROMOTIONS } from '@/constants/featureops';
 import { Promotion } from '@/types/featureops';
 
@@ -37,7 +37,7 @@ export const Promotions: React.FC = () => {
       try {
         const parsed = JSON.parse(saved);
         // Migration: add default category if missing
-        const migrated = parsed.map((p: any) => ({
+        const migrated = parsed.map((p: Promotion & { category?: string }) => ({
           ...p,
           category: p.category || 'Cupons'
         }));
@@ -455,7 +455,7 @@ export const Promotions: React.FC = () => {
                     <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Tipo de Desconto</label>
                     <select 
                       value={newPromo.type}
-                      onChange={e => setNewPromo({...newPromo, type: e.target.value as any})}
+                      onChange={e => setNewPromo({...newPromo, type: e.target.value as Promotion['type']})}
                       className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm bg-white"
                     >
                       <option value="percent">Porcentagem (%)</option>
@@ -467,7 +467,7 @@ export const Promotions: React.FC = () => {
                     <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Categoria</label>
                     <select 
                       value={newPromo.category}
-                      onChange={e => setNewPromo({...newPromo, category: e.target.value as any})}
+                      onChange={e => setNewPromo({...newPromo, category: e.target.value as Promotion['category']})}
                       className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm bg-white"
                     >
                       <option value="Cupons">Cupons</option>
@@ -482,7 +482,7 @@ export const Promotions: React.FC = () => {
                     <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Status Inicial</label>
                     <select 
                       value={newPromo.status}
-                      onChange={e => setNewPromo({...newPromo, status: e.target.value as any})}
+                      onChange={e => setNewPromo({...newPromo, status: e.target.value as Promotion['status']})}
                       className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm bg-white"
                     >
                       <option value="Ativa">Ativa</option>
