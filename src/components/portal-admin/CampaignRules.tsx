@@ -17,7 +17,6 @@ import {
   Trash2, 
   ChevronDown, 
   ChevronUp,
-  Search
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
