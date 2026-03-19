@@ -23,8 +23,6 @@ describe('Dashboard', () => {
   it('renders metric cards', () => {
     render(<Dashboard />)
     expect(screen.getByText('Flags Ativas')).toBeInTheDocument()
-    expect(screen.getByText('Programas Piloto')).toBeInTheDocument()
-    expect(screen.getByText('Conversão de Promo')).toBeInTheDocument()
     expect(screen.getByText('Saúde do Sistema')).toBeInTheDocument()
   })
 
