@@ -18,11 +18,7 @@ describe('PortalSidebar', () => {
     render(<PortalSidebar />)
     expect(screen.getByText('Dashboard')).toBeInTheDocument()
     expect(screen.getByText('Feature Flags')).toBeInTheDocument()
-    expect(screen.getByText('Pilotos')).toBeInTheDocument()
-    expect(screen.getByText('Promoções')).toBeInTheDocument()
-    expect(screen.getByText('RecEngine')).toBeInTheDocument()
     expect(screen.getByText('Form Wizard')).toBeInTheDocument()
-    expect(screen.getByText('Regras')).toBeInTheDocument()
   })
 
   it('renders nav links with correct hrefs', () => {

@@ -3,6 +3,7 @@ import { PublicEnvScript } from "next-runtime-env";
 
 import { PortalSidebar } from "@/components/portal-admin/PortalSidebar";
 import SessionProviderWrapper from "@/components/session-provider-wrapper";
+import { FeatureFlagProvider } from "@/lib/feature-flags/client";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,12 +23,14 @@ export default function RootLayout({
       </head>
       <body>
         <SessionProviderWrapper>
-          <div className="flex min-h-screen bg-slate-50">
-            <PortalSidebar />
-            <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-              {children}
-            </main>
-          </div>
+          <FeatureFlagProvider>
+            <div className="flex min-h-screen bg-slate-50">
+              <PortalSidebar />
+              <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+                {children}
+              </main>
+            </div>
+          </FeatureFlagProvider>
         </SessionProviderWrapper>
       </body>
     </html>
