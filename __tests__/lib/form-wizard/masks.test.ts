@@ -1,7 +1,7 @@
 import {
   maskCPF, unmaskCPF, validateCPF,
   maskCNPJ, unmaskCNPJ, validateCNPJ,
-  maskPhone, unmaskPhone,
+  maskPhone, unmaskPhone, validatePhone,
 } from '@/lib/form-wizard/masks'
 
 describe('CPF', () => {
@@ -112,5 +112,39 @@ describe('Phone', () => {
     it('removes formatting', () => {
       expect(unmaskPhone('(11) 98765-4321')).toBe('11987654321')
     })
+  })
+})
+
+describe('validatePhone', () => {
+  it('validates a correct 11-digit mobile number', () => {
+    expect(validatePhone('11987654321')).toBe(true)
+  })
+
+  it('validates a correct 10-digit landline number', () => {
+    expect(validatePhone('1134567890')).toBe(true)
+  })
+
+  it('rejects a number with invalid DDD', () => {
+    expect(validatePhone('00987654321')).toBe(false)
+  })
+
+  it('rejects a number that is too short', () => {
+    expect(validatePhone('119876')).toBe(false)
+  })
+
+  it('rejects a number that is too long', () => {
+    expect(validatePhone('119876543210')).toBe(false)
+  })
+
+  it('rejects an 11-digit number where 3rd digit is not 9', () => {
+    expect(validatePhone('11187654321')).toBe(false)
+  })
+
+  it('validates formatted 11-digit mobile number', () => {
+    expect(validatePhone('(11) 98765-4321')).toBe(true)
+  })
+
+  it('validates formatted 10-digit landline', () => {
+    expect(validatePhone('(11) 3456-7890')).toBe(true)
   })
 })
