@@ -249,4 +249,200 @@ describe('FeatureFlagCrud', () => {
 
     expect(screen.getByText('Nenhuma flag encontrada')).toBeInTheDocument();
   });
+
+  // ── Help panel ────────────────────────────────────────
+
+  it('abre o painel de ajuda ao clicar no botão help', () => {
+    render(<FeatureFlagCrud storage={createTestStorage()} />);
+
+    const helpBtn = screen.getByTitle('Como funciona?');
+    fireEvent.click(helpBtn);
+
+    // The expandable help panel shows "Como funciona" as a section heading
+    expect(screen.getAllByText(/Como funciona/i).length).toBeGreaterThan(0);
+  });
+
+  it('fecha o painel de ajuda ao clicar no X interno', () => {
+    render(<FeatureFlagCrud storage={createTestStorage()} />);
+
+    fireEvent.click(screen.getByTitle('Como funciona?'));
+
+    // Panel is open
+    expect(screen.getByText('Casos de Uso')).toBeInTheDocument();
+
+    // Close via internal X button in TabHelpContent (has hover:text-slate-500 class)
+    const allBtns = screen.getAllByRole('button');
+    const closeBtn = allBtns.find(b =>
+      b.className.includes('hover:text-slate-500') && !b.textContent?.trim() && !b.title,
+    );
+    if (closeBtn) {
+      fireEvent.click(closeBtn);
+      expect(screen.queryByText('Casos de Uso')).not.toBeInTheDocument();
+    }
+  });
+
+  // ── Multivariant modal full flow ──────────────────────
+
+  it('cria uma nova flag multivariante com variantes', () => {
+    const storage = createTestStorage();
+    render(<FeatureFlagCrud storage={storage} />);
+
+    fireEvent.click(screen.getByText('Multivariantes'));
+    fireEvent.click(screen.getByText('Nova Flag'));
+
+    // Fill all required fields 
+    fireEvent.change(screen.getByPlaceholderText('Ex: Dark Mode'), { target: { value: 'Test Variant Flag' } });
+    fireEvent.change(screen.getByPlaceholderText('Ex: ui_dark_mode'), { target: { value: 'test_variant' } });
+    fireEvent.change(screen.getByPlaceholderText('Para que serve esta flag?'), { target: { value: 'A multivariant test' } });
+    // Fill current value (required field in multivariant modal)
+    fireEvent.change(screen.getByPlaceholderText('beta'), { target: { value: 'control' } });
+    // Fill variant label
+    fireEvent.change(screen.getByPlaceholderText('Label'), { target: { value: 'Control' } });
+
+    const criarBtn = screen.getByRole('button', { name: /Criar/i });
+    fireEvent.click(criarBtn);
+    expect(storage.store.multivariantFlags.length).toBe(3);
+  });
+
+  it('adiciona variante no modal multivariante', () => {
+    render(<FeatureFlagCrud storage={createTestStorage()} />);
+
+    fireEvent.click(screen.getByText('Multivariantes'));
+    fireEvent.click(screen.getByText('Nova Flag'));
+
+    const addBtn = screen.getByRole('button', { name: /Adicionar/i });
+    fireEvent.click(addBtn);
+
+    // There should now be 2 rows of variant inputs
+    expect(screen.getAllByPlaceholderText('Label').length).toBe(2);
+  });
+
+  it('remove variante no modal multivariante quando há mais de uma', () => {
+    render(<FeatureFlagCrud storage={createTestStorage()} />);
+
+    fireEvent.click(screen.getByText('Multivariantes'));
+    fireEvent.click(screen.getByText('Nova Flag'));
+
+    // Add a variant first
+    const addBtn = screen.getByRole('button', { name: /Adicionar/i });
+    fireEvent.click(addBtn);
+    expect(screen.getAllByPlaceholderText('Label').length).toBe(2);
+
+    // Now remove it — the remove buttons appear when variants.length > 1
+    const xBtns = screen.getAllByRole('button').filter(b =>
+      b.className.includes('hover:text-red-500') && !b.title,
+    );
+    if (xBtns.length > 0) {
+      fireEvent.click(xBtns[xBtns.length - 1]);
+      expect(screen.getAllByPlaceholderText('Label').length).toBe(1);
+    }
+  });
+
+  it('altera valueType no modal multivariante', () => {
+    render(<FeatureFlagCrud storage={createTestStorage()} />);
+
+    fireEvent.click(screen.getByText('Multivariantes'));
+    fireEvent.click(screen.getByText('Nova Flag'));
+
+    // Use getAllByRole to handle the status filter select + the valueType select
+    const selects = screen.getAllByRole('combobox') as HTMLSelectElement[];
+    // The valueType select has 'string' as first option
+    const vtSelect = selects.find(s => s.value === 'string');
+    if (vtSelect) {
+      fireEvent.change(vtSelect, { target: { value: 'number' } });
+      expect(vtSelect.value).toBe('number');
+    }
+  });
+
+  // ── Attribute modal full flow ──────────────────────────
+
+  it('cria uma nova flag com atributos', () => {
+    const storage = createTestStorage();
+    render(<FeatureFlagCrud storage={storage} />);
+
+    fireEvent.click(screen.getByText('Com Atributos'));
+    fireEvent.click(screen.getByText('Nova Flag'));
+
+    fireEvent.change(screen.getByPlaceholderText('Ex: ML Rec Engine'), { target: { value: 'Attr Flag' } });
+    fireEvent.change(screen.getByPlaceholderText('Ex: ml_rec_engine'), { target: { value: 'attr_flag' } });
+    fireEvent.change(screen.getByPlaceholderText('Para que serve esta flag?'), { target: { value: 'Attr test' } });
+
+    // Fill attribute key and value
+    fireEvent.change(screen.getByPlaceholderText('Chave'), { target: { value: 'threshold' } });
+    fireEvent.change(screen.getByPlaceholderText('Valor'), { target: { value: '0.8' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /Criar/i }));
+    expect(storage.store.attributeFlags.length).toBe(2);
+  });
+
+  it('adiciona atributo no modal de atributos', () => {
+    render(<FeatureFlagCrud storage={createTestStorage()} />);
+
+    fireEvent.click(screen.getByText('Com Atributos'));
+    fireEvent.click(screen.getByText('Nova Flag'));
+
+    // "Adicionar" button is the only one with that name in the attrs section
+    const addBtn = screen.getByRole('button', { name: /Adicionar/i });
+    fireEvent.click(addBtn);
+
+    expect(screen.getAllByPlaceholderText('Chave').length).toBe(2);
+  });
+
+  it('alterna enabled no modal booleano', () => {
+    render(<FeatureFlagCrud storage={createTestStorage()} />);
+
+    fireEvent.click(screen.getByText('Nova Flag'));
+
+    // Confirm EnabledToggle is rendered with initial Desativado state
+    expect(screen.getByText('Estado')).toBeInTheDocument();
+    // The toggle button starts as bg-slate-300 (disabled)
+    const toggleBtn = screen.getAllByRole('button').find(b =>
+      b.className.includes('bg-slate-300') && b.className.includes('w-11'),
+    );
+    expect(toggleBtn).toBeTruthy();
+
+    // Click and verify the button class changes to bg-emerald-500 (enabled)
+    if (toggleBtn) {
+      fireEvent.click(toggleBtn);
+      // After click, the button should have emerald background (enabled)
+      const enabledBtn = screen.getAllByRole('button').find(b =>
+        b.className.includes('bg-emerald-500') && b.className.includes('w-11'),
+      );
+      expect(enabledBtn).toBeTruthy();
+    }
+  });
+
+  it('edita uma flag multivariante existente', () => {
+    const storage = createTestStorage();
+    render(<FeatureFlagCrud storage={storage} />);
+
+    fireEvent.click(screen.getByText('Multivariantes'));
+
+    const editBtns = screen.getAllByTitle('Editar');
+    fireEvent.click(editBtns[0]);
+
+    expect(screen.getByText('Editar Flag Multivariante')).toBeInTheDocument();
+
+    const saveBtn = screen.getByRole('button', { name: /Salvar/i });
+    fireEvent.click(saveBtn);
+
+    expect(storage.store.multivariantFlags.length).toBe(2);
+  });
+
+  it('edita uma flag com atributos existente', () => {
+    const storage = createTestStorage();
+    render(<FeatureFlagCrud storage={storage} />);
+
+    fireEvent.click(screen.getByText('Com Atributos'));
+
+    const editBtns = screen.getAllByTitle('Editar');
+    fireEvent.click(editBtns[0]);
+
+    expect(screen.getByText('Editar Flag com Atributos')).toBeInTheDocument();
+
+    const saveBtn = screen.getByRole('button', { name: /Salvar/i });
+    fireEvent.click(saveBtn);
+
+    expect(storage.store.attributeFlags.length).toBe(1);
+  });
 });

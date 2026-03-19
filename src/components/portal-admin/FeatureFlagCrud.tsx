@@ -20,7 +20,6 @@ import {
   createBooleanFlag,
   createMultivariantFlag,
   createAttributeFlag,
-  generateId,
 } from '@/lib/feature-flags/crud-storage';
 
 // ---------------------------------------------------------------------------
@@ -71,7 +70,7 @@ export function FeatureFlagCrud({
 
   // ── Filtering ─────────────────────────────────────────
 
-  function matchesFilter(flag: { key: string; name: string; enabled: boolean }) {
+  const matchesFilter = useCallback((flag: { key: string; name: string; enabled: boolean }) => {
     const q = searchQuery.toLowerCase();
     const matchSearch = !q || flag.name.toLowerCase().includes(q) || flag.key.toLowerCase().includes(q);
     const matchStatus =
@@ -79,11 +78,11 @@ export function FeatureFlagCrud({
       (statusFilter === 'active' && flag.enabled) ||
       (statusFilter === 'inactive' && !flag.enabled);
     return matchSearch && matchStatus;
-  }
+  }, [searchQuery, statusFilter]);
 
-  const filteredBoolean = useMemo(() => store.booleanFlags.filter(matchesFilter), [store.booleanFlags, searchQuery, statusFilter]);
-  const filteredMulti = useMemo(() => store.multivariantFlags.filter(matchesFilter), [store.multivariantFlags, searchQuery, statusFilter]);
-  const filteredAttr = useMemo(() => store.attributeFlags.filter(matchesFilter), [store.attributeFlags, searchQuery, statusFilter]);
+  const filteredBoolean = useMemo(() => store.booleanFlags.filter(matchesFilter), [store.booleanFlags, matchesFilter]);
+  const filteredMulti = useMemo(() => store.multivariantFlags.filter(matchesFilter), [store.multivariantFlags, matchesFilter]);
+  const filteredAttr = useMemo(() => store.attributeFlags.filter(matchesFilter), [store.attributeFlags, matchesFilter]);
 
   // ── Toggle ────────────────────────────────────────────
 
