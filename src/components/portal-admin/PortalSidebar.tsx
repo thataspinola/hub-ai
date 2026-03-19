@@ -6,11 +6,7 @@ import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, 
   Flag, 
-  Users, 
-  Percent, 
-  Settings, 
   LogOut,
-  Code,
   Wand2
 } from 'lucide-react';
 
@@ -20,11 +16,7 @@ export const PortalSidebar: React.FC = () => {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/' },
     { id: 'feature-flags', label: 'Feature Flags', icon: Flag, href: '/feature-flags' },
-    { id: 'pilots', label: 'Pilotos', icon: Users, href: '/pilots' },
-    { id: 'promotions', label: 'Promoções', icon: Percent, href: '/promotions' },
-    { id: 'rec-engine', label: 'RecEngine', icon: Settings, href: '/rec-engine' },
     { id: 'form-wizard', label: 'Form Wizard', icon: Wand2, href: '/form-wizard' },
-    { id: 'regras', label: 'Regras', icon: Code, href: '/regras' },
   ];
 
   return (

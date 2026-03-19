@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { Bell, Plus, TrendingUp, Users, Percent, Activity, ChevronRight } from 'lucide-react';
-import { FEATURE_FLAGS, PILOT_PROGRAMS, SYSTEM_EVENTS } from '@/constants/featureops';
+import { Bell, Plus, TrendingUp, Activity, ChevronRight } from 'lucide-react';
+import { FEATURE_FLAGS, SYSTEM_EVENTS } from '@/constants/featureops';
 
 export const Dashboard: React.FC = () => {
   return (
@@ -28,7 +28,7 @@ export const Dashboard: React.FC = () => {
       </header>
 
       {/* Metrics Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm font-medium text-slate-500">Flags Ativas</p>
@@ -37,28 +37,6 @@ export const Dashboard: React.FC = () => {
           <div className="flex items-end justify-between">
             <h3 className="text-3xl font-bold text-slate-900">24</h3>
             <span className="text-green-600 text-xs font-bold bg-green-50 px-2 py-1 rounded">+2 esta semana</span>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-sm font-medium text-slate-500">Programas Piloto</p>
-            <Users size={16} className="text-indigo-500" />
-          </div>
-          <div className="flex items-end justify-between">
-            <h3 className="text-3xl font-bold text-slate-900">8</h3>
-            <span className="text-slate-400 text-xs font-medium">3 Agendados</span>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-sm font-medium text-slate-500">Conversão de Promo</p>
-            <Percent size={16} className="text-indigo-500" />
-          </div>
-          <div className="flex items-end justify-between">
-            <h3 className="text-3xl font-bold text-slate-900">4.2%</h3>
-            <span className="text-indigo-600 text-xs font-bold bg-indigo-50 px-2 py-1 rounded">Meta: 3.5%</span>
           </div>
         </div>
 
@@ -74,9 +52,7 @@ export const Dashboard: React.FC = () => {
         </div>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Feature Flags Table */}
-        <section className="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <section className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50/50">
             <h3 className="font-bold text-slate-800">Flags de Recursos Críticos</h3>
             <button className="text-sm text-indigo-600 font-medium hover:underline flex items-center gap-1">
@@ -115,67 +91,7 @@ export const Dashboard: React.FC = () => {
           </div>
         </section>
 
-        {/* Pilot Status */}
-        <section className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-          <h3 className="font-bold text-slate-800 mb-6">Status do Programa Piloto</h3>
-          <div className="space-y-6">
-            {PILOT_PROGRAMS.map((pilot) => (
-              <div key={pilot.id} className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-600 font-medium">{pilot.title}</span>
-                  <span className="text-slate-400">{pilot.progress}% Concluído</span>
-                </div>
-                <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: `${pilot.progress}%` }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className={`h-full rounded-full ${pilot.progress > 50 ? 'bg-indigo-600' : 'bg-amber-500'}`}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-          <button className="w-full mt-8 py-2.5 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
-            Gerenciar Pilotos
-          </button>
-        </section>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Promotion Performance */}
-        <section className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-          <h3 className="font-bold text-slate-800 mb-6">Desempenho Recente de Promoções</h3>
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <p className="text-sm text-slate-500">Venda de Verão 2023</p>
-              <p className="text-2xl font-bold">12.480 <span className="text-sm font-normal text-slate-400">Cliques</span></p>
-            </div>
-            <div className="text-right">
-              <p className="text-sm text-slate-500">Dias Ativos</p>
-              <p className="text-2xl font-bold">14 / 30</p>
-            </div>
-          </div>
-          <div className="h-40 flex items-end gap-2 px-2">
-            {[40, 60, 75, 100, 80, 90, 75, 50, 65, 100].map((height, i) => (
-              <motion.div 
-                key={i}
-                initial={{ height: 0 }}
-                animate={{ height: `${height}%` }}
-                transition={{ delay: i * 0.05, duration: 0.5 }}
-                className={`flex-1 rounded-t-md transition-colors cursor-pointer ${
-                  i === 9 ? 'bg-indigo-600' : 
-                  i > 7 ? 'bg-indigo-400' :
-                  i > 4 ? 'bg-indigo-300' : 'bg-indigo-100'
-                } hover:bg-indigo-500`}
-                title={`Dia ${i + 1}: ${height}%`}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* System Health Logs */}
-        <section className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+      <section className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
           <h3 className="font-bold text-slate-800 mb-6">Saúde do Sistema e Eventos</h3>
           <div className="space-y-6">
             {SYSTEM_EVENTS.map((event) => (
@@ -199,7 +115,6 @@ export const Dashboard: React.FC = () => {
             ))}
           </div>
         </section>
-      </div>
     </motion.div>
   );
 };
