@@ -37,6 +37,7 @@
   ],
   "exclude": [
     "node_modules",
-    "v0-form-wizard-builder-main"
+    "v0-form-wizard-builder-main",
+    "v0-painel-de-recomendacoes-ky"
   ]
 }
