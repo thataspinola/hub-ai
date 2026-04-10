@@ -1,8 +1,8 @@
 import { libraryItems, categoryLabels } from '@/lib/form-wizard/library-items'
 
 describe('libraryItems', () => {
-  it('has 14 items', () => {
-    expect(libraryItems).toHaveLength(14)
+  it('has 18 items', () => {
+    expect(libraryItems).toHaveLength(18)
   })
 
   it('includes a STEP item', () => {

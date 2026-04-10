@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useCallback } from "react"
-import { Trash2, GripVertical, Type, AlignLeft, TextCursorInput, ChevronDown, Circle, CheckSquare, ChevronUp, ChevronDownIcon, CreditCard, Award as IdCard, Building2, Phone, GitFork, ExternalLink, Zap, AlertTriangle } from "lucide-react"
+import { Trash2, GripVertical, Type, AlignLeft, TextCursorInput, ChevronDown, Circle, CheckSquare, ChevronUp, ChevronDownIcon, CreditCard, Award as IdCard, Building2, Phone, GitFork, ExternalLink, Zap, AlertTriangle, MapPin, UserRound, ShieldCheck, Mail } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useFormStore, isFieldElement, isActionElement } from "@/lib/form-wizard/form-store"
 import { Button } from "@/components/ui/button"
@@ -28,6 +28,10 @@ const elementIcons: Record<string, React.ElementType> = {
   CPF_INPUT: IdCard,
   CNPJ_INPUT: Building2,
   PHONE_INPUT: Phone,
+  CEP_INPUT: MapPin,
+  SOCIAL_NAME_INPUT: UserRound,
+  PRIVACY_POLICY: ShieldCheck,
+  EMAIL_INPUT: Mail,
 }
 
 const elementLabels: Record<string, string> = {
@@ -46,6 +50,10 @@ const elementLabels: Record<string, string> = {
   CPF_INPUT: "CPF",
   CNPJ_INPUT: "CNPJ",
   PHONE_INPUT: "Phone",
+  CEP_INPUT: "CEP",
+  SOCIAL_NAME_INPUT: "Nome Social",
+  PRIVACY_POLICY: "Política de Privacidade",
+  EMAIL_INPUT: "E-mail",
 }
 
 interface CanvasElementProps {

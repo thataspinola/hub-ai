@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Layers, Type, AlignLeft, TextCursorInput, ChevronDown, Circle, CheckSquare, GripVertical, ChevronRight, CreditCard, Award as IdCard, Building2, Phone, GitFork, ExternalLink, Zap } from "lucide-react"
+import { Layers, Type, AlignLeft, TextCursorInput, ChevronDown, Circle, CheckSquare, GripVertical, ChevronRight, CreditCard, Award as IdCard, Building2, Phone, GitFork, ExternalLink, Zap, MapPin, UserRound, ShieldCheck, Mail } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { libraryItems, categoryLabels } from "@/lib/form-wizard/library-items"
 import { useFormStore } from "@/lib/form-wizard/form-store"
@@ -24,6 +24,10 @@ const iconMap: Record<string, React.ElementType> = {
   GitFork,
   ExternalLink,
   Zap,
+  MapPin,
+  UserRound,
+  ShieldCheck,
+  Mail,
 }
 
 interface DraggableItemProps {
