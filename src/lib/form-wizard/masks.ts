@@ -98,6 +98,21 @@ export function unmaskPhone(value: string): string {
   return value.replace(/\D/g, "")
 }
 
+// CEP Mask: 00000-000
+export function maskCEP(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 8)
+  return digits.replace(/(\d{5})(\d{1,3})$/, "$1-$2")
+}
+
+export function unmaskCEP(value: string): string {
+  return value.replace(/\D/g, "")
+}
+
+export function validateCEP(cep: string): boolean {
+  const digits = cep.replace(/\D/g, "")
+  return digits.length === 8
+}
+
 export function validatePhone(phone: string): boolean {
   const digits = phone.replace(/\D/g, "")
 

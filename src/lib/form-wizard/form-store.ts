@@ -83,6 +83,14 @@ const getDefaultConfig = (type: ElementType, elementId: string): ElementConfig =
       return { label: "CNPJ", placeholder: "00.000.000/0000-00", required: false, name: generateFieldName(type, elementId) }
     case "PHONE_INPUT":
       return { label: "Phone", placeholder: "(00) 00000-0000", required: false, name: generateFieldName(type, elementId), allowInternational: false }
+    case "CEP_INPUT":
+      return { label: "CEP", placeholder: "00000-000", required: false, name: generateFieldName(type, elementId) }
+    case "SOCIAL_NAME_INPUT":
+      return { label: "Nome Social", placeholder: "Digite o nome social...", required: false, name: generateFieldName(type, elementId) }
+    case "PRIVACY_POLICY":
+      return { label: "Li e aceito a Política de Privacidade", required: false, name: generateFieldName(type, elementId), policyUrl: "" }
+    case "EMAIL_INPUT":
+      return { label: "E-mail", placeholder: "exemplo@email.com", required: false, name: generateFieldName(type, elementId) }
     case "CONDITIONAL_ROUTE":
       return { label: "Continue", fieldName: "", operator: "EQUALS", value: "", targetStepSlug: "", fallbackStepSlug: "" }
     case "NAVIGATION":
@@ -457,7 +465,7 @@ export const isFinalizationElement = (type: ElementType): boolean => {
 }
 
 export const isFieldElement = (type: ElementType): boolean => {
-  return ["TEXT_INPUT", "SELECT", "RADIO", "CHECKBOX", "PLANS", "CPF_INPUT", "CNPJ_INPUT", "PHONE_INPUT"].includes(type)
+  return ["TEXT_INPUT", "SELECT", "RADIO", "CHECKBOX", "PLANS", "CPF_INPUT", "CNPJ_INPUT", "PHONE_INPUT", "CEP_INPUT", "SOCIAL_NAME_INPUT", "PRIVACY_POLICY", "EMAIL_INPUT"].includes(type)
 }
 
 export const isActionElement = (type: ElementType): boolean => {

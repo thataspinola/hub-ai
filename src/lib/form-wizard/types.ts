@@ -16,6 +16,10 @@ export type ElementType =
   | "CPF_INPUT"
   | "CNPJ_INPUT"
   | "PHONE_INPUT"
+  | "CEP_INPUT"
+  | "SOCIAL_NAME_INPUT"
+  | "PRIVACY_POLICY"
+  | "EMAIL_INPUT"
 
 export type ServiceType = "eligibility" | "cotation" | "proposal" | "simulation"
 
@@ -80,6 +84,34 @@ export interface PhoneInputConfig {
   required: boolean
   name?: string
   allowInternational?: boolean
+}
+
+export interface CEPInputConfig {
+  label: string
+  placeholder: string
+  required: boolean
+  name?: string
+}
+
+export interface SocialNameInputConfig {
+  label: string
+  placeholder: string
+  required: boolean
+  name?: string
+}
+
+export interface PrivacyPolicyConfig {
+  label: string
+  required: boolean
+  name?: string
+  policyUrl?: string
+}
+
+export interface EmailInputConfig {
+  label: string
+  placeholder: string
+  required: boolean
+  name?: string
 }
 
 export interface SuccessScreenConfig {
@@ -155,6 +187,10 @@ export type ElementConfig =
   | CPFInputConfig
   | CNPJInputConfig
   | PhoneInputConfig
+  | CEPInputConfig
+  | SocialNameInputConfig
+  | PrivacyPolicyConfig
+  | EmailInputConfig
 
 export interface FormElement {
   id: string

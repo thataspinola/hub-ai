@@ -27,6 +27,10 @@ import type {
   CPFInputConfig,
   CNPJInputConfig,
   PhoneInputConfig,
+  CEPInputConfig,
+  SocialNameInputConfig,
+  PrivacyPolicyConfig,
+  EmailInputConfig,
 } from "@/lib/form-wizard/types"
 import { cn } from "@/lib/utils"
 import { useState, useEffect } from "react"
@@ -519,6 +523,174 @@ function PhoneInputProperties({
         Format: (00) 00000-0000
         <br />
         Supports mobile and landline
+      </div>
+    </div>
+  )
+}
+
+function CEPInputProperties({
+  stepId,
+  elementId,
+  config,
+}: { stepId: string; elementId: string; config: CEPInputConfig }) {
+  const updateElement = useFormStore((s) => s.updateElement)
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <Label htmlFor="cep-label">Label</Label>
+        <Input
+          id="cep-label"
+          value={config.label}
+          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          className="mt-1"
+        />
+      </div>
+      <div>
+        <Label htmlFor="cep-placeholder">Placeholder</Label>
+        <Input
+          id="cep-placeholder"
+          value={config.placeholder}
+          onChange={(e) => updateElement(stepId, elementId, { placeholder: e.target.value })}
+          className="mt-1"
+        />
+      </div>
+      <div className="flex items-center justify-between">
+        <Label htmlFor="cep-required">Required</Label>
+        <Switch
+          id="cep-required"
+          checked={config.required}
+          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+        />
+      </div>
+      <div className="rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
+        Format: 00000-000
+        <br />
+        Includes automatic mask
+      </div>
+    </div>
+  )
+}
+
+function SocialNameInputProperties({
+  stepId,
+  elementId,
+  config,
+}: { stepId: string; elementId: string; config: SocialNameInputConfig }) {
+  const updateElement = useFormStore((s) => s.updateElement)
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <Label htmlFor="social-name-label">Label</Label>
+        <Input
+          id="social-name-label"
+          value={config.label}
+          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          className="mt-1"
+        />
+      </div>
+      <div>
+        <Label htmlFor="social-name-placeholder">Placeholder</Label>
+        <Input
+          id="social-name-placeholder"
+          value={config.placeholder}
+          onChange={(e) => updateElement(stepId, elementId, { placeholder: e.target.value })}
+          className="mt-1"
+        />
+      </div>
+      <div className="flex items-center justify-between">
+        <Label htmlFor="social-name-required">Required</Label>
+        <Switch
+          id="social-name-required"
+          checked={config.required}
+          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+        />
+      </div>
+    </div>
+  )
+}
+
+function PrivacyPolicyProperties({
+  stepId,
+  elementId,
+  config,
+}: { stepId: string; elementId: string; config: PrivacyPolicyConfig }) {
+  const updateElement = useFormStore((s) => s.updateElement)
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <Label htmlFor="privacy-label">Label</Label>
+        <Input
+          id="privacy-label"
+          value={config.label}
+          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          className="mt-1"
+        />
+      </div>
+      <div>
+        <Label htmlFor="privacy-url">Policy URL</Label>
+        <Input
+          id="privacy-url"
+          value={config.policyUrl || ""}
+          onChange={(e) => updateElement(stepId, elementId, { policyUrl: e.target.value })}
+          placeholder="https://..."
+          className="mt-1"
+        />
+      </div>
+      <div className="flex items-center justify-between">
+        <Label htmlFor="privacy-required">Required</Label>
+        <Switch
+          id="privacy-required"
+          checked={config.required}
+          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+        />
+      </div>
+      <div className="rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
+        Renders as a checkbox with a link to the privacy policy
+      </div>
+    </div>
+  )
+}
+
+function EmailInputProperties({
+  stepId,
+  elementId,
+  config,
+}: { stepId: string; elementId: string; config: EmailInputConfig }) {
+  const updateElement = useFormStore((s) => s.updateElement)
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <Label htmlFor="email-label">Label</Label>
+        <Input
+          id="email-label"
+          value={config.label}
+          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          className="mt-1"
+        />
+      </div>
+      <div>
+        <Label htmlFor="email-placeholder">Placeholder</Label>
+        <Input
+          id="email-placeholder"
+          value={config.placeholder}
+          onChange={(e) => updateElement(stepId, elementId, { placeholder: e.target.value })}
+          className="mt-1"
+        />
+      </div>
+      <div className="flex items-center justify-between">
+        <Label htmlFor="email-required">Required</Label>
+        <Switch
+          id="email-required"
+          checked={config.required}
+          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+        />
+      </div>
+      <div className="rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
+        Includes e-mail format validation
       </div>
     </div>
   )
@@ -1182,6 +1354,10 @@ const elementTypeLabels: Record<string, string> = {
   CPF_INPUT: "CPF Input",
   CNPJ_INPUT: "CNPJ Input",
   PHONE_INPUT: "Phone Input",
+  CEP_INPUT: "CEP Input",
+  SOCIAL_NAME_INPUT: "Nome Social Input",
+  PRIVACY_POLICY: "Política de Privacidade",
+  EMAIL_INPUT: "E-mail Input",
 }
 
   const renderProperties = () => {
@@ -1270,6 +1446,38 @@ const elementTypeLabels: Record<string, string> = {
             stepId={selectedStepId}
             elementId={element.id}
             config={element.config as PhoneInputConfig}
+          />
+        )
+      case "CEP_INPUT":
+        return (
+          <CEPInputProperties
+            stepId={selectedStepId}
+            elementId={element.id}
+            config={element.config as CEPInputConfig}
+          />
+        )
+      case "SOCIAL_NAME_INPUT":
+        return (
+          <SocialNameInputProperties
+            stepId={selectedStepId}
+            elementId={element.id}
+            config={element.config as SocialNameInputConfig}
+          />
+        )
+      case "PRIVACY_POLICY":
+        return (
+          <PrivacyPolicyProperties
+            stepId={selectedStepId}
+            elementId={element.id}
+            config={element.config as PrivacyPolicyConfig}
+          />
+        )
+      case "EMAIL_INPUT":
+        return (
+          <EmailInputProperties
+            stepId={selectedStepId}
+            elementId={element.id}
+            config={element.config as EmailInputConfig}
           />
         )
       default:
