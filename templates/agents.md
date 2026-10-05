@@ -1,7 +1,7 @@
 ---
-name: { { AGENT_NAME } }
+name: "{{AGENT_NAME}}"
 description: "{{DESCRIPTION}}. Keywords: {{KEYWORDS}}."
-tools: [{ { TOOLS } }]
+tools: [{{TOOLS}}]
 argument-hint: "{{ARGUMENT_HINT}}"
 ---
 
@@ -35,3 +35,4 @@ Você é um **{{ROLE}}** especializado em {{SPECIALIZATION}}.
 Usuário: "{{EXAMPLE_INPUT}}"
 
 {{EXAMPLE_OUTPUT}}
+

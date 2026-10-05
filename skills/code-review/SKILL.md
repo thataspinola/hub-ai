@@ -5,6 +5,9 @@ description: "Code review para frontend React/Next.js. Use para: revisar PRs, an
 
 # Code Review
 
+
+> Referência reutilizável: confirme stack, versões, scripts e arquivos no projeto alvo antes de aplicar. Os caminhos e exemplos abaixo não comprovam uma implementação existente.
+
 ## Modo de Resposta
 
 **Default**: diagnóstico em até 8 bullets, sem blocos de código extensos. Só expandir quando o usuário pedir implementação detalhada ou correção completa.
@@ -83,3 +86,4 @@ description: "Code review para frontend React/Next.js. Use para: revisar PRs, an
 ## Referências
 
 Para templates de feedback, exemplos de código e checklist detalhado por tipo de arquivo, consulte [patterns.md](./references/patterns.md).
+

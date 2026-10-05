@@ -5,6 +5,9 @@ description: 'Acessibilidade para aplicações web. Use para: ARIA attributes, s
 
 # Acessibilidade
 
+
+> Referência reutilizável: confirme stack, versões, scripts e arquivos no projeto alvo antes de aplicar. Os caminhos e exemplos abaixo não comprovam uma implementação existente.
+
 ## Modo de Responsta
 
 **Default**: checklist de problemas encontrados + 1 correção de exemplo. Só gerar implementação completa quando o usuário pedir.
@@ -17,7 +20,7 @@ description: 'Acessibilidade para aplicações web. Use para: ARIA attributes, s
 - Garantir compatibilidade com screen readers
 - Revisar componentes para WCAG compliance
 
-## Padrões do Projeto
+## Padrões de Referência
 
 ### Input Acessível
 
@@ -28,7 +31,7 @@ Use esta padrão como referência ao criar ou revisar inputs. Não assuma que um
 <input
   id={name} // ID para label
   aria-invalid={isError} // Estado de erro
-  aria-describedBy={isError ? `${name}-error` : undefined} // Mensagem de erro
+  aria-describedby={isError ? `${name}-error` : undefined} // Mensagem de erro
   aria-busy={isLoading} // Estado de carregamento
 />
 
@@ -102,7 +105,7 @@ export const AcessibleInput = ({
   ...props
 }: AccessibleInputProps) => {
   const hasError = Boolean(errorMessage)
-  const helperId = helperText ? `${name}-helper` : undefined
+  const helperId = helperText && !hasError ? `${name}-helper` : undefined
   const errorId = hasError ? `${name}-error` : undefined
 
   // Combina ID's para aria-describedby
@@ -208,7 +211,7 @@ export const useFocusTrap = (isOpen: boolean) => {
     firstElement?.focus()
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key !=== 'Tab') return
+      if (e.key !== 'Tab') return
 
       if (e.shiftKey) {
         // Shift + Tab
@@ -247,7 +250,7 @@ export const SkipLink = () => (
 // No layout
 <SkipLink />
 <Header />
-<main id="main-content" tab-index={-1}>
+<main id="main-content" tabIndex={-1}>
   {/* Conteúdo principal */}
   {children}
 </main>
@@ -361,4 +364,5 @@ export const Skeleton = () => (
 
 ## Referências
 
-- [Padrões detalhados de acessibilidade](./references//patterns.md)
+- [Padrões detalhados de acessibilidade](./references/patterns.md)
+

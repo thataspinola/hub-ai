@@ -5,6 +5,9 @@ description: "Padrões e convenções de código frontend. Use para: criar compo
 
 # Code Standards
 
+
+> Referência reutilizável: confirme stack, versões, scripts e arquivos no projeto alvo antes de aplicar. Os caminhos e exemplos abaixo não comprovam uma implementação existente.
+
 ## Modo de Resposta
 
 **Default**: estrutura de pastas + assinatura/interface. Só gerar implementação completa quando o usuário pedir.
@@ -103,3 +106,4 @@ lead/
 ## Referências
 
 Para templates completos de componente, hook, service e store, consulte [patterns.md](./references/patterns.md).
+

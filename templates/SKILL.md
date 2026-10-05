@@ -1,5 +1,5 @@
 ---
-name: { { SKILL_NAME } }
+name: "{{SKILL_NAME}}"
 description: "{{DESCRIPTION}}. Keywords: {{KEYWORDS}}."
 ---
 
@@ -32,4 +32,5 @@ description: "{{DESCRIPTION}}. Keywords: {{KEYWORDS}}."
 
 ## Referências
 
-Para padrões detalhados, consulte [patterns.md](../references/patterns.md).
+Para padrões detalhados, consulte [patterns.md](./references/patterns.md).
+

@@ -5,6 +5,9 @@ description: "Testes unitários para aplicações React/Next.js. Use para: criar
 
 # Unit Testing
 
+
+> Referência reutilizável: confirme stack, versões, scripts e arquivos no projeto alvo antes de aplicar. Os caminhos e exemplos abaixo não comprovam uma implementação existente.
+
 ## Modo de Resposta
 
 **Default**: estrutura do teste em bullets + 1 exemplo mínimo. Só mostrar múltiplos casos ou mocks complexos quando o usuário pedir.
@@ -94,7 +97,7 @@ vi.mocked(useModalState).mockReturnValue({
 - `await new Promise(r => setTimeout(r, X))` — use `waitFor`
 - Esquecer `vi.clearAllMocks()` no `beforeEach`
 
-## Helpers do Projeto
+## Helpers de Referência
 
 ```typescript
 // __tests__/setup/global-mocks.ts
@@ -105,3 +108,4 @@ export const mockUseLeadStore = (overrides = {}) => ({ lead: { ... }, ...overrid
 ## Referências
 
 Para padrões detalhados de mocking, hooks, forms e coverage, consulte [patterns.md](./references/patterns.md).
+

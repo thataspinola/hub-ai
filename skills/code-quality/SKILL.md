@@ -5,6 +5,9 @@ description: "Qualidade de código para frontend sênior. Use para: lint errors,
 
 # Code Quality
 
+
+> Referência reutilizável: confirme stack, versões, scripts e arquivos no projeto alvo antes de aplicar. Os caminhos e exemplos abaixo não comprovam uma implementação existente.
+
 ## Modo de Resposta
 
 **Default**: erros em lista + comando de correção. Só mostrar código corrigido quando necessário ou quando o usuário pedir.
@@ -29,7 +32,7 @@ Prefira os scripts do projeto para validação. Isso reduz divergência entre o 
 
 ## Configuração Biome
 
-O projeto usa Biome com as seguintes configurações:
+Exemplo para um projeto que usa Biome com as seguintes configurações:
 
 ```json
 {
@@ -61,7 +64,7 @@ O projeto usa Biome com as seguintes configurações:
 
 ## TypeScript Strict
 
-O projeto usa `strict: true` no tsconfig. Isso inclui:
+Exemplo para um projeto que usa `strict: true` no tsconfig. Isso inclui:
 
 - `strictNullChecks` - Null safety obrigatório
 - `noImplicitAny` - Types explícitos
@@ -144,3 +147,4 @@ const phone =
 ## Referências
 
 - [Padrões detalhados](./references/patterns.md)
+

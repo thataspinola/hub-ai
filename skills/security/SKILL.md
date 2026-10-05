@@ -5,6 +5,9 @@ description: "Segurança para aplicações frontend. Use para: encriptação, sa
 
 # Security
 
+
+> Referência reutilizável: confirme stack, versões, scripts e arquivos no projeto alvo antes de aplicar. Os caminhos e exemplos abaixo não comprovam uma implementação existente.
+
 ## Modo de Resposta
 
 **Default**: vulnerabilidades encontradas em lista + 1 correção de exemplo. Só gerar implementação completa quando o usuário pedir.
@@ -20,7 +23,7 @@ description: "Segurança para aplicações frontend. Use para: encriptação, sa
 
 ## Headers de Segurança
 
-O projeto implementa headers de segurança via middleware Next.js:
+Exemplo de implementação de headers de segurança via middleware Next.js:
 
 ```typescript
 // middleware.ts
@@ -55,10 +58,13 @@ Evite instruções que pareçam "seguras por padrão" quando dependem de segredo
 
 ## Encriptação de Dados
 
-### Serviço de Encriptação
+### Serviço de Encriptação no Servidor
+
+Este exemplo usa segredo somente no servidor. Não importe este serviço em componentes cliente e não exponha a chave com `NEXT_PUBLIC_`. Para dados no navegador, priorize minimização e evite persistência de dados sensíveis; uma chave entregue ao cliente não protege contra XSS.
 
 ```typescript
 // services/encryption/index.ts
+import "server-only";
 import * as CryptoJS from "crypto-js";
 
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
@@ -79,7 +85,7 @@ export const decrypt = (encryptedValue: string): string => {
 };
 ```
 
-Encriptação no frontend reduz exposição acidental em storage, mas não substitui controles de backend, rotação de segredo e política de retenção de dados.
+Encriptação no frontend, quando a gestão de chaves é adequada, pode reduzir exposição acidental em storage, mas não substitui controles de backend, rotação de segredo e política de retenção de dados.
 
 ### Dados que Devem Ser Encriptados
 
@@ -96,7 +102,9 @@ Encriptação no frontend reduz exposição acidental em storage, mas não subst
 
 ## Storage Seguro
 
-### Storage Encriptado para Zustand
+### Storage Encriptado para Zustand (pseudocódigo de contrato)
+
+O trecho ilustra a interface de storage, não uma solução pronta para navegador. Não utilize o serviço com segredo de servidor acima neste storage cliente. Defina o modelo de ameaça e a gestão de chaves antes de implementar encrypt/decrypt.
 
 ```typescript
 // stores/lead/storage.ts
@@ -258,7 +266,7 @@ console.log('User data:', { cpf, email, phone });
 // ❌ Usar dangerouslySetInnerHTML sem sanitização
 <div dangerouslySetInnerHTML={{ __html: userContent }} />
 
-// ❌ Armazenar tokens em localStorage (prefira sessionStorage ou cookies HttpOnly)
+// ❌ Armazenar tokens em localStorage (prefira cookies HttpOnly definidos pelo servidor; sessionStorage também é acessível por XSS)
 localStorage.setItem('auth-token', token);
 
 // ❌ Construir queries com concatenação
@@ -292,3 +300,4 @@ await api.post('/validate-admin', { userId });
 ## Referências
 
 - [Padrões detalhados de segurança](./references/patterns.md)
+

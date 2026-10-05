@@ -5,6 +5,9 @@ description: "Otimização de performance frontend. Use para useMemo, useCallbac
 
 # Performance
 
+
+> Referência reutilizável: confirme stack, versões, scripts e arquivos no projeto alvo antes de aplicar. Os caminhos e exemplos abaixo não comprovam uma implementação existente.
+
 ## Modo de Resposta
 
 **Default**: diagnóstico em bullets + 1 exemplo de otimização. Só gerar análise completa ou refatoração extensa quando o usuário pedir.
@@ -18,7 +21,7 @@ description: "Otimização de performance frontend. Use para useMemo, useCallbac
 - Reduzir bundle size
 - Melhorar métricas Core Web Vitals
 
-## Padrões do Projeto
+## Padrões de Referência
 
 ### Memoização com useMemo
 
@@ -85,7 +88,7 @@ export const queryClient = new QueryClient({
 ```typescript
 // 1. Cálculos custosos
 const sortedItems = useMemo(
-  () => items.sort((a, b) => a.price - b.price),
+  () => [...items].sort((a, b) => a.price - b.price),
   [items],
 );
 
@@ -351,4 +354,5 @@ useEffect(() => {
 
 ## Referências
 
-- [Padrões detalhados de performance](../references/patterns.md)
+- [Padrões detalhados de performance](./references/patterns.md)
+

@@ -136,7 +136,7 @@ const SafeHtml = ({ content }: { content: string }) => (
 ### CSRF Protection
 
 ```typescript
-// O projeto usa cookies SameSite=Lax por padrão
+// Exemplo para um projeto que usa cookies SameSite=Lax por padrão
 // Para APIs críticas, adicionar token CSRF
 
 // Backend deve validar:
@@ -342,13 +342,17 @@ headers: {
 
 ```typescript
 // src/services/encryption - usa CryptoJS + AES-JS
+import "server-only";
 import * as CryptoJS from "crypto-js";
 
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
+if (!ENCRYPTION_KEY) throw new Error("ENCRYPTION_KEY is required");
+
 export const encrypt = (value: string) =>
-  CryptoJS.AES.encrypt(value, DEFAULT_ENCRYPTION_KEY).toString();
+  CryptoJS.AES.encrypt(value, ENCRYPTION_KEY).toString();
 ```
 
-> ⚠️ A chave deve vir de env var, nunca hardcoded.
+> Exemplo exclusivo do servidor: nunca disponibilize a chave ao navegador nem importe este módulo em código cliente.
 
 ## Checklist de Segurança
 
@@ -363,3 +367,4 @@ export const encrypt = (value: string) =>
 - [ ] Cookies com flags Secure e SameSite
 - [ ] CSP configurado (se aplicável)
 - [ ] Dependências sem vulnerabilidades conhecidas (npm audit)
+

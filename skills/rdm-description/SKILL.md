@@ -8,6 +8,9 @@ argument-hint: "Nome da branch (ex: feature/HPS2-305) [ticket Jira opcional, ex:
 
 Analisa o histórico e os diffs de uma branch git para gerar automaticamente uma descrição de RDM padronizada.
 
+
+> Referência reutilizável: confirme stack, versões, scripts e arquivos no projeto alvo antes de aplicar. Os caminhos e exemplos abaixo não comprovam uma implementação existente.
+
 ## Quando Usar
 
 - Criar ou redigir uma RDM (Requisição de Mudança)
@@ -55,20 +58,20 @@ Execute os comandos abaixo em sequência para obter o histórico completo da bra
 git remote show origin | grep "HEAD branch"
 
 # Listar commits exclusivos da branch
-git log origin/<base>...<branch> --oneline --no-merges
+git log origin/<base>..<branch> --oneline --no-merges
 
 # Ver diff completo (arquivos alterados e conteúdo)
 git diff origin/<base>...<branch> --stat
 git diff origin/<base>...<branch>
 
 # Mensagens completas dos commits
-git log origin/<base>...<branch> --no-merges --pretty=format:"%h %s%n%b"
+git log origin/<base>..<branch> --no-merges --pretty=format:"%h %s%n%b"
 ```
 
 Se a branch ainda não foi publicada no remote, use a versão local:
 
 ```bash
-git log <base>...<branch> --oneline --no-merges
+git log <base>..<branch> --oneline --no-merges
 git diff <base>...<branch>
 ```
 
@@ -111,8 +114,7 @@ Impacto
 
 Indisponibilidade
 <Haverá indisponibilidade? Qual a estratégia de deploy?
-- Para APIs serverless com pipeline Jenkins: "Não há indisponibilidade — a nova versão substituirá
-  a anterior no momento do deploy."
+- Para APIs serverless com pipeline Jenkins: "[a confirmar: verificar estratégia de deploy, tráfego, compatibilidade e rollback]"
 - Para alterações de banco/infra: descreva a janela necessária.>
 
 
@@ -143,9 +145,10 @@ Evidência de HML em Anexo
 - **Benefícios**: foco no resultado de negócio/segurança (ex: "Garantir que apenas recursos Y se comuniquem com a fila")
 - **Motivo**: mencionar origem se houver (vulnerabilidade, ticket, incidente, requisito)
 - **Impacto**: citar o nome exato do recurso/sistema impactado
-- **Indisponibilidade**: padrão para serverless/Lambda com Jenkins é zero-downtime
+- **Indisponibilidade**: não inferir zero-downtime apenas por usar serverless/Lambda ou Jenkins; validar a estratégia real
 - **Plano de Teste**: listar cenários concretos a validar em HML com critério de aceite claro; não deixar em branco
 
 ## Exemplo de saída esperada
 
 Veja [exemplo-rdm.md](./assets/exemplo-rdm.md) para referência de uma RDM bem preenchida.
+

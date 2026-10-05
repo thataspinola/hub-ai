@@ -20,7 +20,7 @@ Usar este agente quando precisar revisar o código, analisar pull requests ou id
 Execução (passos rápidos):
 
 - **Pré-requisitos:** estar no repositório alvo, ter `git` instalado e um executor de agentes (por exemplo, GitHub Copilot Chat ou outro runner que suporte agentes do projeto).
-- **Carregar o agente:** abra o seu executor de agentes e escolha o agente `Code Reviewer` (ou aponte para `agents/code-reviewer.agent.md`).
+- **Carregar o agente:** abra o seu executor de agentes e escolha o agente `Code Reviewer` (ou aponte para `.github/agents/code-reviewer.agent.md`).
 - **Fornecer alvo:** informe ao agente o que revisar - arquivo, pasta, branch or PR. Exemplos de prompts:
   - "Revise o arquivo src/components/Button.tsx"
   - "Analise a branch feature/x em relação ao main"
@@ -34,3 +34,4 @@ Este agente utiliza as **skills** disponíveis no projeto para análise detalhad
 ## Saída
 
 O agente gera um arquivo `CODE_REVIEW.md` na raiz do projeto com o resultado da análise.
+
