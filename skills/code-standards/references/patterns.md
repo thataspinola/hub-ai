@@ -19,27 +19,27 @@
 
 ```typescript
 // src/components/index.ts
-export { Button } from "./ui/Button";
-export { Input } from "./ui/Input";
-export { Card } from "./ui/Card";
-export { Modal } from "./ui/Modal";
+export { Button } from './ui/Button'
+export { Input } from './ui/Input'
+export { Card } from './ui/Card'
+export { Modal } from './ui/Modal'
 
 // Types também exportados
-export type { ButtonProps } from "./ui/Button/types";
-export type { InputProps } from "./ui/Input/types";
+export type { ButtonProps } from './ui/Button/types'
+export type { InputProps } from './ui/Input/types'
 ```
 
 ### Hooks Index
 
 ```typescript
 // src/hooks/index.ts
-export { useProposal } from "./useProposal";
-export { useErrorHandler } from "./useErrorHandler";
-export { useModalState } from "./useModalState";
-export { useDebounce } from "./useDebounce";
+export { useProposal } from './useProposal'
+export { useErrorHandler } from './useErrorHandler'
+export { useModalState } from './useModalState'
+export { useDebounce } from './useDebounce'
 
 // Types
-export type { UseProposalReturn } from "./useProposal/types";
+export type { UseProposalReturn } from './useProposal/types'
 ```
 
 ## Padrões de Props
@@ -65,15 +65,15 @@ export const Input = ({ label, errorMessage, isLoading, ...restProps }: InputPro
 ```typescript
 // Para componentes container
 interface CardProps {
-  title: string;
-  children: React.ReactNode;
+  title: string
+  children: React.ReactNode
 }
 
 // Para slots específicos
 interface ModalProps {
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
-  children: React.ReactNode;
+  header?: React.ReactNode
+  footer?: React.ReactNode
+  children: React.ReactNode
 }
 ```
 
@@ -82,8 +82,8 @@ interface ModalProps {
 ```typescript
 // Para lógica reutilizável
 interface DataFetcherProps<T> {
-  url: string;
-  render: (data: T, isLoading: boolean) => React.ReactNode;
+  url: string
+  render: (data: T, isLoading: boolean) => React.ReactNode
 }
 ```
 
@@ -105,14 +105,14 @@ interface DataFetcherProps<T> {
 // ✅ Estado derivado com useMemo
 const filteredItems = useMemo(
   () => items.filter((item) => item.active),
-  [items],
-);
+  [items]
+)
 
 // ✅ Lazy initialization
-const [state, setState] = useState(() => computeExpensiveValue());
+const [state, setState] = useState(() => computeExpensiveValue())
 
 // ❌ Evitar computação em render
-const filteredItems = items.filter((item) => item.active); // Roda todo render
+const filteredItems = items.filter((item) => item.active) // Roda todo render
 ```
 
 ## Padrões de Side Effects
@@ -122,27 +122,27 @@ const filteredItems = items.filter((item) => item.active); // Roda todo render
 ```typescript
 // ✅ Cleanup de subscriptions
 useEffect(() => {
-  const subscription = api.subscribe(handleUpdate);
-  return () => subscription.unsubscribe();
-}, []);
+  const subscription = api.subscribe(handleUpdate)
+  return () => subscription.unsubscribe()
+}, [])
 
 // ✅ Ref para evitar re-runs
-const hasInitialized = useRef(false);
+const hasInitialized = useRef(false)
 
 useEffect(() => {
-  if (hasInitialized.current) return;
-  hasInitialized.current = true;
-  initialize();
-}, []);
+  if (hasInitialized.current) return
+  hasInitialized.current = true
+  initialize()
+}, [])
 
 // ✅ Abort controller para requests
 useEffect(() => {
-  const controller = new AbortController();
+  const controller = new AbortController()
 
-  fetchData({ signal: controller.signal });
+  fetchData({ signal: controller.signal })
 
-  return () => controller.abort();
-}, []);
+  return () => controller.abort()
+}, [])
 ```
 
 ## Padrões de Formulário
@@ -161,22 +161,22 @@ const {
   setFieldValue,
   resetForm,
 } = useForm({
-  initialValues: { email: "", phone: "" },
+  initialValues: { email: '', phone: '' },
 
   validate: (values) => {
-    const errors: Partial<typeof values> = {};
+    const errors: Partial<typeof values> = {}
 
     if (!isValidEmail(values.email)) {
-      errors.email = "Email inválido";
+      errors.email = 'Email inválido'
     }
 
-    return errors;
+    return errors
   },
 
   onSubmit: async (values) => {
-    await submitLead(values);
+    await submitLead(values)
   },
-});
+})
 ```
 
 ### Validação
@@ -209,20 +209,20 @@ const {
 // hooks/useErrorHandler/index.ts
 export const useErrorHandler = () => {
   const showApiError = useCallback((error: unknown, context: string) => {
-    const message = getErrorMessage(error);
+    const message = getErrorMessage(error)
 
     // Log para monitoramento
-    logger.error(context, { error, message });
+    logger.error(context, { error, message })
 
     // Exibir para usuário
     openErrorModal({
-      title: "Erro",
+      title: 'Erro',
       message: message,
-    });
-  }, []);
+    })
+  }, [])
 
-  return { showApiError };
-};
+  return { showApiError }
+}
 ```
 
 ### Retry Logic
@@ -230,11 +230,11 @@ export const useErrorHandler = () => {
 ```typescript
 // Em React Query
 const { data, error, refetch } = useQuery({
-  queryKey: ["plans", quotationToken],
+  queryKey: ['plans', quotationToken],
   queryFn: () => fetchPlans(quotationToken),
   retry: 2,
   retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
-});
+})
 ```
 
 ## Padrões de Navegação
@@ -244,29 +244,29 @@ const { data, error, refetch } = useQuery({
 ```typescript
 // hooks/useStepNavigation/index.ts
 export const useStepNavigation = () => {
-  const router = useRouter();
-  const pathname = usePathname();
+  const router = useRouter()
+  const pathname = usePathname()
 
   const currentStepIndex = useMemo(
     () => STEPS.findIndex((step) => pathname.includes(step.path)),
-    [pathname],
-  );
+    [pathname]
+  )
 
   const nextStep = useCallback(() => {
-    const next = STEPS[currentStepIndex + 1];
+    const next = STEPS[currentStepIndex + 1]
 
-    if (next) router.push(next.path);
-  }, [currentStepIndex, router]);
+    if (next) router.push(next.path)
+  }, [currentStepIndex, router])
 
   const goToStep = useCallback(
     (stepPath: string) => {
-      router.push(stepPath);
+      router.push(stepPath)
     },
-    [router],
-  );
+    [router]
+  )
 
-  return { nextStep, goToStep, currentStepIndex };
-};
+  return { nextStep, goToStep, currentStepIndex }
+}
 ```
 
 ## Padrões de GTM/Analytics
@@ -279,33 +279,33 @@ export const useDataGtmType = ({ name, userCpf }: GtmParams) => {
   const dataGtmType = useMemo(
     () => ({
       input: (fieldName: string) => ({
-        "data-gtm-type": "input",
-        "data-gtm-form": name,
-        "data-gtm-name": fieldName,
+        'data-gtm-type': 'input',
+        'data-gtm-form': name,
+        'data-gtm-name': fieldName,
       }),
 
       click: (action: string) => ({
-        "data-gtm-type": "click",
-        "data-gtm-clicktype": action,
-        "data-gtm-name": name,
+        'data-gtm-type': 'click',
+        'data-gtm-clicktype': action,
+        'data-gtm-name': name,
       }),
 
       pushEvent: (event: GtmEvent) => {
-        window.dataLayer?.push(event);
+        window.dataLayer?.push(event)
       },
 
       alertError: (params: ErrorParams) => {
         window.dataLayer?.push({
-          event: "error",
+          event: 'error',
           ...params,
-        });
+        })
       },
     }),
-    [name, userCpf],
-  );
+    [name, userCpf]
+  )
 
-  return { dataGtmType };
-};
+  return { dataGtmType }
+}
 ```
 
 ## Service com reCAPTCHA
@@ -314,15 +314,15 @@ export const useDataGtmType = ({ name, userCpf }: GtmParams) => {
 // Assinatura padrão para services protegidos
 export async function fetchVehicle(plate: string, recaptchaToken: string) {
   return carbonClient.post(
-    "/vehicle",
+    '/vehicle',
     { plate },
     {
       headers: {
-        "X-Recaptcha-Token": recaptchaToken,
-        "X-Recaptcha-Action": "fetchVehicle",
+        'X-Recaptcha-Token': recaptchaToken,
+        'X-Recaptcha-Action': 'fetchVehicle',
       },
-    },
-  );
+    }
+  )
 }
 ```
 
@@ -331,14 +331,14 @@ export async function fetchVehicle(plate: string, recaptchaToken: string) {
 ```typescript
 export const useVehiclePlate = (plate: string) => {
   return useQuery({
-    queryKey: ["vehicle", plate],
+    queryKey: ['vehicle', plate],
 
     queryFn: async () => {
-      const token = await recaptcha("fetchVehicle");
-      return fetchVehicle(plate, token);
+      const token = await recaptcha('fetchVehicle')
+      return fetchVehicle(plate, token)
     },
 
     enabled: plate.length === 7,
-  });
-};
+  })
+}
 ```

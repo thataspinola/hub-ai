@@ -7,36 +7,36 @@
 ```typescript
 // next.config.ts do projeto
 const nextConfig: NextConfig = {
-  output: "standalone", // Bundle mínimo para deploy
+  output: 'standalone', // Bundle mínimo para deploy
   compress: true, // Compressão gzip habilitada
   reactStrictMode: true,
 
   // Remove propriedades React selecionadas em produção; não remove console
   compiler: {
-    reactRemoveProperties: process.env.NODE_ENV === "production",
+    reactRemoveProperties: process.env.NODE_ENV === 'production',
   },
 
   // Otimização de imagens
   images: {
-    remotePatterns: [{ hostname: "*.portoseguro.com.br" }],
-    formats: ["image/avif", "image/webp"],
+    remotePatterns: [{ hostname: '*.portoseguro.com.br' }],
+    formats: ['image/avif', 'image/webp'],
   },
 
   // Headers de cache
   async headers() {
     return [
       {
-        source: "/_next/static/:path*",
+        source: '/_next/static/:path*',
         headers: [
           {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
-    ];
+    ]
   },
-};
+}
 ```
 
 ## React Query Patterns
@@ -45,7 +45,7 @@ const nextConfig: NextConfig = {
 
 ```typescript
 const { data, isLoading, error } = useQuery({
-  queryKey: ["plans", quotationToken],
+  queryKey: ['plans', quotationToken],
   queryFn: () => fetchPlans(quotationToken),
 
   // Retry com backoff exponencial
@@ -62,7 +62,7 @@ const { data, isLoading, error } = useQuery({
 
   // Habilitar apenas com token válido
   enabled: Boolean(quotationToken),
-});
+})
 ```
 
 ### Prefetching
@@ -93,25 +93,25 @@ const mutation = useMutation({
 
   // Update imediato antes da resposta
   onMutate: async (newLead) => {
-    await queryClient.cancelQueries({ queryKey: ["lead"] });
+    await queryClient.cancelQueries({ queryKey: ['lead'] })
 
-    const previousLead = queryClient.getQueryData(["lead"]);
+    const previousLead = queryClient.getQueryData(['lead'])
 
-    queryClient.setQueryData(["lead"], newLead);
+    queryClient.setQueryData(['lead'], newLead)
 
-    return { previousLead };
+    return { previousLead }
   },
 
   // Rollback em caso de erro
   onError: (err, newLead, context) => {
-    queryClient.setQueryData(["lead"], context?.previousLead);
+    queryClient.setQueryData(['lead'], context?.previousLead)
   },
 
   // Invalidar cache em sucesso
   onSettled: () => {
-    queryClient.invalidateQueries({ queryKey: ["lead"] });
+    queryClient.invalidateQueries({ queryKey: ['lead'] })
   },
-});
+})
 ```
 
 ## Virtualização de Listas
@@ -182,21 +182,21 @@ ANALYZE=true npm run build
 
 ```typescript
 // ❌ Import completo de lodash
-import _ from "lodash";
-_.debounce(fn, 300);
+import _ from 'lodash'
+_.debounce(fn, 300)
 
 // ✅ Import específico
-import debounce from "lodash/debounce";
-debounce(fn, 300);
+import debounce from 'lodash/debounce'
+debounce(fn, 300)
 
 // ✅ Ou usar lodash-es com tree shaking
-import { debounce } from "lodash-es";
+import { debounce } from 'lodash-es'
 
 // ❌ Import de biblioteca inteira
-import * as Icons from "@/components/icons";
+import * as Icons from '@/components/icons'
 
 // ✅ Import específico
-import { IconSearch } from "@/components/icons/IconSearch";
+import { IconSearch } from '@/components/icons/IconSearch'
 ```
 
 ## Web Vitals
@@ -216,13 +216,13 @@ import { IconSearch } from "@/components/icons/IconSearch";
 // app/layout.tsx
 export function reportWebVitals(metric: NextWebVitalsMetric) {
   // Enviar para analytics
-  if (metric.label === "web-vital") {
+  if (metric.label === 'web-vital') {
     window.dataLayer?.push({
-      event: "web-vital",
+      event: 'web-vital',
       metric_name: metric.name,
       metric_value: metric.value,
       metric_id: metric.id,
-    });
+    })
   }
 }
 ```
@@ -311,15 +311,15 @@ const handleItemClick = useCallback(() => handleClick(id), [id]);
 ## useShallow para Stores
 
 ```typescript
-import { useShallow } from "zustand/shallow";
+import { useShallow } from 'zustand/shallow'
 
 // ✅ Evita re-render quando outros campos mudam
 const { lead, setLead } = useLeadStore(
-  useShallow((state) => ({ lead: state.lead, setLead: state.setLead })),
-);
+  useShallow((state) => ({ lead: state.lead, setLead: state.setLead }))
+)
 
 // ❌ Re-render em qualquer mudança do store
-const store = useLeadStore();
+const store = useLeadStore()
 ```
 
 ## Checklist de Performance
@@ -336,4 +336,3 @@ const store = useLeadStore();
 - [ ] Web Vitals dentro das metas
 - [ ] Fontes com display: swap
 - [ ] Assets críticos com preload
-
