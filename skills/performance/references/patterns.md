@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
   compress: true, // Compressão gzip habilitada
   reactStrictMode: true,
 
-  // Remove console em produção
+  // Remove propriedades React selecionadas em produção; não remove console
   compiler: {
     reactRemoveProperties: process.env.NODE_ENV === "production",
   },
@@ -336,3 +336,4 @@ const store = useLeadStore();
 - [ ] Web Vitals dentro das metas
 - [ ] Fontes com display: swap
 - [ ] Assets críticos com preload
+

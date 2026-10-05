@@ -1,54 +1,49 @@
 # hub-ai
 
-Repositório centralizado de agentes Copilot, skills e templates para projetos Porto Seguro.
+Agentes, skills e templates reutilizáveis para Copilot em projetos Porto Seguro. Versão dos recursos: **1.1.0**. O hub orienta tarefas; geração de instructions e adaptação de regras dependem do executor e da leitura do projeto alvo.
 
-## Objetivo
+## Instalar e revisar
 
-Fornecer ferramentas e recursos reutilizáveis para acelerar a criação de agentes Copilot customizados em novos projetos, promovendo consistência e qualidade através de padrões estabelecidos.
+Requer Python 3.10+. O instalador e o diagnóstico usam apenas a biblioteca padrão. A validação de desenvolvimento requer `python3 -m pip install -r requirements-dev.txt`.
 
-Este repositório também é um ponto de contribuição para evoluir e ampliar os agentes, skills e templates — não apenas um artefato estático.
-
-## Estrutura
-
-```javascript
-hub-ai/
-├── README.md                    # Este arquivo
-├── agents/
-│   ├── README.md                # Guia de como usar agentes em projetos
-│   ├── code-reviewer/
-│   │   ├── code-reviewer.agent.md   # Arquivo do agente
-│   │   └── README.md                 # Documentação do agente
-│   └── copilot-setup/
-│       ├── copilot-setup.agent.md    # Arquivo do agente
-│       └── README.md                 # Documentação do agente
-├── skills/                      # Skills compartilhadas (referência e padrão)
-└── templates/                   # Templates para geração automática
+```bash
+python3 scripts/install.py /caminho/do/projeto --profile node --dry-run
+python3 scripts/install.py /caminho/do/projeto --profile node
+python3 scripts/doctor.py /caminho/do/projeto
 ```
 
-## Como usar em seu projeto
+Selecionar **Node Setup** ou **Copilot Setup** e pedir `full setup`. O diagnóstico aponta instructions ainda não geradas, arquivos faltantes, mudanças locais, recursos antigos, links e placeholders. Ele não modifica arquivos nem certifica comportamento do executor.
 
-Execute `python3 scripts/install.py /caminho/do/projeto` a partir da raiz do hub. Requer Python 3.10 ou superior, sem dependências externas. O comando não altera arquivos diferentes já existentes: apresenta os conflitos antes de copiar. Para atualização deliberada, revise o diff e use `--overwrite`. Registre o commit do hub utilizado na atualização.
+| Perfil | Recursos |
+| --- | --- |
+| [Frontend](profiles/frontend/profile.json) | Copilot Setup, Code Reviewer e oito skills React/Next.js |
+| [Node](profiles/node/README.md) | Node Setup, Node Code Reviewer, base backend e capacidades opcionais |
 
-Depois, selecione Copilot Setup no executor compatível e peça `full setup`. A cópia dos recursos não gera instructions nem valida a compatibilidade do executor automaticamente.
+Frontend continua como padrão quando --profile é omitido. Em Node, todas as capacidades são instaladas por padrão para preservar uso anterior. Escolher apenas a base com `--capabilities base` ou adicionar capacidades com `--capabilities security,events,e2e,delivery`. Agents devem consultar somente recursos instalados. CPF, Dynamics, propostas e consentimento são exemplos opcionais de domínio; não integram automaticamente novos projetos.
 
-As oito skills cobrem acessibilidade, qualidade, revisão, padrões, performance, segurança, testes e RDM. Essas oito skills formam o perfil frontend; o perfil Node usa um catálogo próprio descrito abaixo. Exemplos com CPF, propostas, Jira e Jenkins preservam contexto de negócio e não representam integrações instaladas.
+## Atualizar e migrar
 
-## Perfil Node.js
+O instalador registra versão, commit quando disponível, perfil, capacidades e SHA-256 dos arquivos em `.github/hub-ai-lock.json`. Não incluir secrets nesse arquivo. Fixar o checkout em um commit revisado para distribuir uma versão reproduzível; VERSION identifica a versão dos recursos, mas não substitui o commit.
 
-Para backends como porto_connectivity, execute `python3 scripts/install.py /caminho/do/projeto --profile node` e selecione **Node Setup**. Consulte [perfil Node](profiles/node/README.md) para agentes, skills, exemplos e referências. O perfil frontend continua como padrão do instalador; o Node não importa orientações React. A troca de perfil não remove customizações anteriores: revise recursos antigos antes de ativar outro perfil.
+```bash
+python3 scripts/install.py /caminho/do/projeto --profile node --dry-run --overwrite --migrate
+python3 scripts/install.py /caminho/do/projeto --profile node --overwrite --migrate
+```
 
-## Validação e contribuição
+--overwrite substitui conflitos dos recursos selecionados: revisar o diff antes. --migrate remove apenas recursos anteriormente gerenciados e localmente inalterados. Recursos antigos modificados bloqueiam a migração; preservar/adaptar o conteúdo antes de tentar novamente. Sem --migrate, recursos antigos são mantidos e o diagnóstico os sinaliza. Recursos instalados pelo instalador antigo, sem lock, não podem ser identificados como gerenciados: revisar manualmente, não presumir propriedade.
 
-Execute `python3 scripts/validate.py` e `python3 scripts/test_install.py` antes de contribuir. O GitHub Actions executa a mesma validação de metadados, links e contrato entre agentes e templates. Revise exemplos técnicos para a stack e versão alvo; esta validação não executa o Copilot nem compila todos os exemplos.
+Instructions e AGENTS.md locais não são sobrescritos pelo instalador. Ver [guia de atualização](docs/updating.md), [compatibilidade](docs/compatibility.md) e [changelog](CHANGELOG.md).
 
-Use Conventional Commits e descreva a validação realizada. Nunca inclua credenciais ou dados reais de clientes nos exemplos.
+## Validar e contribuir
 
-## Documentação dos agentes
+```bash
+python3 -m pip install -r requirements-dev.txt
+python3 scripts/validate.py
+python3 scripts/test_install.py
+python3 scripts/test_validation.py
+npm --prefix examples/node-backend test
+```
 
-Consulte [agents/README.md](agents/README.md) para instruções detalhadas de como usar os agentes em um novo projeto.
+A CI executa essas verificações e os scripts automated/E2E local do [exemplo Node](examples/node-backend/README.md). Os testes cobrem instalação, migração, recuperação, metadados e comportamento de exemplos selecionados; não compilam todos os blocos de documentação nem validam produção.
 
-## Referência
-
-- **Skills** — Consulte a pasta `skills/` para ver padrões de estrutura e comportamento
-- **Agentes** — Veja a documentação individual de cada agente em sua respectiva pasta
-
+A [avaliação de reviewers](evaluations/README.md) oferece um cenário com defeitos conhecidos e métricas adjudicadas. Usar Conventional Commits, revisar exemplos, não inserir dados reais/credenciais e atualizar testes, catálogo e versão quando o contrato de distribuição mudar.

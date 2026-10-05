@@ -9,7 +9,7 @@ argument-hint: 'full setup, instructions ou AGENTS para o pacote informado'
 
 1. Ler README, docs e AGENTS.md aplicáveis. Inventariar todos os package.json relevantes, engines, módulo CommonJS/ESM, lockfiles, scripts, schemas e pipeline; excluir node_modules, builds e fixtures do inventário.
 2. Identificar transporte (HTTP, EventBridge, SQS, SNS etc.), camadas reais, provedores e módulos compartilhados. Não assumir servidor HTTP, workspaces, TypeScript ou runtime único.
-3. Consultar as skills instaladas abaixo e adaptar somente as aplicáveis. Não carregar skills React para backend por semelhança de nome.
+3. Consultar as skills instaladas abaixo e adaptar somente as aplicáveis. Capabilities opcionais podem não estar instaladas: verificar `.github/hub-ai-lock.json`, não inventar nem exigir recursos ausentes. Não carregar skills React para backend por semelhança de nome.
 
 | Skill | Finalidade |
 | --- | --- |
@@ -24,7 +24,7 @@ argument-hint: 'full setup, instructions ou AGENTS para o pacote informado'
 
 4. Ler `.github/templates/node-instructions.md`; preencher com dados comprovados e gerar `.github/copilot-instructions.md`. Registrar comandos por pacote, não inventar scripts globais.
 5. Quando solicitado, usar `.github/templates/node-AGENTS.md` para criar AGENTS.md na raiz/pacotes pertinentes. Não sobrescrever instruções locais: revisar diff, preservar domínio e aplicar regras mais específicas de cada diretório.
-6. Para full setup, adaptar as oito skills e revisar Node Code Reviewer. Não duplicar exemplos extensos nas instructions; preservar referências relativas.
+6. Para full setup, adaptar as skills efetivamente instaladas e revisar Node Code Reviewer. Não duplicar exemplos extensos nas instructions; preservar referências relativas.
 7. Validar ausência de placeholders nas saídas e links locais existentes. Relatar arquivos, ferramentas detectadas, checks e pendências operacionais. Não executar deploy ou cloud para configurar documentação.
 
 Preservar JavaScript/CommonJS, Jest, AWS SDK v3 e organização existente quando encontrados. Manter CPF, Dynamics, propostas comerciais e consentimento como padrões opcionais somente onde houver contrato real. Separar Jenkins/GitLab vigente de checks suplementares no GitHub; respeitar acesso corporativo em VDI documentado pelo projeto.

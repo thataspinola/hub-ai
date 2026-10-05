@@ -6,18 +6,37 @@
   ],
   "skills": [
     "profiles/node/skills/node-architecture",
-    "profiles/node/skills/node-security",
-    "profiles/node/skills/node-event-contracts",
     "profiles/node/skills/node-testing",
-    "profiles/node/skills/node-delivery",
-    "skills/rdm-description",
-    "profiles/node/skills/node-e2e",
-    "profiles/node/skills/node-automated-testing"
+    "profiles/node/skills/node-automated-testing",
+    "skills/rdm-description"
   ],
   "templates": [
     "templates/SKILL.md",
     "templates/agents.md",
     "profiles/node/templates/node-instructions.md",
     "profiles/node/templates/node-AGENTS.md"
-  ]
+  ],
+  "setup": "Node Setup",
+  "capabilities": {
+    "security": {
+      "skills": [
+        "profiles/node/skills/node-security"
+      ]
+    },
+    "events": {
+      "skills": [
+        "profiles/node/skills/node-event-contracts"
+      ]
+    },
+    "delivery": {
+      "skills": [
+        "profiles/node/skills/node-delivery"
+      ]
+    },
+    "e2e": {
+      "skills": [
+        "profiles/node/skills/node-e2e"
+      ]
+    }
+  }
 }

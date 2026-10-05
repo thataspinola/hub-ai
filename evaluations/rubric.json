@@ -1,0 +1,15 @@
+{
+  "node-review": {
+    "expected": [
+      "partial-publication",
+      "runtime-dependency",
+      "secret-logging",
+      "incorrect-test-expectation"
+    ],
+    "description": "Adjudication must inspect the raw reviewer output and match each finding to source evidence. Do not pass this rubric to the reviewer."
+  },
+  "node-clean": {
+    "expected": [],
+    "description": "No seeded bug: count unsupported bug claims as false positives; optional suggestions are not bugs."
+  }
+}

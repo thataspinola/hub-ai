@@ -1,0 +1,12 @@
+{
+  "name": "hub-ai-node-backend-example",
+  "private": true,
+  "version": "1.1.0",
+  "type": "commonjs",
+  "engines": {"node": ">=22"},
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "test:automated": "node --test test/contracts.test.js test/security.test.js",
+    "test:e2e": "node --test test/flow.test.js"
+  }
+}

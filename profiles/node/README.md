@@ -27,4 +27,6 @@ Depois selecionar **Node Setup** e pedir `full setup`. São instalados dois agen
 
 Exemplos de pedido: “Configure Copilot para este backend sem alterar os AGENTS existentes”; “Revise a branch de renovação de tokens”; “Verifique falhas parciais SQS e EventBridge”; “Confira dependências de produção no bundle”.
 
-Consultar [a referência de origem](references/porto-connectivity.md) para os padrões observados e os limites dessa evidência. Instalar um perfil não remove recursos de uma instalação anterior; ao mudar de perfil, revisar skills/agentes antigos que possam continuar ativos.
+Consultar [a referência de origem](references/porto-connectivity.md) para os padrões observados e os limites dessa evidência. Usar --dry-run para revisar mudanças e --migrate para remover recursos gerenciados antigos sem alterações locais. Consultar [guia de atualização](../../docs/updating.md).
+
+A base contém arquitetura, testes, automação e RDM. Capabilities opcionais: security, events, delivery e e2e. O padrão instala todas; usar --capabilities base ou uma lista separada por vírgulas para limitar a instalação. Consultar [exemplo executável](../../examples/node-backend/README.md) e [avaliação](../../evaluations/README.md).
