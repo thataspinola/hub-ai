@@ -31,11 +31,15 @@ Execute `python3 scripts/install.py /caminho/do/projeto` a partir da raiz do hub
 
 Depois, selecione Copilot Setup no executor compatível e peça `full setup`. A cópia dos recursos não gera instructions nem valida a compatibilidade do executor automaticamente.
 
-As oito skills cobrem acessibilidade, qualidade, revisão, padrões, performance, segurança, testes e RDM. O foco atual é frontend; outros stacks exigem adaptação. Exemplos com CPF, propostas, Jira e Jenkins preservam contexto de negócio e não representam integrações instaladas.
+As oito skills cobrem acessibilidade, qualidade, revisão, padrões, performance, segurança, testes e RDM. Essas oito skills formam o perfil frontend; o perfil Node usa um catálogo próprio descrito abaixo. Exemplos com CPF, propostas, Jira e Jenkins preservam contexto de negócio e não representam integrações instaladas.
+
+## Perfil Node.js
+
+Para backends como porto_connectivity, execute `python3 scripts/install.py /caminho/do/projeto --profile node` e selecione **Node Setup**. Consulte [perfil Node](profiles/node/README.md) para agentes, skills, exemplos e referências. O perfil frontend continua como padrão do instalador; o Node não importa orientações React. A troca de perfil não remove customizações anteriores: revise recursos antigos antes de ativar outro perfil.
 
 ## Validação e contribuição
 
-Execute `python3 scripts/validate.py` antes de contribuir. O GitHub Actions executa a mesma validação de metadados, links e contrato entre agentes e templates. Revise exemplos técnicos para a stack e versão alvo; esta validação não executa o Copilot nem compila todos os exemplos.
+Execute `python3 scripts/validate.py` e `python3 scripts/test_install.py` antes de contribuir. O GitHub Actions executa a mesma validação de metadados, links e contrato entre agentes e templates. Revise exemplos técnicos para a stack e versão alvo; esta validação não executa o Copilot nem compila todos os exemplos.
 
 Use Conventional Commits e descreva a validação realizada. Nunca inclua credenciais ou dados reais de clientes nos exemplos.
 

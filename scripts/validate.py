@@ -1,6 +1,7 @@
 """Validate the hub's local links, metadata and resource contract using stdlib."""
 from pathlib import Path
 import re
+import json
 
 root = Path(__file__).resolve().parents[1]
 errors = []
@@ -34,9 +35,23 @@ if len(skills) != 8:
 for skill in skills:
     if not re.search(rf'^\|\s*{re.escape(skill)}\s*\|', setup, re.M):
         errors.append(f'Setup catalog missing {skill}')
-for path in (root / 'templates').glob('*.md'):
+for path in list((root / 'templates').glob('*.md')) + list((root / 'profiles/node/templates').glob('*.md')):
     if re.search(r'\{\s+\{', path.read_text()):
         errors.append(f'{path.name}: malformed placeholder')
+profile = json.loads((root / 'profiles/node/profile.json').read_text())
+node_setup = (root / profile['agents'][0]).read_text()
+for kind in ('agents', 'templates', 'skills'):
+    for item in profile[kind]:
+        resource = root / item
+        if not resource.exists():
+            errors.append(f'Node profile missing {kind}: {item}')
+        if kind == 'skills' and not (resource / 'SKILL.md').is_file():
+            errors.append(f'Node skill missing SKILL.md: {item}')
+        if kind == 'skills' and not re.search(rf'^\|\s*{re.escape(resource.name)}\s*\|', node_setup, re.M):
+            errors.append(f'Node setup catalog missing {resource.name}')
+for name in re.findall(r'\.github/templates/([\w.-]+)', node_setup):
+    if name not in [Path(p).name for p in profile['templates']]:
+        errors.append(f'Node setup references missing template: {name}')
 if errors:
     raise SystemExit('\n'.join(errors))
-print(f'Validation passed: {len(skills)} skills, local links, frontmatter and template contract.')
+print(f'Validation passed: {len(skills)} skills, local links, frontmatter and frontend/Node profile contracts.')

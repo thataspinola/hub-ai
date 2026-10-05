@@ -7,6 +7,8 @@ Este diretório contém os agentes reutilizáveis do hub ai. Cada agente possui 
 - **[code-reviewer](code-reviewer/README.md)** - Especialista em análise e revisão de código para React/Next.js
 - **[copilot-setup](copilot-setup/README.md)** - Ferramenta de bootstrap para configurar Copilot em novos projetos
 
+Os agentes de backend **Node Setup** e **Node Code Reviewer** estão no [perfil Node](../profiles/node/README.md), instalado com `--profile node`.
+
 ## Estrutura de um agente neste projeto
 
 Cada agente é composto por:
