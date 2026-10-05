@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.3.0
+
+- Orientações NestJS instaláveis no perfil Node para unitários, integração e E2E HTTP.
+- Exemplo TypeScript/Nest com TestingModule, DI, DTOs/pipes, guards, teardown, build e cobertura.
+- Matriz GitLab CI em Node 22/24 para o exemplo Nest sem Python nem serviços corporativos.
+
+## 1.2.1
+
+- Migração completa das ferramentas, testes e GitLab CI para Node.js 22+.
+- Instalação, diagnóstico, recuperação e avaliação sem runtime adicional.
+- Validação impede arquivos de runtime não permitido e seu uso na pipeline.
+
+## 1.2.0 — 2026-10-05
+
+- Adicionar perfis Angular, React, Next.js e Vue com agentes e regras específicas; preservar Node e o alias frontend legado.
+- Compartilhar skills de qualidade/testes web e entrega GitLab/Jenkins.
+- Trocar workflow GitHub Actions por .gitlab-ci.yml de validação, sem deploy nem alteração do pipeline dos consumidores.
+- Testar instalação isolada de cada framework. Validação no editor e execução de builds reais desses frameworks ainda pendentes.
+
 ## 1.1.0 — 2026-10-05
 
 - Unificar perfis via manifestos; oferecer capacidades Node opcionais sem mudar o padrão de instalação anterior.

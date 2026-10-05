@@ -8,7 +8,8 @@
     "profiles/node/skills/node-architecture",
     "profiles/node/skills/node-testing",
     "profiles/node/skills/node-automated-testing",
-    "skills/rdm-description"
+    "skills/rdm-description",
+    "skills/gitlab-delivery"
   ],
   "templates": [
     "templates/SKILL.md",

@@ -17,3 +17,5 @@ description: "Criar e revisar testes E2E de backends Node.js, fluxos Lambda/Even
 10. Entregar cenário, arquivos, comando real, modo, ambiente, resultados sanitizados e limites. Se ambiente indisponível, preparar a suíte/runbook e marcar execução operacional pendente.
 
 Consultar [matriz de jornadas](references/scenarios.md) e usar [plano de E2E](assets/e2e-plan.md) para registrar execução.
+
+Para NestJS, seguir [cenários HTTP e ciclo da aplicação](../node-testing/references/nestjs.md). Manter pipes/guards/globals reais e declarar mocks de fronteiras; teste direto de controller não valida o caminho HTTP.

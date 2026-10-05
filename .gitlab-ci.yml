@@ -1,0 +1,41 @@
+# Hub quality checks only; does not replace an existing Jenkins delivery pipeline.
+stages:
+  - validate
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
+validate-resources:
+  stage: validate
+  image: node:22-bookworm-slim
+  script:
+    - npm ci --ignore-scripts --no-audit --no-fund
+    - npm run validate
+    - npm test
+node-examples:
+  stage: validate
+  image: node:${NODE_VERSION}-bookworm-slim
+  parallel:
+    matrix:
+      - NODE_VERSION: ['22', '24']
+  script:
+    - npm --prefix examples/node-backend test
+    - npm --prefix examples/node-backend run test:automated
+    - npm --prefix examples/node-backend run test:e2e
+
+nest-examples:
+  stage: validate
+  image: node:${NODE_VERSION}-bookworm-slim
+  parallel:
+    matrix:
+      - NODE_VERSION: ['22', '24']
+  script:
+    - npm ci --prefix examples/nest-backend --ignore-scripts --no-audit --no-fund
+    - npm --prefix examples/nest-backend run test:automated
+    - npm --prefix examples/nest-backend run test:cov
+  artifacts:
+    when: always
+    paths:
+      - examples/nest-backend/coverage/

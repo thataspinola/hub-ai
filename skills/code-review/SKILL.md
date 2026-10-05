@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Code review para frontend React/Next.js. Use para: revisar PRs, analisar código, feedback de qualidade, checklist de revisão, identificar problemas. Keywords: review, revisão, PR, pull request, merge request, análise, feedback, code review."
+description: "Code review para frontend React/Next.js. Use para: revisar MRs, analisar código, feedback de qualidade, checklist de revisão, identificar problemas. Keywords: review, revisão, PR, merge request, merge request, análise, feedback, code review."
 ---
 
 # Code Review
@@ -14,7 +14,7 @@ description: "Code review para frontend React/Next.js. Use para: revisar PRs, an
 
 ## Quando Usar
 
-- Revisar Pull Requests ou arquivos específicos
+- Revisar Merge Requests ou arquivos específicos
 - Dar feedback estruturado sobre qualidade
 - Identificar blockers antes de merge
 

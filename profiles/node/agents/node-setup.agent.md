@@ -13,6 +13,7 @@ argument-hint: 'full setup, instructions ou AGENTS para o pacote informado'
 
 | Skill | Finalidade |
 | --- | --- |
+| gitlab-delivery | Merge requests e pipeline GitLab/Jenkins |
 | node-architecture | Camadas, contratos e compartilhamento |
 | node-security | Secrets, OAuth/mTLS e logs |
 | node-event-contracts | Eventos, retries e DLQ |
@@ -28,3 +29,5 @@ argument-hint: 'full setup, instructions ou AGENTS para o pacote informado'
 7. Validar ausência de placeholders nas saídas e links locais existentes. Relatar arquivos, ferramentas detectadas, checks e pendências operacionais. Não executar deploy ou cloud para configurar documentação.
 
 Preservar JavaScript/CommonJS, Jest, AWS SDK v3 e organização existente quando encontrados. Manter CPF, Dynamics, propostas comerciais e consentimento como padrões opcionais somente onde houver contrato real. Separar Jenkins/GitLab vigente de checks suplementares no GitHub; respeitar acesso corporativo em VDI documentado pelo projeto.
+
+Quando detectar NestJS, ler `.github/skills/node-testing/references/nestjs.md` e registrar major, adapter HTTP, configuração de bootstrap e comandos de testes por aplicação. Validar DI e providers, DTOs/pipes, guards, respostas HTTP e lifecycle conforme o escopo, distinguindo unitário, integração local e E2E. Não substituir Jest/Vitest ou Express/Fastify sem requisito do consumidor.

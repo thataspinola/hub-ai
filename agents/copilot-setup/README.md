@@ -7,10 +7,10 @@ Agente para configurar instruções, skills e agentes do Copilot em projetos.
 Na raiz deste hub, execute:
 
 ```bash
-python3 scripts/install.py /caminho/do/projeto
+node scripts/install.js /caminho/do/projeto
 ```
 
-O instalador registra perfil, versão e hashes. Usar --dry-run para preview, doctor.py para diagnóstico e --migrate para remoção conservadora de recursos gerenciados. O instalador copia os dois agentes para `.github/agents/`, os templates para `.github/templates/` e as oito skills para `.github/skills/`. Não sobrescreve arquivos diferentes por padrão. Consulte o README principal para atualizar uma instalação.
+O instalador registra perfil, versão e hashes. Usar --dry-run para preview, doctor.js para diagnóstico e --migrate para remoção conservadora de recursos gerenciados. O instalador copia os dois agentes para `.github/agents/`, os templates para `.github/templates/` e as oito skills para `.github/skills/`. Não sobrescreve arquivos diferentes por padrão. Consulte o README principal para atualizar uma instalação.
 
 ## Uso
 

@@ -1,0 +1,20 @@
+{
+  "name": "vue",
+  "setup": "Web Setup",
+  "agents": [
+    "agents/web-setup/web-setup.agent.md",
+    "agents/web-code-reviewer/web-code-reviewer.agent.md"
+  ],
+  "skills": [
+    "skills/web-quality",
+    "skills/web-testing",
+    "skills/security",
+    "skills/gitlab-delivery",
+    "skills/vue-patterns"
+  ],
+  "templates": [
+    "templates/web-instructions.md",
+    "templates/web-AGENTS.md"
+  ],
+  "capabilities": {}
+}

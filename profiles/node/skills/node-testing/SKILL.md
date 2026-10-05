@@ -14,3 +14,5 @@ description: "Criar e executar testes backend Node.js por pacote, Jest ou runner
 7. Verificar bundle de produção e resolução de imports além dos testes de desenvolvimento. Relatar comando, diretório, resultado e checks não executados com motivo.
 
 Consultar [padrões e cenários](references/patterns.md) para adaptar a análise a um projeto concreto.
+
+Em projetos NestJS, seguir [validação NestJS](references/nestjs.md): identificar versão/adapter, montar TestingModule, substituir providers por token real e executar E2E pela aplicação inicializada com configuração compartilhada de bootstrap.
