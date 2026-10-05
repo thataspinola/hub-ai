@@ -1,7 +1,7 @@
 ---
 name: "{{AGENT_NAME}}"
 description: "{{DESCRIPTION}}. Keywords: {{KEYWORDS}}."
-tools: [{{TOOLS}}]
+tools: ["{{TOOLS}}"]
 argument-hint: "{{ARGUMENT_HINT}}"
 ---
 

@@ -1,0 +1,24 @@
+{
+  "name": "frontend",
+  "setup": "Copilot Setup",
+  "agents": [
+    "agents/copilot-setup/copilot-setup.agent.md",
+    "agents/code-reviewer/code-reviewer.agent.md"
+  ],
+  "skills": [
+    "skills/acessibility",
+    "skills/code-quality",
+    "skills/code-review",
+    "skills/code-standards",
+    "skills/performance",
+    "skills/rdm-description",
+    "skills/security",
+    "skills/unit-testing"
+  ],
+  "templates": [
+    "templates/SKILL.md",
+    "templates/agents.md",
+    "templates/instructions.md"
+  ],
+  "capabilities": {}
+}

@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+node_modules/
+coverage/
+.hub-ai-transaction.json
+.hub-ai-install.lock
