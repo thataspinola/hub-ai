@@ -2,7 +2,7 @@
 
 GitLab é o provedor de repositório, merge requests e CI deste hub. `.gitlab-ci.yml` executa validações dos recursos e exemplos Node. Não faz deploy nem instala pipelines nos projetos consumidores; Jenkins pode continuar sendo o caminho de entrega já utilizado.
 
-O workflow cria pipelines de MR e evita duplicação de push quando a branch tem MR aberto. A validação de YAML local não substitui CI Lint do GitLab ou execução num runner autorizado. Imagens Python/Node e registry precisam estar disponíveis no ambiente corporativo; adaptar ao registry aprovado quando necessário. Nunca mover credenciais para fora da VDI.
+O workflow cria pipelines de MR e evita duplicação de push quando a branch tem MR aberto. A validação de YAML local não substitui CI Lint do GitLab ou execução num runner autorizado. Imagens Node e registry precisam estar disponíveis no ambiente corporativo; adaptar ao registry aprovado quando necessário. Nunca mover credenciais para fora da VDI.
 
 ## Customização do editor
 

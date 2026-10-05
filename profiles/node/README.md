@@ -7,7 +7,7 @@ Recursos para backends JavaScript/TypeScript, com atenção a pacotes independen
 Na raiz do hub:
 
 ```bash
-python3 scripts/install.py /caminho/do/projeto --profile node
+node scripts/install.js /caminho/do/projeto --profile node
 ```
 
 Depois selecionar **Node Setup** e pedir `full setup`. São instalados dois agentes, sete skills Node, as skills compartilhadas de RDM e GitLab e quatro templates. Instructions e AGENTS.md são gerados pelo agente após ler o projeto; o instalador não os sobrescreve nem executa npm, AWS ou Terraform.

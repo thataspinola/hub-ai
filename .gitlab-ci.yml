@@ -9,12 +9,11 @@ workflow:
     - if: '$CI_COMMIT_BRANCH'
 validate-resources:
   stage: validate
-  image: python:3.12-slim
+  image: node:22-bookworm-slim
   script:
-    - python -m pip install -r requirements-dev.txt
-    - python scripts/validate.py
-    - python scripts/test_install.py
-    - python scripts/test_validation.py
+    - npm ci --ignore-scripts --no-audit --no-fund
+    - npm run validate
+    - npm test
 node-examples:
   stage: validate
   image: node:${NODE_VERSION}-bookworm-slim

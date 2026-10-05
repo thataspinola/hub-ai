@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1
+
+- Migração completa das ferramentas, testes e GitLab CI para Node.js 22+.
+- Instalação, diagnóstico, recuperação e avaliação sem runtime adicional.
+- Validação impede arquivos de runtime não permitido e seu uso na pipeline.
+
 ## 1.2.0 — 2026-10-05
 
 - Adicionar perfis Angular, React, Next.js e Vue com agentes e regras específicas; preservar Node e o alias frontend legado.

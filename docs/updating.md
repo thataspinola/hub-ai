@@ -10,7 +10,7 @@ A escrita usa arquivo temporário e os.replace: hard links existentes não são 
 Em interrupção abrupta, a próxima instalação recusa continuar. Conferir que o processo terminou e executar:
 
 ```bash
-python3 scripts/install.py /caminho/do/projeto --recover
+node scripts/install.js /caminho/do/projeto --recover
 ```
 
 O instalador recusa recuperação enquanto o PID registrado estiver ativo. Não apagar lock/journal durante instalação. Se o sistema não puder restaurar arquivos (permissão/disco), preservar o journal e corrigir o ambiente antes de repetir recuperação. Journal contém cópias de recursos locais: não commitar e não compartilhar esse arquivo. Symlinks não são usados para contornar restrições.

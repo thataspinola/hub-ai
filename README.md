@@ -1,15 +1,15 @@
 # hub-ai
 
-Agentes, skills e templates reutilizáveis para Copilot em projetos Porto Seguro hospedados no **GitLab**, com Jenkins quando previsto no processo de entrega. Versão dos recursos: **1.2.0**. O hub orienta tarefas; geração de instructions e adaptação de regras dependem do executor e da leitura do projeto alvo.
+Agentes, skills e templates reutilizáveis para Copilot em projetos Porto Seguro hospedados no **GitLab**, com Jenkins quando previsto no processo de entrega. Versão dos recursos: **1.2.1**. O hub orienta tarefas; geração de instructions e adaptação de regras dependem do executor e da leitura do projeto alvo.
 
 ## Instalar e revisar
 
-Requer Python 3.10+. O instalador e o diagnóstico usam apenas a biblioteca padrão. A validação de desenvolvimento requer `python3 -m pip install -r requirements-dev.txt`.
+Requer Node.js 22+. O instalador e o diagnóstico usam apenas módulos nativos. Para validar o hub, execute `npm ci`. Não adicionar arquivos `.py` nem dependências de Python: ferramentas devem usar Node.js, shell ou outro runtime aprovado. A validação bloqueia arquivos `.py` e uso de Python no CI.
 
 ```bash
-python3 scripts/install.py /caminho/do/projeto --profile node --dry-run
-python3 scripts/install.py /caminho/do/projeto --profile node
-python3 scripts/doctor.py /caminho/do/projeto
+node scripts/install.js /caminho/do/projeto --profile node --dry-run
+node scripts/install.js /caminho/do/projeto --profile node
+node scripts/doctor.js /caminho/do/projeto
 ```
 
 Selecionar **Node Setup** ou **Copilot Setup** e pedir `full setup`. O diagnóstico aponta instructions ainda não geradas, arquivos faltantes, mudanças locais, recursos antigos, links e placeholders. Ele não modifica arquivos nem certifica comportamento do executor.
@@ -30,8 +30,8 @@ O alias legado frontend continua como padrão por compatibilidade; indicar --pro
 O instalador registra versão, commit quando disponível, perfil, capacidades e SHA-256 dos arquivos em `.github/hub-ai-lock.json`. Não incluir secrets nesse arquivo. Fixar o checkout em um commit revisado para distribuir uma versão reproduzível; VERSION identifica a versão dos recursos, mas não substitui o commit.
 
 ```bash
-python3 scripts/install.py /caminho/do/projeto --profile node --dry-run --overwrite --migrate
-python3 scripts/install.py /caminho/do/projeto --profile node --overwrite --migrate
+node scripts/install.js /caminho/do/projeto --profile node --dry-run --overwrite --migrate
+node scripts/install.js /caminho/do/projeto --profile node --overwrite --migrate
 ```
 
 --overwrite substitui conflitos dos recursos selecionados: revisar o diff antes. --migrate remove apenas recursos anteriormente gerenciados e localmente inalterados. Recursos antigos modificados bloqueiam a migração; preservar/adaptar o conteúdo antes de tentar novamente. Sem --migrate, recursos antigos são mantidos e o diagnóstico os sinaliza. Recursos instalados pelo instalador antigo, sem lock, não podem ser identificados como gerenciados: revisar manualmente, não presumir propriedade.
@@ -41,10 +41,9 @@ Instructions e AGENTS.md locais não são sobrescritos pelo instalador. Ver [gui
 ## Validar e contribuir
 
 ```bash
-python3 -m pip install -r requirements-dev.txt
-python3 scripts/validate.py
-python3 scripts/test_install.py
-python3 scripts/test_validation.py
+npm ci
+npm run validate
+npm test
 npm --prefix examples/node-backend test
 ```
 
@@ -56,4 +55,4 @@ A [avaliação de reviewers](evaluations/README.md) oferece um cenário com defe
 
 Consulte [GitLab e Jenkins](docs/gitlab.md). Não há workflow GitHub Actions ativo. A pasta `.github` é apenas convenção de customização do editor Copilot, não requisito de hospedagem. O instalador não substitui o CI nem o Jenkins dos consumidores.
 
-Exemplo React: `python3 scripts/install.py /caminho/do/projeto --profile react`. Angular, Vue e Next.js usam angular, vue e nextjs. Em monorepos mistos, escolher o perfil por aplicação em diretórios distintos e preservar AGENTS.md por escopo; não alternar perfis na mesma raiz esperando composição automática.
+Exemplo React: `node scripts/install.js /caminho/do/projeto --profile react`. Angular, Vue e Next.js usam angular, vue e nextjs. Em monorepos mistos, escolher o perfil por aplicação em diretórios distintos e preservar AGENTS.md por escopo; não alternar perfis na mesma raiz esperando composição automática.

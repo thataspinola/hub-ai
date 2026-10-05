@@ -5,7 +5,7 @@ O cenário sem defeito intencional em scenarios/node-clean permite medir falsos 
 1. Dar ao reviewer apenas o cenário, agentes e skills; não fornecer rubric.json nem relatórios anteriores.
 2. Guardar saída bruta, data, executor/modelo, versão do hub e limitações.
 3. Um avaliador confere cada finding contra o código e preenche matched_expected e false_positives usando rubric.json. Não contar sugestões como defeitos comprovados.
-4. Executar `python3 scripts/score_evaluation.py evaluations/results/node-review.json`.
+4. Executar `node scripts/score-evaluation.js evaluations/results/node-review.json`.
 5. Comparar precisão e recall entre versões; incluir casos novos e casos sem defeito antes de usar métricas para adoção corporativa.
 
 O scorer valida e calcula uma adjudicação; ele não executa o Copilot nem comprova sozinho a qualidade semântica. Resultados de uma execução são uma evidência limitada, não certificação de todos os agentes/executores.
