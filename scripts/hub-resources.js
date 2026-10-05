@@ -21,7 +21,7 @@ function safePath(root, relative) {
 function walk(root) {
   if (!fs.existsSync(root)) return []
   return fs.readdirSync(root, { withFileTypes: true }).flatMap(entry => {
-    if (['.git', 'node_modules', '__pycache__'].includes(entry.name)) return []
+    if (['.git', 'node_modules', '__pycache__', 'dist', 'coverage'].includes(entry.name)) return []
     const full = path.join(root, entry.name)
     return entry.isDirectory() ? walk(full) : [full]
   })

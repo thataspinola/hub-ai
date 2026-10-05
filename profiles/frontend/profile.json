@@ -2,23 +2,24 @@
   "name": "frontend",
   "setup": "Copilot Setup",
   "agents": [
-    "agents/copilot-setup/copilot-setup.agent.md",
-    "agents/code-reviewer/code-reviewer.agent.md"
+    "resources/agents/copilot-setup.agent.md",
+    "resources/agents/frontend-code-reviewer.agent.md"
   ],
   "skills": [
-    "skills/acessibility",
-    "skills/code-quality",
-    "skills/code-review",
-    "skills/code-standards",
-    "skills/performance",
-    "skills/rdm-description",
-    "skills/security",
-    "skills/unit-testing"
+    "resources/skills/accessibility",
+    "resources/skills/code-quality",
+    "resources/skills/code-review",
+    "resources/skills/code-standards",
+    "resources/skills/performance",
+    "resources/skills/rdm-description",
+    "resources/skills/security",
+    "resources/skills/unit-testing"
   ],
   "templates": [
-    "templates/SKILL.md",
-    "templates/agents.md",
-    "templates/instructions.md"
+    "resources/templates/skill.template.md",
+    "resources/templates/agent.template.md",
+    "resources/templates/frontend-instructions.template.md",
+    "resources/templates/frontend-agents.template.md"
   ],
   "capabilities": {}
 }

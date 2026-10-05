@@ -1,6 +1,6 @@
 # hub-ai
 
-Agentes, skills e templates reutilizáveis para Copilot em projetos Porto Seguro hospedados no **GitLab**, com Jenkins quando previsto no processo de entrega. Versão dos recursos: **1.3.0**. O hub orienta tarefas; geração de instructions e adaptação de regras dependem do executor e da leitura do projeto alvo.
+Agentes, skills e templates reutilizáveis para Copilot em projetos Porto Seguro hospedados no **GitLab**, com Jenkins quando previsto no processo de entrega. Versão dos recursos: **1.4.0**. O hub orienta tarefas; geração de instructions e adaptação de regras dependem do executor e da leitura do projeto alvo.
 
 ## Instalar e revisar
 
@@ -12,16 +12,16 @@ node scripts/install.js /caminho/do/projeto --profile node
 node scripts/doctor.js /caminho/do/projeto
 ```
 
-Selecionar **Node Setup** ou **Copilot Setup** e pedir `full setup`. O diagnóstico aponta instructions ainda não geradas, arquivos faltantes, mudanças locais, recursos antigos, links e placeholders. Ele não modifica arquivos nem certifica comportamento do executor.
+Selecionar **Copilot Setup** e pedir `full setup`. O diagnóstico aponta instructions ainda não geradas, arquivos faltantes, mudanças locais, recursos antigos, links e placeholders. Ele não modifica arquivos nem certifica comportamento do executor.
 
 | Perfil | Recursos |
 | --- | --- |
-| [Angular](profiles/angular/profile.json) | Web Setup/Reviewer, Angular e testes web |
-| [React](profiles/react/profile.json) | Web Setup/Reviewer, React SPA e testes web |
-| [Next.js](profiles/nextjs/profile.json) | Web Setup/Reviewer, router e fronteiras servidor/cliente |
-| [Vue](profiles/vue/profile.json) | Web Setup/Reviewer, reatividade e contratos Vue |
+| [Angular](profiles/angular/profile.json) | Copilot Setup/Reviewer, Angular e testes web |
+| [React](profiles/react/profile.json) | Copilot Setup/Reviewer, React SPA e testes web |
+| [Next.js](profiles/nextjs/profile.json) | Copilot Setup/Reviewer, router e fronteiras servidor/cliente |
+| [Vue](profiles/vue/profile.json) | Copilot Setup/Reviewer, reatividade e contratos Vue |
 | [Frontend legado](profiles/frontend/profile.json) | Compatibilidade com instalações anteriores; escolher perfil específico em novos projetos |
-| [Node](profiles/node/README.md) | Node Setup, Node Code Reviewer, base backend e capacidades opcionais |
+| [Node](profiles/node/README.md) | Copilot Setup, Node Code Reviewer, base backend e capacidades opcionais |
 
 O alias legado frontend continua como padrão por compatibilidade; indicar --profile node, angular, react, nextjs ou vue em novos projetos. Em Node, todas as capacidades são instaladas por padrão para preservar uso anterior. Escolher apenas a base com `--capabilities base` ou adicionar capacidades com `--capabilities security,events,e2e,delivery`. Agents devem consultar somente recursos instalados. CPF, Dynamics, propostas e consentimento são exemplos opcionais de domínio; não integram automaticamente novos projetos.
 
@@ -60,3 +60,7 @@ Exemplo React: `node scripts/install.js /caminho/do/projeto --profile react`. An
 ## Node com NestJS
 
 O perfil Node inclui orientações específicas para módulos/DI, DTOs, pipes, guards e lifecycle NestJS. O [exemplo NestJS](examples/nest-backend/README.md) valida testes unitários, integração e E2E HTTP local com TypeScript, Jest e Supertest, além de build e cobertura. Preservar framework/runner/adapter reais de cada consumidor.
+
+## Organização
+
+Recursos reutilizáveis ficam em `resources/agents`, `resources/skills` e `resources/templates`; `profiles` seleciona os recursos por stack. Ferramentas ficam em `scripts`, testes em `tests/tooling` e exemplos têm `src`/`tests`. Todos os perfis usam o mesmo Copilot Setup. Ver [estrutura, nomenclatura e migração](docs/structure-and-naming.md).

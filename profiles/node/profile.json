@@ -1,42 +1,42 @@
 {
   "name": "node",
   "agents": [
-    "profiles/node/agents/node-setup.agent.md",
-    "profiles/node/agents/node-code-reviewer.agent.md"
+    "resources/agents/copilot-setup.agent.md",
+    "resources/agents/node-code-reviewer.agent.md"
   ],
   "skills": [
-    "profiles/node/skills/node-architecture",
-    "profiles/node/skills/node-testing",
-    "profiles/node/skills/node-automated-testing",
-    "skills/rdm-description",
-    "skills/gitlab-delivery"
+    "resources/skills/node-architecture",
+    "resources/skills/node-testing",
+    "resources/skills/node-automated-testing",
+    "resources/skills/rdm-description",
+    "resources/skills/gitlab-delivery"
   ],
   "templates": [
-    "templates/SKILL.md",
-    "templates/agents.md",
-    "profiles/node/templates/node-instructions.md",
-    "profiles/node/templates/node-AGENTS.md"
+    "resources/templates/skill.template.md",
+    "resources/templates/agent.template.md",
+    "resources/templates/node-instructions.template.md",
+    "resources/templates/node-agents.template.md"
   ],
-  "setup": "Node Setup",
+  "setup": "Copilot Setup",
   "capabilities": {
     "security": {
       "skills": [
-        "profiles/node/skills/node-security"
+        "resources/skills/node-security"
       ]
     },
     "events": {
       "skills": [
-        "profiles/node/skills/node-event-contracts"
+        "resources/skills/node-event-contracts"
       ]
     },
     "delivery": {
       "skills": [
-        "profiles/node/skills/node-delivery"
+        "resources/skills/node-delivery"
       ]
     },
     "e2e": {
       "skills": [
-        "profiles/node/skills/node-e2e"
+        "resources/skills/node-e2e"
       ]
     }
   }

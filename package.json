@@ -1,6 +1,6 @@
 {
   "name": "hub-ai-resources",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "private": true,
   "type": "commonjs",
   "engines": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "validate": "node scripts/validate.js",
-    "test": "node --test scripts/test-*.js",
+    "test": "node --test tests/tooling/*.test.js",
     "check": "npm run validate && npm test && npm --prefix examples/node-backend test && npm --prefix examples/nest-backend run test:automated",
     "install:profile": "node scripts/install.js",
     "doctor": "node scripts/doctor.js"

@@ -1,20 +1,22 @@
 {
   "name": "angular",
-  "setup": "Web Setup",
+  "setup": "Copilot Setup",
   "agents": [
-    "agents/web-setup/web-setup.agent.md",
-    "agents/web-code-reviewer/web-code-reviewer.agent.md"
+    "resources/agents/copilot-setup.agent.md",
+    "resources/agents/web-code-reviewer.agent.md"
   ],
   "skills": [
-    "skills/web-quality",
-    "skills/web-testing",
-    "skills/security",
-    "skills/gitlab-delivery",
-    "skills/angular-patterns"
+    "resources/skills/web-quality",
+    "resources/skills/web-testing",
+    "resources/skills/security",
+    "resources/skills/gitlab-delivery",
+    "resources/skills/angular-patterns"
   ],
   "templates": [
-    "templates/web-instructions.md",
-    "templates/web-AGENTS.md"
+    "resources/templates/web-instructions.template.md",
+    "resources/templates/web-agents.template.md",
+    "resources/templates/skill.template.md",
+    "resources/templates/agent.template.md"
   ],
   "capabilities": {}
 }
