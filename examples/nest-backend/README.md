@@ -25,4 +25,4 @@ Os testes cobrem criação/consulta, duplicata sem substituição, DTO inválido
 
 Não há AWS, banco externo, rede corporativa ou deploy nesta validação. Integrações reais devem ser validadas em ambiente aprovado, pela VDI quando exigida. Para Fastify, usar o adapter real, `ready()` e `inject()`; para mensageria, acrescentar cenários por transporte.
 
-Ver [evidências de execução e limites](VALIDATION.md).
+Ver [evidências de execução e limites](validation.md).

@@ -3,10 +3,12 @@
   "private": true,
   "version": "1.1.0",
   "type": "commonjs",
-  "engines": {"node": ">=22"},
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "test": "node --test test/*.test.js",
-    "test:automated": "node --test test/contracts.test.js test/security.test.js",
-    "test:e2e": "node --test test/flow.test.js"
+    "test:automated": "node --test tests/contracts.test.js tests/security.test.js",
+    "test:e2e": "node --test tests/flow.test.js",
+    "test": "node --test tests/*.test.js"
   }
 }

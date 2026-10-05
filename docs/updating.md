@@ -16,3 +16,5 @@ node scripts/install.js /caminho/do/projeto --recover
 O instalador recusa recuperação enquanto o PID registrado estiver ativo. Não apagar lock/journal durante instalação. Se o sistema não puder restaurar arquivos (permissão/disco), preservar o journal e corrigir o ambiente antes de repetir recuperação. Journal contém cópias de recursos locais: não commitar e não compartilhar esse arquivo. Symlinks não são usados para contornar restrições.
 
 Nunca executar instaladores concorrentes no mesmo destino. A proteção se destina a uso local cooperativo; não garante integridade contra outro processo hostil alterando a árvore durante a operação. Durabilidade após falha de energia depende das garantias do filesystem.
+
+Para a reorganização 1.4.0 e a migração de agentes/templates antigos, seguir [estrutura e nomenclatura](structure-and-naming.md). Copilot Setup é o agente de configuração para todos os perfis.
