@@ -16,3 +16,5 @@ description: "Criar e organizar suítes automatizadas Node.js e gates de CI por 
 9. Verificar dependências no bundle de produção além da instalação de desenvolvimento. Classificar relatórios: executado/passou, falhou, preparado/não executado e pendência operacional.
 
 Consultar [matriz de automação](references/matrix.md) e usar [plano de automação](assets/automation-plan.md) para adaptar gates e evidências.
+
+Para NestJS, seguir [matriz e gates NestJS](../node-testing/references/nestjs.md). Separar unitário, integração e E2E no runner existente; verificar typecheck/build e teardown sem ocultar handles abertos.

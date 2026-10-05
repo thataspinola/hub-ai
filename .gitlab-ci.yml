@@ -24,3 +24,18 @@ node-examples:
     - npm --prefix examples/node-backend test
     - npm --prefix examples/node-backend run test:automated
     - npm --prefix examples/node-backend run test:e2e
+
+nest-examples:
+  stage: validate
+  image: node:${NODE_VERSION}-bookworm-slim
+  parallel:
+    matrix:
+      - NODE_VERSION: ['22', '24']
+  script:
+    - npm ci --prefix examples/nest-backend --ignore-scripts --no-audit --no-fund
+    - npm --prefix examples/nest-backend run test:automated
+    - npm --prefix examples/nest-backend run test:cov
+  artifacts:
+    when: always
+    paths:
+      - examples/nest-backend/coverage/

@@ -1,6 +1,6 @@
 # hub-ai
 
-Agentes, skills e templates reutilizáveis para Copilot em projetos Porto Seguro hospedados no **GitLab**, com Jenkins quando previsto no processo de entrega. Versão dos recursos: **1.2.1**. O hub orienta tarefas; geração de instructions e adaptação de regras dependem do executor e da leitura do projeto alvo.
+Agentes, skills e templates reutilizáveis para Copilot em projetos Porto Seguro hospedados no **GitLab**, com Jenkins quando previsto no processo de entrega. Versão dos recursos: **1.3.0**. O hub orienta tarefas; geração de instructions e adaptação de regras dependem do executor e da leitura do projeto alvo.
 
 ## Instalar e revisar
 
@@ -42,9 +42,9 @@ Instructions e AGENTS.md locais não são sobrescritos pelo instalador. Ver [gui
 
 ```bash
 npm ci
-npm run validate
-npm test
-npm --prefix examples/node-backend test
+npm ci --prefix examples/nest-backend --ignore-scripts --no-audit --no-fund
+npm run check
+npm --prefix examples/nest-backend run test:cov
 ```
 
 A pipeline GitLab em `.gitlab-ci.yml` executa essas verificações e os scripts automated/E2E local do [exemplo Node](examples/node-backend/README.md). Os testes cobrem instalação, migração, recuperação, metadados e comportamento de exemplos selecionados; não compilam todos os blocos de documentação nem validam produção.
@@ -56,3 +56,7 @@ A [avaliação de reviewers](evaluations/README.md) oferece um cenário com defe
 Consulte [GitLab e Jenkins](docs/gitlab.md). Não há workflow GitHub Actions ativo. A pasta `.github` é apenas convenção de customização do editor Copilot, não requisito de hospedagem. O instalador não substitui o CI nem o Jenkins dos consumidores.
 
 Exemplo React: `node scripts/install.js /caminho/do/projeto --profile react`. Angular, Vue e Next.js usam angular, vue e nextjs. Em monorepos mistos, escolher o perfil por aplicação em diretórios distintos e preservar AGENTS.md por escopo; não alternar perfis na mesma raiz esperando composição automática.
+
+## Node com NestJS
+
+O perfil Node inclui orientações específicas para módulos/DI, DTOs, pipes, guards e lifecycle NestJS. O [exemplo NestJS](examples/nest-backend/README.md) valida testes unitários, integração e E2E HTTP local com TypeScript, Jest e Supertest, além de build e cobertura. Preservar framework/runner/adapter reais de cada consumidor.

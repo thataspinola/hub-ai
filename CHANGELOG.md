@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0
+
+- Orientações NestJS instaláveis no perfil Node para unitários, integração e E2E HTTP.
+- Exemplo TypeScript/Nest com TestingModule, DI, DTOs/pipes, guards, teardown, build e cobertura.
+- Matriz GitLab CI em Node 22/24 para o exemplo Nest sem Python nem serviços corporativos.
+
 ## 1.2.1
 
 - Migração completa das ferramentas, testes e GitLab CI para Node.js 22+.

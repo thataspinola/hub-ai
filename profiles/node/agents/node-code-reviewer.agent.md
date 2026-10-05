@@ -19,3 +19,5 @@ Revisar e reportar; não corrigir código, instalar dependências automaticament
 Não marcar toda ausência de padrão como bug. Verificar consumidores e infraestrutura antes de recomendar mudança de contrato. Para CPF, Dynamics, propostas e consentimento, respeitar regras do domínio sem presumir que todas as integrações estão implementadas.
 
 Para merge requests, usar integração GitLab autorizada ou diff git local com base real. Não depender de APIs GitHub.
+
+Quando detectar NestJS, ler `.github/skills/node-testing/references/nestjs.md` e registrar major, adapter HTTP, configuração de bootstrap e comandos de testes por aplicação. Validar DI e providers, DTOs/pipes, guards, respostas HTTP e lifecycle conforme o escopo, distinguindo unitário, integração local e E2E. Não substituir Jest/Vitest ou Express/Fastify sem requisito do consumidor.

@@ -21,3 +21,5 @@ Validar entrada antes de efeitos. Não expor credenciais, tokens, CPF, certifica
 {{DOMAIN_RULES_PIPELINE_AND_ENVIRONMENT_RESTRICTIONS}}
 
 Concluir com código, contratos, testes, infraestrutura e documentação coerentes; registrar validações reais pendentes separadamente.
+
+Para NestJS, preservar versão, adapter e runner detectados. E2E deve inicializar a aplicação com a mesma configuração de bootstrap, manter globals reais e declarar fronteiras externas substituídas. Fechar aplicações/conexões no teardown e registrar validações operacionais pendentes.
