@@ -13,6 +13,7 @@ argument-hint: 'full setup, instructions ou AGENTS para o pacote informado'
 
 | Skill | Finalidade |
 | --- | --- |
+| gitlab-delivery | Merge requests e pipeline GitLab/Jenkins |
 | node-architecture | Camadas, contratos e compartilhamento |
 | node-security | Secrets, OAuth/mTLS e logs |
 | node-event-contracts | Eventos, retries e DLQ |

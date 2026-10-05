@@ -5,7 +5,7 @@ description: "Revisar entrega de backends Node.js/Lambda com múltiplos pacotes,
 
 # node-delivery
 
-1. Descobrir pipeline vigente, ambientes, runtime, build, handler e layout do ZIP. Não substituir Jenkins/GitLab por GitHub Actions quando este for apenas suplementar.
+1. Descobrir pipeline vigente, ambientes, runtime, build, handler e layout do ZIP. Não substituir Jenkins/GitLab por outro sistema de CI.
 2. Verificar imports transitivos no artefato final, incluindo shared-modules. Dependências de runtime precisam estar no bundle ou em layer explicitamente verificada; devDependencies disponíveis nos testes não comprovam disponibilidade na Lambda.
 3. Inspecionar npm ci --omit=dev e verificar o pacote resultante sem acessar cloud. Não importar um handler para teste de cold start se isso executar efeitos externos no carregamento.
 4. Conferir handlers, archive paths, variáveis/schemas, IAM, timeout, DLQ e retry junto ao código. Rodar fmt/validate sem backend conforme ferramentas e políticas locais; init pode exigir rede/providers.

@@ -12,7 +12,7 @@ class InstallTests(unittest.TestCase):
         return subprocess.run(['python3', str(INSTALL), str(target), *args], capture_output=True, text=True)
 
     def test_profiles_and_repeat_install(self):
-        for profile, agent, count in [('frontend', 'copilot-setup', 8), ('node', 'node-setup', 8)]:
+        for profile, agent, count in [('frontend', 'copilot-setup', 8), ('node', 'node-setup', 9)]:
             with self.subTest(profile=profile), tempfile.TemporaryDirectory() as tmp:
                 target = Path(tmp)
                 self.assertEqual(self.run_install(target, '--profile', profile).returncode, 0)
@@ -25,6 +25,22 @@ class InstallTests(unittest.TestCase):
                     self.assertFalse((target / '.github/skills/acessibility').exists())
                     self.assertTrue((target / '.github/skills/node-e2e/assets/e2e-plan.md').exists())
                     self.assertTrue((target / '.github/skills/node-automated-testing/references/matrix.md').exists())
+
+    def test_web_framework_profiles(self):
+        for profile in ('angular', 'react', 'nextjs', 'vue'):
+            with self.subTest(profile=profile), tempfile.TemporaryDirectory() as tmp:
+                target = Path(tmp)
+                self.assertEqual(self.run_install(target, '--profile', profile).returncode, 0)
+                self.assertTrue((target / '.github/agents/web-setup.agent.md').exists())
+                self.assertTrue((target / f'.github/skills/{profile}-patterns/SKILL.md').exists())
+                self.assertTrue((target / '.github/skills/gitlab-delivery/SKILL.md').exists())
+                for other in {'angular', 'react', 'nextjs', 'vue'} - {profile}:
+                    self.assertFalse((target / f'.github/skills/{other}-patterns').exists())
+                self.assertFalse((target / '.gitlab-ci.yml').exists())  # Installer preserves consumer CI.
+                (target / '.github/copilot-instructions.md').write_text('Completed instructions')
+                doctor = INSTALL.with_name('doctor.py')
+                result = subprocess.run(['python3', str(doctor), str(target)], capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stdout)
 
     def test_conflicts_preserve_every_file_until_explicit_overwrite(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -99,14 +115,14 @@ class RegressionTests(InstallTests):
             self.assertFalse(custom.exists())
             state = json.loads((target / '.github/hub-ai-lock.json').read_text())
             self.assertEqual(state['profile'], 'node')
-            self.assertEqual(state['version'], '1.1.0')
+            self.assertEqual(state['version'], '1.2.0')
 
     def test_capabilities_and_diagnostic_drift(self):
         with tempfile.TemporaryDirectory() as tmp:
             target = Path(tmp)
             self.assertEqual(self.run_install(target, '--profile', 'node', '--capabilities', 'base').returncode, 0)
             self.assertFalse((target / '.github/skills/node-e2e').exists())
-            self.assertEqual(len(list((target / '.github/skills').glob('*/SKILL.md'))), 4)
+            self.assertEqual(len(list((target / '.github/skills').glob('*/SKILL.md'))), 5)
             (target / '.github/copilot-instructions.md').write_text('Completed project instructions')
             doctor = INSTALL.with_name('doctor.py')
             self.assertEqual(subprocess.run(['python3', str(doctor), str(target)], capture_output=True).returncode, 0)

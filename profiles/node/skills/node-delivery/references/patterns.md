@@ -8,4 +8,4 @@
 | Plan/estado IAM e rede | Não | Sim |
 | Lambda cold start e OAuth/mTLS | Não | Sim |
 
-Antes de npm ci --omit=dev, conferir imports do SDK, bibliotecas e módulos compartilhados. Se depender de layer/runtime, registrar versão e verificar sua existência no ambiente. Não concluir pelo conteúdo de node_modules de desenvolvimento. Manter Jenkins como caminho de produção quando previsto e GitHub Actions como evidência suplementar.
+Antes de npm ci --omit=dev, conferir imports do SDK, bibliotecas e módulos compartilhados. Se depender de layer/runtime, registrar versão e verificar sua existência no ambiente. Não concluir pelo conteúdo de node_modules de desenvolvimento. Manter Jenkins como caminho de produção quando previsto e GitLab CI como validação; Jenkins como entrega vigente.

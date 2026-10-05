@@ -50,7 +50,7 @@ def recover(target):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('project', type=Path)
-    parser.add_argument('--profile', choices=('frontend', 'node'), default='frontend')
+    parser.add_argument('--profile', choices=tuple(p.parent.name for p in sorted(ROOT.glob('profiles/*/profile.json'))), default='frontend')
     parser.add_argument('--capabilities', help='Comma-separated optional capabilities; base selects none, omitted selects all')
     parser.add_argument('--overwrite', action='store_true', help='Replace conflicting selected resources')
     parser.add_argument('--migrate', action='store_true', help='Remove obsolete managed files only if locally unchanged')

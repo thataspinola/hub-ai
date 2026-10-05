@@ -68,7 +68,7 @@ for manifest_path in ROOT.glob('profiles/*/profile.json'):
                     errors.append(f'{agent}: references missing skill {name}')
     except (ValueError, KeyError, OSError, json.JSONDecodeError) as error:
         errors.append(f'{manifest_path}: {error}')
-for path in ROOT.glob('.github/workflows/*.yml'):
+for path in [ROOT / '.gitlab-ci.yml']:
     try:
         if not isinstance(yaml.safe_load(path.read_text()), dict):
             errors.append(f'{path}: workflow must be a mapping')

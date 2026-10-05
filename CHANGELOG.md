@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 — 2026-10-05
+
+- Adicionar perfis Angular, React, Next.js e Vue com agentes e regras específicas; preservar Node e o alias frontend legado.
+- Compartilhar skills de qualidade/testes web e entrega GitLab/Jenkins.
+- Trocar workflow GitHub Actions por .gitlab-ci.yml de validação, sem deploy nem alteração do pipeline dos consumidores.
+- Testar instalação isolada de cada framework. Validação no editor e execução de builds reais desses frameworks ainda pendentes.
+
 ## 1.1.0 — 2026-10-05
 
 - Unificar perfis via manifestos; oferecer capacidades Node opcionais sem mudar o padrão de instalação anterior.

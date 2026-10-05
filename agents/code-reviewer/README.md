@@ -15,7 +15,7 @@ O `code-reviewer` é um agente de revisão de código que analisa solicitações
 
 ## Como usar
 
-Usar este agente quando precisar revisar o código, analisar pull requests ou identificar problemas de qualidade e segurança.
+Usar este agente quando precisar revisar o código, analisar merge requests ou identificar problemas de qualidade e segurança.
 
 Execução (passos rápidos):
 
@@ -24,7 +24,7 @@ Execução (passos rápidos):
 - **Fornecer alvo:** informe ao agente o que revisar - arquivo, pasta, branch or PR. Exemplos de prompts:
   - "Revise o arquivo src/components/Button.tsx"
   - "Analise a branch feature/x em relação ao main"
-  - "Revise o PR #123"
+  - "Revise o MR !123"
 - **Resultado:** o agente analisa os diffs e arquivos relevantes e gera `CODE_REVIEW.md` na raiz do projeto com o relatório completo.
 
 ## Recursos
