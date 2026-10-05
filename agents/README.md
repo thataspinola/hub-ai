@@ -28,4 +28,3 @@ Para criar um novo agente:
 
 - Os arquivos `.agent.md` estão dentro de suas pastas para melhor organização
 - O arquivo `README.md` em cada pasta é para documentaçao e referência
-
