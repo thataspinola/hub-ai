@@ -10,7 +10,9 @@
     "profiles/node/skills/node-event-contracts",
     "profiles/node/skills/node-testing",
     "profiles/node/skills/node-delivery",
-    "skills/rdm-description"
+    "skills/rdm-description",
+    "profiles/node/skills/node-e2e",
+    "profiles/node/skills/node-automated-testing"
   ],
   "templates": [
     "templates/SKILL.md",

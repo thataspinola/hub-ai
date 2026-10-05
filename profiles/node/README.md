@@ -10,7 +10,7 @@ Na raiz do hub:
 python3 scripts/install.py /caminho/do/projeto --profile node
 ```
 
-Depois selecionar **Node Setup** e pedir `full setup`. São instalados dois agentes, cinco skills Node, a skill compartilhada de RDM e quatro templates. Instructions e AGENTS.md são gerados pelo agente após ler o projeto; o instalador não os sobrescreve nem executa npm, AWS ou Terraform.
+Depois selecionar **Node Setup** e pedir `full setup`. São instalados dois agentes, sete skills Node, a skill compartilhada de RDM e quatro templates. Instructions e AGENTS.md são gerados pelo agente após ler o projeto; o instalador não os sobrescreve nem executa npm, AWS ou Terraform.
 
 | Recurso | Uso |
 | --- | --- |
@@ -20,6 +20,8 @@ Depois selecionar **Node Setup** e pedir `full setup`. São instalados dois agen
 | [Segurança](skills/node-security/SKILL.md) | OAuth/mTLS, secrets e logs |
 | [Eventos](skills/node-event-contracts/SKILL.md) | Schemas, falhas parciais e retries |
 | [Testes](skills/node-testing/SKILL.md) | Runner e checks reais por pacote |
+| [E2E](skills/node-e2e/SKILL.md) | Jornadas, isolamento e limites operacionais |
+| [Automatizados](skills/node-automated-testing/SKILL.md) | Regressão, contratos e gates de CI |
 | [Entrega](skills/node-delivery/SKILL.md) | Bundle, Terraform e CI/CD |
 | [RDM](../../skills/rdm-description/SKILL.md) | Descrição da mudança |
 

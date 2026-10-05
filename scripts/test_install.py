@@ -12,7 +12,7 @@ class InstallTests(unittest.TestCase):
         return subprocess.run(['python3', str(INSTALL), str(target), *args], capture_output=True, text=True)
 
     def test_profiles_and_repeat_install(self):
-        for profile, agent, count in [('frontend', 'copilot-setup', 8), ('node', 'node-setup', 6)]:
+        for profile, agent, count in [('frontend', 'copilot-setup', 8), ('node', 'node-setup', 8)]:
             with self.subTest(profile=profile), tempfile.TemporaryDirectory() as tmp:
                 target = Path(tmp)
                 self.assertEqual(self.run_install(target, '--profile', profile).returncode, 0)
@@ -23,6 +23,8 @@ class InstallTests(unittest.TestCase):
                 if profile == 'node':
                     self.assertFalse((target / '.github/agents/code-reviewer.agent.md').exists())
                     self.assertFalse((target / '.github/skills/acessibility').exists())
+                    self.assertTrue((target / '.github/skills/node-e2e/assets/e2e-plan.md').exists())
+                    self.assertTrue((target / '.github/skills/node-automated-testing/references/matrix.md').exists())
 
     def test_conflicts_preserve_every_file_until_explicit_overwrite(self):
         with tempfile.TemporaryDirectory() as tmp:
