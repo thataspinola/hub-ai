@@ -1,4 +1,4 @@
-import { Cliente } from '@/types/cliente';
+import { Cliente } from '@/types/cliente'
 
 export default function Lista({ clientes }: { clientes: Cliente[] }) {
   if (clientes.length > 0) {
@@ -7,14 +7,14 @@ export default function Lista({ clientes }: { clientes: Cliente[] }) {
         <h2 style={{ textAlign: 'center' }}>Lista de clientes</h2>
         {clientes.map((cliente) => (
           <div key={cliente.codigo}>
-            <span>{cliente.codigo} - {cliente.nome.toLowerCase()} - {cliente.email}</span>
+            <span>
+              {cliente.codigo} - {cliente.nome.toLowerCase()} - {cliente.email}
+            </span>
           </div>
         ))}
       </div>
     )
   } else {
-    return (
-      <p>Nenhum cliente cadastrado</p>
-    )
+    return <p>Nenhum cliente cadastrado</p>
   }
 }

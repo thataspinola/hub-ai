@@ -8,7 +8,6 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const config: Config = {
-
   // Automatically clear mock calls, instances, contexts and results before every test
   clearMocks: true,
 
@@ -17,7 +16,6 @@ const config: Config = {
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   // collectCoverageFrom: undefined,
-
   // The directory where Jest should output its coverage files
   coverageDirectory: "coverage",
 
