@@ -50,6 +50,12 @@ Versões completas e ranges estão nos manifests e lockfiles de cada escopo. Nã
 
 React, Next.js e os exemplos TypeScript ficam fora de `codigo-a-ser-transcrito`. Os scripts JavaScript compartilhados continuam reconhecendo stacks frontend. TypeScript e Jest do painel excluem o toolkit e o exemplo Nest para manter as validações independentes.
 
+### Nomenclatura e limites dos escopos
+
+Recursos novos usam kebab-case: `papel.agent.md`, `escopo-documento.template.md` e `nome/SKILL.md`. Os nomes convencionais `README.md`, `CHANGELOG.md`, `VERSION`, `AGENTS.md` e `SKILL.md` são mantidos. Esse padrão não exige renomear componentes, rotas, testes ou agentes existentes.
+
+O painel, o toolkit e o exemplo Nest têm manifests e dependências próprios. As fontes frontend pertencem a `resources/frontend/`; cenários sintéticos de avaliação não devem ser importados ou implantados pela aplicação.
+
 ## Configurar e executar o painel
 
 Executar a partir da raiz, no ambiente com acesso corporativo aprovado:
@@ -77,6 +83,32 @@ O lockfile corporativo foi recuperado da branch HPC e deve ser preservado. A aut
 
 Saída standalone, `distDir` e `basePath` são definidos em `next.config.ts`; o passo de cópia dos artefatos está em `package.json`. Build e postbuild foram validados localmente. O lint usa `eslint . --max-warnings=0` com flat config. Entrega e integrações corporativas continuam exigindo validação autorizada.
 
+### Build e configuração de entrega
+
+O build produz `dist/react-ssr-corp-hubv-painel-administrativo/`. O `postbuild` em `tools/postbuild.cjs` copia `static` e `public` para a saída standalone; `npm start` executa seu `standalone/server.js`. Depois do build, `npm run test:standalone` verifica por HTTP local uma página e um asset.
+
+Os pares `config/values_dev`, `values_hml` e `values_prd` nas extensões `.yaml`/`.yml` têm conteúdo equivalente, verificado pelos checks. Preservam o namespace `corp-hubv`, o basePath do painel e `ingress.enabled`. O processo corporativo deve injetar `NEXTAUTH_SECRET` e `KEYCLOAK_CLIENT_SECRET`; os manifests não contêm valores dessas credenciais. Se credenciais históricas foram utilizadas, sua rotação cabe aos responsáveis no ambiente autorizado; remover o valor atual não apaga o histórico Git.
+
+### Testes E2E locais
+
+Após instalar as dependências no ambiente aprovado:
+
+```sh
+npx playwright install chromium
+npm run test:e2e:list
+npm run test:e2e
+```
+
+Playwright inicia uma instância nova em `127.0.0.1:3100`, com o basePath real. Cada teste usa contexto limpo, bloqueia service workers e requisições a outros hosts/portas e intercepta a sessão como anônima. Não há bypass de autenticação no código da aplicação. As quatro jornadas cobrem catálogo/perfis do reviewer, flags, criação/persistência de formulário e recomendações.
+
+Se um Chromium aprovado já estiver instalado, informar o executável por variável de processo:
+
+```sh
+HUB_AI_E2E_CHROMIUM_PATH=/caminho/chromium npm run test:e2e
+```
+
+Não versionar caminhos da máquina ou credenciais em `.env`, nem apontar esses casos locais para um ambiente real. As jornadas controladas não validam autorização ou integrações corporativas.
+
 ## Usar o Code Reviewer neste projeto
 
 Os recursos do perfil `nextjs` já estão instalados em `.github`. Esse perfil inclui orientações React/Next.js, qualidade, testes web, segurança e entrega. As regras específicas do painel estão em [AGENTS.md](AGENTS.md), [agent.md](agent.md) e `.github/copilot-instructions.md`.
@@ -85,6 +117,10 @@ Os recursos do perfil `nextjs` já estão instalados em `.github`. Esse perfil i
 2. Selecionar **Copilot Setup** para revisar/adaptar as instruções ao projeto real, quando necessário.
 3. Selecionar **Web Code Reviewer** e informar o escopo: alterações locais, arquivos ou comparação entre branches/commits.
 4. Revisar os achados e suas evidências, executar os testes aplicáveis e registrar pendências.
+
+No **Copilot Setup**, solicitar `full setup`, `instructions`, `AGENTS`, `skills` ou `agent <nome>`. O agente deve inspecionar o código e os testes reais antes de escrever regras, excluir toolkit/exemplos do inventário da aplicação e preservar customizações. Neste painel, usar Jest/React Testing Library; orientações genéricas não autorizam instalar outros runners ou pipelines automaticamente.
+
+O **Web Code Reviewer** considera diff/base reais, arquivos completos, fronteiras server/client, contratos, segurança e testes existentes. O relatório padrão é `web-code-review.md`, salvo caminho solicitado pelo usuário.
 
 Exemplo de solicitação ao agente:
 
@@ -124,7 +160,53 @@ node tools/code-reviewer.cjs doctor --project /caminho/aplicacao --ref "$HUB_AI_
 | `--source` | Usa um checkout local aprovado em vez de obter uma fonte remota |
 | `--profile` | Seleciona explicitamente `react`, `nextjs`, `angular`, `vue`, `node` ou `frontend` |
 
-Para atualizar, escolher e revisar um novo SHA, executar `update` primeiro com `--dry-run` e depois aplicar. Não há atualização automática para `main`. Os recursos obtidos ficam em cache por URL+SHA e podem ser reutilizados offline.
+### Perfis e seleção do agente
+
+| Projeto consumidor | Perfil | Reviewer |
+| --- | --- | --- |
+| Next.js, incluindo componentes React | `nextjs` | Web Code Reviewer |
+| React | `react` | Web Code Reviewer |
+| Angular | `angular` | Web Code Reviewer |
+| Vue | `vue` | Web Code Reviewer |
+| Node/Nest | `node` | Node Code Reviewer |
+| Frontend legado | `frontend` | Frontend Code Reviewer |
+
+A detecção automática prioriza Next.js sobre React. TypeScript acompanha o framework. Em monorepos, apontar `--project` para o pacote consumidor e selecionar o perfil explicitamente quando necessário. `--capabilities base` instala o conjunto base; outros conjuntos usam nomes do manifesto separados por vírgulas.
+
+### Atualizar, voltar uma versão e recuperar
+
+Escolher um novo SHA completo e revisado. Substituir os valores abaixo pelos SHAs reais:
+
+```sh
+HUB_AI_NEW_REF=SHA_COMPLETO_DA_NOVA_VERSAO
+node tools/code-reviewer.cjs update --project /caminho/aplicacao --ref "$HUB_AI_NEW_REF" --dry-run
+node tools/code-reviewer.cjs update --project /caminho/aplicacao --ref "$HUB_AI_NEW_REF"
+node tools/code-reviewer.cjs doctor --project /caminho/aplicacao --ref "$HUB_AI_NEW_REF"
+node tools/code-reviewer.cjs version
+```
+
+Não há atualização automática para `main`. `update` mantém perfil/capacidades e verifica checksums: conflitos bloqueiam a operação antes de sobrescrever personalizações. A migração remove apenas recursos gerenciados antigos que continuem intactos. Código, CI, `AGENTS.md` e instructions específicos são preservados.
+
+Para voltar a uma fonte anterior compatível, usar a CLI atual e revisar o plano:
+
+```sh
+HUB_AI_PREVIOUS_REF=SHA_COMPLETO_DA_VERSAO_ANTERIOR
+node tools/code-reviewer.cjs rollback --project /caminho/aplicacao --ref "$HUB_AI_PREVIOUS_REF" --dry-run
+node tools/code-reviewer.cjs rollback --project /caminho/aplicacao --ref "$HUB_AI_PREVIOUS_REF"
+```
+
+O rollback exige estado de instalação e uma fonte compatível (1.6+), aplica as proteções de atualização e não restaura o Git do consumidor. Perfis/capacidades ausentes na fonte escolhida causam falha antes das escritas.
+
+Em uma transação interrompida, inspecionar o diagnóstico e confirmar que o processo anterior terminou antes de recuperar:
+
+```sh
+node tools/code-reviewer.cjs recover --project /caminho/aplicacao --ref "$HUB_AI_NEW_REF"
+node tools/code-reviewer.cjs doctor --project /caminho/aplicacao --ref "$HUB_AI_NEW_REF"
+```
+
+### Cache e uso offline
+
+Fontes remotas ficam em `~/.cache/hub-ai-code-reviewer`, separadas por URL+SHA; `--cache /caminho/cache` muda o local. Uma revisão já obtida pode ser reutilizada offline. Cache alterado é recusado: usar uma pasta nova e obter novamente a fonte aprovada. `--repo` permite uma origem alternativa confiável com SHA fixo; a fonte contém código executável. Usar a autenticação Git existente, sem tokens na URL.
 
 Modo local/offline:
 
@@ -157,9 +239,65 @@ npm --prefix codigo-a-ser-transcrito run catalog:export
 
 O export do catálogo atualiza `src/data/ai-resources.json`. Os E2E Nest usam HTTP local e serviços/adapters controlados; não comprovam integração com AWS, Keycloak, Dynamics ou serviços corporativos reais.
 
+## Avaliar a qualidade do reviewer
+
+Os casos Node ficam em `codigo-a-ser-transcrito/evaluations/scenarios/`; os frontend, em `resources/frontend/evaluations/review/` e `clean/`. São fixtures sintéticas, separadas da aplicação.
+
+1. Fixar o SHA dos recursos e registrar editor, modelo e data.
+2. Apresentar cada caso separadamente ao reviewer, com o mesmo prompt, sem mostrar rubrica, erros esperados ou relatórios anteriores.
+3. Salvar o relatório bruto, sem editar achados, em `codigo-a-ser-transcrito/evaluations/results/`.
+4. Um avaliador humano relaciona achados ao código, identifica falsos positivos e preenche a adjudicação.
+5. Executar a pontuação e registrar também os problemas omitidos.
+
+```sh
+node tools/evaluate-reviewer.cjs list
+node tools/evaluate-reviewer.cjs score /caminho/adjudicacao.json
+```
+
+Exemplo de estrutura; preencher com a avaliação real:
+
+```json
+{
+  "scenario": "frontend-review",
+  "matched_expected": [],
+  "false_positives": 0,
+  "adjudicator": "NOME_DO_AVALIADOR",
+  "raw_report": "evaluations/results/frontend-review.raw.md"
+}
+```
+
+Os cenários `frontend-review`, `frontend-clean`, `node-review` e `node-clean` usam a rubrica em `codigo-a-ser-transcrito/evaluations/rubric.json`. O script exige relatório bruto existente dentro do toolkit e rejeita IDs desconhecidos. Recall mede os problemas esperados encontrados; precision considera os acertos e falsos positivos; omissões registram problemas esperados não encontrados. Métricas sem denominador são `null`, inclusive em um caso limpo sem achados.
+
+Testar o cálculo das métricas não certifica a qualidade semântica do modelo. A nova avaliação frontend no editor está pendente; os resultados Node existentes são históricos.
+
 ## Evidências e pendências
 
-A versão atual inclui toolkit 1.7.0, catálogo navegável, CLI version/rollback, checks de entrega e E2E controlados. Consulte [validação local](docs/local-validation.md) e [status das melhorias](docs/improvements-status.md) para a matriz de resultados e ambiente utilizado. Os testes locais não comprovam Keycloak, AppConfig, provisionamento, AWS, editor Copilot ou deploy na VDI.
+Resultados locais da versão 1.7.0, em Node 24.19.0/Linux, registrados em 2026-10-08:
+
+| Validação | Resultado |
+| --- | --- |
+| Jest do painel | 370 testes, 37 suítes passaram |
+| Configuração e postbuild | 2 testes passaram |
+| ESLint e typecheck do painel | Passaram, sem warnings no lint |
+| Build e postbuild do painel | Passaram |
+| Smoke standalone | Página e asset responderam por HTTP local |
+| E2E Playwright | 4 jornadas passaram |
+| Ferramentas do toolkit | 42 testes passaram |
+| Exemplo Node | 8 testes passaram |
+| Exemplo Nest | 18 testes; typecheck/build/smoke passaram |
+| Audit público de dependências de produção | Nenhuma vulnerabilidade reportada naquela execução |
+
+A validação usou dependências públicas isoladas, preservando registry/certificado corporativos. O download padrão do Chromium falhou nesse ambiente; os E2E passaram com executável alternativo Chromium 153 indicado pela variável de processo. A combinação validada de lint foi ESLint 9.39.4 com eslint-config-next 16.2.2; ESLint 10 apresentou incompatibilidade com plugins. Atualizar essas dependências em conjunto e validar antes de adotar.
+
+Continuam pendentes, fora deste ambiente:
+
+- Descoberta/execução efetiva dos agentes no editor e avaliação semântica com relatório bruto/adjudicação humana.
+- Instalação pelo mirror corporativo, certificado e disponibilidade do Chromium aprovado.
+- Keycloak, AppConfig, APIs, AWS, credenciais e autorização reais.
+- Provisionamento, compatibilidade do chart/pipeline e deploy pelo processo corporativo existente.
+- Rotação de eventuais credenciais históricas utilizadas, pelos responsáveis.
+
+Mocks, testes locais e audit não certificam integrações ou produção. Não foi realizado acesso à VDI. Os documentos de contexto/validação anteriores mantêm evidências históricas; para resultados atuais, usar esta matriz e o [status das melhorias](docs/improvements-status.md).
 
 ## Documentação complementar
 
