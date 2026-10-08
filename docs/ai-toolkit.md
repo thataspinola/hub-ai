@@ -24,6 +24,6 @@ npm --prefix codigo-a-ser-transcrito run catalog:export
 node codigo-a-ser-transcrito/scripts/install.js . --profile nextjs --dry-run
 ```
 
-O código novo não foi excluído. TypeScript e Jest ignoram o toolkit e o exemplo Nest para evitar misturar os runtimes. O catálogo é uma interface de dados local; não há novo endpoint/tela conectada sem requisito específico. O pipeline e as dependências corporativas permanecem sob o processo aprovado; validar aplicação/serviços reais na VDI.
+O código novo não foi excluído. TypeScript e Jest ignoram o toolkit e o exemplo Nest para evitar misturar os runtimes. O catálogo é uma interface de dados local; a página /code-reviewer agora consome o catálogo para filtros e orientações de instalação. O pipeline e as dependências corporativas permanecem sob o processo aprovado; validar aplicação/serviços reais na VDI.
 
 Distribuição sem pipeline: consultar [Code Reviewer CLI](code-reviewer-cli.md).

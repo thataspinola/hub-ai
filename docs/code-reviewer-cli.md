@@ -67,3 +67,17 @@ O diagnóstico pode apontar agentes externos como não gerenciados ou instructio
 ## Evidências desta implementação
 
 Toolkit 1.6.0, Node 24/Linux: 40 testes de ferramentas (7 da CLI), 8 do exemplo Node e 18 do exemplo Nest passaram. Typecheck/build/smoke do exemplo Nest também passaram. A instalação Git foi exercitada com um repositório local, fonte fixada, checkout sem node_modules e SHA registrado no consumidor. Preview, preservação das instruções, colisões e cache offline foram verificados. Acesso de rede ao Git corporativo e descoberta dos agentes no editor permanecem para validação no ambiente autorizado.
+
+## Versão e retorno a uma revisão anterior
+
+O toolkit 1.7.0 acrescenta version e rollback:
+
+```sh
+node tools/code-reviewer.cjs version
+node tools/code-reviewer.cjs rollback --project /caminho/aplicacao --ref SHA_ANTERIOR_COMPLETO --dry-run
+node tools/code-reviewer.cjs rollback --project /caminho/aplicacao --ref SHA_ANTERIOR_COMPLETO
+```
+
+Rollback exige estado instalado, escolhe explicitamente a fonte anterior e aplica as mesmas proteções de update. Recursos obsoletos intactos são removidos; alterações locais bloqueiam a transação. Não usa reset no Git do consumidor, não desfaz código da aplicação e não altera suas instructions. A fonte anterior precisa oferecer atualização segura (toolkit 1.6.0+). Perfil/capacidades inexistentes na versão anterior são recusados antes de escrever.
+
+A versão 1.6.0 pode ser reproduzida com o SHA 2a6bd0b1ece7c860d726c57155c2a9ec14fb43d4. Para novas versões, consultar VERSION/CHANGELOG e registrar o SHA completo aprovado. Instalação/update continuam exigindo revisão explícita; não seguem main automaticamente.

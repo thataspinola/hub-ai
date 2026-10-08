@@ -11,3 +11,5 @@ Recursos de frontend ficam em resources/frontend; recursos ativos em .github/age
 codigo-a-ser-transcrito conserva ferramentas/backend Node. examples/nest-backend é exemplo independente; ambos estão excluídos da suíte/build Next. Validar o toolkit separadamente com npm --prefix codigo-a-ser-transcrito run check. Catálogo de recursos disponível em src/data/ai-resources.json; regenerar com npm --prefix codigo-a-ser-transcrito run catalog:export. Não remover dados existentes da aplicação.
 
 Não criar arquivos .py. Não inserir secrets, tokens, CPF real ou certificados em logs/fixtures. Não editar .env. Respeitar VDI e a infraestrutura/pipeline existente, sem deploy automático. Reportar validações realizadas e limites; mocks locais não comprovam Keycloak, AppConfig ou deploy.
+
+Validação local autorizada: npm run check:local, npm run build e npm run test:e2e. E2E em tests/e2e usa fixtures locais e bloqueia hosts externos. O catálogo é apresentado na página /code-reviewer, sem enviar código a um modelo. Não declarar VDI, autenticação real ou deploy validados com base nesses checks.

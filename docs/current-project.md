@@ -31,3 +31,7 @@ A integração moveu os recursos frontend para resources/frontend e os ativou em
 Em 2026-10-08, a main 1f8aaaa estava 22 commits à frente da HPC-606/local-code-review-back-and-front (858ba6a), sem commits exclusivos na HPC. A correção preserva Dashboard, PortalSidebar, SessionProviderWrapper e FeatureFlagProvider, removendo marcadores de conflito das duas entradas do App Router. O import da rota clients usa o alias @/types/cliente. O arquivo recommendations/form-store.ts mantém o caminho como compatibilidade e reexporta a implementação completa em form-wizard/form-store.ts, sem criar uma segunda persistência/store.
 
 O lockfile foi recuperado pelo blob b38da87389b99161c015f3bff1652c89555f205d da HPC, mantendo registry e integridades corporativos. Validação local: 110 arquivos TypeScript/TSX sem erros de sintaxe; manifest e dependências da raiz do lock coincidentes; 40 testes de ferramentas, 8 Node e 18 Nest passaram, além de typecheck/build/smoke do Nest. A análise de sintaxe não substitui o typecheck/build e a suíte da aplicação Next, pendentes na VDI com dependências corporativas.
+
+## Melhorias 1.7.0
+
+A página /code-reviewer agora apresenta o catálogo de recursos com seleção de perfil e busca. O painel tem lint/typecheck/check:local, E2E controlados e build/postbuild local validados. O toolkit acrescenta version/rollback e casos frontend de avaliação. Consultar [status atualizado](improvements-status.md) para ambiente, resultados e limitações externas; as evidências anteriores nesta página são históricas.

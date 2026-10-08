@@ -44,7 +44,7 @@ Versões completas e ranges estão nos manifests e lockfiles de cada escopo. Nã
 | `codigo-a-ser-transcrito/` | Recursos backend Node, ferramentas compartilhadas e exemplo JavaScript |
 | `examples/nest-backend/` | Exemplo independente TypeScript/Nest, com testes próprios |
 | `tools/code-reviewer.cjs` | CLI de distribuição do reviewer |
-| `src/data/ai-resources.json` | Catálogo gerado dos recursos de IA; ainda sem nova tela/endpoint conectado |
+| `src/data/ai-resources.json` | Catálogo gerado dos recursos de IA, consumido pela página `/code-reviewer` |
 | `docs/` | Documentação do projeto, revisão, configuração e evidências |
 | `config/`, `pom.xml` | Configuração e infraestrutura corporativa existentes |
 
@@ -67,11 +67,15 @@ O lockfile corporativo foi recuperado da branch HPC e deve ser preservado. A aut
 | --- | --- |
 | `npm run dev` | Servidor de desenvolvimento |
 | `npm run build` | Build Next e execução do `postbuild` declarado |
-| `npm start` | Script de inicialização declarado; validar com o modo de entrega corporativo |
+| `npm start` | Servidor Node da saída standalone, após build/postbuild |
 | `npm test` | Suíte Jest, com cobertura configurada em `jest.config.ts` |
 | `npm run test:watch` | Testes em modo watch |
+| `npm run lint` / `npm run typecheck` | ESLint e verificação TypeScript |
+| `npm run check:local` | Configuração, lint, typecheck e Jest |
+| `npm run test:standalone` | Smoke HTTP local da página e de um asset após build |
+| `npm run test:e2e` | Jornadas Playwright em localhost, com rede externa bloqueada |
 
-Saída standalone, `distDir` e `basePath` são definidos em `next.config.ts`; o passo de cópia dos artefatos está em `package.json`. A existência desses scripts não comprova que build/start/deploy passaram. O script `lint` atual é `next lint` e sua compatibilidade/configuração ainda precisa ser revisada antes de tratá-lo como um gate validado.
+Saída standalone, `distDir` e `basePath` são definidos em `next.config.ts`; o passo de cópia dos artefatos está em `package.json`. Build e postbuild foram validados localmente. O lint usa `eslint . --max-warnings=0` com flat config. Entrega e integrações corporativas continuam exigindo validação autorizada.
 
 ## Usar o Code Reviewer neste projeto
 
@@ -98,12 +102,13 @@ cd /caminho/ferramentas/hub-ai
 node tools/code-reviewer.cjs help
 ```
 
-A revisão abaixo é uma fonte fixa do toolkit 1.6.0. Substituir `/caminho/aplicacao` pelo projeto consumidor:
+Com o checkout limpo e a versão revisada/aprovada, registrar seu SHA completo. O comando abaixo fixa essa revisão (não segue a branch automaticamente). Substituir `/caminho/aplicacao` pelo projeto consumidor:
 
 ```sh
-node tools/code-reviewer.cjs setup --project /caminho/aplicacao --ref 9d7ee1a6d01f8e38741a79710b57f3d5ecab3513 --dry-run
-node tools/code-reviewer.cjs setup --project /caminho/aplicacao --ref 9d7ee1a6d01f8e38741a79710b57f3d5ecab3513
-node tools/code-reviewer.cjs doctor --project /caminho/aplicacao --ref 9d7ee1a6d01f8e38741a79710b57f3d5ecab3513
+HUB_AI_REVIEWER_REF="$(git rev-parse HEAD)"
+node tools/code-reviewer.cjs setup --project /caminho/aplicacao --ref "$HUB_AI_REVIEWER_REF" --dry-run
+node tools/code-reviewer.cjs setup --project /caminho/aplicacao --ref "$HUB_AI_REVIEWER_REF"
+node tools/code-reviewer.cjs doctor --project /caminho/aplicacao --ref "$HUB_AI_REVIEWER_REF"
 ```
 
 | Comando/opção | Comportamento |
@@ -111,6 +116,8 @@ node tools/code-reviewer.cjs doctor --project /caminho/aplicacao --ref 9d7ee1a6d
 | `setup` | Instala recursos; identifica automaticamente a stack |
 | `update` | Exige instalação anterior; mantém perfil/capacidades e atualiza recursos gerenciados intactos |
 | `doctor` | Aponta inconsistências e pendências da instalação |
+| `rollback` | Retorna à fonte anterior indicada, preservando personalizações |
+| `version` | Mostra a versão local do toolkit |
 | `recover` | Recupera uma transação interrompida após o processo anterior terminar |
 | `--ref` | SHA completo e imutável da fonte; não aceita branch/tag |
 | `--dry-run` | Mostra o plano sem escrever no projeto consumidor |
@@ -152,11 +159,13 @@ O export do catálogo atualiza `src/data/ai-resources.json`. Os E2E Nest usam HT
 
 ## Evidências e pendências
 
-Na validação local em Node 24/Linux, passaram **40 testes de ferramentas, 8 Node e 18 Nest**, além de typecheck/build/smoke do exemplo Nest. Após corrigir os conflitos de merge, **110 arquivos TypeScript/TSX** passaram pela análise de sintaxe. O lockfile recuperado tem dependências da entrada raiz coincidentes com `package.json`.
-
-Permanecem pendentes os testes, typecheck/build e lint completos do painel, descoberta/execução dos agentes no editor e validação das integrações reais na VDI. A análise de sintaxe e os testes do toolkit não substituem essas verificações. Preservar o fluxo corporativo existente; este projeto não implementa revisão automática em GitLab/Jenkins nem autoriza deploy.
+A versão atual inclui toolkit 1.7.0, catálogo navegável, CLI version/rollback, checks de entrega e E2E controlados. Consulte [validação local](docs/local-validation.md) e [status das melhorias](docs/improvements-status.md) para a matriz de resultados e ambiente utilizado. Os testes locais não comprovam Keycloak, AppConfig, provisionamento, AWS, editor Copilot ou deploy na VDI.
 
 ## Documentação complementar
+
+- [Validação local sem VDI](docs/local-validation.md)
+- [Status das melhorias e pendências externas](docs/improvements-status.md)
+- [Avaliação do reviewer](docs/reviewer-evaluation.md)
 
 - [Contexto e correções da aplicação](docs/current-project.md)
 - [Recursos de IA integrados ao painel](docs/ai-toolkit.md)

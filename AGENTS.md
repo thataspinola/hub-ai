@@ -12,7 +12,7 @@ A autenticação existente usa NextAuth/Keycloak. Não registrar tokens, secrets
 
 ## Validação
 
-Usar Jest e React Testing Library adotados pelo projeto. Verificar package.json e configurações antes de executar scripts. npm test/build da raiz pertencem à aplicação; registry e certificados corporativos podem exigir a VDI. Não instalar Vitest, MSW ou Playwright automaticamente. Não reduzir gates, criar scripts fictícios ou ocultar falhas.
+Usar Jest e React Testing Library adotados pelo projeto. Verificar package.json e configurações antes de executar scripts. npm test/build da raiz pertencem à aplicação; registry e certificados corporativos podem exigir a VDI. Não trocar Jest por outro runner. A suíte Playwright autorizada fica em tests/e2e, com servidor localhost e bloqueio de rede externa. Não reduzir gates, criar scripts fictícios ou ocultar falhas.
 
 As ferramentas compartilhadas estão em codigo-a-ser-transcrito; recursos frontend em resources/frontend; configuração ativa do editor em .github. O exemplo independente Nest fica em examples/nest-backend. Não incluir esses exemplos no inventário de stack ou na suíte/build Next. Validar o toolkit separadamente com npm --prefix codigo-a-ser-transcrito run check.
 
@@ -23,3 +23,13 @@ Usar Copilot Setup e Web Code Reviewer da configuração instalada. Consultar .g
 ## Entrega e evidências
 
 Preservar pom.xml/config/ e o fluxo corporativo existente. Não executar deploy ou acessar Keycloak/AppConfig/serviços corporativos fora do ambiente autorizado. Reportar arquivos, comandos executados, resultados e pendências; não declarar funcionamento em produção ou no editor sem evidência.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
