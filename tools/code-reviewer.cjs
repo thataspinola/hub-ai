@@ -16,9 +16,9 @@ function parse(argv) {
     else if (['project', 'profile', 'capabilities', 'ref', 'repo', 'source', 'cache'].includes(name) && argv[i + 1] && !argv[i + 1].startsWith('--')) args[name] = argv[++i]
     else throw new Error(`Unknown/missing option: ${argv[i]}`)
   }
-  if (!['setup', 'update', 'doctor', 'recover', 'help'].includes(args.command)) throw new Error('Choose setup, update, doctor, recover or help')
+  if (!['setup', 'update', 'doctor', 'recover', 'rollback', 'version', 'help'].includes(args.command)) throw new Error('Choose setup, update, doctor, recover, rollback, version or help')
   if (args.source && (args.ref || args.repo !== DEFAULT_REPO)) throw new Error('--source cannot be combined with --ref/--repo')
-  if (!args.source && args.command !== 'help' && !args.help && !/^[a-f0-9]{40}$/.test(args.ref || '')) throw new Error('--ref requires a full immutable commit SHA; branches/tags are not accepted')
+  if (!args.source && !['help', 'version'].includes(args.command) && !args.help && !/^[a-f0-9]{40}$/.test(args.ref || '')) throw new Error('--ref requires a full immutable commit SHA; branches/tags are not accepted')
   return args
 }
 function git(cwd, args) {
@@ -49,12 +49,13 @@ function checkout(args) {
 }
 function run(args, log = console.log) {
   if (args.command === 'help' || args.help) {
-    log('node tools/code-reviewer.cjs setup|update|doctor|recover --project PATH --ref FULL_COMMIT_SHA [--profile auto|react|nextjs|angular|vue|node|frontend] [--capabilities base|LIST] [--dry-run] [--migrate] [--overwrite] [--cache PATH] [--repo TRUSTED_URL]\nOffline/development: replace --ref/--repo with --source LOCAL_HUB_CHECKOUT. No npm installation is required; Node 22+ and Git are required for remote sources.'); return
+    log('node tools/code-reviewer.cjs setup|update|rollback|doctor|recover --project PATH --ref FULL_COMMIT_SHA [--profile auto|react|nextjs|angular|vue|node|frontend] [--capabilities base|LIST] [--dry-run] [--migrate] [--overwrite] [--cache PATH] [--repo TRUSTED_URL]\nOffline/development: replace --ref/--repo with --source LOCAL_HUB_CHECKOUT. No npm installation is required; Node 22+ and Git are required for remote sources.'); return
   }
+  if (args.command === 'version') { log(fs.readFileSync(path.join(__dirname, '../codigo-a-ser-transcrito/VERSION'), 'utf8').trim()); return 0 }
   const project = fs.realpathSync(args.project)
   if (!fs.statSync(project).isDirectory()) throw new Error('Project must be an existing directory')
   let previous
-  if (args.command === 'update') {
+  if (['update', 'rollback'].includes(args.command)) {
     // Validate the state path before reading; installation validates all managed paths.
     const { safePath } = require('../codigo-a-ser-transcrito/scripts/hub-resources')
     previous = JSON.parse(fs.readFileSync(safePath(project, '.github/hub-ai-lock.json'), 'utf8'))
@@ -71,8 +72,8 @@ function run(args, log = console.log) {
   }
   const { install, supportsManagedUpdates } = require(path.join(scripts, 'install.js'))
   // The source must include safe managed updates; older releases must not silently downgrade this behavior.
-  if (args.command === 'update' && !supportsManagedUpdates) throw new Error('Selected source predates safe updates; choose a newer commit')
-  install({ project, recover: args.command === 'recover', profile: args.profile || previous?.profile || 'auto', capabilities: args.capabilities ?? (previous ? previous.capabilities.join(',') || 'base' : undefined), 'update-managed': args.command === 'update', 'dry-run': args['dry-run'], overwrite: args.overwrite, migrate: args.migrate }, undefined, log)
+  if (['update', 'rollback'].includes(args.command) && !supportsManagedUpdates) throw new Error('Selected source predates safe updates; choose a newer commit')
+  install({ project, recover: args.command === 'recover', profile: args.profile || previous?.profile || 'auto', capabilities: args.capabilities ?? (previous ? previous.capabilities.join(',') || 'base' : undefined), 'update-managed': ['update', 'rollback'].includes(args.command), 'dry-run': args['dry-run'], overwrite: args.overwrite, migrate: args.migrate || args.command === 'rollback' }, undefined, log)
   if (args.command === 'recover') return 0
   log(`Select Copilot Setup to create project-specific instructions, then the installed Code Reviewer in your editor. ${args['dry-run'] ? 'Preview only.' : 'Resources installed; no review was executed.'}`)
   return 0

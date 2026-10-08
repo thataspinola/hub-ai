@@ -33,4 +33,12 @@ test('scoring requires human adjudication and rejects invented matches', () => {
 test('noncanonical names rejected', t => mutation(t, 'Bad_File.md', () => 'bad name'))
 test('duplicate setup selection rejected', t => mutation(t, '../resources/frontend/profiles/react/profile.json', text => text.replace('Copilot Setup', 'Web Setup')))
 
-test('stale portal catalog rejected', t => mutation(t, '../src/data/ai-resources.json', text => text.replace('1.6.0', '0.0.0')))
+test('stale portal catalog rejected', t => mutation(t, '../src/data/ai-resources.json', text => text.replace('1.7.0', '0.0.0')))
+test('frontend evaluation counts missed findings and false positives honestly', t => {
+  const raw = path.join(ROOT, 'evaluations/results/frontend-test.raw.md'); fs.writeFileSync(raw, 'Temporary reviewer test output'); t.after(() => fs.rmSync(raw, { force: true }))
+  const base = { raw_report: 'evaluations/results/frontend-test.raw.md', adjudicator: 'test-human', false_positives: 1 }
+  const result = score({ ...base, scenario: 'frontend-review', matched_expected: ['stale-effect'] })
+  assert.equal(result.recall, 1 / 3); assert.equal(result.precision, 1 / 2)
+  const clean = score({ ...base, scenario: 'frontend-clean', matched_expected: [] })
+  assert.equal(clean.precision, 0); assert.equal(clean.recall, null)
+})

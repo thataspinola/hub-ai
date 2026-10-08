@@ -1,6 +1,6 @@
 # Toolkit backend e ferramentas compartilhadas
 
-Versão **1.6.0**, Node.js 22+. Esta pasta conserva os recursos backend Node, cenários de avaliação e ferramentas de instalação/validação/inspeção. React, Next.js, templates frontend, perfis frontend e o Copilot Setup foram integrados fora dela, em `resources/frontend` e nas configurações ativas `.github` do projeto.
+Versão **1.7.0**, Node.js 22+. Esta pasta conserva os recursos backend Node, cenários de avaliação e ferramentas de instalação/validação/inspeção. React, Next.js, templates frontend, perfis frontend e o Copilot Setup foram integrados fora dela, em `resources/frontend` e nas configurações ativas `.github` do projeto.
 
 O exemplo TypeScript/NestJS foi movido para `examples/nest-backend` na raiz. A aplicação continua em src/, com sua suíte __tests__/ e dependências próprias. Não remover ou substituir código novo para fazer a migração.
 

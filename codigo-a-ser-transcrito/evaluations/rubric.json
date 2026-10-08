@@ -11,5 +11,17 @@
   "node-clean": {
     "expected": [],
     "description": "No seeded bug: count unsupported bug claims as false positives; optional suggestions are not bugs."
+  },
+  "frontend-review": {
+    "expected": [
+      "stale-effect",
+      "unescaped-html",
+      "credential-logging"
+    ],
+    "description": "Review the blinded frontend fixtures and adjudicate findings against code evidence; do not provide the rubric to the reviewer."
+  },
+  "frontend-clean": {
+    "expected": [],
+    "description": "Count unsupported bug claims as false positives; suggestions are not bugs."
   }
 }

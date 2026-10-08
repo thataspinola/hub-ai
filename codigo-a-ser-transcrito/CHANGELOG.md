@@ -1,5 +1,11 @@
 # Changelog do toolkit
 
+## 1.7.0
+
+- CLI version/rollback com proteção de personalizações e fonte explícita.
+- Casos frontend de avaliação, controle limpo e cálculo de falsos positivos/omissões.
+- Integração do catálogo no painel e validação local ampliada documentadas na raiz.
+
 ## 1.6.0 — CLI para o editor
 
 - Setup/update/doctor/recover em tools/code-reviewer.cjs, sem registry npm ou pipeline.

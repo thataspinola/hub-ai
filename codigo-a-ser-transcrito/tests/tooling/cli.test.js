@@ -87,3 +87,17 @@ test('complete Git-source installation records pinned SHA without installing dep
   assert.equal(fs.existsSync(path.join(dir, 'node_modules')), false)
 })
 function ROOT_FOR_COPY() { return path.join(REPOSITORY_ROOT, 'codigo-a-ser-transcrito') }
+test('rollback keeps consumer customizations protected and version runs offline', t => {
+  const dir = project(t); run(local(dir), () => {})
+  const name = '.github/skills/react-patterns/SKILL.md', dest = path.join(dir, name), content = fs.readFileSync(dest, 'utf8')
+  fs.writeFileSync(dest, content + '\nNewer managed revision\n')
+  const stateFile = path.join(dir, '.github/hub-ai-lock.json'), state = JSON.parse(fs.readFileSync(stateFile))
+  state.files[name] = digest(fs.readFileSync(dest)); fs.writeFileSync(stateFile, JSON.stringify(state))
+  run(local(dir, { command: 'rollback' }), () => {})
+  assert.equal(fs.readFileSync(dest, 'utf8'), content)
+  fs.writeFileSync(dest, 'consumer customization')
+  assert.throws(() => run(local(dir, { command: 'rollback' }), () => {}), /Conflicts/)
+  const output = []
+  run(parse(['version']), text => output.push(text))
+  assert.equal(output[0], fs.readFileSync(path.join(ROOT, 'VERSION'), 'utf8').trim())
+})
