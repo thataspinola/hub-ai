@@ -1,20 +1,20 @@
-# Feature Flags - Definições e Guia de Uso
+# Feature Flags — Definições e Guia de Uso
 
 ## O que são Feature Flags?
 
-Feature Flags (também chamads de _feature toggles_) são uma técnica de engenharia de software que permite **ativar ou desativar funcionalidades** em tempo de execução, sem necessidade de deploy. Elas desacoplam o lançamento de uma feature do deploy do código.
+Feature Flags (também chamadas de _feature toggles_) são uma técnica de engenharia de software que permite **ativar ou desativar funcionalidades** em tempo de execução, sem necessidade de deploy. Elas desacoplam o lançamento de uma feature do deploy do código.
 
 ---
 
 ## Por que usar Feature Flags?
 
-| Benefício           | Descrição                                                    |
-| ------------------- | ------------------------------------------------------------ |
-| **Deploys seguros** | Código pode ser deployed sem expor a feature ao usuário      |
-| **Rellout gradual** | Lançar para 5%, 10%, 50% dos usuários progressivamente       |
-| **Testes A/B**      | Comparar variantes de uma feature com métricas               |
-| **Kill switch**     | Desligar imediatamente uma feature problemática sem rollback |
-| **Personalização**  | Configurar comportamento diferente por segmento de usuário   |
+| Benefício           | Descrição                                                     |
+| ------------------- | ------------------------------------------------------------- |
+| **Deploys seguros** | Código pode ser deployed sem expor a feature ao usuário final |
+| **Rollout gradual** | Lançar para 5%, 10%, 50% dos usuários progressivamente        |
+| **Testes A/B**      | Comparar variantes de uma feature com métricas                |
+| **Kill switch**     | Desligar imediatamente uma feature problemática sem rollback  |
+| **Personalização**  | Configurar comportamento diferente por segmento de usuário    |
 
 ---
 
@@ -26,7 +26,7 @@ A forma mais simples: **ligado ou desligado**.
 
 **Quando usar:**
 
-- Esconder/mostrar uma functionalidade inteira
+- Esconder/mostrar uma funcionalidade inteira
 - Modo de manutenção
 - Kill switches de emergência
 
@@ -41,7 +41,7 @@ export default async function Page() {
   return showNewCheckout ? <NewCheckout /> : <LegacyCheckout />
 }
 
-// Client-side (hook)
+// Client-side (Hook)
 import { useIsEnabled } from '@/lib/feature-flags/client'
 
 function MyComponent() {
@@ -54,7 +54,7 @@ function MyComponent() {
 
 | Campo         | Tipo      | Descrição                        |
 | ------------- | --------- | -------------------------------- |
-| `key`         | `string`  | Identificador único (snake case) |
+| `key`         | `string`  | Identificador único (snake_case) |
 | `name`        | `string`  | Nome legível                     |
 | `description` | `string`  | Propósito da flag                |
 | `enabled`     | `boolean` | Estado atual                     |
@@ -70,7 +70,7 @@ Retorna **valores dinâmicos** ao invés de apenas true/false. O valor pode ser 
 
 - Testes A/B com múltiplas variantes
 - Configuração de limites (rate limit, max items)
-- Temas ou modos visuais (dar/light/auto)
+- Temas ou modos visuais (dark/light/auto)
 - Configurações numéricas ajustáveis
 
 **Exemplo:**
@@ -86,11 +86,11 @@ export default async function Page() {
   return <App theme={theme} rateLimit={rateLimit} />
 }
 
-//Client-side (Hook)
-import { useFlagValue } from '@/lib/feature-flags/server'
+// Client-side (Hook)
+import { useFlagValue } from '@/lib/feature-flags/client'
 
 function MyComponent() {
-  const theme = useFlagValue<string>('ui_datk_mode', 'disabled')
+  const theme = useFlagValue<string>('ui_dark_mode', 'disabled')
   const rateLimit = useFlagValue<number>('rate_limit', 100)
 
   return <Config theme={theme} limit={rateLimit} />
@@ -104,7 +104,7 @@ function MyComponent() {
 | `key`       | `string`                         | Identificador único                     |
 | `valueType` | `'string' \| 'number' \| 'json'` | Tipo do valor retornado                 |
 | `value`     | `string`                         | Valor atual (serializado)               |
-| `variants`  | `{ labels, value, weight }[]`    | Variantes possíveis com pesos           |
+| `variants`  | `{ label, value, weight }[]`     | Variantes possíveis com pesos           |
 | `enabled`   | `boolean`                        | Se desabilitada, retorna `defaultValue` |
 
 ---
@@ -115,7 +115,7 @@ Carrega **metadados/configurações adicionais** em pares chave-valor. Útil qua
 
 **Quando usar:**
 
-- Configuração complexa de um motor de ML (modelo, max resultados, grupo de testes)
+- Configuração complexa de um motor de ML (modelo, max resultados, grupo de teste)
 - Regras de negócio com múltiplos parâmetros
 - Feature com configuração de rollout detalhada
 
@@ -127,12 +127,12 @@ import { getFlagAttributes } from '@/lib/feature-flags/server'
 
 export default async function Page() {
   const recConfig = await getFlagAttributes('ml_rec_engine')
-  // {rolloutPercentage: 50, model: 'v3-collaborative', maxResults: 12}
+  // { rolloutPercentage: 50, model: "v3-collaborative", maxResults: 12 }
   return recConfig ? <RecEngine config={recConfig} /> : <FallbackRec />
 }
 
 // Client-side (Hook)
-import { useFlagAttributes } from '@/lib/feature-flags/server'
+import { useFlagAttributes } from '@/lib/feature-flags/client'
 
 function MyComponent() {
   const recConfig = useFlagAttributes('ml_rec_engine')
@@ -154,33 +154,45 @@ function MyComponent() {
 ## Arquitetura
 
 ```bash
-+--------------------------------------------------+
-|          FeatureFlagDataProvider (Strategy)      |
-|                                                  |
-| +-----------------+   +-----------------------+  |
-| | LocalStorage    |   | AppConfigProvider     |  |
-| | Provider (mock) |   | (AWS AppConfig Agent) |  |
-| +-----------------+   +-----------------------+  |
-|         |                         |              |
-+---------|-------------------------|--------------+
-          |                         |
-  +-----------------+   +-----------------------+
-  | server.ts       |   | client.tsx            |
-  | (RSC/Actions)   |   | (React Hooks)         |
-  | cache Map + TTL |   | polling 30z           |
-  +-----------------+   +-----------------------+
-          |                         |
-  +---------------------------------------------+
-  | crud-storage.ts                             |
-  | FlagCrudStorage (Strategy)                  |
-  | |- LocalStorageCrudStore (mock)             |
-  | |- [AwsCrudStorage] (futuro)                |
-  +---------------------------------------------+
+┌─────────────────────────────────────────────────────┐
+│           FeatureFlagDataProvider (Strategy)         │
+│                                                     │
+│  ┌──────────────────┐   ┌────────────────────────┐  │
+│  │ LocalStorage      │   │ AppConfigProvider      │  │
+│  │ Provider (mock)   │   │ (AWS AppConfig Agent)  │  │
+│  └────────┬─────────┘   └──────────┬─────────────┘  │
+│           │                        │                 │
+└───────────┼────────────────────────┼─────────────────┘
+            │                        │
+       ┌────▼────────────┐    ┌─────▼──────────┐
+       │  server.ts       │    │  client.tsx     │
+       │  (RSC / Actions) │    │  (React Hooks)  │
+       │  cache Map + TTL │    │  polling 30s    │
+       └─────────────────┘    └────────────────┘
+            │                        │
+       ┌────▼────────────────────────▼────────────┐
+       │  crud-storage.ts                          │
+       │  FlagCrudStorage (Strategy)               │
+       │  ├── LocalStorageCrudStorage (mock)       │
+       │  └── [AwsCrudStorage] (futuro)            │
+       └──────────────────────────────────────────┘
 ```
+
+### Server-Side vs Client-Side
+
+| Aspecto       | Server-Side                                            | Client-Side                                               |
+| ------------- | ------------------------------------------------------ | --------------------------------------------------------- |
+| **Onde roda** | RSC, Server Actions, API Routes                        | Componentes `'use client'`                                |
+| **Import**    | `@/lib/feature-flags/server`                           | `@/lib/feature-flags/client`                              |
+| **API**       | `isEnabled()`, `getFlagValue()`, `getFlagAttributes()` | `useIsEnabled()`, `useFlagValue()`, `useFlagAttributes()` |
+| **Cache**     | Map em memória com TTL (30s)                           | React state com polling periódico                         |
+| **Async**     | Sim (`async/await`)                                    | Não (hooks síncronos após hydration)                      |
+
+---
 
 ## Como administrar flags
 
-Acesse a página de adminitração em:
+Acesse a página de administração em:
 
 ```bash
 /feature-flags
@@ -210,8 +222,8 @@ npm install @aws-sdk/client-appconfigdata
 
 ### 2. Configurar variáveis de ambiente
 
-```yml
-# config/values_dev.yml
+```yaml
+# config/values_dev.yaml
 APPCONFIG_APPLICATION_ID: 'sua-app-id'
 APPCONFIG_ENVIRONMENT_ID: 'dev'
 APPCONFIG_CONFIGURATION_PROFILE_ID: 'feature-flags'
@@ -255,24 +267,24 @@ E passar como prop:
 
 ```bash
 src/lib/feature-flags/
-+- types.ts                     # Tipos e interfaces
-+- index.ts                     # Barrel exports
-+- server.ts                    # Serviço server-side (RSC)
-+- client.tsx                   # Provider + Hooks (client)
-+- crud-storage.ts              # CRUD storage abstraction
-+- providers/
-  +- local-storage-provider.ts  # Mock (localStorage)
-  +- appconfig-provider.ts      # Stub (AWS AppConfig Agent)
+├── types.ts                          # Tipos e interfaces
+├── index.ts                          # Barrel exports
+├── server.ts                         # Serviço server-side (RSC)
+├── client.tsx                        # Provider + Hooks (client)
+├── crud-storage.ts                   # CRUD storage abstraction
+└── providers/
+    ├── local-storage-provider.ts     # Mock (localStorage)
+    └── appconfig-provider.ts         # Stub (AWS AppConfig Agent)
 
 src/components/portal-admin/
-+- FeatureFlagCrud.tsx          # UI CRUD com abas
-+- FeatireFlagExample.tsx       # Exemplo de consumo (hooks)
+├── FeatureFlagCrud.tsx               # UI CRUD com abas
+└── FeatureFlagExample.tsx            # Exemplo de consumo (hooks)
 
 src/app/feature-flags/
-+- page.tsx
+└── page.tsx                          # Página de administração CRUD
 
 __tests__/lib/feature-flags/
-+- local-storage-provider.test.ts
-+- server.test.ts
-+- client.test.tsx
+├── local-storage-provider.test.ts    # Testes do provider
+├── server.test.ts                    # Testes server-side
+└── client.test.tsx                   # Testes dos hooks
 ```

@@ -6,9 +6,9 @@ import type {
 } from './types'
 import { LocalStorageProvider } from './providers/local-storage-provider'
 
-// --------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // Cache em memória com TTL
-// --------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 interface CacheEntry {
   data: FlagValueMap
@@ -30,9 +30,9 @@ export function invalidateCache(): void {
   cache = null
 }
 
-// --------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // Provider resolution
-// --------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 let providerOverride: FeatureFlagDataProvider | null = null
 
@@ -45,15 +45,15 @@ function getProvider(): FeatureFlagDataProvider {
   if (providerOverride) return providerOverride
 
   // TODO: quando o AppConfig estiver configurado, selecionar via env var:
-  // const providerType = process.env.FEATURE_FLAGS_PROVIDER ?? 'localStorage'
-  // if (providerType === 'appconfig') return new AppConfigProvider({...})
+  // const providerType = process.env.FEATURE_FLAGS_PROVIDER ?? 'localStorage';
+  // if (providerType === 'appconfig') return new AppConfigProvider({...});
 
   return new LocalStorageProvider()
 }
 
-// --------------------------------------------------------------------------------
-// Public API - server-side functions
-// --------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Public API — server-side functions
+// ---------------------------------------------------------------------------
 
 /**
  * Busca todas as feature flags (com cache em memória).
@@ -85,11 +85,13 @@ export async function isEnabled(flagName: string): Promise<boolean> {
 /**
  * Retorna o valor tipado de um atributo da flag.
  *
- * Por convenção, o atributo `variant` é usado como valor principal da flag multivariante. Caso a flag ou o atributo não exista, retprma `defaultValue`.
+ * Por convenção, o atributo `variant` é usado como valor principal
+ * da flag multivariante. Caso a flag ou o atributo não exista,
+ * retorna `defaultValue`.
  *
  * @example
- * const color = await getFlagValue<string>('theme_color', 'blue')
- * const limit = await getFlagValue<number>('rate_limit', 100)
+ * const color = await getFlagValue<string>('theme_color', 'blue');
+ * const limit = await getFlagValue<number>('rate_limit', 100);
  */
 export async function getFlagValue<T extends FlagPrimitive>(
   flagName: string,
@@ -106,7 +108,8 @@ export async function getFlagValue<T extends FlagPrimitive>(
 }
 
 /**
- * Retorna todos os atributos da flag (exceto `enabled`), ou `null` se a flag não existir.
+ * Retorna todos os atributos da flag (exceto `enabled`), ou `null`
+ * se a flag não existir.
  */
 export async function getFlagAttributes(
   flagName: string

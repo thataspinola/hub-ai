@@ -1,10 +1,10 @@
 import type { FlagValueMap, FlagEntry } from './types'
 
-// ----------------------------------------------------------------------------
-// CRUD Types para adminitração de Feature Flags
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// CRUD Types para administração de Feature Flags
+// ---------------------------------------------------------------------------
 
-/** Flag booleana - controle de binário on/off. */
+/** Flag booleana — controle binário on/off. */
 export interface BooleanFlag {
   id: string
   key: string
@@ -16,7 +16,7 @@ export interface BooleanFlag {
   updatedAt: string
 }
 
-/** Flag multivariante - retorna valores dinâmicos (string, number, JSON). */
+/** Flag multivariante — retorna valores dinâmicos (string, number, JSON). */
 export interface MultivariantFlag {
   id: string
   key: string
@@ -25,7 +25,7 @@ export interface MultivariantFlag {
   enabled: boolean
   /** Tipo do valor retornado. */
   valueType: 'string' | 'number' | 'json'
-  /** Valor atual da variante (armazenado como string, parseado conforme valueType) */
+  /** Valor atual da variante (armazenado como string, parseado conforme valueType). */
   value: string
   /** Variantes possíveis com seus pesos de distribuição. */
   variants: { label: string; value: string; weight: number }[]
@@ -34,14 +34,14 @@ export interface MultivariantFlag {
   updatedAt: string
 }
 
-/** Flag com atributos - possui metadados/configurações adicionais. */
+/** Flag com atributos — possui metadados/configurações adicionais. */
 export interface AttributeFlag {
   id: string
   key: string
   name: string
   description: string
   enabled: boolean
-  /** Pares chave-valor de atributos adicionais */
+  /** Pares chave-valor de atributos adicionais. */
   attributes: Record<string, string | number | boolean>
   owner: string
   createdAt: string
@@ -51,13 +51,13 @@ export interface AttributeFlag {
 /** Payload completo salvo no storage. */
 export interface FlagStore {
   booleanFlags: BooleanFlag[]
-  multivariantsFlags: MultivariantFlag[]
+  multivariantFlags: MultivariantFlag[]
   attributeFlags: AttributeFlag[]
 }
 
-// ----------------------------------------------------------------------------
-// Storage abstraction (Strategy pattern - swap para AWS futuramente)
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Storage abstraction (Strategy pattern — swap para AWS futuramente)
+// ---------------------------------------------------------------------------
 
 export interface FlagCrudStorage {
   load(): FlagStore
@@ -70,9 +70,9 @@ function now(): string {
   return new Date().toISOString()
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // Seed data
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 export const SEED_STORE: FlagStore = {
   booleanFlags: [
@@ -89,7 +89,7 @@ export const SEED_STORE: FlagStore = {
     {
       id: '2',
       key: 'maintenance_mode',
-      name: 'Modo manutenção',
+      name: 'Modo Manutenção',
       description:
         'Coloca o sistema em modo de manutenção para todos os usuários.',
       enabled: false,
@@ -98,7 +98,7 @@ export const SEED_STORE: FlagStore = {
       updatedAt: '2026-03-10T09:00:00.000Z',
     },
   ],
-  multivariantsFlags: [
+  multivariantFlags: [
     {
       id: '1',
       key: 'ui_dark_mode',
@@ -113,8 +113,8 @@ export const SEED_STORE: FlagStore = {
         { label: 'Full', value: 'full', weight: 20 },
       ],
       owner: 'Equipe de Design',
-      createdAt: '2026-01-15T10:00:00.000Z',
-      updatedAt: '2026-03-19T08:00:00.000Z',
+      createdAt: '2026-01-20T12:00:00.000Z',
+      updatedAt: '2026-03-18T15:00:00.000Z',
     },
     {
       id: '2',
@@ -130,8 +130,8 @@ export const SEED_STORE: FlagStore = {
         { label: 'High', value: '200', weight: 20 },
       ],
       owner: 'Engenharia',
-      createdAt: '2026-01-10T14:00:00.000Z',
-      updatedAt: '2026-03-14T09:00:00.000Z',
+      createdAt: '2026-02-10T09:00:00.000Z',
+      updatedAt: '2026-03-15T11:00:00.000Z',
     },
   ],
   attributeFlags: [
@@ -143,22 +143,22 @@ export const SEED_STORE: FlagStore = {
       enabled: false,
       attributes: {
         rolloutPercentage: 50,
-        model: 'V3-collaborative',
+        model: 'v3-collaborative',
         maxResults: 12,
         abTestGroup: 'control',
       },
       owner: 'Crescimento',
-      createdAt: '2026-01-10T14:00:00.000Z',
-      updatedAt: '2026-03-14T09:00:00.000Z',
+      createdAt: '2026-01-05T08:00:00.000Z',
+      updatedAt: '2026-03-14T16:00:00.000Z',
     },
   ],
 }
 
-// ----------------------------------------------------------------------------
-// LocalStorage
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// LocalStorage implementation
+// ---------------------------------------------------------------------------
 
-export class LocalStorageCrudStore implements FlagCrudStorage {
+export class LocalStorageCrudStorage implements FlagCrudStorage {
   load(): FlagStore {
     if (typeof window === 'undefined') return SEED_STORE
 
@@ -168,6 +168,8 @@ export class LocalStorageCrudStore implements FlagCrudStorage {
     } catch {
       /* fallback */
     }
+    this.save(SEED_STORE)
+    return SEED_STORE
   }
 
   save(store: FlagStore): void {
@@ -176,9 +178,9 @@ export class LocalStorageCrudStore implements FlagCrudStorage {
   }
 }
 
-// ----------------------------------------------------------------------------
-// Sync helpers - converte o FlagStore CRUD para FlagValueMap do provider
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Sync helpers — converte o FlagStore CRUD para FlagValueMap do provider
+// ---------------------------------------------------------------------------
 
 /** Converte o store CRUD para o formato FlagValueMap (AppConfig nativo). */
 export function storeToFlagValueMap(store: FlagStore): FlagValueMap {
@@ -192,7 +194,7 @@ export function storeToFlagValueMap(store: FlagStore): FlagValueMap {
     }
   }
 
-  for (const flag of store.multivariantsFlags) {
+  for (const flag of store.multivariantFlags) {
     let variant: unknown = flag.value
 
     if (flag.valueType === 'number') {
@@ -230,16 +232,16 @@ export function storeToFlagValueMap(store: FlagStore): FlagValueMap {
   return map
 }
 
-/** Sincroniza o FlagValueMap do provider (localStorage) com o store CRUD */
+/** Sincroniza o FlagValueMap do provider (localStorage) com o store CRUD. */
 export function syncProviderStorage(store: FlagStore): void {
   if (typeof window === 'undefined') return
   const map = storeToFlagValueMap(store)
   localStorage.setItem('appconfig_feature_flags', JSON.stringify(map))
 }
 
-// ----------------------------------------------------------------------------
-// CRUD
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// CRUD helpers
+// ---------------------------------------------------------------------------
 
 export function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 7)

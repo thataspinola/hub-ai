@@ -2,7 +2,7 @@ appFramework: react
 ingress:
   enabled: true
   contextURL: /react-ssr-corp-hubv-painel-administrativo
-  host: ""
+  host: ''
 
 namespace: corp-hubv
 containerPort: 3000
@@ -19,11 +19,11 @@ hpa:
 enable_secrets: false
 
 configmap:
- profile: "hml"
- KEYCLOAK_CLIENT_ID: "adhml"
- KEYCLOAK_CLIENT_SECRET: ""
- KEYCLOAK_ISSUER: "https://sso-interno.authcorp.hml.awsporto/auth/realms/adhml"
- NEXTAUTH_URL: "https://apps.appsarquitetura.hml.awsporto/react-ssr-corp-hubv-painel-administrativo/api/auth"
- NEXTAUTH_SECRET: "my-secret-abc-123"
- NEXTAUTH_LOGOUT: "https://sso-interno.authcorp.hml.awsporto/auth/realms/adhml/protocol/openid-connect/logout"
- NEXT_PUBLIC_API: "https://apps.appsarquitetura.hml.awsporto/sboot-corp-arqt-aplicacao-referencia"
+  profile: 'hml'
+  KEYCLOAK_CLIENT_ID: 'adhml'
+  KEYCLOAK_CLIENT_S: ''
+  KEYCLOAK_ISSUER: 'https://sso-interno.authcorp.hml.awsporto/auth/realms/adhml'
+  NEXTAUTH_URL: 'https://apps.appsarquitetura.hml.awsporto/react-ssr-corp-hubv-painel-administrativo/api/auth'
+  NEXTAUTH_S: 'my-secret-abc-123'
+  NEXTAUTH_LOGOUT: 'https://sso-interno.authcorp.hml.awsporto/auth/realms/adhml/protocol/openid-connect/logout'
+  NEXT_PUBLIC_API: 'https://apps.appsarquitetura.hml.awsporto/sboot-corp-arqt-aplicacao-referencia'

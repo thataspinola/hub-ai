@@ -1,10 +1,10 @@
 import type { FeatureFlagDataProvider, FlagValueMap } from '../types'
 
-const STORAGE_KEY = 'appconfig_feature_flag'
+const STORAGE_KEY = 'appconfig_feature_flags'
 
 /**
  * Seed data no formato AppConfig Feature Flags nativo.
- * Derivado dos dados mock existentes em `@/constants/featureops.
+ * Derivado dos dados mock existentes em `@/constants/featureops`.
  */
 export const SEED_FLAGS: FlagValueMap = {
   new_checkout_v2: {
@@ -26,7 +26,7 @@ export const SEED_FLAGS: FlagValueMap = {
     variant: 'control',
     rolloutPercentage: 50,
     description: 'Sugerir produtos usando modelo de ML interno.',
-    owner: 'Crescrimento',
+    owner: 'Crescimento',
   },
 }
 

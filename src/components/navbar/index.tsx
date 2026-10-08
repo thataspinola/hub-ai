@@ -23,6 +23,10 @@ export default function Navbar() {
       <div>
         <Link href="/clientes">Clientes</Link>
         <span>|</span>
+        <Link href="/recomendacoes">Recomendações</Link>
+        <span>|</span>
+        <Link href="/portal-admin">Portal Admin</Link>
+        <span>|</span>
         <Auth />
       </div>
     </nav>

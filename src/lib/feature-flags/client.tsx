@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from 'react'
+
 import type {
   FeatureFlagClientState,
   FeatureFlagProviderProps,
@@ -17,14 +18,16 @@ import type {
 } from './types'
 import { LocalStorageProvider } from './providers/local-storage-provider'
 
-// --------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // Context
-// --------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
 const FeatureFlagContext = createContext<FeatureFlagClientState | null>(null)
 
-// --------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // Helper: extrai atributos (sem `enabled`) de uma flag entry
-// --------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
 function extractAttributes(
   flags: FlagValueMap,
   flagName: string
@@ -35,9 +38,10 @@ function extractAttributes(
   return attributes
 }
 
-// ---------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // Provider
-// ---------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
 const DEFAULT_POLLING_INTERVAL = 30_000
 
 export function FeatureFlagProvider({
@@ -79,7 +83,7 @@ export function FeatureFlagProvider({
     return () => clearInterval(id)
   }, [pollingInterval, fetchFlags])
 
-  // Métodos de leitura memorizados
+  // Métodos de leitura memoizados
   const isEnabled = useCallback(
     (flagName: string): boolean => flags[flagName]?.enabled ?? false,
     [flags]
@@ -100,7 +104,7 @@ export function FeatureFlagProvider({
     [flags]
   )
 
-  // Context value memorizado para evitar re-renders desnecessários
+  // Context value memoizado para evitar re-renders desnecessários
   const value = useMemo<FeatureFlagClientState>(
     () => ({
       flags,
@@ -120,9 +124,10 @@ export function FeatureFlagProvider({
   )
 }
 
-// -----------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // Hooks
-// -----------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
 function useFeatureFlagContext(): FeatureFlagClientState {
   const ctx = useContext(FeatureFlagContext)
 
@@ -136,17 +141,17 @@ function useFeatureFlagContext(): FeatureFlagClientState {
 }
 
 /** Acesso completo ao estado de feature flags. */
-export function useFeatureFlgs(): FeatureFlagClientState {
+export function useFeatureFlags(): FeatureFlagClientState {
   return useFeatureFlagContext()
 }
 
-/** Retprma `true` se a flag existir e estiver habilidtada */
+/** Retorna `true` se a flag existir e estiver habilitada. */
 export function useIsEnabled(flagName: string): boolean {
   const { isEnabled } = useFeatureFlagContext()
   return useMemo(() => isEnabled(flagName), [isEnabled, flagName])
 }
 
-/** Retorna o valor tipado de um atributo da flag, ou `defaultValue` */
+/** Retorna o valor tipado de um atributo da flag, ou `defaultValue`. */
 export function useFlagValue<T extends FlagPrimitive>(
   flagName: string,
   defaultValue: T

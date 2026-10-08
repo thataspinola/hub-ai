@@ -1,9 +1,9 @@
-import { FeatureFlag, SystemEvent } from '../types/featureops'
+import { FeatureFlag, SystemEvent } from '@/types/featureops'
 
 export const FEATURE_FLAGS: FeatureFlag[] = [
   {
     id: '1',
-    name: 'Checkout_V2_Redesign',
+    name: 'Checkout_v2_Redesign',
     description: 'Habilitar interface de checkout integrada ao Stripe.',
     key: 'new_checkout_v2',
     status: 'Ativado',
@@ -15,7 +15,7 @@ export const FEATURE_FLAGS: FeatureFlag[] = [
   {
     id: '2',
     name: 'Dark_Mode_BETA',
-    description: 'Suporte o modo escuro em todo sistema.',
+    description: 'Suporte a modo escuro em todo o sistema.',
     key: 'ui_dark_mode',
     status: 'Apenas Piloto',
     traffic: '15%',
@@ -45,7 +45,7 @@ export const SYSTEM_EVENTS: SystemEvent[] = [
   },
   {
     id: '2',
-    title: 'Nova flag: "loyalty_rewards" criada',
+    title: "Nova flag: 'loyalty_rewards' criada",
     time: 'Ontem às 04:30 PM • Admin: Sarah K.',
     type: 'info',
   },

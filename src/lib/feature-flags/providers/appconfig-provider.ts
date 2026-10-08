@@ -4,7 +4,7 @@ import type { FeatureFlagDataProvider, FlagValueMap } from '../types'
  * Provider para integração com AWS AppConfig Agent (sidecar).
  *
  * O AppConfig Agent expõe uma API HTTP local que retorna a configuração
- * da Feature Flags no formato JSON nativo do AppConfig.
+ * de Feature Flags no formato JSON nativo do AppConfig.
  *
  * Endpoint padrão: http://localhost:2772/applications/{appId}/environments/{envId}/configurations/{configId}
  *
@@ -35,14 +35,14 @@ export class AppConfigProvider implements FeatureFlagDataProvider {
   }
 
   async fetchFlags(): Promise<FlagValueMap> {
-    // TODO: Configurar applicationId, environmentId e configurationProfileId via variáveis de ambiente quando o AppConfig Agent estiver disponível.
-    /**
-     * O Agent retorna o payload no formato:
-     * {
-     *    "flag_key": { "enabled": true, "attribute1": "value1", ... },
-     *    ...
-     * }
-     */
+    // TODO: Configurar applicationId, environmentId e configurationProfileId
+    //       via variáveis de ambiente quando o AppConfig Agent estiver disponível.
+    //
+    // O Agent retorna o payload no formato:
+    // {
+    //   "flag_key": { "enabled": true, "attribute1": "value1", ... },
+    //   ...
+    // }
 
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(), this.timeoutMs)
