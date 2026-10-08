@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,7 +23,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
   "include": [
@@ -27,11 +33,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next-env.d.ts",
-    "/dist/hub-ai/types/**/*.ts"
+    "/dist/react-ssr-corp-hubv-painel-administrativo/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "v0-form-wizard-builder-main",
-    "v0-painel-de-recomendacaoes-ky"
+    "node_modules"
   ]
 }
