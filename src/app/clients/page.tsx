@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth'
 import { env } from 'next-runtime-env'
 
 import authOptions from '@/app/api/auth/[...nextauth]/auth-options'
-import { Cliente } from '@types/cliente'
+import { Cliente } from '@/types/cliente'
 import { getAccessToken } from '@/utils/session-token-accessor'
 import Lista from './lista'
 
@@ -31,7 +31,7 @@ export default async function Clientes() {
     try {
       const clientes = await getAllClients()
       return <Lista clientes={clientes} />
-    } catch (error) {
+    } catch {
       return <p>Ops! Houve um erro ao buscar a lista de clientes</p>
     }
   } else {

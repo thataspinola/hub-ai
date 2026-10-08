@@ -4,7 +4,7 @@ Aplicação @porto/react-ssr-corp-hubv-painel-administrativo. Stack declarada: N
 
 Ler AGENTS.md e agent.md. Priorizar o código e os contratos reais: App Router, server/client boundaries, NextAuth/Keycloak, feature flags via strategy localStorage/AppConfig, builder de formulários e recomendações com persistência local. Não impor arquitetura Nest/backend ao painel nem tratar exemplos como serviços reais.
 
-Testes existentes usam Jest/React Testing Library. Scripts declarados na raiz: npm run dev, npm run build, npm test, npm run test:watch e npm run lint. Confirmar suporte/configuração antes de executar; script declarado não é evidência de execução. O lockfile da aplicação está vazio nesta revisão e a instalação usa configuração corporativa: não alterá-lo ou trocar registry para contornar acesso.
+Testes existentes usam Jest/React Testing Library. Scripts declarados na raiz: npm run dev, npm run build, npm test, npm run test:watch e npm run lint. Confirmar suporte/configuração antes de executar; script declarado não é evidência de execução. O lockfile corporativo da aplicação foi recuperado e deve ser preservado. A instalação usa configuração corporativa: não trocar registry nem alterar certificados para contornar acesso.
 
 Recursos de frontend ficam em resources/frontend; recursos ativos em .github/agents, .github/skills e .github/templates. Copilot Setup é compartilhado; Web Code Reviewer revisa esta aplicação. O frontend_engineering_expert existente permanece preservado. Usar as skills instaladas Next/React, qualidade/testes web, segurança e entrega conforme o lock; não instalar runners diferentes apenas por orientação genérica.
 

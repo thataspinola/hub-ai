@@ -11,7 +11,7 @@ Base remota: main 48304b7. Ferramentas do toolkit 1.5.0 executadas em Node 24.19
 | Typecheck/build/smoke do exemplo Nest | Passaram |
 | Gates de cobertura do exemplo Nest | Passaram, 100% apenas no pequeno exemplo |
 | Avaliação sintética histórica | Recall/precision 1, sem nova avaliação semântica |
-| Inspeção da aplicação da raiz | nextjs, package-lock vazio, scripts declarados |
+| Inspeção da aplicação da raiz | nextjs; lock inicialmente vazio, recuperado posteriormente da HPC; scripts declarados |
 | Preview de instalação na aplicação atual | Selecionou nextjs, não escreveu arquivos |
 
 Comandos a partir da raiz:
