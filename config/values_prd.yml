@@ -1,10 +1,10 @@
 appFramework: react
 ingress:
-  enable: true
-  contextURL: /hub-ai
+  enabled: true
+  contextURL: /react-ssr-corp-hubv-painel-administrativo
   host: ''
 
-namespace: ignitra-tech
+namespace: corp-hubv
 containerPort: 3000
 
 hpa:
@@ -12,7 +12,7 @@ hpa:
   minReplicas: 1
   #Número máximo de PODS
   maxReplicas: 5
-  #Porcentagem de média para escar o POD (Quando bater a média de consumo o POD escala!), melhores detalhes consultar a documentação.
+  #Porcentagem de média para escalar o POD (Quando bater a média de consumo o POD escala!), melhores detalhes consultar a documentação.
   targetMemoryUtilizationPercentage: 70
 
 # Habilita ou não as secrets que são "puxadas" através do Backstage

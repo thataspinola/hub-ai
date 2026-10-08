@@ -5,23 +5,23 @@ import { render, screen, fireEvent } from '@testing-library/react'
 // Mock motion/react
 jest.mock('motion/react', () => ({
   motion: {
-    div: React.forwardRef(({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>, ref: React.Ref<HTMLDivElement>) => {
+    div: React.forwardRef(function MockElement1({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>, ref: React.Ref<HTMLDivElement>) {
       const { initial: _i, animate: _a, exit: _e, whileHover: _wh, whileTap: _wt, transition: _t, layout: _l, variants: _v, ...rest } = props
       return <div ref={ref} {...rest}>{children}</div>
     }),
-    button: React.forwardRef(({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>, ref: React.Ref<HTMLButtonElement>) => {
+    button: React.forwardRef(function MockElement2({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>, ref: React.Ref<HTMLButtonElement>) {
       const { initial: _i, animate: _a, exit: _e, whileHover: _wh, whileTap: _wt, transition: _t, layout: _l, variants: _v, ...rest } = props
       return <button ref={ref} {...rest}>{children}</button>
     }),
-    span: React.forwardRef(({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>, ref: React.Ref<HTMLSpanElement>) => {
+    span: React.forwardRef(function MockElement3({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>, ref: React.Ref<HTMLSpanElement>) {
       const { initial: _i, animate: _a, exit: _e, whileHover: _wh, whileTap: _wt, transition: _t, layout: _l, variants: _v, ...rest } = props
       return <span ref={ref} {...rest}>{children}</span>
     }),
-    tr: React.forwardRef(({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>, ref: React.Ref<HTMLTableRowElement>) => {
+    tr: React.forwardRef(function MockElement4({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>, ref: React.Ref<HTMLTableRowElement>) {
       const { initial: _i, animate: _a, exit: _e, whileHover: _wh, whileTap: _wt, transition: _t, layout: _l, variants: _v, ...rest } = props
       return <tr ref={ref} {...rest}>{children}</tr>
     }),
-    p: React.forwardRef(({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>, ref: React.Ref<HTMLParagraphElement>) => {
+    p: React.forwardRef(function MockElement5({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>, ref: React.Ref<HTMLParagraphElement>) {
       const { initial: _i, animate: _a, exit: _e, whileHover: _wh, whileTap: _wt, transition: _t, layout: _l, variants: _v, ...rest } = props
       return <p ref={ref} {...rest}>{children}</p>
     }),
@@ -32,7 +32,7 @@ jest.mock('motion/react', () => ({
 // Mock next/image
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props: Record<string, unknown>) => {
+  default: function MockImage(props: Record<string, unknown>) {
     const { fill: _f, priority: _p, ...rest } = props
     // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
     return <img {...rest} />
@@ -40,7 +40,7 @@ jest.mock('next/image', () => ({
 }))
 
 import { FeatureFlags } from '@/components/portal-admin/FeatureFlags'
-import { FEATURE_FLAGS } from '@/constants/featureops'
+import { } from '@/constants/featureops'
 
 const STORAGE_KEY = 'feature_flags_data'
 
@@ -131,7 +131,7 @@ describe('FeatureFlags', () => {
       b.className.includes('rounded-full') && !b.textContent?.includes('Novo'),
     )
     if (toggleBtns.length > 0) {
-      const initialClass = toggleBtns[0].className
+      const _initialClass = toggleBtns[0].className
       fireEvent.click(toggleBtns[0])
       // Toggle should have changed state
       expect(screen.getByText('Feature Flags')).toBeInTheDocument()

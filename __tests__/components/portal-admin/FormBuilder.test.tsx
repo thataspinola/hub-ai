@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 
 jest.mock('motion/react', () => ({
   motion: {
-    div: React.forwardRef(({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>, ref: React.Ref<HTMLDivElement>) => {
+    div: React.forwardRef(function MockElement1({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>, ref: React.Ref<HTMLDivElement>) {
       const { initial: _i, animate: _a, exit: _e, whileHover: _wh, whileTap: _wt, transition: _t, layout: _l, variants: _v, ...rest } = props
       return <div ref={ref} {...rest}>{children}</div>
     }),

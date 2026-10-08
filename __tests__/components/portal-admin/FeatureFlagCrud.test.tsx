@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { render, screen, fireEvent, within, act } from '@testing-library/react';
+import { render, screen, fireEvent, within, } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import { FeatureFlagCrud } from '@/components/portal-admin/FeatureFlagCrud';
@@ -23,13 +23,13 @@ jest.mock('motion/react', () => {
       {
         get: (_target: unknown, prop: string) => {
           return React.forwardRef(
-            (
+            function MockMotion(
               { children, ...props }: { children?: React.ReactNode; [key: string]: unknown },
               ref: React.Ref<HTMLElement>,
-            ) => {
+            ) {
               const {
-                initial, animate, exit, whileHover, whileTap,
-                transition, layout, variants, ...rest
+                initial: _initial, animate: _animate, exit: _exit, whileHover: _whileHover, whileTap: _whileTap,
+                transition: _transition, layout: _layout, variants: _variants, ...rest
               } = props;
               return React.createElement(prop, { ref, ...rest }, children);
             },

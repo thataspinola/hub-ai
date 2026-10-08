@@ -11,9 +11,9 @@ jest.mock('next/navigation', () => ({
 
 // Mock next/link
 jest.mock('next/link', () => {
-  return ({ children, href, ...props }: React.PropsWithChildren<{ href: string }>) => (
+  return function MockLink({ children, href, ...props }: React.PropsWithChildren<{ href: string }>) { return (
     <a href={href} {...props}>{children}</a>
-  )
+  ) }
 })
 
 import FormWizardListPage from '@/app/form-wizard/page'

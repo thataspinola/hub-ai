@@ -6,10 +6,19 @@ import { Search, Plus, X, Code, Trash2, Edit2, Check, AlertCircle } from 'lucide
 import { FEATURE_FLAGS } from '@/constants/featureops';
 import { FeatureFlag } from '@/types/featureops';
 
+import { useHydrated } from '@/lib/use-hydrated';
+
 const STORAGE_KEY = 'feature_flags_data';
 
 export const FeatureFlags: React.FC = () => {
-  const [flags, setFlags] = useState<FeatureFlag[]>([]);
+  const hydrated = useHydrated();
+  return hydrated ? <FeatureFlagsContent /> : <p>Loading flags...</p>;
+};
+
+function FeatureFlagsContent() {
+  const [flags, setFlags] = useState<FeatureFlag[]>(() => {
+    try { const saved = localStorage.getItem(STORAGE_KEY); return saved ? JSON.parse(saved) : FEATURE_FLAGS; } catch { return FEATURE_FLAGS; }
+  });
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,23 +36,7 @@ export const FeatureFlags: React.FC = () => {
   });
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        setFlags(JSON.parse(saved));
-      } catch (e) {
-        console.error('Error parsing feature flags from localStorage', e);
-        setFlags(FEATURE_FLAGS);
-      }
-    } else {
-      setFlags(FEATURE_FLAGS);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (flags.length > 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(flags));
-    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(flags));
   }, [flags]);
 
   const toggleFlag = (id: string) => {
@@ -71,11 +64,12 @@ export const FeatureFlags: React.FC = () => {
         lastModified: 'Agora'
       } : f));
     } else {
+      const id = crypto.randomUUID();
       const flag: FeatureFlag = {
-        id: Date.now().toString(),
+        id,
         name: newFlag.name || 'Nova Flag',
         description: newFlag.description || '',
-        key: newFlag.key || `flag_${Date.now()}`,
+        key: newFlag.key || `flag_${id}`,
         status: newFlag.enabled ? 'Ativado' : 'Desativado',
         traffic: newFlag.traffic || '0%',
         owner: newFlag.owner || 'Engenharia',

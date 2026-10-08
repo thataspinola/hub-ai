@@ -59,9 +59,12 @@ export function Toolbar() {
   const [localSlug, setLocalSlug] = useState(form.slug)
   const [slugError, setSlugError] = useState<string | null>(null)
 
-  useEffect(() => {
+  const [previousSlug, setPreviousSlug] = useState(form.slug)
+  if (previousSlug !== form.slug) {
+    setPreviousSlug(form.slug)
     setLocalSlug(form.slug)
-  }, [form.slug])
+    setSlugError(null)
+  }
 
   const handleSlugChange = (value: string) => {
     const formatted = value.toLowerCase().replace(/[^a-z0-9-]/g, "")

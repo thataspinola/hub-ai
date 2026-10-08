@@ -33,7 +33,7 @@ import type {
   EmailInputConfig,
 } from "@/lib/form-wizard/types"
 import { cn } from "@/lib/utils"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 function StepProperties() {
   const form = useFormStore((s) => s.form)
@@ -45,12 +45,13 @@ function StepProperties() {
   const [localSlug, setLocalSlug] = useState(step?.slug || "")
   const [slugError, setSlugError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (step) {
-      setLocalSlug(step.slug)
-      setSlugError(null)
-    }
-  }, [step]) // Updated to use the entire step object as dependency
+  const identity = step ? `${step.id}:${step.slug}` : ""
+  const [previousIdentity, setPreviousIdentity] = useState(identity)
+  if (previousIdentity !== identity) {
+    setPreviousIdentity(identity)
+    setLocalSlug(step?.slug || "")
+    setSlugError(null)
+  }
 
   if (!step) return null
 

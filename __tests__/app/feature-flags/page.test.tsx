@@ -11,8 +11,8 @@ jest.mock('motion/react', () => {
   const createProxy = () =>
     new Proxy({}, {
       get: (_: unknown, prop: string) =>
-        React.forwardRef(({ children, ...props }: { children?: React.ReactNode; [k: string]: unknown }, ref: React.Ref<HTMLElement>) => {
-          const { initial, animate, exit, whileHover, whileTap, transition, layout, variants, ...rest } = props;
+        React.forwardRef(function MockElement1({ children, ...props }: { children?: React.ReactNode; [k: string]: unknown }, ref: React.Ref<HTMLElement>) {
+          const { initial: _initial, animate: _animate, exit: _exit, whileHover: _whileHover, whileTap: _whileTap, transition: _transition, layout: _layout, variants: _variants, ...rest } = props;
           return React.createElement(prop, { ref, ...rest }, children);
         }),
     });

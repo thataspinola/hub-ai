@@ -5,9 +5,7 @@ import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockSignIn = jest.fn()
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockSignOut = jest.fn()
 let mockSession: { data: unknown; status: string } = { data: null, status: 'unauthenticated' }
 

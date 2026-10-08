@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import React from 'react'
-import { render, screen, act } from '@testing-library/react'
+import { render, screen, } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
 const mockRouterPush = jest.fn()
@@ -19,8 +19,9 @@ const mockLoadForm = jest.fn()
 const mockResetForm = jest.fn()
 const mockSaveFormToStorage = jest.fn()
 
-jest.mock('../../../src/lib/form-wizard/form-store', () => ({
-  useFormStore: (selector: (s: unknown) => unknown) => {
+jest.mock('../../../src/lib/form-wizard/form-store', () => {
+  return ({
+  useFormStore: Object.assign((selector: (s: unknown) => unknown) => {
     const state = {
       loadForm: mockLoadForm,
       resetForm: mockResetForm,
@@ -33,8 +34,8 @@ jest.mock('../../../src/lib/form-wizard/form-store', () => ({
       },
     }
     return selector(state)
-  },
-}))
+  }, { getState: () => ({ resetForm: mockResetForm, saveFormToStorage: mockSaveFormToStorage, setFormSlug: jest.fn(), form: { id: 'form-1', slug: 'test-form', name: 'Test Form' } }) }),
+})})
 
 const mockGetFormBySlug = jest.fn()
 const mockGetFormsIndex = jest.fn().mockReturnValue([])

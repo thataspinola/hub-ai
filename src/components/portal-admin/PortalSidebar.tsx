@@ -8,7 +8,8 @@ import {
   Flag, 
   LogOut,
   Wand2,
-  Star
+  Star,
+  ScanSearch
 } from 'lucide-react';
 
 export const PortalSidebar: React.FC = () => {
@@ -18,6 +19,7 @@ export const PortalSidebar: React.FC = () => {
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/' },
     { id: 'feature-flags', label: 'Feature Flags', icon: Flag, href: '/feature-flags' },
     { id: 'form-wizard', label: 'Form Wizard', icon: Wand2, href: '/form-wizard' },
+    { id: 'code-reviewer', label: 'Code Reviewer', icon: ScanSearch, href: '/code-reviewer' },
     { id: 'recommendations', label: 'Recommendations', icon: Star, href: '/recommendations' },
   ];
 

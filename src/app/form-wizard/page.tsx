@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
+import { useHydrated } from "@/lib/use-hydrated"
 import {
   FileText, Edit, Copy, Trash2, Plus, Calendar, Layers, Eye,
   Type, AlignLeft, TextCursorInput, ChevronDown, Circle, CheckSquare,
@@ -97,19 +98,19 @@ function getElementPreview(element: { type: ElementType; config: unknown }): str
 }
 
 export default function FormWizardListPage() {
-  const [forms, setForms] = useState<FormIndexEntry[]>([])
+  const hydrated = useHydrated()
+  return hydrated ? <FormWizardList /> : <p>Loading forms...</p>
+}
+
+function FormWizardList() {
+  const [forms, setForms] = useState<FormIndexEntry[]>(() => getFormsIndex().sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()))
   const [deleteSlug, setDeleteSlug] = useState<string | null>(null)
   const [previewForm, setPreviewForm] = useState<Form | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    loadForms()
-  }, [])
+  const isLoading = false
 
   const loadForms = () => {
     const index = getFormsIndex()
     setForms(index.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()))
-    setIsLoading(false)
   }
 
   const handleDuplicate = (slug: string) => {

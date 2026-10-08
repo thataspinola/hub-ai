@@ -1,4 +1,5 @@
 'use client';
+import { useHydrated } from '@/lib/use-hydrated';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -15,7 +16,6 @@ import type {
 } from '@/lib/feature-flags/crud-storage';
 import {
   LocalStorageCrudStorage,
-  SEED_STORE,
   syncProviderStorage,
   createBooleanFlag,
   createMultivariantFlag,
@@ -38,13 +38,18 @@ type ModalMode =
 // Component
 // ---------------------------------------------------------------------------
 
-export function FeatureFlagCrud({
+export function FeatureFlagCrud(props: { storage?: FlagCrudStorage }) {
+  const hydrated = useHydrated();
+  return hydrated ? <FeatureFlagCrudContent {...props} /> : <p>Loading flags...</p>;
+}
+
+function FeatureFlagCrudContent({
   storage: storageProp,
 }: {
   storage?: FlagCrudStorage;
 }) {
   const [storage] = useState<FlagCrudStorage>(() => storageProp ?? new LocalStorageCrudStorage());
-  const [store, setStore] = useState<FlagStore>(SEED_STORE);
+  const [store, setStore] = useState<FlagStore>(() => storage.load());
   const [activeTab, setActiveTab] = useState<Tab>('boolean');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
@@ -55,9 +60,11 @@ export function FeatureFlagCrud({
 
   // ── Load / persist ────────────────────────────────────
 
+  const [clock, setClock] = useState(() => Date.now());
   useEffect(() => {
-    setStore(storage.load());
-  }, [storage]);
+    const interval = setInterval(() => setClock(Date.now()), 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   const persist = useCallback(
     (next: FlagStore) => {
@@ -135,7 +142,7 @@ export function FeatureFlagCrud({
   // ── Time helper ───────────────────────────────────────
 
   function relativeTime(iso: string) {
-    const diff = Date.now() - new Date(iso).getTime();
+    const diff = clock - new Date(iso).getTime();
     const minutes = Math.floor(diff / 60000);
     if (minutes < 1) return 'Agora';
     if (minutes < 60) return `${minutes}m atrás`;

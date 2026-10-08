@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 jest.mock('motion/react', () => ({
   motion: {
     div: ({ children, ...props }) => {
-      const { initial, animate, exit, whileHover, whileTap, transition, layout, ...rest } = props
+      const { initial: _initial, animate: _animate, exit: _exit, whileHover: _whileHover, whileTap: _whileTap, transition: _transition, layout: _layout, ...rest } = props
       return <div {...rest}>{children}</div>
     },
   },
