@@ -33,4 +33,4 @@ test('scoring requires human adjudication and rejects invented matches', () => {
 test('noncanonical names rejected', t => mutation(t, 'Bad_File.md', () => 'bad name'))
 test('duplicate setup selection rejected', t => mutation(t, '../resources/frontend/profiles/react/profile.json', text => text.replace('Copilot Setup', 'Web Setup')))
 
-test('stale portal catalog rejected', t => mutation(t, '../src/data/ai-resources.json', text => text.replace('1.5.0', '0.0.0')))
+test('stale portal catalog rejected', t => mutation(t, '../src/data/ai-resources.json', text => text.replace('1.6.0', '0.0.0')))

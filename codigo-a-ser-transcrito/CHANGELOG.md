@@ -1,5 +1,12 @@
 # Changelog do toolkit
 
+## 1.6.0 — CLI para o editor
+
+- Setup/update/doctor/recover em tools/code-reviewer.cjs, sem registry npm ou pipeline.
+- Fonte Git fixada por SHA completo, cache reutilizável e modo local offline.
+- Atualização segura de arquivos gerenciados intactos; personalizações continuam protegidas.
+- Testes de instalação remota com Git local, cache offline e atualização/conflictos.
+
 ## 1.5.0
 
 - Pacote independente em codigo-a-ser-transcrito, sem substituir a aplicação Next.js da raiz.

@@ -87,7 +87,7 @@ function install(args, write = atomicWrite, log = console.log) {
     const dest = safePath(target, name), current = fs.existsSync(dest) ? fs.readFileSync(dest) : null
     observed[name] = current
     if (current && current.equals(data)) continue
-    if (current && !args.overwrite) conflicts.push(name)
+    if (current && !args.overwrite && !(args['update-managed'] && old[name] === digest(current))) conflicts.push(name)
     operations[name] = data
   }
   if (args.migrate) for (const name of obsolete) {
@@ -129,4 +129,4 @@ function install(args, write = atomicWrite, log = console.log) {
   log(`Installed ${state.profile} ${state.version}; select ${manifest.setup}.`)
 }
 if (require.main === module) { try { install(parseArgs(process.argv.slice(2))) } catch (error) { console.error(error.message); process.exitCode = 1 } }
-module.exports = { atomicWrite, recover, parseArgs, install }
+module.exports = { atomicWrite, recover, parseArgs, install, supportsManagedUpdates: true }
