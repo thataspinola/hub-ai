@@ -29,5 +29,9 @@
     "next-env.d.ts",
     "/dist/hub-ai/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "v0-form-wizard-builder-main",
+    "v0-painel-de-recomendacaoes-ky"
+  ]
 }
