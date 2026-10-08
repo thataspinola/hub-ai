@@ -1,0 +1,29 @@
+appFramework: react
+ingress:
+  enable: true
+  contextURL: /hub-ai
+  host: ''
+
+namespace: ignitra-tech
+containerPort: 3000
+
+hpa:
+  #Número mínimo de PODS
+  minReplicas: 1
+  #Número máximo de PODS
+  maxReplicas: 5
+  #Porcentagem de média para escar o POD (Quando bater a média de consumo o POD escala!), melhores detalhes consultar a documentação.
+  targetMemoryUtilizationPercentage: 70
+
+# Habilita ou não as secrets que são "puxadas" através do Backstage
+enable_secrets: false
+
+configmap:
+  profile: 'dev'
+  KEYCLOAK_CLIENT_ID: 'addev'
+  KEYCLOAK_CLIENT_S: ''
+  KEYCLOAK_ISSUER: ''
+  NEXTAUTH_URL: ''
+  NEXTAUTH_S: ''
+  NEXTAUTH_LOGOUT: ''
+  NEXT_PUBLIC_API: ''

@@ -1,0 +1,43 @@
+{
+  "name": "node",
+  "agents": [
+    "resources/agents/copilot-setup.agent.md",
+    "resources/agents/node-code-reviewer.agent.md"
+  ],
+  "skills": [
+    "resources/skills/node-architecture",
+    "resources/skills/node-testing",
+    "resources/skills/node-automated-testing",
+    "resources/skills/rdm-description",
+    "resources/skills/gitlab-delivery"
+  ],
+  "templates": [
+    "resources/templates/skill.template.md",
+    "resources/templates/agent.template.md",
+    "resources/templates/node-instructions.template.md",
+    "resources/templates/node-agents.template.md"
+  ],
+  "setup": "Copilot Setup",
+  "capabilities": {
+    "security": {
+      "skills": [
+        "resources/skills/node-security"
+      ]
+    },
+    "events": {
+      "skills": [
+        "resources/skills/node-event-contracts"
+      ]
+    },
+    "delivery": {
+      "skills": [
+        "resources/skills/node-delivery"
+      ]
+    },
+    "e2e": {
+      "skills": [
+        "resources/skills/node-e2e"
+      ]
+    }
+  }
+}
