@@ -11,3 +11,5 @@ O cenário sem defeito intencional em scenarios/node-clean permite medir falsos 
 O scorer valida e calcula uma adjudicação; ele não executa o Copilot nem comprova sozinho a qualidade semântica. Resultados de uma execução são uma evidência limitada, não certificação de todos os agentes/executores.
 
 A execução registrada em [resultado](results/node-review.raw.md) identificou os quatro critérios esperados (um agrupado à falha parcial), com precisão/recall adjudicados de 1.0 neste cenário. O resultado não deve ser extrapolado para outros projetos.
+
+Os comandos deste guia partem do diretório `codigo-a-ser-transcrito`. Para execução na raiz do repositório, acrescentar esse prefixo aos caminhos; a aplicação Next.js tem scripts e dependências próprios.

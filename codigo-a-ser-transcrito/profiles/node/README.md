@@ -14,7 +14,7 @@ Depois selecionar **Copilot Setup** e pedir `full setup`. São instalados dois a
 
 | Recurso | Uso |
 | --- | --- |
-| [Copilot Setup](../../resources/agents/copilot-setup.agent.md) | Adaptar instructions, skills e AGENTS.md |
+| [Copilot Setup](../../../resources/frontend/agents/copilot-setup.agent.md) | Adaptar instructions, skills e AGENTS.md |
 | [Node Code Reviewer](../../resources/agents/node-code-reviewer.agent.md) | Revisar backend e contratos |
 | [Arquitetura](../../resources/skills/node-architecture/SKILL.md) | Organização e compartilhamento |
 | [Segurança](../../resources/skills/node-security/SKILL.md) | OAuth/mTLS, secrets e logs |
@@ -31,4 +31,6 @@ Consultar [a referência de origem](../../docs/references/porto-connectivity.md)
 
 A base contém arquitetura, testes, automação, RDM e entrega GitLab. Capabilities opcionais: security, events, delivery e e2e. O padrão instala todas; usar --capabilities base ou uma lista separada por vírgulas para limitar a instalação. Consultar [exemplo executável](../../examples/node-backend/README.md) e [avaliação](../../evaluations/README.md).
 
-Projetos NestJS continuam no perfil `node`. A skill node-testing inclui [orientações NestJS](../../resources/skills/node-testing/references/nestjs.md); consultar o [exemplo executável Nest](../../examples/nest-backend/README.md) para unitários, integração, E2E HTTP, build e cobertura.
+Projetos NestJS continuam no perfil `node`. A skill node-testing inclui [orientações NestJS](../../resources/skills/node-testing/references/nestjs.md); consultar o [exemplo executável Nest](../../../examples/nest-backend/README.md) para unitários, integração, E2E HTTP, build e cobertura.
+
+Os comandos deste guia partem do diretório `codigo-a-ser-transcrito`. Para execução na raiz do repositório, acrescentar esse prefixo aos caminhos; a aplicação Next.js tem scripts e dependências próprios.

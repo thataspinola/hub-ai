@@ -1,7 +1,7 @@
 {
   "name": "node",
   "agents": [
-    "resources/agents/copilot-setup.agent.md",
+    "resources/frontend/agents/copilot-setup.agent.md",
     "resources/agents/node-code-reviewer.agent.md"
   ],
   "skills": [
@@ -12,8 +12,8 @@
     "resources/skills/gitlab-delivery"
   ],
   "templates": [
-    "resources/templates/skill.template.md",
-    "resources/templates/agent.template.md",
+    "resources/frontend/templates/skill.template.md",
+    "resources/frontend/templates/agent.template.md",
     "resources/templates/node-instructions.template.md",
     "resources/templates/node-agents.template.md"
   ],

@@ -2,7 +2,7 @@
 const fs = require('node:fs')
 const path = require('node:path')
 const YAML = require('yaml')
-const { ROOT, walk, resources } = require('./hub-resources')
+const { ROOT, REPOSITORY_ROOT, FRONTEND_ROOT, sourcePath, profiles, walk, resources } = require('./hub-resources')
 function validate() {
   const errors = [], names = new Set()
   const metadata = text => {
@@ -12,8 +12,8 @@ function validate() {
     if (!data || !['name', 'description'].every(k => typeof data[k] === 'string' && data[k].trim())) throw new Error('name and description must be nonempty strings')
     return data
   }
-  for (const file of walk(ROOT)) {
-    const relative = path.relative(ROOT, file)
+  for (const file of [...walk(ROOT), ...walk(FRONTEND_ROOT)]) {
+    const relative = path.relative(file.startsWith(FRONTEND_ROOT) ? REPOSITORY_ROOT : ROOT, file)
     const exceptions = new Set(['README.md', 'CHANGELOG.md', 'VERSION', 'SKILL.md', 'AGENTS.md', '.gitignore', '.gitlab-ci.yml'])
     for (const part of relative.split(path.sep)) if (!exceptions.has(part) && !/^\.?[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(part)) errors.push(relative + ': invalid file/directory naming')
     if (/\.py[cow]?$/.test(file)) errors.push(`${relative}: prohibited runtime file`)
@@ -21,7 +21,7 @@ function validate() {
     const text = fs.readFileSync(file, 'utf8'), prose = text.replace(/```[\s\S]*?```/g, '')
     for (const match of prose.matchAll(/(?<!!)\[[^\]]+\]\(([^\s)]+)\)/g)) {
       const link = match[1]
-      if (link.includes('://') || /^(#|mailto:)/.test(link) || (path.dirname(file) === path.join(ROOT, 'resources/templates') && link === './references/patterns.md')) continue
+      if (link.includes('://') || /^(#|mailto:)/.test(link) || ([path.join(ROOT, 'resources/templates'), path.join(FRONTEND_ROOT, 'templates')].includes(path.dirname(file)) && link === './references/patterns.md')) continue
       if (!fs.existsSync(path.resolve(path.dirname(file), link.split('#')[0]))) errors.push(`${relative}: broken link ${link}`)
     }
     try {
@@ -39,33 +39,41 @@ function validate() {
       if (relative.split(path.sep).includes('templates') && /\{\s+\{/.test(text)) throw new Error('Malformed placeholder')
     } catch (error) { errors.push(`${relative}: ${error.message}`) }
   }
-  for (const profile of fs.readdirSync(path.join(ROOT, 'profiles'))) {
+  for (const profile of profiles()) {
     try {
       const { manifest, files } = resources(profile)
       for (const [kind, paths] of Object.entries(manifest).filter(([k]) => ['agents', 'skills', 'templates'].includes(k))) for (const source of paths) {
-        if (!source.startsWith(`resources/${kind}/`)) throw new Error(`Noncanonical resource path: ${source}`)
+        if (!source.startsWith(`resources/${kind}/`) && !source.startsWith(`resources/frontend/${kind}/`)) throw new Error(`Noncanonical resource path: ${source}`)
         if (kind === 'agents' && !source.endsWith('.agent.md')) throw new Error(`Agent filename requires .agent.md: ${source}`)
         if (kind === 'templates' && !source.endsWith('.template.md')) throw new Error(`Template filename requires .template.md: ${source}`)
       }
-      if (manifest.setup !== 'Copilot Setup' || manifest.agents[0] !== 'resources/agents/copilot-setup.agent.md') throw new Error('Every profile must use the shared Copilot Setup')
+      if (manifest.setup !== 'Copilot Setup' || manifest.agents[0] !== 'resources/frontend/agents/copilot-setup.agent.md') throw new Error('Every profile must use the shared Copilot Setup')
       if (manifest.name !== profile) throw new Error('Manifest name does not match directory')
       const available = Object.keys(files).filter(x => x.startsWith('.github/skills/') && x.endsWith('/SKILL.md')).map(x => x.split('/')[2])
-      const setup = manifest.agents.filter(x => metadata(fs.readFileSync(path.join(ROOT, x), 'utf8')).name === manifest.setup)
+      const setup = manifest.agents.filter(x => metadata(fs.readFileSync(sourcePath(x), 'utf8')).name === manifest.setup)
       if (setup.length !== 1) throw new Error('Exactly one setup agent is required')
-      const catalog = fs.readFileSync(path.join(ROOT, setup[0]), 'utf8')
+      const catalog = fs.readFileSync(sourcePath(setup[0]), 'utf8')
       for (const name of available) if (!new RegExp('^\\|\\s*`?' + name + '`?\\s*\\|', 'm').test(catalog)) errors.push(`${profile}: setup catalog missing ${name}`)
       for (const agent of manifest.agents) {
-        const text = fs.readFileSync(path.join(ROOT, agent), 'utf8')
+        const text = fs.readFileSync(sourcePath(agent), 'utf8')
         for (const match of text.matchAll(/\.github\/templates\/([\w.-]+)/g)) if (!files[`.github/templates/${match[1]}`]) errors.push(`${agent}: missing template ${match[1]}`)
         if (manifest.name === 'node') for (const match of text.matchAll(/\bnode-[a-z-]+\b/g)) if (!['node-setup', 'node-code-reviewer', 'node-instructions', 'node-architecture', 'node-agents', 'node-code-review'].includes(match[0]) && !match[0].endsWith('-') && !available.includes(match[0])) errors.push(`${agent}: missing skill ${match[0]}`)
       }
     } catch (error) { errors.push(`${profile}: ${error.message}`) }
   }
   try {
-    const text = fs.readFileSync(path.join(ROOT, '.gitlab-ci.yml'), 'utf8'), data = YAML.parse(text)
+    const ci = path.join(ROOT, '.gitlab-ci.yml')
+    if (fs.existsSync(ci)) {
+    const text = fs.readFileSync(ci, 'utf8'), data = YAML.parse(text)
     if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('Workflow must be a mapping')
     if (/python|pip\s|\.py\b/i.test(text)) throw new Error('Unsupported runtime in pipeline')
+    }
   } catch (error) { errors.push(`.gitlab-ci.yml: ${error.message}`) }
+  try {
+    const { exportCatalog } = require('./export-catalog')
+    const current = JSON.parse(fs.readFileSync(path.join(REPOSITORY_ROOT, 'src/data/ai-resources.json'), 'utf8'))
+    if (JSON.stringify(current) !== JSON.stringify(exportCatalog())) throw new Error('Stale resource catalog; run npm run catalog:export')
+  } catch (error) { errors.push(error.message) }
   return { errors, count: names.size }
 }
 if (require.main === module) {

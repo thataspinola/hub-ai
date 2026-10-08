@@ -3,6 +3,14 @@ const fs = require('node:fs')
 const path = require('node:path')
 const crypto = require('node:crypto')
 const ROOT = path.resolve(__dirname, '..')
+const REPOSITORY_ROOT = path.dirname(ROOT)
+const FRONTEND_ROOT = path.join(REPOSITORY_ROOT, 'resources/frontend')
+function sourcePath(item) {
+  const frontend = item.startsWith('resources/frontend/')
+  const source = path.resolve(frontend ? REPOSITORY_ROOT : ROOT, item)
+  if (!inside(frontend ? FRONTEND_ROOT : ROOT, source)) throw new Error(`Invalid resource: ${item}`)
+  return source
+}
 const STATE = '.github/hub-ai-lock.json'
 const digest = data => crypto.createHash('sha256').update(data).digest('hex')
 const inside = (root, dest) => dest === root || dest.startsWith(root + path.sep)
@@ -26,9 +34,13 @@ function walk(root) {
     return entry.isDirectory() ? walk(full) : [full]
   })
 }
+function profiles() {
+  return [...new Set([path.join(ROOT, 'profiles'), path.join(FRONTEND_ROOT, 'profiles')].flatMap(dir => fs.existsSync(dir) ? fs.readdirSync(dir) : []))].sort()
+}
 function resources(profile, capabilities) {
   if (!/^[a-z-]+$/.test(profile)) throw new Error('Invalid profile name')
-  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'profiles', profile, 'profile.json'), 'utf8'))
+  const frontendManifest = path.join(FRONTEND_ROOT, 'profiles', profile, 'profile.json')
+  const manifest = JSON.parse(fs.readFileSync(fs.existsSync(frontendManifest) ? frontendManifest : path.join(ROOT, 'profiles', profile, 'profile.json'), 'utf8'))
   const available = manifest.capabilities || {}
   const selected = capabilities === undefined ? Object.keys(available) : capabilities
   for (const name of selected) if (!Object.hasOwn(available, name)) throw new Error(`Unknown capability: ${name}`)
@@ -36,11 +48,11 @@ function resources(profile, capabilities) {
   for (const name of selected) for (const [kind, items] of Object.entries(available[name])) spec[kind].push(...items)
   const files = {}
   for (const [kind, items] of Object.entries(spec)) for (const item of items) {
-    const source = path.resolve(ROOT, item)
-    if (!inside(ROOT, source) || !fs.existsSync(source) || fs.lstatSync(source).isSymbolicLink()) throw new Error(`Invalid resource: ${item}`)
+    const source = sourcePath(item)
+    if (!fs.existsSync(source) || fs.lstatSync(source).isSymbolicLink()) throw new Error(`Invalid resource: ${item}`)
     if (kind === 'skills' && !fs.existsSync(path.join(source, 'SKILL.md'))) throw new Error(`Missing skill metadata: ${item}`)
     for (const full of kind === 'skills' ? walk(source) : [source]) {
-      if (fs.lstatSync(full).isSymbolicLink() || !inside(ROOT, fs.realpathSync(full))) throw new Error(`Unsafe resource: ${full}`)
+      if (fs.lstatSync(full).isSymbolicLink() || !inside(item.startsWith('resources/frontend/') ? FRONTEND_ROOT : ROOT, fs.realpathSync(full))) throw new Error(`Unsafe resource: ${full}`)
       const relative = (kind === 'skills' ? path.join('.github/skills', path.basename(source), path.relative(source, full)) : path.join('.github', kind, path.basename(full))).split(path.sep).join('/')
       if (Object.hasOwn(files, relative)) throw new Error(`Duplicate destination: ${relative}`)
       files[relative] = fs.readFileSync(full)
@@ -48,4 +60,4 @@ function resources(profile, capabilities) {
   }
   return { manifest, selected, files }
 }
-module.exports = { ROOT, STATE, digest, inside, safePath, walk, resources }
+module.exports = { ROOT, REPOSITORY_ROOT, FRONTEND_ROOT, sourcePath, profiles, STATE, digest, inside, safePath, walk, resources }

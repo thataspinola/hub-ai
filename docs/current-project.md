@@ -1,0 +1,27 @@
+# Contexto da aplicação atual
+
+Referência de leitura: main 48304b7, em 2026-10-08. Reinspecionar package.json e os arquivos reais após mudanças; versões abaixo são ranges declarados, não versões instaladas certificadas.
+
+| Aspecto | Evidência na raiz |
+| --- | --- |
+| Aplicação | @porto/react-ssr-corp-hubv-painel-administrativo |
+| Frontend | Next ^16.2.2, React ^19, App Router e TypeScript |
+| Testes | Jest ^30.3.0, React Testing Library, __tests__/ e jest.config.ts |
+| UI/estado | Tailwind ^4.2.1, Radix UI, Zustand ^5.0.12 |
+| Sessão | NextAuth e provider Keycloak em src/app/api/auth/[...nextauth]/auth-options.ts |
+| Feature flags | Strategy localStorage/AppConfig Agent, context/hydration e polling em src/lib/feature-flags |
+| Formulários | Builder, stores e tipos em src/lib/form-wizard e src/components/wizard-builder |
+| Recomendações | Stores/IndexedDB/tipos e componentes administrativos em src/lib/recommendations e src/components/portal-admin |
+| Entrega | pom.xml e config/ existentes; não há .gitlab-ci.yml ou Jenkinsfile versionado nesta revisão |
+
+Preservar todo o código novo. Recursos Node/Nest deste toolkit são reutilizáveis para outros consumidores, não serviços backend encontrados no painel. O perfil correto da aplicação atual é nextjs, com web-quality, web-testing, security, gitlab-delivery, nextjs-patterns e react-patterns.
+
+Copilot Setup deve inventariar src/__tests__/ e configurações da aplicação; excluir este toolkit e seus exemplos do inventário de stack. O agente frontend já versionado na raiz continua preservado. Recursos do hub recomendam usar o runner instalado (Jest nesta aplicação), sem instalar Vitest, MSW ou Playwright apenas por constarem em orientações genéricas.
+
+## Validação e limites
+
+`npm --prefix codigo-a-ser-transcrito run project:inspect` atualiza a leitura de stack/scripts, configuração e estado do lockfile sem escrever no consumidor. `npm --prefix codigo-a-ser-transcrito run check` valida as ferramentas e os recursos do toolkit/resources/frontend. `npm test` e `npm run build` na raiz pertencem à aplicação e exigem o ambiente/dependências dela.
+
+O package-lock.json da aplicação nesta revisão está vazio. Não foi substituído nem regenerado neste trabalho. A instalação corporativa depende do registry/certificado aprovado; a suíte e o build da aplicação devem ser executados na VDI. Não inferir que scripts declarados passaram ou que o AppConfig Agent/Keycloak real funcionaram a partir de testes do toolkit.
+
+A integração moveu os recursos frontend para resources/frontend e os ativou em .github, com AGENTS/instructions específicos. O catálogo fica em src/data/ai-resources.json e o exemplo TypeScript/Nest em examples/nest-backend. Jest/TypeScript excluem o toolkit e o exemplo independente. Rotas, interfaces, feature flags, recomendações, formulários, sessão e infraestrutura do código novo foram preservados.

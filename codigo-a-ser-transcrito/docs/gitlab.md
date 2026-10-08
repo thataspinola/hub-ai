@@ -1,17 +1,17 @@
-# GitLab e Jenkins
+# GitLab, Jenkins e validação do toolkit
 
-GitLab é o provedor de repositório, merge requests e CI deste hub. `.gitlab-ci.yml` executa validações dos recursos e exemplos Node. Não faz deploy nem instala pipelines nos projetos consumidores; Jenkins pode continuar sendo o caminho de entrega já utilizado.
+Os recursos mantêm suporte a consumidores GitLab/Jenkins. O repositório de trabalho atual continua sendo o GitHub autorizado pelo usuário. Não inferir acesso a um GitLab corporativo nem alterar o caminho de entrega existente.
 
-O workflow cria pipelines de MR e evita duplicação de push quando a branch tem MR aberto. A validação de YAML local não substitui CI Lint do GitLab ou execução num runner autorizado. Imagens Node e registry precisam estar disponíveis no ambiente corporativo; adaptar ao registry aprovado quando necessário. Nunca mover credenciais para fora da VDI.
+A aplicação atual contém pom.xml/config/, mas não versiona .gitlab-ci.yml ou Jenkinsfile nesta revisão. O toolkit não depende de um CI inexistente: sua validação YAML de .gitlab-ci.yml só ocorre quando esse arquivo existir dentro do módulo. Não recriar a pipeline antiga na raiz nem afirmar que um runner executou verificações locais.
 
-## Customização do editor
+Gates locais preparados para serem chamados no pipeline aprovado:
 
-`.github/agents`, `.github/skills` e `.github/copilot-instructions.md` são convenções do executor Copilot. Seu nome não define o provedor Git. Não renomear essas pastas para .gitlab esperando descoberta automática pelo editor. Se usarem outro assistente, adaptar o formato para seu executor; descoberta no editor continua pendente de validação.
+```sh
+npm --prefix codigo-a-ser-transcrito run validate
+npm --prefix codigo-a-ser-transcrito test
+npm --prefix codigo-a-ser-transcrito run check
+```
 
-## Merge requests
+Instalar dependências do toolkit e do exemplo Nest com seus próprios package.json/lockfiles antes de check. A aplicação usa seu package.json e scripts separados. Manter registry, certificado, VDI e aprovações corporativas; não contornar restrições de acesso.
 
-Usar base e head reais do MR, via integração autorizada GitLab ou git local. Não converter um número de MR em PR GitHub. Comentários automáticos no MR exigem autorização e integração próprias; os agentes do hub geram relatórios locais por padrão.
-
-## Publicação
-
-Alterações precisam ser enviadas ao remote GitLab correto. Não inferir uma URL corporativa ou usar o antigo remote GitHub como destino. Se GitLab/Jenkins estiverem restritos à VDI, aplicar o commit/patch no checkout autorizado e publicar de lá. Não substituir definições externas de Jenkins nem instalar deploys para resolver a ausência de acesso nesta sessão.
+`.github/agents`, `.github/skills` e `.github/copilot-instructions.md` são convenções do editor, não provedor Git. O instalador preserva agentes existentes e não substitui CI/Jenkins dos consumidores. MR GitLab exige base/head reais e integração autorizada; não converter número de MR em PR GitHub. Relatórios de reviewers são locais por padrão.

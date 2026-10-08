@@ -14,4 +14,4 @@ O pacote `yaml` é dependência apenas de validação/desenvolvimento. Installer
 
 Perfis Angular/React/Next.js/Vue foram validados quanto a YAML, catálogo e instalação independente. Não foram executados builds de aplicações reais desses frameworks nem descoberta de agentes no editor. A compatibilidade é guiada pelo framework/versão detectado no consumidor, não por uma versão universal.
 
-O [exemplo NestJS](../examples/nest-backend/validation.md) passou em Node 22.23.3 e 24.19.0/Linux com Nest 11.2.7, TypeScript, Jest e Supertest: 18 testes, build, smoke do artefato compilado e gates de cobertura. Essa evidência não certifica outras versões Nest, adapter Fastify ou aplicações corporativas. A matriz GitLab foi preparada; execução em runner autorizado permanece pendente.
+O [exemplo NestJS](../../examples/nest-backend/validation.md) passou em Node 22.23.3 e 24.19.0/Linux com Nest 11.2.7, TypeScript, Jest e Supertest: 18 testes, build, smoke do artefato compilado e gates de cobertura. Essa evidência não certifica outras versões Nest, adapter Fastify ou aplicações corporativas. A matriz GitLab foi preparada; execução em runner autorizado permanece pendente.

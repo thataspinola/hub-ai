@@ -5,7 +5,7 @@
 3. Usar --overwrite somente para mudanças deliberadas. --migrate remove arquivos gerenciados sem modificações locais; bloqueia remoção dos modificados.
 4. Rodar o setup e revisar seu diff antes de commitar no projeto consumidor. Não usar atualização para substituir regras de domínio.
 
-A escrita usa arquivo temporário e os.replace: hard links existentes não são alterados em outras localizações. Symlinks nos destinos são recusados, assim como destino que seja diretório. A transação registra cópias anteriores e restaura arquivos se uma operação falhar. A recuperação pode deixar diretórios vazios recém-criados; não remove diretórios arbitrários.
+A escrita usa arquivo temporário e rename atômico de Node.js: hard links existentes não são alterados em outras localizações. Symlinks nos destinos são recusados, assim como destino que seja diretório. A transação registra cópias anteriores e restaura arquivos se uma operação falhar. A recuperação pode deixar diretórios vazios recém-criados; não remove diretórios arbitrários.
 
 Em interrupção abrupta, a próxima instalação recusa continuar. Conferir que o processo terminou e executar:
 
@@ -17,4 +17,6 @@ O instalador recusa recuperação enquanto o PID registrado estiver ativo. Não 
 
 Nunca executar instaladores concorrentes no mesmo destino. A proteção se destina a uso local cooperativo; não garante integridade contra outro processo hostil alterando a árvore durante a operação. Durabilidade após falha de energia depende das garantias do filesystem.
 
-Para a reorganização 1.4.0 e a migração de agentes/templates antigos, seguir [estrutura e nomenclatura](structure-and-naming.md). Copilot Setup é o agente de configuração para todos os perfis.
+Para a reorganização 1.4.0 e a migração de agentes/templates antigos, seguir [estrutura e nomenclatura](../../docs/structure-and-naming.md). Copilot Setup é o agente de configuração para todos os perfis.
+
+Os comandos deste guia partem do diretório `codigo-a-ser-transcrito`. Para execução na raiz do repositório, acrescentar esse prefixo aos caminhos; a aplicação Next.js tem scripts e dependências próprios.

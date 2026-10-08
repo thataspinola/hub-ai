@@ -3,6 +3,7 @@ const fs = require('node:fs')
 const path = require('node:path')
 const { randomUUID } = require('node:crypto')
 const { spawnSync } = require('node:child_process')
+const { inspectProject } = require('./project-context')
 const { ROOT, STATE, digest, inside, resources, safePath } = require('./hub-resources')
 const JOURNAL = '.hub-ai-transaction.json', LOCK = '.hub-ai-install.lock'
 function atomicWrite(dest, data) {
@@ -36,7 +37,7 @@ function recover(target, write = atomicWrite) {
   return true
 }
 function parseArgs(argv) {
-  const args = { profile: 'frontend' }, booleans = new Set(['overwrite', 'migrate', 'dry-run', 'recover'])
+  const args = { profile: 'auto' }, booleans = new Set(['overwrite', 'migrate', 'dry-run', 'recover'])
   for (let i = 0; i < argv.length; i++) {
     const token = argv[i]
     if (token === '--help') { args.help = true; continue }
@@ -51,7 +52,7 @@ function parseArgs(argv) {
   return args
 }
 function install(args, write = atomicWrite, log = console.log) {
-  if (args.help) { log('node scripts/install.js PROJECT [--profile node|angular|react|nextjs|vue|frontend] [--capabilities base|LIST] [--dry-run] [--overwrite] [--migrate] [--recover]'); return }
+  if (args.help) { log('node scripts/install.js PROJECT [--profile auto|node|angular|react|nextjs|vue|frontend] [--capabilities base|LIST] [--dry-run] [--overwrite] [--migrate] [--recover]'); return }
   if (!args.project) throw new Error('Project path required')
   if (args.recover && args['dry-run']) throw new Error('--recover and --dry-run cannot be combined')
   const target = fs.realpathSync(args.project)
@@ -69,8 +70,9 @@ function install(args, write = atomicWrite, log = console.log) {
     return
   }
   if (fs.existsSync(journal) || fs.existsSync(lock)) throw new Error('Installation locked/interrupted; inspect and run --recover')
+  const profile = !args.profile || args.profile === 'auto' ? inspectProject(target).profile : args.profile
   const capabilities = args.capabilities === undefined ? undefined : args.capabilities === 'base' ? [] : args.capabilities.split(',')
-  const { manifest, selected, files } = resources(args.profile || 'frontend', capabilities)
+  const { manifest, selected, files } = resources(profile, capabilities)
   const statePath = safePath(target, STATE)
   const observedState = fs.existsSync(statePath) ? fs.readFileSync(statePath) : null
   const previous = observedState ? JSON.parse(observedState) : { schema: 1, files: {} }
@@ -105,7 +107,8 @@ function install(args, write = atomicWrite, log = console.log) {
   if (conflicts.length) throw new Error('No files written. Conflicts:\n' + conflicts.join('\n'))
   if (args['dry-run']) { log('Preview complete; no files written'); return }
   const commit = spawnSync('git', ['-C', ROOT, 'rev-parse', 'HEAD'], { encoding: 'utf8' })
-  const state = { schema: 1, version: fs.readFileSync(path.join(ROOT, 'VERSION'), 'utf8').trim(), source_commit: commit.status === 0 ? commit.stdout.trim() : null, profile: args.profile || 'frontend', capabilities: selected, files: { ...(args.migrate ? {} : old), ...Object.fromEntries(Object.entries(files).map(([n, d]) => [n, digest(d)])) } }
+  const origin = spawnSync('git', ['-C', ROOT, 'remote', 'get-url', 'origin'], { encoding: 'utf8' })
+  const state = { schema: 1, version: fs.readFileSync(path.join(ROOT, 'VERSION'), 'utf8').trim(), source_commit: commit.status === 0 && origin.status === 0 ? commit.stdout.trim() : null, profile, capabilities: selected, files: { ...(args.migrate ? {} : old), ...Object.fromEntries(Object.entries(files).map(([n, d]) => [n, digest(d)])) } }
   operations[STATE] = Buffer.from(JSON.stringify(state, null, 2) + '\n'); observed[STATE] = observedState
   acquire()
   try {
