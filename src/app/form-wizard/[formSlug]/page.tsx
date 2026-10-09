@@ -42,7 +42,7 @@ function NewFormHandler() {
     const slugs = getFormsIndex().map(entry => entry.slug)
     if (slugs.includes(state.form.slug)) state.setFormSlug(generateFormSlug(state.form.name, slugs))
     const current = useFormStore.getState()
-    current.saveFormToStorage()
+    if (current.saveFormToStorage() === false) return
     router.replace(`/form-wizard/${current.form.slug}`)
   }, [resetForm, router])
   return <p>Creating new form...</p>

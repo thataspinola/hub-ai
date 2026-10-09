@@ -223,3 +223,31 @@ describe('importFormFromJson', () => {
     expect(result?.slug).toBeTruthy()
   })
 })
+
+describe('corrupt storage and failed writes', () => {
+  it('ignores a valid JSON index with an invalid shape', () => {
+    localStorage.setItem('wf:forms:index', '{}')
+    expect(getFormsIndex()).toEqual([])
+    expect(() => saveForm(createTestForm())).toThrow('Stored form index is invalid')
+    expect(localStorage.getItem('wf:forms:index')).toBe('{}')
+  })
+  it('rejects malformed form and response structures', () => {
+    localStorage.setItem('wf:forms:test-form', '{"steps":{}}')
+    localStorage.setItem('wf:responses:test-form', '{"values":[]}')
+    expect(getFormBySlug('test-form')).toBeNull()
+    expect(getFormResponses('test-form')).toBeNull()
+    expect(importFormFromJson('{"id":"x","name":"bad","steps":[{}]}')).toBeNull()
+  })
+  it('keeps the previous form when the index write fails', () => {
+    saveForm(createTestForm())
+    const previous = localStorage.getItem('wf:forms:test-form')
+    const original = Storage.prototype.setItem
+    const spy = jest.spyOn(Storage.prototype, 'setItem').mockImplementation(function (this: Storage, key, value) {
+      if (key === 'wf:forms:index') throw new DOMException('full', 'QuotaExceededError')
+      original.call(this, key, value)
+    })
+    try { expect(() => saveForm(createTestForm({ name: 'Changed' }))).toThrow('Unable to save form') }
+    finally { spy.mockRestore() }
+    expect(localStorage.getItem('wf:forms:test-form')).toBe(previous)
+  })
+})

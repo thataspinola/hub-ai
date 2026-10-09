@@ -65,7 +65,7 @@ describe('Auth component', () => {
     await new Promise(resolve => setTimeout(resolve, 10))
     expect(global.fetch).toHaveBeenCalledWith(
       '/react-ssr-corp-hubv-painel-administrativo/api/auth/logout',
-      { method: 'GET' },
+      { method: 'POST' },
     )
   })
 
@@ -76,7 +76,7 @@ describe('Auth component', () => {
     render(<Auth />)
     fireEvent.click(screen.getByText('Logout'))
     await new Promise(resolve => setTimeout(resolve, 20))
-    expect(consoleSpy).toHaveBeenCalled()
+    expect(mockSignOut).toHaveBeenCalled()
     consoleSpy.mockRestore()
   })
 })

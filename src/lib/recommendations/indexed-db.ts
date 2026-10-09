@@ -1,100 +1,49 @@
-"use client"
-
-const DB_NAME = "recommendation-admin-db"
-const DB_VERSION = 1
-const STORE_NAME = "recommendation-data"
-const DATA_KEY = "current-data"
-
+'use client'
+const DB_NAME = 'recommendation-admin-db'
+const STORE_NAME = 'recommendation-data'
+const DATA_KEY = 'current-data'
 let db: IDBDatabase | null = null
+let opening: Promise<IDBDatabase> | null = null
 
 export async function initDB(): Promise<IDBDatabase> {
   if (db) return db
-
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION)
-
-    request.onerror = () => {
-      reject(new Error("Failed to open IndexedDB"))
+  if (opening) return opening
+  opening = new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, 1)
+    request.onerror = () => reject(new Error('Failed to open IndexedDB'))
+    request.onblocked = () => reject(new Error('IndexedDB upgrade blocked; close other tabs'))
+    request.onupgradeneeded = () => {
+      if (!request.result.objectStoreNames.contains(STORE_NAME)) request.result.createObjectStore(STORE_NAME, { keyPath: 'id' })
     }
-
     request.onsuccess = () => {
       db = request.result
+      db.onversionchange = () => { db?.close(); db = null }
+      db.onclose = () => { db = null }
       resolve(db)
     }
-
-    request.onupgradeneeded = (event) => {
-      const database = (event.target as IDBOpenDBRequest).result
-      
-      if (!database.objectStoreNames.contains(STORE_NAME)) {
-        database.createObjectStore(STORE_NAME, { keyPath: "id" })
-      }
-    }
   })
+  try { return await opening } finally { opening = null }
 }
 
+async function transact<T>(mode: IDBTransactionMode, execute: (store: IDBObjectStore) => IDBRequest, read: (value: unknown) => T): Promise<T> {
+  const database = await initDB()
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction([STORE_NAME], mode)
+    let result: unknown
+    transaction.onabort = () => reject(new Error('IndexedDB transaction aborted'))
+    transaction.onerror = () => reject(new Error('IndexedDB transaction failed'))
+    transaction.oncomplete = () => resolve(read(result))
+    const request = execute(transaction.objectStore(STORE_NAME))
+    request.onsuccess = () => { result = request.result }
+    request.onerror = () => reject(new Error('IndexedDB request failed'))
+  })
+}
 export async function saveToIndexedDB(data: unknown): Promise<void> {
-  const database = await initDB()
-  
-  return new Promise((resolve, reject) => {
-    const transaction = database.transaction([STORE_NAME], "readwrite")
-    const store = transaction.objectStore(STORE_NAME)
-    
-    const record = {
-      id: DATA_KEY,
-      data: data,
-      updatedAt: new Date().toISOString(),
-    }
-    
-    const request = store.put(record)
-    
-    request.onerror = () => {
-      reject(new Error("Failed to save to IndexedDB"))
-    }
-    
-    request.onsuccess = () => {
-      resolve()
-    }
-  })
+  await transact('readwrite', store => store.put({ id: DATA_KEY, data, updatedAt: new Date().toISOString() }), () => undefined)
 }
-
 export async function loadFromIndexedDB<T>(): Promise<T | null> {
-  const database = await initDB()
-  
-  return new Promise((resolve, reject) => {
-    const transaction = database.transaction([STORE_NAME], "readonly")
-    const store = transaction.objectStore(STORE_NAME)
-    
-    const request = store.get(DATA_KEY)
-    
-    request.onerror = () => {
-      reject(new Error("Failed to load from IndexedDB"))
-    }
-    
-    request.onsuccess = () => {
-      if (request.result) {
-        resolve(request.result.data as T)
-      } else {
-        resolve(null)
-      }
-    }
-  })
+  return transact('readonly', store => store.get(DATA_KEY), value => value ? (value as { data: T }).data : null)
 }
-
 export async function clearIndexedDB(): Promise<void> {
-  const database = await initDB()
-  
-  return new Promise((resolve, reject) => {
-    const transaction = database.transaction([STORE_NAME], "readwrite")
-    const store = transaction.objectStore(STORE_NAME)
-    
-    const request = store.delete(DATA_KEY)
-    
-    request.onerror = () => {
-      reject(new Error("Failed to clear IndexedDB"))
-    }
-    
-    request.onsuccess = () => {
-      resolve()
-    }
-  })
+  await transact('readwrite', store => store.delete(DATA_KEY), () => undefined)
 }

@@ -12,6 +12,7 @@ import type {
 } from './types'
 import { DEPRECATED_ELEMENT_TYPES } from './types'
 import { saveForm, getFormsIndex, generateFormSlug } from './forms-storage'
+import { isForm } from './validation'
 
 const generateId = () => Math.random().toString(36).substring(2, 11)
 
@@ -238,7 +239,8 @@ interface FormState {
 
   resetForm: () => void
   loadForm: (form: Form) => void
-  saveFormToStorage: () => void
+  storageError: string | null
+  saveFormToStorage: () => boolean
   exportForm: () => string
   importForm: (json: string) => boolean
 }
@@ -268,6 +270,7 @@ export const useFormStore = create<FormState>()(
   persist(
     (set, get) => ({
       form: createDefaultForm(),
+      storageError: null,
       selectedStepId: null,
       selectedElementId: null,
 
@@ -577,7 +580,8 @@ export const useFormStore = create<FormState>()(
 
       saveFormToStorage: () => {
         const state = get()
-        saveForm(state.form)
+        try { saveForm(state.form); set({ storageError: null }); return true }
+        catch { set({ storageError: 'Não foi possível salvar: armazenamento indisponível, cheio ou dados inválidos.' }); return false }
       },
 
       exportForm: () => JSON.stringify(get().form, null, 2),
@@ -585,7 +589,7 @@ export const useFormStore = create<FormState>()(
       importForm: (json) => {
         try {
           const form = JSON.parse(json) as Form
-          if (!form.id || !form.steps || !Array.isArray(form.steps)) {
+          if (!isForm(form)) {
             return false
           }
 

@@ -23,7 +23,7 @@ export default function RootLayout({
       </head>
       <body>
         <SessionProviderWrapper>
-          <FeatureFlagProvider>
+          <FeatureFlagProvider providerName={process.env.FEATURE_FLAGS_PROVIDER === 'appconfig' ? 'appconfig' : 'localStorage'}>
             <div className="flex min-h-screen bg-slate-50">
               <PortalSidebar />
               <main className="flex-1 flex flex-col min-w-0 overflow-hidden">

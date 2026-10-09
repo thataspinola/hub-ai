@@ -272,22 +272,22 @@ Testar o cálculo das métricas não certifica a qualidade semântica do modelo.
 
 ## Evidências e pendências
 
-Resultados locais da versão 1.7.0, em Node 24.19.0/Linux, registrados em 2026-10-08:
+Resultados locais da versão 1.8.0, em Node 24.19.0/Linux, registrados em 2026-10-09:
 
 | Validação | Resultado |
 | --- | --- |
-| Jest do painel | 370 testes, 37 suítes passaram |
+| Jest do painel | 384 testes, 41 suítes passaram |
 | Configuração e postbuild | 2 testes passaram |
 | ESLint e typecheck do painel | Passaram, sem warnings no lint |
 | Build e postbuild do painel | Passaram |
 | Smoke standalone | Página e asset responderam por HTTP local |
-| E2E Playwright | 4 jornadas passaram |
-| Ferramentas do toolkit | 42 testes passaram |
+| E2E Playwright | Reexecução bloqueada: Chromium não disponível; 4 jornadas passaram na execução anterior |
+| Ferramentas do toolkit | 43 testes passaram |
 | Exemplo Node | 8 testes passaram |
 | Exemplo Nest | 18 testes; typecheck/build/smoke passaram |
-| Audit público de dependências de produção | Nenhuma vulnerabilidade reportada naquela execução |
+| Audit público de dependências de produção | Histórico anterior: nenhuma vulnerabilidade reportada; não repetido nesta rodada |
 
-A validação usou dependências públicas isoladas, preservando registry/certificado corporativos. O download padrão do Chromium falhou nesse ambiente; os E2E passaram com executável alternativo Chromium 153 indicado pela variável de processo. A combinação validada de lint foi ESLint 9.39.4 com eslint-config-next 16.2.2; ESLint 10 apresentou incompatibilidade com plugins. Atualizar essas dependências em conjunto e validar antes de adotar.
+A validação usou dependências públicas isoladas, preservando registry/certificado corporativos. O download padrão do Chromium falhou nesse ambiente; na execução anterior, os E2E passaram com Chromium 153 alternativo. Na reexecução atual esse executável não está disponível, portanto os quatro casos não puderam iniciar. A combinação validada de lint foi ESLint 9.39.4 com eslint-config-next 16.2.2; ESLint 10 apresentou incompatibilidade com plugins. Atualizar essas dependências em conjunto e validar antes de adotar.
 
 Continuam pendentes, fora deste ambiente:
 
@@ -314,3 +314,15 @@ Mocks, testes locais e audit não certificam integrações ou produção. Não f
 - [Evidências de validação](docs/validation-current.md)
 - [Toolkit backend e ferramentas compartilhadas](codigo-a-ser-transcrito/README.md)
 - [Exemplo Nest e sua suíte](examples/nest-backend/README.md)
+
+## Autenticação, flags e persistência
+
+Em produção, páginas administrativas e APIs exigem autenticação; o catálogo `/code-reviewer`, assets e endpoints de autenticação permanecem públicos. Desenvolvimento mantém o fluxo local; `HUB_AI_REQUIRE_AUTH=true` habilita a proteção também nesse ambiente. `NEXTAUTH_SECRET` é obrigatório para a proteção. `HUB_AI_ADMIN_ROLE`, quando definido, exige a role configurada, extraída das claims realm_access/resource_access do perfil Keycloak. Sem essa configuração, acesso administrativo exige sessão válida; homologar o contrato de roles antes de disponibilizar dados restritos.
+
+O refresh usa o issuer/client ID/client secret existentes, renova antes do vencimento e mantém refresh token no servidor. Falha elimina acesso utilizável e pede novo login. Chamadas concorrentes são agrupadas por processo; a rotação em múltiplas instâncias exige validação específica. Logout usa POST, valida Origin, limita timeout e reporta falha do provedor; a sessão local é encerrada mesmo quando o provedor falha.
+
+`FEATURE_FLAGS_PROVIDER` aceita `localStorage` (padrão) ou `appconfig`. Para AppConfig, configurar `APPCONFIG_APPLICATION_ID`, `APPCONFIG_ENVIRONMENT_ID` e `APPCONFIG_CONFIGURATION_PROFILE_ID`; `APPCONFIG_AGENT_ENDPOINT` é opcional. Somente o servidor acessa o agent; o browser usa `/api/feature-flags` no basePath, com autenticação administrativa e sem cache HTTP. Configuração inválida ou resposta malformada é recusada. Nenhum arquivo de credenciais foi alterado.
+
+Formulários/importações e dados persistidos passam por validação estrutural. Falhas de armazenamento aparecem na interface; o índice não sobrescreve conteúdo corrompido e uma falha de gravação tenta restaurar o documento anterior. IndexedDB confirma sucesso apenas após o commit da transação e trata abortos. localStorage não oferece transações entre chaves: preservar backup e validar quotas/recuperação no ambiente real.
+
+Os toolkits reconhecem seus estados separados e impedem sobrescrita de recursos do outro. O Setup backend usa nome próprio. Journals de recuperação não podem apontar para código da aplicação.

@@ -57,6 +57,7 @@ export interface FeatureFlagClientState {
 export interface FeatureFlagProviderProps {
   children: React.ReactNode
   /** Provider customizado; se omitido, usa LocalStorageProvider. */
+  providerName?: 'appconfig' | 'localStorage'
   provider?: FeatureFlagDataProvider
   /** Intervalo de polling em ms (default: 30000). Use `0` para desabilitar polling. */
   pollingInterval?: number

@@ -1,5 +1,10 @@
 # Changelog do toolkit
 
+## 1.8.0
+
+- Recuperação restrita aos recursos gerenciados; coexistência com backend-code-reviewer.
+- Regressão contra journal adulterado que aponta para código da aplicação.
+
 ## 1.7.0
 
 - CLI version/rollback com proteção de personalizações e fonte explícita.

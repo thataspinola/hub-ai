@@ -45,3 +45,7 @@ Essas dependências não foram executadas daqui. Os mocks/E2E e a auditoria púb
 ## Reprodução e manutenção
 
 Consultar [validação local](local-validation.md), [CLI](code-reviewer-cli.md) e [avaliação do reviewer](reviewer-evaluation.md). Manter uma fonte Git fixada por SHA; revisar preview antes de update/rollback. A combinação ESLint/config Next foi testada em conjunto; uma migração para ESLint 10 exige plugins compatíveis, pois a tentativa nesta execução falhou antes de lintar.
+
+## Correções de 2026-10-09
+
+Implementados: recuperação limitada aos recursos conhecidos, proteção de propriedade entre toolkits, refresh de token, proteção administrativa em produção, logout POST/Origin/timeout, configuração AppConfig no servidor, validação de JSON/localStorage e commit de IndexedDB. Jest: 384 testes/41 suítes; toolkit: 43; Node: 8; Nest: 18. Homologação Keycloak/roles/refresh distribuído, AppConfig real, VDI e avaliação do modelo no editor permanecem pendentes.

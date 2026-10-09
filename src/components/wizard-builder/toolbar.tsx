@@ -39,6 +39,8 @@ export function Toolbar() {
   const resetForm = useFormStore((s) => s.resetForm)
   const saveFormToStorage = useFormStore((s) => s.saveFormToStorage)
 
+  const storageError = useFormStore((s) => s.storageError)
+
   const [showJson, setShowJson] = useState(false)
   const [importJson, setImportJson] = useState("")
   const [showImport, setShowImport] = useState(false)
@@ -49,8 +51,7 @@ export function Toolbar() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      saveFormToStorage()
-      setLastSaved(new Date())
+      if (saveFormToStorage() !== false) setLastSaved(new Date())
     }, 5000)
 
     return () => clearInterval(interval)
@@ -92,8 +93,7 @@ export function Toolbar() {
 
   const handleSave = useCallback(() => {
     setIsSaving(true)
-    saveFormToStorage()
-    setLastSaved(new Date())
+    if (saveFormToStorage() !== false) setLastSaved(new Date())
     setTimeout(() => setIsSaving(false), 500)
   }, [saveFormToStorage])
 
@@ -121,6 +121,7 @@ export function Toolbar() {
 
   return (
     <div className="flex items-center justify-between border-b bg-card px-4 py-3">
+      {storageError && <span role="alert">{storageError}</span>}
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" asChild>
           <Link href="/form-wizard">

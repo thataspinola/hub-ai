@@ -4,7 +4,7 @@ const path = require('node:path')
 const { randomUUID } = require('node:crypto')
 const { spawnSync } = require('node:child_process')
 const { inspectProject } = require('./project-context')
-const { ROOT, STATE, digest, inside, resources, safePath } = require('./hub-resources')
+const { ROOT, STATE, digest, inside, resources, profiles, safePath } = require('./hub-resources')
 const JOURNAL = '.hub-ai-transaction.json', LOCK = '.hub-ai-install.lock'
 function atomicWrite(dest, data) {
   fs.mkdirSync(path.dirname(dest), { recursive: true })
@@ -23,8 +23,24 @@ function recover(target, write = atomicWrite) {
   const journal = safePath(target, JOURNAL)
   if (!fs.existsSync(journal)) return false
   const snapshots = JSON.parse(fs.readFileSync(journal, 'utf8')).before
+  if (!snapshots || Array.isArray(snapshots) || typeof snapshots !== 'object') throw new Error('Invalid recovery journal')
+  const allowed = new Set([STATE])
+  for (const profile of profiles()) for (const name of Object.keys(resources(profile).files)) allowed.add(name)
+  const stateFile = safePath(target, STATE)
+  if (fs.existsSync(stateFile)) {
+    const state = JSON.parse(fs.readFileSync(stateFile, 'utf8'))
+    for (const name of Object.keys(state.files || {})) allowed.add(name)
+  }
+  if (typeof snapshots[STATE] === 'string') {
+    const beforeState = JSON.parse(Buffer.from(snapshots[STATE], 'base64').toString('utf8'))
+    for (const name of Object.keys(beforeState.files || {})) allowed.add(name)
+  }
+  const foreignStateFile = safePath(target, '.github/backend-reviewer-lock.json')
+  const foreignFiles = fs.existsSync(foreignStateFile) ? JSON.parse(fs.readFileSync(foreignStateFile, 'utf8')).files || {} : {}
   const decoded = {}
   for (const [name, encoded] of Object.entries(snapshots)) {
+    if (name !== STATE && !/^\.github\/(agents|skills|templates)\//.test(name)) throw new Error('Invalid recovery path')
+    if (!allowed.has(name) || Object.hasOwn(foreignFiles, name)) throw new Error('Invalid recovery path or other toolkit ownership')
     safePath(target, name)
     if (encoded !== null && (typeof encoded !== 'string' || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(encoded))) throw new Error('Invalid recovery snapshot')
     decoded[name] = encoded === null ? null : Buffer.from(encoded, 'base64')
@@ -103,6 +119,12 @@ function install(args, write = atomicWrite, log = console.log) {
       const before = observed[name]?.toString() || '', after = data?.toString() || ''
       log(`--- ${name}\n+++ ${name}\n${before.split('\n').map(l => '-' + l).join('\n')}\n${after.split('\n').map(l => '+' + l).join('\n')}`)
     }
+  }
+  const foreignStatePath = safePath(target, '.github/backend-reviewer-lock.json')
+  if (fs.existsSync(foreignStatePath)) {
+    const foreignState = JSON.parse(fs.readFileSync(foreignStatePath, 'utf8'))
+    if (foreignState.schema !== 1 || !foreignState.files || Array.isArray(foreignState.files)) throw new Error('Invalid other toolkit state')
+    for (const name of Object.keys(operations)) if (Object.hasOwn(foreignState.files, name)) conflicts.push(name + ' (owned by another toolkit)')
   }
   if (conflicts.length) throw new Error('No files written. Conflicts:\n' + conflicts.join('\n'))
   if (args['dry-run']) { log('Preview complete; no files written'); return }

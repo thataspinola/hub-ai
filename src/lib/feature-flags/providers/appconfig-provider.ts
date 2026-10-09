@@ -30,14 +30,11 @@ export class AppConfigProvider implements FeatureFlagDataProvider {
 
   constructor(private readonly options: AppConfigProviderOptions) {
     const base = options.endpoint ?? 'http://localhost:2772'
-    this.url = `${base}/applications/${options.applicationId}/environments/${options.environmentId}/configurations/${options.configurationProfileId}`
+    this.url = `${base}/applications/${encodeURIComponent(options.applicationId)}/environments/${encodeURIComponent(options.environmentId)}/configurations/${encodeURIComponent(options.configurationProfileId)}`
     this.timeoutMs = options.timeoutMs ?? 5000
   }
 
   async fetchFlags(): Promise<FlagValueMap> {
-    // TODO: Configurar applicationId, environmentId e configurationProfileId
-    //       via variáveis de ambiente quando o AppConfig Agent estiver disponível.
-    //
     // O Agent retorna o payload no formato:
     // {
     //   "flag_key": { "enabled": true, "attribute1": "value1", ... },
@@ -50,6 +47,8 @@ export class AppConfigProvider implements FeatureFlagDataProvider {
     try {
       const response = await fetch(this.url, {
         signal: controller.signal,
+        cache: 'no-store',
+        redirect: 'error',
         headers: { Accept: 'application/json' },
       })
 
@@ -59,7 +58,9 @@ export class AppConfigProvider implements FeatureFlagDataProvider {
         )
       }
 
-      return (await response.json()) as FlagValueMap
+      const data: unknown = await response.json()
+      if (!data || typeof data !== 'object' || Array.isArray(data) || !Object.values(data).every(entry => entry && typeof entry === 'object' && !Array.isArray(entry) && typeof entry.enabled === 'boolean')) throw new Error('Invalid AppConfig flag payload')
+      return data as FlagValueMap
     } finally {
       clearTimeout(timeout)
     }

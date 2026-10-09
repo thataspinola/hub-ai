@@ -38,3 +38,7 @@ KEYCLOAK_CLIENT_SECRET e NEXTAUTH_SECRET correspondem aos nomes usados pelo cód
 ## Evidências
 
 Consultar docs/improvements-status.md para resultados da versão atual e distinção entre verificações locais e externas. Não apresentar testes com mocks como comprovação de integração ou produção.
+
+## Reexecução de 2026-10-09
+
+Jest 384/41 suítes, configuração 2, toolkit 43, Node 8 e Nest 18 passaram. Build com cache limpo e smoke standalone passaram. E2E Playwright não iniciou: o executável alternativo Chromium da execução anterior não existe mais no ambiente. Não houve falha de jornada observada nem aprovação de E2E nesta rodada. Ver README para proteção administrativa, refresh e AppConfig; homologação externa permanece pendente.

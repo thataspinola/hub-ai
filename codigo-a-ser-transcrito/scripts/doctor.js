@@ -18,13 +18,20 @@ function diagnose(project) {
       if (!Object.hasOwn(state.files, name)) issues.push(`Untracked required resource: ${name}`)
       else if (digest(data) !== state.files[name]) issues.push(`Hub update available: ${name}`)
     }
+    let otherManaged = {}
+    const otherStatePath = safePath(root, '.github/backend-reviewer-lock.json')
+    if (fs.existsSync(otherStatePath)) {
+      const other = JSON.parse(fs.readFileSync(otherStatePath, 'utf8'))
+      if (other.schema !== 1 || !other.files || Array.isArray(other.files)) throw new Error('Invalid other toolkit state')
+      otherManaged = other.files
+    }
     for (const folder of ['agents', 'skills', 'templates']) {
       const directory = path.join(root, '.github', folder)
       if (fs.existsSync(directory) && fs.lstatSync(directory).isSymbolicLink()) throw new Error(`Symlink folder: ${directory}`)
       for (const file of walk(directory)) {
         const name = path.relative(root, file).split(path.sep).join('/')
         if (fs.lstatSync(file).isSymbolicLink()) issues.push(`Symlink resource: ${name}`)
-        else if (!Object.hasOwn(state.files, name)) issues.push(`Unmanaged resource (review, do not delete): ${name}`)
+        else if (!Object.hasOwn(state.files, name) && !Object.hasOwn(otherManaged, name)) issues.push(`Unmanaged resource (review, do not delete): ${name}`)
       }
     }
     const generated = [path.join(root, '.github/copilot-instructions.md'), path.join(root, 'AGENTS.md')]

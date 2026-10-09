@@ -47,10 +47,15 @@ const DEFAULT_POLLING_INTERVAL = 30_000
 export function FeatureFlagProvider({
   children,
   provider,
+  providerName,
   pollingInterval = DEFAULT_POLLING_INTERVAL,
   initialFlags,
 }: FeatureFlagProviderProps) {
-  const dataProvider = useRef(provider ?? new LocalStorageProvider())
+  const dataProvider = useRef(provider ?? (providerName === 'appconfig' ? { async fetchFlags() {
+    const response = await fetch('/react-ssr-corp-hubv-painel-administrativo/api/feature-flags', { cache: 'no-store', signal: AbortSignal.timeout(5000) })
+    if (!response.ok) throw new Error('Feature flags unavailable')
+    return response.json() as Promise<FlagValueMap>
+  } } : new LocalStorageProvider()))
   const [flags, setFlags] = useState<FlagValueMap>(initialFlags ?? {})
   const [isLoading, setIsLoading] = useState(!initialFlags)
   const [error, setError] = useState<Error | null>(null)

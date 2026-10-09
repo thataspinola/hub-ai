@@ -2,6 +2,8 @@
 
 import type { Form, FormIndexEntry, FormResponses } from "./types"
 
+import { isForm, isFormIndex, isFormResponses } from './validation'
+
 const FORMS_INDEX_KEY = "wf:forms:index"
 const FORM_PREFIX = "wf:forms:"
 const RESPONSES_PREFIX = "wf:responses:"
@@ -30,7 +32,8 @@ export function getFormsIndex(): FormIndexEntry[] {
   if (typeof window === "undefined") return []
   try {
     const data = localStorage.getItem(FORMS_INDEX_KEY)
-    return data ? JSON.parse(data) : []
+    const parsed: unknown = data ? JSON.parse(data) : []
+    return isFormIndex(parsed) ? parsed : []
   } catch {
     return []
   }
@@ -45,7 +48,8 @@ export function getFormBySlug(slug: string): Form | null {
   if (typeof window === "undefined") return null
   try {
     const data = localStorage.getItem(`${FORM_PREFIX}${slug}`)
-    return data ? JSON.parse(data) : null
+    const parsed: unknown = data ? JSON.parse(data) : null
+    return isForm(parsed) ? parsed : null
   } catch {
     return null
   }
@@ -60,7 +64,9 @@ export function saveForm(form: Form): void {
     updatedAt: now,
   }
 
-  localStorage.setItem(`${FORM_PREFIX}${form.slug}`, JSON.stringify(formToSave))
+  if (!isForm(formToSave)) throw new Error('Invalid form data')
+  const previousIndex = localStorage.getItem(FORMS_INDEX_KEY)
+  if (previousIndex && !isFormIndex(JSON.parse(previousIndex))) throw new Error('Stored form index is invalid; export or repair it before saving')
 
   const index = getFormsIndex()
   const existingIndex = index.findIndex((f) => f.id === form.id)
@@ -74,16 +80,24 @@ export function saveForm(form: Form): void {
   }
 
   if (existingIndex >= 0) {
-    const oldEntry = index[existingIndex]
-    if (oldEntry.slug !== form.slug) {
-      localStorage.removeItem(`${FORM_PREFIX}${oldEntry.slug}`)
-    }
     index[existingIndex] = indexEntry
   } else {
     index.push(indexEntry)
   }
 
-  saveFormsIndex(index)
+  const key = FORM_PREFIX + form.slug
+  const previousForm = localStorage.getItem(key)
+  try {
+    localStorage.setItem(key, JSON.stringify(formToSave))
+    saveFormsIndex(index)
+  } catch {
+    try { if (previousForm === null) localStorage.removeItem(key); else localStorage.setItem(key, previousForm) } catch { /* Keep the original error; storage may be unavailable. */ }
+    throw new Error('Unable to save form; browser storage is unavailable or full')
+  }
+  const oldEntry = previousIndex ? (JSON.parse(previousIndex) as FormIndexEntry[]).find(entry => entry.id === form.id) : null
+  if (oldEntry && oldEntry.slug !== form.slug) {
+    try { localStorage.removeItem(FORM_PREFIX + oldEntry.slug) } catch { /* The new document and index are already committed; retain the old backup. */ }
+  }
 }
 
 export function deleteForm(slug: string): void {
@@ -121,7 +135,8 @@ export function getFormResponses(formSlug: string): FormResponses | null {
   if (typeof window === "undefined") return null
   try {
     const data = localStorage.getItem(`${RESPONSES_PREFIX}${formSlug}`)
-    return data ? JSON.parse(data) : null
+    const parsed: unknown = data ? JSON.parse(data) : null
+    return isFormResponses(parsed) ? parsed : null
   } catch {
     return null
   }
@@ -151,7 +166,7 @@ export function exportFormAsJson(slug: string): string | null {
 export function importFormFromJson(json: string): Form | null {
   try {
     const form = JSON.parse(json) as Form
-    if (!form.id || !form.steps || !Array.isArray(form.steps)) {
+    if (!isForm(form)) {
       return null
     }
 

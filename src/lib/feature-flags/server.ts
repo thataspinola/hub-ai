@@ -4,7 +4,7 @@ import type {
   FlagPrimitive,
   FlagValueMap,
 } from './types'
-import { LocalStorageProvider } from './providers/local-storage-provider'
+import { configuredFlagProvider } from './provider-factory'
 
 // ---------------------------------------------------------------------------
 // Cache em memória com TTL
@@ -39,16 +39,13 @@ let providerOverride: FeatureFlagDataProvider | null = null
 /** Permite injetar um provider customizado (útil para testes). */
 export function setProvider(provider: FeatureFlagDataProvider | null): void {
   providerOverride = provider
+  cache = null
 }
 
 function getProvider(): FeatureFlagDataProvider {
   if (providerOverride) return providerOverride
 
-  // TODO: quando o AppConfig estiver configurado, selecionar via env var:
-  // const providerType = process.env.FEATURE_FLAGS_PROVIDER ?? 'localStorage';
-  // if (providerType === 'appconfig') return new AppConfigProvider({...});
-
-  return new LocalStorageProvider()
+  return configuredFlagProvider()
 }
 
 // ---------------------------------------------------------------------------
