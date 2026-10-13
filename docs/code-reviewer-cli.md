@@ -25,9 +25,9 @@ node tools/code-reviewer.cjs setup --project /caminho/aplicacao --ref SHA_COMPLE
 node tools/code-reviewer.cjs doctor --project /caminho/aplicacao --ref SHA_COMPLETO
 ```
 
-O perfil automático prioriza Next.js sobre React e também identifica Angular, Vue e Node. TypeScript usa o perfil do framework; não é um perfil independente. Para pacotes com backend e frontend misturados, indicar o diretório correto ou `--profile nextjs|react|angular|vue|node|frontend`. Capacidades opcionais podem ser selecionadas com `--capabilities base` ou uma lista separada por vírgulas conforme o manifest.
+O perfil automático prioriza Next.js sobre React e também identifica Angular e Vue. TypeScript usa o perfil do framework; não é um perfil independente. Para pacotes com backend e frontend misturados, indicar o diretório correto ou `--profile nextjs|react|angular|vue|frontend`. Capacidades opcionais podem ser selecionadas com `--capabilities base` ou uma lista separada por vírgulas conforme o manifest.
 
-Em seguida, abrir o projeto no editor, selecionar **Copilot Setup** e pedir que gere/adapte as instruções ao código real. Selecionar **Web Code Reviewer** nos perfis React/Next.js, **Frontend Code Reviewer** no perfil frontend ou **Node Code Reviewer** no backend. Confirmar que o editor carregou os agentes e skills antes de usar a revisão. O setup da CLI não gera automaticamente instruções específicas de domínio.
+Em seguida, abrir o projeto no editor, selecionar **Copilot Setup** e pedir que gere/adapte as instruções ao código real. Selecionar **Web Code Reviewer** nos perfis Angular/React/Next.js/Vue, **Frontend Code Reviewer** no perfil frontend. Confirmar que o editor carregou os agentes e skills antes de usar a revisão. O setup da CLI não gera automaticamente instruções específicas de domínio.
 
 ## Atualizar sem perder personalizações
 
@@ -81,3 +81,7 @@ node tools/code-reviewer.cjs rollback --project /caminho/aplicacao --ref SHA_ANT
 Rollback exige estado instalado, escolhe explicitamente a fonte anterior e aplica as mesmas proteções de update. Recursos obsoletos intactos são removidos; alterações locais bloqueiam a transação. Não usa reset no Git do consumidor, não desfaz código da aplicação e não altera suas instructions. A fonte anterior precisa oferecer atualização segura (toolkit 1.6.0+). Perfil/capacidades inexistentes na versão anterior são recusados antes de escrever.
 
 A versão 1.6.0 pode ser reproduzida com o SHA 2a6bd0b1ece7c860d726c57155c2a9ec14fb43d4. Para novas versões, consultar VERSION/CHANGELOG e registrar o SHA completo aprovado. Instalação/update continuam exigindo revisão explícita; não seguem main automaticamente.
+
+## Escopo atual (2.0.0)
+
+Ferramentas em tooling/web-code-reviewer. Perfil node não é mais fornecido; usar backend-code-reviewer para APIs/BFFs/Node/Nest. Evidências 1.x acima são históricas. Não executar check Nest neste checkout. Consultar [migração de consumidores](reviewer-migration.md) antes de atualizar uma instalação backend antiga.

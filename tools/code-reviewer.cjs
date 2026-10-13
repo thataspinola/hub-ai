@@ -49,20 +49,22 @@ function checkout(args) {
 }
 function run(args, log = console.log) {
   if (args.command === 'help' || args.help) {
-    log('node tools/code-reviewer.cjs setup|update|rollback|doctor|recover --project PATH --ref FULL_COMMIT_SHA [--profile auto|react|nextjs|angular|vue|node|frontend] [--capabilities base|LIST] [--dry-run] [--migrate] [--overwrite] [--cache PATH] [--repo TRUSTED_URL]\nOffline/development: replace --ref/--repo with --source LOCAL_HUB_CHECKOUT. No npm installation is required; Node 22+ and Git are required for remote sources.'); return
+    log('node tools/code-reviewer.cjs setup|update|rollback|doctor|recover --project PATH --ref FULL_COMMIT_SHA [--profile auto|react|nextjs|angular|vue|frontend] [--capabilities base|LIST] [--dry-run] [--migrate] [--overwrite] [--cache PATH] [--repo TRUSTED_URL]\nOffline/development: replace --ref/--repo with --source LOCAL_HUB_CHECKOUT. No npm installation is required; Node 22+ and Git are required for remote sources.'); return
   }
-  if (args.command === 'version') { log(fs.readFileSync(path.join(__dirname, '../codigo-a-ser-transcrito/VERSION'), 'utf8').trim()); return 0 }
+  if (args.command === 'version') { log(fs.readFileSync(path.join(__dirname, '../tooling/web-code-reviewer/VERSION'), 'utf8').trim()); return 0 }
   const project = fs.realpathSync(args.project)
   if (!fs.statSync(project).isDirectory()) throw new Error('Project must be an existing directory')
   let previous
   if (['update', 'rollback'].includes(args.command)) {
     // Validate the state path before reading; installation validates all managed paths.
-    const { safePath } = require('../codigo-a-ser-transcrito/scripts/hub-resources')
+    const { safePath } = require('../tooling/web-code-reviewer/scripts/hub-resources')
     previous = JSON.parse(fs.readFileSync(safePath(project, '.github/hub-ai-lock.json'), 'utf8'))
     if (previous.schema !== 1) throw new Error('Unsupported installation state')
   }
   const source = checkout(args)
-  const scripts = path.join(source, 'codigo-a-ser-transcrito/scripts')
+  // Preserve access to approved older releases for safe rollback/recovery.
+  const currentScripts = path.join(source, 'tooling/web-code-reviewer/scripts')
+  const scripts = fs.existsSync(currentScripts) ? currentScripts : path.join(source, 'codigo-a-ser-transcrito/scripts')
   if (!fs.existsSync(path.join(scripts, 'install.js')) || !fs.existsSync(path.join(source, 'resources/frontend'))) throw new Error('Source does not contain the complete reviewer resources')
   log(`Reviewer source: ${args.source ? source + ' (local; not pinned)' : args.repo + '@' + args.ref}`)
   if (args.command === 'doctor') {

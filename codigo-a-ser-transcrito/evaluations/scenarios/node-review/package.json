@@ -1,6 +1,0 @@
-{
-  "name": "synthetic-review-fixture",
-  "private": true,
-  "scripts": {"build": "npm ci --omit=dev"},
-  "devDependencies": {"@aws-sdk/client-eventbridge": "3.0.0"}
-}

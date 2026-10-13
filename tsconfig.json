@@ -38,10 +38,8 @@
   ],
   "exclude": [
     "node_modules",
-    "v0-form-wizard-builder-main",
-    "v0-painel-de-recomendacoes-ky",
-    "codigo-a-ser-transcrito",
-    "examples/nest-backend",
-    "tests/e2e"
+    "tooling/web-code-reviewer",
+    "tests/e2e",
+    "resources/frontend/evaluations"
   ]
 }

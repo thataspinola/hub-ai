@@ -12,7 +12,6 @@ A aplicação foi inicialmente gerada pelo Tech Store. Seu nome técnico é `@po
 | Copilot Setup | Inspecionar o projeto consumidor e adaptar suas instruções, agentes e skills |
 | Code Reviewer | Revisar alterações no editor conforme a stack, contratos, segurança e testes do consumidor |
 | CLI | Instalar, atualizar, diagnosticar e recuperar a configuração do reviewer |
-| Exemplos Node/Nest | Validar recursos backend e cenários de testes; não são serviços implantados do painel |
 
 A CLI não executa uma revisão com IA, não chama um modelo e não publica comentários em Merge Requests. A revisão é acionada no Copilot do editor. Não é necessária integração com GitLab, Jenkins ou registry npm para distribuir esses recursos.
 
@@ -41,14 +40,13 @@ Versões completas e ranges estão nos manifests e lockfiles de cada escopo. Nã
 | `__tests__/` | Suíte Jest da aplicação |
 | `.github/` | Agentes, skills e templates ativos do editor, instructions e lock do reviewer |
 | `resources/frontend/` | Fontes reutilizáveis dos recursos e perfis frontend |
-| `codigo-a-ser-transcrito/` | Recursos backend Node, ferramentas compartilhadas e exemplo JavaScript |
-| `examples/nest-backend/` | Exemplo independente TypeScript/Nest, com testes próprios |
+| `tooling/web-code-reviewer/` | Instalação, diagnóstico, validação e avaliação frontend |
 | `tools/code-reviewer.cjs` | CLI de distribuição do reviewer |
 | `src/data/ai-resources.json` | Catálogo gerado dos recursos de IA, consumido pela página `/code-reviewer` |
 | `docs/` | Documentação do projeto, revisão, configuração e evidências |
 | `config/`, `pom.xml` | Configuração e infraestrutura corporativa existentes |
 
-React, Next.js e os exemplos TypeScript ficam fora de `codigo-a-ser-transcrito`. Os scripts JavaScript compartilhados continuam reconhecendo stacks frontend. TypeScript e Jest do painel excluem o toolkit e o exemplo Nest para manter as validações independentes.
+Os recursos frontend ficam em resources/frontend; ferramentas JavaScript ficam em tooling/web-code-reviewer. TypeScript/Jest do painel excluem ferramentas e fixtures. Backend Node/Nest fica no projeto backend-code-reviewer.
 
 ### Nomenclatura e limites dos escopos
 
@@ -158,7 +156,7 @@ node tools/code-reviewer.cjs doctor --project /caminho/aplicacao --ref "$HUB_AI_
 | `--ref` | SHA completo e imutável da fonte; não aceita branch/tag |
 | `--dry-run` | Mostra o plano sem escrever no projeto consumidor |
 | `--source` | Usa um checkout local aprovado em vez de obter uma fonte remota |
-| `--profile` | Seleciona explicitamente `react`, `nextjs`, `angular`, `vue`, `node` ou `frontend` |
+| `--profile` | Seleciona explicitamente `react`, `nextjs`, `angular`, `vue` ou `frontend` |
 
 ### Perfis e seleção do agente
 
@@ -168,7 +166,6 @@ node tools/code-reviewer.cjs doctor --project /caminho/aplicacao --ref "$HUB_AI_
 | React | `react` | Web Code Reviewer |
 | Angular | `angular` | Web Code Reviewer |
 | Vue | `vue` | Web Code Reviewer |
-| Node/Nest | `node` | Node Code Reviewer |
 | Frontend legado | `frontend` | Frontend Code Reviewer |
 
 A detecção automática prioriza Next.js sobre React. TypeScript acompanha o framework. Em monorepos, apontar `--project` para o pacote consumidor e selecionar o perfil explicitamente quando necessário. `--capabilities base` instala o conjunto base; outros conjuntos usam nomes do manifesto separados por vírgulas.
@@ -219,33 +216,31 @@ Nesse modo, o conteúdo local é usado inclusive se houver mudanças não commit
 
 TypeScript utiliza o perfil do framework; não é um perfil independente. Pacotes com frontend e backend misturados exigem escopo/perfil explícito. Depois da instalação, configurar as instruções com Copilot Setup e acionar o reviewer correspondente no editor.
 
-## Validar as ferramentas e exemplos
+## Validar as ferramentas
 
 As dependências destes escopos são separadas das dependências do painel. Instalar com o registry/ambiente aprovado:
 
 ```sh
-npm ci --prefix codigo-a-ser-transcrito --ignore-scripts --no-audit --no-fund
-npm ci --prefix examples/nest-backend --ignore-scripts --no-audit --no-fund
-npm --prefix codigo-a-ser-transcrito run check
+npm ci --prefix tooling/web-code-reviewer --ignore-scripts --no-audit --no-fund
+npm --prefix tooling/web-code-reviewer run check
 ```
 
-`check` valida os recursos e executa testes das ferramentas, do exemplo Node e do exemplo Nest, incluindo typecheck/build/smoke do Nest. Comandos adicionais:
+`check` valida recursos frontend e executa os testes das ferramentas. A aplicação usa check:local, build, test:standalone e test:e2e separadamente. Comandos adicionais:
 
 ```sh
-npm --prefix examples/nest-backend run test:cov
-npm --prefix codigo-a-ser-transcrito run project:inspect
-npm --prefix codigo-a-ser-transcrito run catalog:export
+npm --prefix tooling/web-code-reviewer run project:inspect
+npm --prefix tooling/web-code-reviewer run catalog:export
 ```
 
-O export do catálogo atualiza `src/data/ai-resources.json`. Os E2E Nest usam HTTP local e serviços/adapters controlados; não comprovam integração com AWS, Keycloak, Dynamics ou serviços corporativos reais.
+O export do catálogo atualiza `src/data/ai-resources.json`. Os testes locais não comprovam integração com Keycloak, AppConfig ou serviços corporativos.
 
 ## Avaliar a qualidade do reviewer
 
-Os casos Node ficam em `codigo-a-ser-transcrito/evaluations/scenarios/`; os frontend, em `resources/frontend/evaluations/review/` e `clean/`. São fixtures sintéticas, separadas da aplicação.
+Os casos frontend ficam em `resources/frontend/evaluations/review/` e `clean/`. São fixtures sintéticas, separadas da aplicação.
 
 1. Fixar o SHA dos recursos e registrar editor, modelo e data.
 2. Apresentar cada caso separadamente ao reviewer, com o mesmo prompt, sem mostrar rubrica, erros esperados ou relatórios anteriores.
-3. Salvar o relatório bruto, sem editar achados, em `codigo-a-ser-transcrito/evaluations/results/`.
+3. Salvar o relatório bruto, sem editar achados, em `tooling/web-code-reviewer/evaluations/results/`.
 4. Um avaliador humano relaciona achados ao código, identifica falsos positivos e preenche a adjudicação.
 5. Executar a pontuação e registrar também os problemas omitidos.
 
@@ -266,13 +261,13 @@ Exemplo de estrutura; preencher com a avaliação real:
 }
 ```
 
-Os cenários `frontend-review`, `frontend-clean`, `node-review` e `node-clean` usam a rubrica em `codigo-a-ser-transcrito/evaluations/rubric.json`. O script exige relatório bruto existente dentro do toolkit e rejeita IDs desconhecidos. Recall mede os problemas esperados encontrados; precision considera os acertos e falsos positivos; omissões registram problemas esperados não encontrados. Métricas sem denominador são `null`, inclusive em um caso limpo sem achados.
+Os cenários `frontend-review`, `frontend-clean` usam a rubrica em `tooling/web-code-reviewer/evaluations/rubric.json`. O script exige relatório bruto existente dentro do toolkit e rejeita IDs desconhecidos. Recall mede os problemas esperados encontrados; precision considera os acertos e falsos positivos; omissões registram problemas esperados não encontrados. Métricas sem denominador são `null`, inclusive em um caso limpo sem achados.
 
-Testar o cálculo das métricas não certifica a qualidade semântica do modelo. A nova avaliação frontend no editor está pendente; os resultados Node existentes são históricos.
+Testar o cálculo das métricas não certifica a qualidade semântica do modelo. A nova avaliação frontend no editor está pendente; avaliações backend pertencem ao backend-code-reviewer.
 
 ## Evidências e pendências
 
-Resultados locais da versão 1.8.0, em Node 24.19.0/Linux, registrados em 2026-10-09:
+Resultados históricos locais da versão 1.8.0, em Node 24.19.0/Linux, registrados em 2026-10-09:
 
 | Validação | Resultado |
 | --- | --- |
@@ -312,8 +307,7 @@ Mocks, testes locais e audit não certificam integrações ou produção. Não f
 - [Revisão do painel](docs/code-review.md)
 - [Estrutura e nomenclatura](docs/structure-and-naming.md)
 - [Evidências de validação](docs/validation-current.md)
-- [Toolkit backend e ferramentas compartilhadas](codigo-a-ser-transcrito/README.md)
-- [Exemplo Nest e sua suíte](examples/nest-backend/README.md)
+- [Ferramentas do Web Code Reviewer](tooling/web-code-reviewer/README.md)
 
 ## Autenticação, flags e persistência
 
@@ -326,3 +320,15 @@ O refresh usa o issuer/client ID/client secret existentes, renova antes do venci
 Formulários/importações e dados persistidos passam por validação estrutural. Falhas de armazenamento aparecem na interface; o índice não sobrescreve conteúdo corrompido e uma falha de gravação tenta restaurar o documento anterior. IndexedDB confirma sucesso apenas após o commit da transação e trata abortos. localStorage não oferece transações entre chaves: preservar backup e validar quotas/recuperação no ambiente real.
 
 Os toolkits reconhecem seus estados separados e impedem sobrescrita de recursos do outro. O Setup backend usa nome próprio. Journals de recuperação não podem apontar para código da aplicação.
+
+## Divisão atual dos projetos (2.0.0)
+
+O hub-ai mantém o painel e a revisão frontend. Perfil Node, skills/agente backend, exemplos Node/Nest e avaliações backend foram retirados deste checkout. APIs/BFFs, Node vanilla, NestJS, Lambda e eventos são cobertos pelo [backend-code-reviewer](https://github.com/thataspinola/backend-code-reviewer).
+
+A antiga pasta codigo-a-ser-transcrito foi eliminada; ferramentas necessárias ficam em tooling/web-code-reviewer. Instalações frontend mantêm os mesmos destinos e estado. Instalações backend antigas são recusadas sem alteração automática. Consultar [migração](docs/reviewer-migration.md) e [estrutura](docs/structure-and-naming.md). Use uma revisão 2.0.0 aprovada para novos setups; os números 1.8.0 acima são históricos.
+
+## Limpeza de escopo — 2026-10-13 (2.0.0)
+
+Removidos perfil/agente/skills/templates backend, exemplos Node/Nest e avaliações Node. Ferramentas necessárias movidas para tooling/web-code-reviewer; codigo-a-ser-transcrito eliminada. Catálogo frontend e Setup instalado atualizados. README e guias de uso/migração dos dois projetos revisados.
+
+Validação atual: 42 testes do toolkit frontend, 384 testes/41 suítes Jest do painel, configuração/lint/typecheck, build/postbuild e smoke standalone passaram. Doctor mantém apenas o aviso do agente frontend_engineering_expert externo preservado. E2E/editor/integrações reais não foram reexecutados nesta limpeza. Números e exemplos Node/Nest anteriores são históricos; validação backend pertence ao projeto independente.

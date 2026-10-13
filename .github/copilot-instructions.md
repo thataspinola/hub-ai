@@ -8,7 +8,7 @@ Testes existentes usam Jest/React Testing Library. Scripts declarados na raiz: n
 
 Recursos de frontend ficam em resources/frontend; recursos ativos em .github/agents, .github/skills e .github/templates. Copilot Setup é compartilhado; Web Code Reviewer revisa esta aplicação. O frontend_engineering_expert existente permanece preservado. Usar as skills instaladas Next/React, qualidade/testes web, segurança e entrega conforme o lock; não instalar runners diferentes apenas por orientação genérica.
 
-codigo-a-ser-transcrito conserva ferramentas/backend Node. examples/nest-backend é exemplo independente; ambos estão excluídos da suíte/build Next. Validar o toolkit separadamente com npm --prefix codigo-a-ser-transcrito run check. Catálogo de recursos disponível em src/data/ai-resources.json; regenerar com npm --prefix codigo-a-ser-transcrito run catalog:export. Não remover dados existentes da aplicação.
+tooling/web-code-reviewer contém as ferramentas frontend; fixtures e ferramentas estão excluídas da suíte/build Next. Backend Node/Nest é mantido no backend-code-reviewer. Validar o toolkit separadamente com npm --prefix tooling/web-code-reviewer run check. Catálogo de recursos disponível em src/data/ai-resources.json; regenerar com npm --prefix tooling/web-code-reviewer run catalog:export. Não remover dados existentes da aplicação.
 
 Não criar arquivos .py. Não inserir secrets, tokens, CPF real ou certificados em logs/fixtures. Não editar .env. Respeitar VDI e a infraestrutura/pipeline existente, sem deploy automático. Reportar validações realizadas e limites; mocks locais não comprovam Keycloak, AppConfig ou deploy.
 

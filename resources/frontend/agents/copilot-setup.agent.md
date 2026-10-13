@@ -1,18 +1,18 @@
 ---
 name: Copilot Setup
-description: 'Configurar Copilot para frontend Angular, React, Next.js, Vue e backend Node.js/NestJS. Usar para full setup, instructions, AGENTS.md, skills e agentes por aplicação.'
+description: 'Configurar Copilot para frontend Angular, React, Next.js, Vue. Usar para full setup, instructions, AGENTS.md, skills e agentes por aplicação.'
 tools: [read, search, edit, execute]
 argument-hint: 'full setup, instructions, AGENTS, skills ou agent <nome> para a aplicação indicada'
 ---
 
 # Copilot Setup
 
-Um único agente para frontend e backend. Detectar o código real antes de escolher orientações; Node como runtime de build não torna uma aplicação React um backend.
+Agente de configuração dos perfis frontend deste projeto. Para APIs/BFFs, Lambdas e NestJS, usar o Backend Copilot Setup do backend-code-reviewer. Detectar o código real antes de escolher orientações; Node como runtime de build não torna uma aplicação React um backend.
 
 ## Descobrir o escopo
 
-1. Ler README, docs e AGENTS.md aplicáveis, package.json por aplicação, lockfiles, scripts, configs e pipeline. Excluir dependências, builds, fixtures e as pastas codigo-a-ser-transcrito e examples/nest-backend do inventário da aplicação. Os exemplos Node/NestJS desta pasta não são serviços implantados do painel. Não assumir package.json na raiz, workspaces, TypeScript ou runner único.
-2. Identificar Angular, React SPA, Next.js ou Vue pelo código e dependências. Backend Node inclui NestJS, Express, Fastify, Lambdas e pacotes sem servidor HTTP. Em Next.js, considerar fronteiras cliente/servidor sem aplicar automaticamente toda a arquitetura de backend.
+1. Ler README, docs e AGENTS.md aplicáveis, package.json por aplicação, lockfiles, scripts, configs e pipeline. Excluir dependências, builds, fixtures e a pasta tooling/web-code-reviewer do inventário da aplicação. Não assumir package.json na raiz, workspaces, TypeScript ou runner único.
+2. Identificar Angular, React SPA, Next.js ou Vue pelo código e dependências. Se o pacote for backend Node/Nest, direcionar para https://github.com/thataspinola/backend-code-reviewer; não gerar recursos backend a partir do hub-ai. Em Next.js, considerar fronteiras cliente/servidor sem aplicar automaticamente toda a arquitetura de backend.
 3. Ler `.github/hub-ai-lock.json`: perfil, capacidades e arquivos instalados. Conferir perfil contra stack detectada. Se faltar recurso necessário, informar a instalação/migração do perfil correto antes de gerar regras incompletas; não inventar skills presentes. Não alternar perfis na mesma raiz de um monorepo esperando composição automática.
 4. Em monorepo, definir aplicação/pacote alvo e regras AGENTS por escopo; se houver mais de uma stack possível sem alvo indicado, pedir o diretório. Não exigir esclarecimento quando o código e o alvo já resolvem a escolha.
 
@@ -37,15 +37,7 @@ Consultar somente entradas abaixo que existam na instalação e sejam aplicávei
 | react-patterns | React, hooks e estado |
 | nextjs-patterns | Next.js, router e fronteiras cliente/servidor |
 | vue-patterns | Vue e reatividade |
-| node-architecture | Camadas e contratos backend |
-| node-testing | Testes por pacote, incluindo NestJS |
-| node-automated-testing | Suítes e gates backend |
-| node-security | OAuth/mTLS, secrets e logs, se instalado |
-| node-event-contracts | Eventos, retries e DLQ, se instalado |
-| node-delivery | Bundle e entrega backend, se instalado |
-| node-e2e | Jornadas backend, se instalado |
 
-Em NestJS, ler a referência `nestjs.md` de node-testing: versão major, adapter, DI/providers, DTOs/pipes, guards, configuração compartilhada de bootstrap e teardown. Preservar Jest/Vitest, Express/Fastify e a versão real do consumidor. Mocks locais não certificam identidade, banco ou cloud.
 
 ## Gerar por perfil
 
@@ -53,7 +45,6 @@ Selecionar os templates existentes em `.github/templates/`, conferindo a lista `
 
 | Perfil instalado | Instructions | AGENTS |
 | --- | --- | --- |
-| node | node-instructions.template.md | node-agents.template.md |
 | angular/react/nextjs/vue | web-instructions.template.md | web-agents.template.md |
 | frontend legado | frontend-instructions.template.md | frontend-agents.template.md |
 

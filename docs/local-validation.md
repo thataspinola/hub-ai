@@ -42,3 +42,9 @@ Consultar docs/improvements-status.md para resultados da versão atual e distin�
 ## Reexecução de 2026-10-09
 
 Jest 384/41 suítes, configuração 2, toolkit 43, Node 8 e Nest 18 passaram. Build com cache limpo e smoke standalone passaram. E2E Playwright não iniciou: o executável alternativo Chromium da execução anterior não existe mais no ambiente. Não houve falha de jornada observada nem aprovação de E2E nesta rodada. Ver README para proteção administrativa, refresh e AppConfig; homologação externa permanece pendente.
+
+## Limpeza de escopo — 2026-10-13 (2.0.0)
+
+Removidos perfil/agente/skills/templates backend, exemplos Node/Nest e avaliações Node. Ferramentas necessárias movidas para tooling/web-code-reviewer; codigo-a-ser-transcrito eliminada. Catálogo frontend e Setup instalado atualizados. README e guias de uso/migração dos dois projetos revisados.
+
+Validação atual: 42 testes do toolkit frontend, 384 testes/41 suítes Jest do painel, configuração/lint/typecheck, build/postbuild e smoke standalone passaram. Doctor mantém apenas o aviso do agente frontend_engineering_expert externo preservado. E2E/editor/integrações reais não foram reexecutados nesta limpeza. Números e exemplos Node/Nest anteriores são históricos; validação backend pertence ao projeto independente.

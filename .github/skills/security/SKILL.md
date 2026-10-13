@@ -15,4 +15,4 @@ description: "Revisar segurança frontend: XSS/CSRF, cookies, headers, minimiza�
 8. Não logar dados pessoais ou erros brutos de transporte. Mascaramento pode reduzir exposição, mas preferir identificadores sem PII quando suficientes.
 9. Para propostas e consentimento, testar submissão duplicada, autorização, valor explícito e auditoria sem expor dados do cliente.
 
-Consultar [padrões por fronteira](references/patterns.md). Para OAuth/mTLS de backend Node, usar a skill node-security quando instalada.
+Consultar [padrões por fronteira](references/patterns.md). Para OAuth/mTLS de backend Node, usar os recursos do backend-code-reviewer no pacote backend.

@@ -49,3 +49,9 @@ Consultar [validação local](local-validation.md), [CLI](code-reviewer-cli.md) 
 ## Correções de 2026-10-09
 
 Implementados: recuperação limitada aos recursos conhecidos, proteção de propriedade entre toolkits, refresh de token, proteção administrativa em produção, logout POST/Origin/timeout, configuração AppConfig no servidor, validação de JSON/localStorage e commit de IndexedDB. Jest: 384 testes/41 suítes; toolkit: 43; Node: 8; Nest: 18. Homologação Keycloak/roles/refresh distribuído, AppConfig real, VDI e avaliação do modelo no editor permanecem pendentes.
+
+## Limpeza de escopo — 2026-10-13 (2.0.0)
+
+Removidos perfil/agente/skills/templates backend, exemplos Node/Nest e avaliações Node. Ferramentas necessárias movidas para tooling/web-code-reviewer; codigo-a-ser-transcrito eliminada. Catálogo frontend e Setup instalado atualizados. README e guias de uso/migração dos dois projetos revisados.
+
+Validação atual: 42 testes do toolkit frontend, 384 testes/41 suítes Jest do painel, configuração/lint/typecheck, build/postbuild e smoke standalone passaram. Doctor mantém apenas o aviso do agente frontend_engineering_expert externo preservado. E2E/editor/integrações reais não foram reexecutados nesta limpeza. Números e exemplos Node/Nest anteriores são históricos; validação backend pertence ao projeto independente.

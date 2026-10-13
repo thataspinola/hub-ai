@@ -1,3 +1,7 @@
+# Evidência histórica — integração de 2026-10-08
+
+O conteúdo abaixo registra versões anteriores à separação 2.0.0; exemplos backend não existem mais neste checkout. Para comandos atuais, usar README e docs/code-reviewer-cli.md.
+
 # Validação da integração — 2026-10-08
 
 Base remota: main 48304b7. Ferramentas do toolkit 1.5.0 executadas em Node 24.19.0/Linux, com dependências locais previamente preparadas; instalação corporativa da aplicação não foi executada.
@@ -17,10 +21,9 @@ Base remota: main 48304b7. Ferramentas do toolkit 1.5.0 executadas em Node 24.19
 Comandos a partir da raiz:
 
 ```sh
-npm --prefix codigo-a-ser-transcrito run check
-npm --prefix examples/nest-backend run test:cov
-npm --prefix codigo-a-ser-transcrito run project:inspect
-node codigo-a-ser-transcrito/scripts/install.js . --dry-run
+npm --prefix tooling/web-code-reviewer run check
+npm --prefix tooling/web-code-reviewer run project:inspect
+node tooling/web-code-reviewer/scripts/install.js . --dry-run
 ```
 
 O novo código em src/, __tests__/, config/, public/ e o agente frontend existente permanece preservado. Além das exclusões de escopo em tsconfig.json/jest.config.ts, foram adicionados recursos frontend, configurações Copilot/AGENTS/instructions e catálogo JSON. O material anterior foi movido para esses caminhos; dependências, scripts e lockfile da aplicação não foram substituídos.

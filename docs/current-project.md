@@ -14,17 +14,17 @@ Referência de leitura: main 48304b7, em 2026-10-08. Reinspecionar package.json 
 | Recomendações | Stores/IndexedDB/tipos e componentes administrativos em src/lib/recommendations e src/components/portal-admin |
 | Entrega | pom.xml e config/ existentes; não há .gitlab-ci.yml ou Jenkinsfile versionado nesta revisão |
 
-Preservar todo o código novo. Recursos Node/Nest deste toolkit são reutilizáveis para outros consumidores, não serviços backend encontrados no painel. O perfil correto da aplicação atual é nextjs, com web-quality, web-testing, security, gitlab-delivery, nextjs-patterns e react-patterns.
+Preservar todo o código novo. Recursos e exemplos Node/Nest são mantidos no backend-code-reviewer; não existem neste toolkit frontend. O perfil correto da aplicação atual é nextjs, com web-quality, web-testing, security, gitlab-delivery, nextjs-patterns e react-patterns.
 
 Copilot Setup deve inventariar src/__tests__/ e configurações da aplicação; excluir este toolkit e seus exemplos do inventário de stack. O agente frontend já versionado na raiz continua preservado. Recursos do hub recomendam usar o runner instalado (Jest nesta aplicação), sem instalar Vitest, MSW ou Playwright apenas por constarem em orientações genéricas.
 
 ## Validação e limites
 
-`npm --prefix codigo-a-ser-transcrito run project:inspect` atualiza a leitura de stack/scripts, configuração e estado do lockfile sem escrever no consumidor. `npm --prefix codigo-a-ser-transcrito run check` valida as ferramentas e os recursos do toolkit/resources/frontend. `npm test` e `npm run build` na raiz pertencem à aplicação e exigem o ambiente/dependências dela.
+`npm --prefix tooling/web-code-reviewer run project:inspect` atualiza a leitura de stack/scripts, configuração e estado do lockfile sem escrever no consumidor. `npm --prefix tooling/web-code-reviewer run check` valida as ferramentas e os recursos do toolkit/resources/frontend. `npm test` e `npm run build` na raiz pertencem à aplicação e exigem o ambiente/dependências dela.
 
 O package-lock.json foi recuperado integralmente da branch HPC (commit 858ba6a), sem regeneração ou troca de registry. As dependências da entrada raiz coincidem com package.json. A instalação corporativa depende do registry/certificado aprovado; a suíte e o build da aplicação devem ser executados na VDI. Não inferir que scripts declarados passaram ou que o AppConfig Agent/Keycloak real funcionaram a partir de testes do toolkit.
 
-A integração moveu os recursos frontend para resources/frontend e os ativou em .github, com AGENTS/instructions específicos. O catálogo fica em src/data/ai-resources.json e o exemplo TypeScript/Nest em examples/nest-backend. Jest/TypeScript excluem o toolkit e o exemplo independente. Rotas, interfaces, feature flags, recomendações, formulários, sessão e infraestrutura do código novo foram preservados.
+A integração moveu os recursos frontend para resources/frontend e os ativou em .github, com AGENTS/instructions específicos. O catálogo fica em src/data/ai-resources.json e as ferramentas ficam em tooling/web-code-reviewer. Jest/TypeScript excluem o toolkit e as fixtures frontend. Rotas, interfaces, feature flags, recomendações, formulários, sessão e infraestrutura do código novo foram preservados.
 
 ## Correção após comparação com HPC-606
 

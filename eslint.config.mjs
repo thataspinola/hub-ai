@@ -7,5 +7,5 @@ export default defineConfig([
   ...nextTypescript,
   { rules: { '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }] } },
   { files: ['**/*.cjs', '__tests__/**'], rules: { '@typescript-eslint/no-require-imports': 'off' } },
-  globalIgnores(['.next/**', 'dist/**', 'coverage/**', 'playwright-report/**', 'test-results/**', 'next-env.d.ts', 'codigo-a-ser-transcrito/**', 'examples/**', 'resources/**', '.github/**']),
+  globalIgnores(['.next/**', 'dist/**', 'coverage/**', 'playwright-report/**', 'test-results/**', 'next-env.d.ts', 'tooling/web-code-reviewer/**', 'examples/**', 'resources/**', '.github/**']),
 ])

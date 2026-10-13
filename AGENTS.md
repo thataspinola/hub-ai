@@ -14,7 +14,7 @@ A autenticação existente usa NextAuth/Keycloak. Não registrar tokens, secrets
 
 Usar Jest e React Testing Library adotados pelo projeto. Verificar package.json e configurações antes de executar scripts. npm test/build da raiz pertencem à aplicação; registry e certificados corporativos podem exigir a VDI. Não trocar Jest por outro runner. A suíte Playwright autorizada fica em tests/e2e, com servidor localhost e bloqueio de rede externa. Não reduzir gates, criar scripts fictícios ou ocultar falhas.
 
-As ferramentas compartilhadas estão em codigo-a-ser-transcrito; recursos frontend em resources/frontend; configuração ativa do editor em .github. O exemplo independente Nest fica em examples/nest-backend. Não incluir esses exemplos no inventário de stack ou na suíte/build Next. Validar o toolkit separadamente com npm --prefix codigo-a-ser-transcrito run check.
+As ferramentas compartilhadas estão em tooling/web-code-reviewer; recursos frontend em resources/frontend; configuração ativa do editor em .github. Backend Node/Nest e exemplos são mantidos no backend-code-reviewer. Não incluir ferramentas ou fixtures na suíte/build Next. Validar o toolkit separadamente com npm --prefix tooling/web-code-reviewer run check.
 
 ## Recursos do Copilot
 

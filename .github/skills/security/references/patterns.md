@@ -13,4 +13,4 @@ CPF: normalizar e validar apenas quando o domínio exigir. Não enviar dados pes
 
 Não ensinar criptografia cliente como proteção contra XSS nem cookie escrito por document.cookie como sessão HttpOnly. Não copiar segredos para fixtures.
 
-O exemplo Node executável no hub (`examples/node-backend/README.md`) inclui teste de criptografia autenticada somente no servidor, com chave sintética. Ele demonstra o mecanismo, não substitui KMS, rotação, controles de acesso ou avaliação de produção.
+Exemplos e critérios específicos de segurança backend ficam no backend-code-reviewer. No frontend, validar autenticação, autorização, saída HTML e fronteiras cliente/servidor; exemplos locais não substituem avaliação de produção.

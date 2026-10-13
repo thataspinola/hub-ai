@@ -1,0 +1,35 @@
+'use strict'
+const test = require('node:test'), assert = require('node:assert/strict')
+const fs = require('node:fs'), path = require('node:path'), os = require('node:os')
+const { spawnSync } = require('node:child_process')
+const { ROOT, REPOSITORY_ROOT } = require('../../scripts/hub-resources'), { score } = require('../../scripts/score-evaluation')
+function mutation(t, name, mutate) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hub-validate-')); t.after(() => fs.rmSync(dir, { recursive: true, force: true }))
+  const copy = path.join(dir, 'tooling/web-code-reviewer')
+  fs.cpSync(ROOT, copy, { recursive: true, filter: source => !['.git', 'node_modules', '__pycache__', 'dist', 'coverage'].includes(path.basename(source)) })
+  fs.cpSync(path.join(REPOSITORY_ROOT, 'docs'), path.join(dir, 'docs'), { recursive: true })
+  fs.cpSync(path.join(REPOSITORY_ROOT, 'resources/frontend'), path.join(dir, 'resources/frontend'), { recursive: true })
+  fs.mkdirSync(path.join(dir, 'src/data'), { recursive: true })
+  fs.copyFileSync(path.join(REPOSITORY_ROOT, 'src/data/ai-resources.json'), path.join(dir, 'src/data/ai-resources.json'))
+  fs.symlinkSync(path.join(ROOT, 'node_modules'), path.join(copy, 'node_modules'), 'dir')
+  const baseline = spawnSync(process.execPath, [path.join(copy, 'scripts/validate.js')], { encoding: 'utf8' }); assert.equal(baseline.status, 0, baseline.stdout + baseline.stderr)
+  const file = path.join(copy, name); fs.writeFileSync(file, mutate(fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : ''))
+  const result = spawnSync(process.execPath, [path.join(copy, 'scripts/validate.js')], { encoding: 'utf8' }); assert.notEqual(result.status, 0, result.stdout)
+}
+test('invalid YAML rejected', t => mutation(t, 'resources/skills/gitlab-delivery/SKILL.md', text => text.replace('name: gitlab-delivery', 'name: [')))
+test('non-string metadata rejected', t => mutation(t, 'resources/skills/gitlab-delivery/SKILL.md', text => text.replace('name: gitlab-delivery', 'name: 123')))
+test('missing profile resource rejected', t => mutation(t, '../../resources/frontend/profiles/react/profile.json', text => text.replace('skills/web-testing', 'skills/missing')))
+test('prohibited runtime files rejected', t => mutation(t, 'prohibited.py', () => ''))
+test('unsupported CI runtime rejected', t => mutation(t, '.gitlab-ci.yml', () => 'job:\n  image: python:3.12-slim\n'))
+test('noncanonical names rejected', t => mutation(t, 'Bad_File.md', () => 'bad name'))
+test('duplicate setup selection rejected', t => mutation(t, '../../resources/frontend/profiles/react/profile.json', text => text.replace('Copilot Setup', 'Web Setup')))
+
+test('stale portal catalog rejected', t => mutation(t, '../../src/data/ai-resources.json', text => text.replace(JSON.parse(text).version, '0.0.0')))
+test('frontend evaluation counts missed findings and false positives honestly', t => {
+  const raw = path.join(ROOT, 'evaluations/results/frontend-test.raw.md'); fs.writeFileSync(raw, 'Temporary reviewer test output'); t.after(() => fs.rmSync(raw, { force: true }))
+  const base = { raw_report: 'evaluations/results/frontend-test.raw.md', adjudicator: 'test-human', false_positives: 1 }
+  const result = score({ ...base, scenario: 'frontend-review', matched_expected: ['stale-effect'] })
+  assert.equal(result.recall, 1 / 3); assert.equal(result.precision, 1 / 2)
+  const clean = score({ ...base, scenario: 'frontend-clean', matched_expected: [] })
+  assert.equal(clean.precision, 0); assert.equal(clean.recall, null)
+})
