@@ -92,18 +92,14 @@ Os pares `config/values_dev`, `values_hml` e `values_prd` nas extensões `.yaml`
 Após instalar as dependências no ambiente aprovado:
 
 ```sh
-npx playwright install chromium
+npm run test:e2e:install
 npm run test:e2e:list
 npm run test:e2e
 ```
 
 Playwright inicia uma instância nova em `127.0.0.1:3100`, com o basePath real. Cada teste usa contexto limpo, bloqueia service workers e requisições a outros hosts/portas e intercepta a sessão como anônima. Não há bypass de autenticação no código da aplicação. As quatro jornadas cobrem catálogo/perfis do reviewer, flags, criação/persistência de formulário e recomendações.
 
-Se um Chromium aprovado já estiver instalado, informar o executável por variável de processo:
-
-```sh
-HUB_AI_E2E_CHROMIUM_PATH=/caminho/chromium npm run test:e2e
-```
+O projeto E2E padrão é `webkit`, com o perfil `Desktop Safari` do Playwright. Usar os binários WebKit da versão fixada no package.json; o executável Chromium e a variável `HUB_AI_E2E_CHROMIUM_PATH` não são mais utilizados. Em Linux, instalar dependências de sistema com `npx playwright install-deps webkit` somente pelo processo autorizado. O WebKit do Playwright não equivale ao Safari instalado.
 
 Não versionar caminhos da máquina ou credenciais em `.env`, nem apontar esses casos locais para um ambiente real. As jornadas controladas não validam autorização ou integrações corporativas.
 
@@ -287,7 +283,7 @@ A validação usou dependências públicas isoladas, preservando registry/certif
 Continuam pendentes, fora deste ambiente:
 
 - Descoberta/execução efetiva dos agentes no editor e avaliação semântica com relatório bruto/adjudicação humana.
-- Instalação pelo mirror corporativo, certificado e disponibilidade do Chromium aprovado.
+- Instalação pelo mirror corporativo, certificado e disponibilidade do WebKit e suas dependências aprovadas.
 - Keycloak, AppConfig, APIs, AWS, credenciais e autorização reais.
 - Provisionamento, compatibilidade do chart/pipeline e deploy pelo processo corporativo existente.
 - Rotação de eventuais credenciais históricas utilizadas, pelos responsáveis.
@@ -332,3 +328,8 @@ A antiga pasta codigo-a-ser-transcrito foi eliminada; ferramentas necessárias f
 Removidos perfil/agente/skills/templates backend, exemplos Node/Nest e avaliações Node. Ferramentas necessárias movidas para tooling/web-code-reviewer; codigo-a-ser-transcrito eliminada. Catálogo frontend e Setup instalado atualizados. README e guias de uso/migração dos dois projetos revisados.
 
 Validação atual: 42 testes do toolkit frontend, 384 testes/41 suítes Jest do painel, configuração/lint/typecheck, build/postbuild e smoke standalone passaram. Doctor mantém apenas o aviso do agente frontend_engineering_expert externo preservado. E2E/editor/integrações reais não foram reexecutados nesta limpeza. Números e exemplos Node/Nest anteriores são históricos; validação backend pertence ao projeto independente.
+
+
+## E2E com WebKit — 2026-10-21
+
+Playwright agora usa webkit/Desktop Safari. Configuração carregada e quatro jornadas listadas; execução pendente porque faltam bibliotecas de sistema neste ambiente. Ver [validação local](docs/local-validation.md). Os resultados Chromium anteriores são históricos.

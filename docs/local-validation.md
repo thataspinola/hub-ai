@@ -21,13 +21,13 @@ Playwright inicia um servidor novo em 127.0.0.1:3100 com o basePath real. Não r
 
 As jornadas cobrem catálogo/perfis do reviewer, persistência e busca de flags com fixture local, criação/persistência de formulário e catálogo de recomendações. São quatro casos locais; não substituem testes de autorização, serviços reais e integração corporativa.
 
-O runner exige um Chromium compatível. Instalar pelo Playwright no ambiente autorizado:
+O runner usa WebKit com o perfil Desktop Safari. Instalar os binários compatíveis pelo Playwright no ambiente autorizado:
 
 ```sh
-npx playwright install chromium
+npm run test:e2e:install
 ```
 
-Se um navegador aprovado já estiver instalado, a configuração aceita a variável HUB_AI_E2E_CHROMIUM_PATH com seu executável. Não adicionar caminhos da máquina nem credenciais a arquivos .env do repositório. Não usar uma URL de ambiente real como base dos casos locais.
+Usar o WebKit distribuído pela versão fixada do Playwright. A antiga variável HUB_AI_E2E_CHROMIUM_PATH não é utilizada. Não adicionar caminhos nem credenciais a arquivos .env. Em Linux, dependências de sistema devem ser instaladas pelo processo aprovado (npx playwright install-deps webkit). Não usar URL de ambiente real como base dos casos locais.
 
 ## Entrega e autenticação
 
@@ -48,3 +48,10 @@ Jest 384/41 suítes, configuração 2, toolkit 43, Node 8 e Nest 18 passaram. Bu
 Removidos perfil/agente/skills/templates backend, exemplos Node/Nest e avaliações Node. Ferramentas necessárias movidas para tooling/web-code-reviewer; codigo-a-ser-transcrito eliminada. Catálogo frontend e Setup instalado atualizados. README e guias de uso/migração dos dois projetos revisados.
 
 Validação atual: 42 testes do toolkit frontend, 384 testes/41 suítes Jest do painel, configuração/lint/typecheck, build/postbuild e smoke standalone passaram. Doctor mantém apenas o aviso do agente frontend_engineering_expert externo preservado. E2E/editor/integrações reais não foram reexecutados nesta limpeza. Números e exemplos Node/Nest anteriores são históricos; validação backend pertence ao projeto independente.
+
+
+## WebKit no Playwright — 2026-10-21
+
+O projeto E2E padrão passou a webkit/Desktop Safari. Instalar com npm run test:e2e:install e executar npm run test:e2e; test:e2e:list lista as jornadas sem abrir navegador. A variável HUB_AI_E2E_CHROMIUM_PATH foi retirada da configuração. BasePath, servidor localhost, isolamento de contexto e bloqueio de rede externa foram preservados.
+
+Validação com Playwright 1.62.1: configuração carregada e quatro jornadas listadas como [webkit]. Binário WebKit baixado, porém a inicialização foi bloqueada por bibliotecas de sistema ausentes (GTK/GStreamer e outras). install-deps webkit também foi bloqueado por permissões do ambiente. As quatro jornadas não foram executadas nesta rodada. Instalar dependências de sistema pelo processo autorizado antes da execução; não confundir descoberta de testes com E2E aprovado.
