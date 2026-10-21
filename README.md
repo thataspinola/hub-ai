@@ -92,18 +92,25 @@ Os pares `config/values_dev`, `values_hml` e `values_prd` nas extensões `.yaml`
 Após instalar as dependências no ambiente aprovado:
 
 ```sh
-npx playwright install chromium
+npm run test:e2e:install
 npm run test:e2e:list
 npm run test:e2e
 ```
 
 Playwright inicia uma instância nova em `127.0.0.1:3100`, com o basePath real. Cada teste usa contexto limpo, bloqueia service workers e requisições a outros hosts/portas e intercepta a sessão como anônima. Não há bypass de autenticação no código da aplicação. As quatro jornadas cobrem catálogo/perfis do reviewer, flags, criação/persistência de formulário e recomendações.
 
-Se um Chromium aprovado já estiver instalado, informar o executável por variável de processo:
+A execução padrão inclui quatro projetos, com as mesmas jornadas:
 
-```sh
-HUB_AI_E2E_CHROMIUM_PATH=/caminho/chromium npm run test:e2e
-```
+| Projeto | Navegador/motor | Comando individual |
+| --- | --- | --- |
+| webkit | WebKit do Playwright, perfil Desktop Safari | npm run test:e2e:webkit |
+| firefox | Firefox compatível distribuído pelo Playwright | npm run test:e2e:firefox |
+| chrome | Google Chrome instalado, canal chrome | npm run test:e2e:chrome |
+| edge | Microsoft Edge instalado, canal msedge | npm run test:e2e:edge |
+
+WebKit não roda dentro dos outros navegadores. Chrome e Edge usam seus próprios canais Chromium; Firefox usa seu motor. Playwright não automatiza o aplicativo Safari instalado: o projeto webkit testa seu motor compatível, sem certificar Safari real. Se a homologação exigir Safari real, será necessária uma execução separada em ambiente Apple com ferramenta compatível.
+
+npm run test:e2e:install instala apenas WebKit e Firefox compatíveis com a versão fixada do Playwright. Chrome e Edge devem estar instalados e aprovados no ambiente; quando necessário, provisioná-los pelo processo autorizado. O comando npx playwright install chrome msedge altera instalações de navegadores e não faz parte da preparação automática deste projeto. Em Linux, dependências de sistema podem exigir npx playwright install-deps webkit firefox pelo processo autorizado. A variável HUB_AI_E2E_CHROMIUM_PATH não é utilizada.
 
 Não versionar caminhos da máquina ou credenciais em `.env`, nem apontar esses casos locais para um ambiente real. As jornadas controladas não validam autorização ou integrações corporativas.
 
@@ -287,7 +294,7 @@ A validação usou dependências públicas isoladas, preservando registry/certif
 Continuam pendentes, fora deste ambiente:
 
 - Descoberta/execução efetiva dos agentes no editor e avaliação semântica com relatório bruto/adjudicação humana.
-- Instalação pelo mirror corporativo, certificado e disponibilidade do Chromium aprovado.
+- Instalação pelo mirror corporativo, certificado e disponibilidade do WebKit e suas dependências aprovadas.
 - Keycloak, AppConfig, APIs, AWS, credenciais e autorização reais.
 - Provisionamento, compatibilidade do chart/pipeline e deploy pelo processo corporativo existente.
 - Rotação de eventuais credenciais históricas utilizadas, pelos responsáveis.
@@ -332,3 +339,12 @@ A antiga pasta codigo-a-ser-transcrito foi eliminada; ferramentas necessárias f
 Removidos perfil/agente/skills/templates backend, exemplos Node/Nest e avaliações Node. Ferramentas necessárias movidas para tooling/web-code-reviewer; codigo-a-ser-transcrito eliminada. Catálogo frontend e Setup instalado atualizados. README e guias de uso/migração dos dois projetos revisados.
 
 Validação atual: 42 testes do toolkit frontend, 384 testes/41 suítes Jest do painel, configuração/lint/typecheck, build/postbuild e smoke standalone passaram. Doctor mantém apenas o aviso do agente frontend_engineering_expert externo preservado. E2E/editor/integrações reais não foram reexecutados nesta limpeza. Números e exemplos Node/Nest anteriores são históricos; validação backend pertence ao projeto independente.
+
+
+## E2E com WebKit — 2026-10-21
+
+Playwright agora usa webkit/Desktop Safari. Configuração carregada e quatro jornadas listadas; execução pendente porque faltam bibliotecas de sistema neste ambiente. Ver [validação local](docs/local-validation.md). Os resultados Chromium anteriores são históricos.
+
+## Matriz E2E — 2026-10-21
+
+A configuração passou a WebKit/Safari, Firefox, Google Chrome e Microsoft Edge. Foram descobertos 16 casos; a execução E2E completa permanece pendente do ambiente com dependências/navegadores aprovados. Ver comandos e limites na seção E2E e em docs/local-validation.md.

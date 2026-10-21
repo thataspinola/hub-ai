@@ -16,7 +16,12 @@
     "test:e2e:list": "playwright test --list",
     "check:local": "npm run check:config && npm run lint && npm run typecheck && npm test -- --runInBand",
     "check:config": "node --test tests/config/*.test.cjs",
-    "test:standalone": "node tools/smoke-standalone.cjs"
+    "test:standalone": "node tools/smoke-standalone.cjs",
+    "test:e2e:install": "playwright install webkit firefox",
+    "test:e2e:webkit": "playwright test --project=webkit",
+    "test:e2e:firefox": "playwright test --project=firefox",
+    "test:e2e:chrome": "playwright test --project=chrome",
+    "test:e2e:edge": "playwright test --project=edge"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
