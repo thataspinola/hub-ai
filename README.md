@@ -6,45 +6,45 @@ A aplicação foi inicialmente gerada pelo Tech Store. Seu nome técnico é `@po
 
 ## Aplicação e recursos de revisão
 
-| Parte | Responsabilidade |
-| --- | --- |
-| Painel | Interface administrativa, sessão NextAuth/Keycloak, flags, formulários e recomendações |
-| Copilot Setup | Inspecionar o projeto consumidor e adaptar suas instruções, agentes e skills |
+| Parte         | Responsabilidade                                                                           |
+| ------------- | ------------------------------------------------------------------------------------------ |
+| Painel        | Interface administrativa, sessão NextAuth/Keycloak, flags, formulários e recomendações     |
+| Copilot Setup | Inspecionar o projeto consumidor e adaptar suas instruções, agentes e skills               |
 | Code Reviewer | Revisar alterações no editor conforme a stack, contratos, segurança e testes do consumidor |
-| CLI | Instalar, atualizar, diagnosticar e recuperar a configuração do reviewer |
+| CLI           | Instalar, atualizar, diagnosticar e recuperar a configuração do reviewer                   |
 
 A CLI não executa uma revisão com IA, não chama um modelo e não publica comentários em Merge Requests. A revisão é acionada no Copilot do editor. Não é necessária integração com GitLab, Jenkins ou registry npm para distribuir esses recursos.
 
 ## Stack e pré-requisitos
 
-| Escopo | Tecnologias e requisitos |
-| --- | --- |
-| Painel | Next.js 16, React 19, TypeScript, Tailwind CSS 4, Radix UI e Zustand |
-| Autenticação | NextAuth com Keycloak |
-| Testes do painel | Jest e React Testing Library |
-| Runtime do painel | Node `>=20.12.2`, conforme `package.json`; confirmar a versão homologada na VDI |
-| Ferramentas/reviewer | Node 22+; Git para obter fontes remotas |
+| Escopo               | Tecnologias e requisitos                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------------------- |
+| Painel               | Next.js 16, React 19, TypeScript, Tailwind CSS 4, Radix UI e Zustand                              |
+| Autenticação         | NextAuth com Keycloak                                                                             |
+| Testes do painel     | Jest e React Testing Library                                                                      |
+| Runtime do painel    | Node `>=20.12.2`, conforme `package.json`; confirmar a versão homologada na VDI                   |
+| Ferramentas/reviewer | Node 22+; Git para obter fontes remotas                                                           |
 | Ambiente corporativo | Registry e certificado configurados em `.npmrc`, acesso aos serviços pelo ambiente autorizado/VDI |
 
 Versões completas e ranges estão nos manifests e lockfiles de cada escopo. Não usar Python nem adicionar arquivos `.py`. Não alterar `.env`, registry ou certificados para contornar restrições de acesso.
 
 ## Estrutura
 
-| Caminho | Conteúdo |
-| --- | --- |
-| `src/app/` | Rotas App Router, layout, sessão e páginas administrativas |
-| `src/components/` | Componentes do painel, UI e builder de formulários |
-| `src/lib/feature-flags/` | Providers, storage e contratos de feature flags |
-| `src/lib/form-wizard/` | Store, persistência e tipos de formulários |
-| `src/lib/recommendations/` | Catálogo, regras, persistência e tipos de recomendações |
-| `__tests__/` | Suíte Jest da aplicação |
-| `.github/` | Agentes, skills e templates ativos do editor, instructions e lock do reviewer |
-| `resources/frontend/` | Fontes reutilizáveis dos recursos e perfis frontend |
-| `tooling/web-code-reviewer/` | Instalação, diagnóstico, validação e avaliação frontend |
-| `tools/code-reviewer.cjs` | CLI de distribuição do reviewer |
-| `src/data/ai-resources.json` | Catálogo gerado dos recursos de IA, consumido pela página `/code-reviewer` |
-| `docs/` | Documentação do projeto, revisão, configuração e evidências |
-| `config/`, `pom.xml` | Configuração e infraestrutura corporativa existentes |
+| Caminho                      | Conteúdo                                                                      |
+| ---------------------------- | ----------------------------------------------------------------------------- |
+| `src/app/`                   | Rotas App Router, layout, sessão e páginas administrativas                    |
+| `src/components/`            | Componentes do painel, UI e builder de formulários                            |
+| `src/lib/feature-flags/`     | Providers, storage e contratos de feature flags                               |
+| `src/lib/form-wizard/`       | Store, persistência e tipos de formulários                                    |
+| `src/lib/recommendations/`   | Catálogo, regras, persistência e tipos de recomendações                       |
+| `__tests__/`                 | Suíte Jest da aplicação                                                       |
+| `.github/`                   | Agentes, skills e templates ativos do editor, instructions e lock do reviewer |
+| `resources/frontend/`        | Fontes reutilizáveis dos recursos e perfis frontend                           |
+| `tooling/web-code-reviewer/` | Instalação, diagnóstico, validação e avaliação frontend                       |
+| `tools/code-reviewer.cjs`    | CLI de distribuição do reviewer                                               |
+| `src/data/ai-resources.json` | Catálogo gerado dos recursos de IA, consumido pela página `/code-reviewer`    |
+| `docs/`                      | Documentação do projeto, revisão, configuração e evidências                   |
+| `config/`                    | Configuração e infraestrutura corporativa existentes                          |
 
 Os recursos frontend ficam em resources/frontend; ferramentas JavaScript ficam em tooling/web-code-reviewer. TypeScript/Jest do painel excluem ferramentas e fixtures. Backend Node/Nest fica no projeto backend-code-reviewer.
 
@@ -67,23 +67,23 @@ Abrir `http://localhost:3000/react-ssr-corp-hubv-painel-administrativo`.
 
 O lockfile corporativo foi recuperado da branch HPC e deve ser preservado. A autenticação, APIs e AppConfig exigem as configurações reais do ambiente; consultar a equipe responsável para provisioná-las, sem inserir credenciais no repositório. Os nomes de variáveis e a integração existente estão em `node-env.d.ts`, `config/` e no código de sessão/providers.
 
-| Comando na raiz | Finalidade |
-| --- | --- |
-| `npm run dev` | Servidor de desenvolvimento |
-| `npm run build` | Build Next e execução do `postbuild` declarado |
-| `npm start` | Servidor Node da saída standalone, após build/postbuild |
-| `npm test` | Suíte Jest, com cobertura configurada em `jest.config.ts` |
-| `npm run test:watch` | Testes em modo watch |
-| `npm run lint` / `npm run typecheck` | ESLint e verificação TypeScript |
-| `npm run check:local` | Configuração, lint, typecheck e Jest |
-| `npm run test:standalone` | Smoke HTTP local da página e de um asset após build |
-| `npm run test:e2e` | Jornadas Playwright em localhost, com rede externa bloqueada |
+| Comando na raiz                      | Finalidade                                                   |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `npm run dev`                        | Servidor de desenvolvimento                                  |
+| `npm run build`                      | Build Next e execução do `postbuild` declarado               |
+| `npm start`                          | Servidor Node da saída standalone, após build/postbuild      |
+| `npm test`                           | Suíte Jest, com cobertura configurada em `jest.config.ts`    |
+| `npm run test:watch`                 | Testes em modo watch                                         |
+| `npm run lint` / `npm run typecheck` | ESLint e verificação TypeScript                              |
+| `npm run check:local`                | Configuração, lint, typecheck e Jest                         |
+| `npm run test:standalone`            | Smoke HTTP local da página e de um asset após build          |
+| `npm run test:e2e`                   | Jornadas Playwright em localhost, com rede externa bloqueada |
 
 Saída standalone, `distDir` e `basePath` são definidos em `next.config.ts`; o passo de cópia dos artefatos está em `package.json`. Build e postbuild foram validados localmente. O lint usa `eslint . --max-warnings=0` com flat config. Entrega e integrações corporativas continuam exigindo validação autorizada.
 
 ### Build e configuração de entrega
 
-O build produz `dist/react-ssr-corp-hubv-painel-administrativo/`. O `postbuild` em `tools/postbuild.cjs` copia `static` e `public` para a saída standalone; `npm start` executa seu `standalone/server.js`. Depois do build, `npm run test:standalone` verifica por HTTP local uma página e um asset.
+O `build` produz `dist/react-ssr-corp-hubv-painel-administrativo/`. O `postbuild` em `tools/postbuild.cjs` copia `static` e `public` para a saída standalone; `npm start` executa seu `standalone/server.js`. Depois do build, `npm run test:standalone` verifica por HTTP local uma página e um asset.
 
 Os pares `config/values_dev`, `values_hml` e `values_prd` nas extensões `.yaml`/`.yml` têm conteúdo equivalente, verificado pelos checks. Preservam o namespace `corp-hubv`, o basePath do painel e `ingress.enabled`. O processo corporativo deve injetar `NEXTAUTH_SECRET` e `KEYCLOAK_CLIENT_SECRET`; os manifests não contêm valores dessas credenciais. Se credenciais históricas foram utilizadas, sua rotação cabe aos responsáveis no ambiente autorizado; remover o valor atual não apaga o histórico Git.
 
@@ -145,28 +145,28 @@ node tools/code-reviewer.cjs setup --project /caminho/aplicacao --ref "$HUB_AI_R
 node tools/code-reviewer.cjs doctor --project /caminho/aplicacao --ref "$HUB_AI_REVIEWER_REF"
 ```
 
-| Comando/opção | Comportamento |
-| --- | --- |
-| `setup` | Instala recursos; identifica automaticamente a stack |
-| `update` | Exige instalação anterior; mantém perfil/capacidades e atualiza recursos gerenciados intactos |
-| `doctor` | Aponta inconsistências e pendências da instalação |
-| `rollback` | Retorna à fonte anterior indicada, preservando personalizações |
-| `version` | Mostra a versão local do toolkit |
-| `recover` | Recupera uma transação interrompida após o processo anterior terminar |
-| `--ref` | SHA completo e imutável da fonte; não aceita branch/tag |
-| `--dry-run` | Mostra o plano sem escrever no projeto consumidor |
-| `--source` | Usa um checkout local aprovado em vez de obter uma fonte remota |
-| `--profile` | Seleciona explicitamente `react`, `nextjs`, `angular`, `vue` ou `frontend` |
+| Comando/opção | Comportamento                                                                                 |
+| ------------- | --------------------------------------------------------------------------------------------- |
+| `setup`       | Instala recursos; identifica automaticamente a stack                                          |
+| `update`      | Exige instalação anterior; mantém perfil/capacidades e atualiza recursos gerenciados intactos |
+| `doctor`      | Aponta inconsistências e pendências da instalação                                             |
+| `rollback`    | Retorna à fonte anterior indicada, preservando personalizações                                |
+| `version`     | Mostra a versão local do toolkit                                                              |
+| `recover`     | Recupera uma transação interrompida após o processo anterior terminar                         |
+| `--ref`       | SHA completo e imutável da fonte; não aceita branch/tag                                       |
+| `--dry-run`   | Mostra o plano sem escrever no projeto consumidor                                             |
+| `--source`    | Usa um checkout local aprovado em vez de obter uma fonte remota                               |
+| `--profile`   | Seleciona explicitamente `react`, `nextjs`, `angular`, `vue` ou `frontend`                    |
 
 ### Perfis e seleção do agente
 
-| Projeto consumidor | Perfil | Reviewer |
-| --- | --- | --- |
-| Next.js, incluindo componentes React | `nextjs` | Web Code Reviewer |
-| React | `react` | Web Code Reviewer |
-| Angular | `angular` | Web Code Reviewer |
-| Vue | `vue` | Web Code Reviewer |
-| Frontend legado | `frontend` | Frontend Code Reviewer |
+| Projeto consumidor                   | Perfil     | Reviewer               |
+| ------------------------------------ | ---------- | ---------------------- |
+| Next.js, incluindo componentes React | `nextjs`   | Web Code Reviewer      |
+| React                                | `react`    | Web Code Reviewer      |
+| Angular                              | `angular`  | Web Code Reviewer      |
+| Vue                                  | `vue`      | Web Code Reviewer      |
+| Frontend legado                      | `frontend` | Frontend Code Reviewer |
 
 A detecção automática prioriza Next.js sobre React. TypeScript acompanha o framework. Em monorepos, apontar `--project` para o pacote consumidor e selecionar o perfil explicitamente quando necessário. `--capabilities base` instala o conjunto base; outros conjuntos usam nomes do manifesto separados por vírgulas.
 
@@ -241,7 +241,7 @@ Os casos frontend ficam em `resources/frontend/evaluations/review/` e `clean/`. 
 1. Fixar o SHA dos recursos e registrar editor, modelo e data.
 2. Apresentar cada caso separadamente ao reviewer, com o mesmo prompt, sem mostrar rubrica, erros esperados ou relatórios anteriores.
 3. Salvar o relatório bruto, sem editar achados, em `tooling/web-code-reviewer/evaluations/results/`.
-4. Um avaliador humano relaciona achados ao código, identifica falsos positivos e preenche a adjudicação.
+4. Um **avaliador humano** relaciona achados ao código, identifica falsos positivos e preenche a adjudicação.
 5. Executar a pontuação e registrar também os problemas omitidos.
 
 ```sh
@@ -269,18 +269,18 @@ Testar o cálculo das métricas não certifica a qualidade semântica do modelo.
 
 Resultados históricos locais da versão 1.8.0, em Node 24.19.0/Linux, registrados em 2026-10-09:
 
-| Validação | Resultado |
-| --- | --- |
-| Jest do painel | 384 testes, 41 suítes passaram |
-| Configuração e postbuild | 2 testes passaram |
-| ESLint e typecheck do painel | Passaram, sem warnings no lint |
-| Build e postbuild do painel | Passaram |
-| Smoke standalone | Página e asset responderam por HTTP local |
-| E2E Playwright | Reexecução bloqueada: Chromium não disponível; 4 jornadas passaram na execução anterior |
-| Ferramentas do toolkit | 43 testes passaram |
-| Exemplo Node | 8 testes passaram |
-| Exemplo Nest | 18 testes; typecheck/build/smoke passaram |
-| Audit público de dependências de produção | Histórico anterior: nenhuma vulnerabilidade reportada; não repetido nesta rodada |
+| Validação                                 | Resultado                                                                               |
+| ----------------------------------------- | --------------------------------------------------------------------------------------- |
+| Jest do painel                            | 384 testes, 41 suítes passaram                                                          |
+| Configuração e postbuild                  | 2 testes passaram                                                                       |
+| ESLint e typecheck do painel              | Passaram, sem warnings no lint                                                          |
+| Build e postbuild do painel               | Passaram                                                                                |
+| Smoke standalone                          | Página e asset responderam por HTTP local                                               |
+| E2E Playwright                            | Reexecução bloqueada: Chromium não disponível; 4 jornadas passaram na execução anterior |
+| Ferramentas do toolkit                    | 43 testes passaram                                                                      |
+| Exemplo Node                              | 8 testes passaram                                                                       |
+| Exemplo Nest                              | 18 testes; typecheck/build/smoke passaram                                               |
+| Audit público de dependências de produção | Histórico anterior: nenhuma vulnerabilidade reportada; não repetido nesta rodada        |
 
 A validação usou dependências públicas isoladas, preservando registry/certificado corporativos. O download padrão do Chromium falhou nesse ambiente; na execução anterior, os E2E passaram com Chromium 153 alternativo. Na reexecução atual esse executável não está disponível, portanto os quatro casos não puderam iniciar. A combinação validada de lint foi ESLint 9.39.4 com eslint-config-next 16.2.2; ESLint 10 apresentou incompatibilidade com plugins. Atualizar essas dependências em conjunto e validar antes de adotar.
 

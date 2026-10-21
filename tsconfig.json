@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -23,9 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
@@ -38,6 +32,8 @@
   ],
   "exclude": [
     "node_modules",
+    "v0-form-wizard-builder-main",
+    "v0-paine-de-recomendacoes-ky",
     "tooling/web-code-reviewer",
     "tests/e2e",
     "resources/frontend/evaluations"
