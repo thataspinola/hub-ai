@@ -62,3 +62,11 @@ Validação atual: 42 testes do toolkit frontend, 384 testes/41 suítes Jest do 
 O projeto E2E padrão passou a webkit/Desktop Safari. Instalar com npm run test:e2e:install e executar npm run test:e2e; test:e2e:list lista as jornadas sem abrir navegador. A variável HUB_AI_E2E_CHROMIUM_PATH foi retirada da configuração. BasePath, servidor localhost, isolamento de contexto e bloqueio de rede externa foram preservados.
 
 Validação com Playwright 1.62.1: configuração carregada e quatro jornadas listadas como [webkit]. Binário WebKit baixado, porém a inicialização foi bloqueada por bibliotecas de sistema ausentes (GTK/GStreamer e outras). install-deps webkit também foi bloqueado por permissões do ambiente. As quatro jornadas não foram executadas nesta rodada. Instalar dependências de sistema pelo processo autorizado antes da execução; não confundir descoberta de testes com E2E aprovado.
+
+## Matriz de navegadores — 2026-10-21
+
+O padrão foi ampliado para quatro projetos: webkit (Desktop Safari), firefox (Firefox do Playwright), chrome (canal Google Chrome instalado) e edge (canal Microsoft Edge instalado). WebKit não executa dentro dos outros navegadores, nem equivale ao aplicativo Safari. A homologação no Safari real exige validação separada no ambiente Apple.
+
+npm run test:e2e executa a matriz; comandos test:e2e:webkit, test:e2e:firefox, test:e2e:chrome e test:e2e:edge selecionam um projeto. test:e2e:install instala WebKit/Firefox; Chrome/Edge são provisionados pelo processo autorizado, sem substituição automática.
+
+Configuração carregada com Playwright 1.62.1: 16 casos descobertos (quatro jornadas por projeto). Não foram executados os 16 casos nesta rodada. A limitação de dependências de sistema registrada na etapa WebKit permanece; navegadores e políticas corporativas devem ser validados no ambiente autorizado. Descoberta não equivale à aprovação de E2E.
