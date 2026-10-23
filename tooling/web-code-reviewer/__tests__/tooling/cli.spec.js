@@ -317,3 +317,20 @@ test('rollback keeps consumer customizations protected and version runs offline'
     fs.readFileSync(path.join(ROOT, 'VERSION'), 'utf8').trim()
   )
 })
+
+test('rollback accepts a safe source with the legacy directory layout', (t) => {
+  const source = temp(t), dir = project(t)
+  run(local(dir), () => {})
+  const legacy = path.join(source, 'codigo-a-ser-transcrito')
+  fs.cpSync(ROOT, legacy, {
+    recursive: true,
+    filter: (p) => !['node_modules', 'dist', 'coverage', '.git'].includes(path.basename(p)),
+  })
+  fs.cpSync(path.join(REPOSITORY_ROOT, 'resources/frontend'), path.join(source, 'resources/frontend'), { recursive: true })
+  const helper = path.join(legacy, 'scripts/hub-resources.js')
+  fs.writeFileSync(helper, fs.readFileSync(helper, 'utf8').replace("path.resolve(ROOT, '../..')", 'path.dirname(ROOT)'))
+  fs.writeFileSync(path.join(legacy, 'VERSION'), '1.8.0\n')
+  run({ command: 'rollback', project: dir, source }, () => {})
+  assert.equal(JSON.parse(fs.readFileSync(path.join(dir, '.github/hub-ai-lock.json'))).version, '1.8.0')
+  assert.ok(fs.existsSync(path.join(dir, '.github/skills/react-patterns/SKILL.md')))
+})

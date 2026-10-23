@@ -46,6 +46,7 @@ function validate() {
       'VERSION',
       'SKILL.md',
       'AGENTS.md',
+      '__tests__',
       '.gitignore',
       '.gitlab-ci.yml',
     ])
@@ -56,6 +57,9 @@ function validate() {
         !/^\.?[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(part)
       )
         errors.push(relative + ': invalid file/directory naming')
+
+    if (/\.py[cow]?$/.test(file))
+      errors.push(`${relative}: prohibited runtime file`)
 
     if (!file.endsWith('.md')) continue
 
@@ -203,6 +207,8 @@ function validate() {
 
       if (!data || typeof data !== 'object' || Array.isArray(data))
         throw new Error('Workflow must be a mapping')
+      if (/python|pip\s|\.py\b/i.test(text))
+        throw new Error('Unsupported runtime in pipeline')
     }
   } catch (error) {
     errors.push(`.gitlab-ci.yml: ${error.message}`)

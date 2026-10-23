@@ -126,3 +126,10 @@ test('frontend evaluation counts missed findings and false positives honestly', 
   assert.equal(clean.precision, 0)
   assert.equal(clean.recall, null)
 })
+
+// Keep the runtime policy after the test-directory migration.
+test('prohibited runtime files rejected', (t) =>
+  mutation(t, 'prohibited.py', () => ''))
+
+test('unsupported CI runtime rejected', (t) =>
+  mutation(t, '.gitlab-ci.yml', () => 'job:\n  image: python:3.12-slim\n'))

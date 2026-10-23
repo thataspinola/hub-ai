@@ -29,7 +29,7 @@ export async function refreshAccessToken(
       !(
         process.env.NODE_ENV !== 'production' &&
         endpoint.protocol === 'http:' &&
-        ['localhost', 'localhost'].includes(endpoint.hostname)
+        endpoint.hostname === 'localhost'
       )
     )
       return failed(token)

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-23 — integração dos ajustes da main
+
+- Alinhamento dos caminhos de testes, catálogo e basePath dos E2E.
+- Correções de recuperação, propriedade de recursos, detecção de escopo e rollback legado.
+- Documentação e configuração instalada do editor atualizadas mantendo o código recebido.
+
 ## 1.4.0
 
 - Recursos centralizados em resources/agents, resources/skills e resources/templates; perfis selecionam recursos sem duplicá-los.

@@ -198,10 +198,14 @@ function run(args, log = console.log) {
 
   const source = checkout(args)
   // Preserve access to approved older releases for safe rollback/recovery.
-  const currentScripts = path.join(source, 'tooling/web-code-reviewer/scripts')
+  const currentScripts = [
+    path.join(source, 'tooling/web-code-reviewer/scripts'),
+    path.join(source, 'scripts'),
+    path.join(source, 'codigo-a-ser-transcrito/scripts'),
+  ].find((directory) => fs.existsSync(path.join(directory, 'install.js')))
 
   if (
-    !fs.existsSync(path.join(currentScripts, 'install.js')) ||
+    !currentScripts ||
     !fs.existsSync(path.join(source, 'resources/frontend'))
   )
     throw new Error('Source does not contain the complete reviewer resources')
