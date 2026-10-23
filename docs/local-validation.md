@@ -62,3 +62,18 @@ O padrão foi ampliado para quatro projetos: webkit (Desktop Safari), firefox (F
 npm run test:e2e executa a matriz; comandos test:e2e:webkit, test:e2e:firefox, test:e2e:chrome e test:e2e:edge selecionam um projeto. test:e2e:install instala WebKit/Firefox; Chrome/Edge são provisionados pelo processo autorizado, sem substituição automática.
 
 Configuração carregada com Playwright 1.62.1: 16 casos descobertos (quatro jornadas por projeto). Não foram executados os 16 casos nesta rodada. A limitação de dependências de sistema registrada na etapa WebKit permanece; navegadores e políticas corporativas devem ser validados no ambiente autorizado. Descoberta não equivale à aprovação de E2E.
+
+## Ajustes após a reorganização — 2026-10-23
+
+Base: main 168cb44da67ce3800836e31a08bdd8a387883ed6. Mantidos a formatação, os diretórios __tests__, os runners Jest/Playwright/node:test e a matriz WebKit/Firefox/Chrome/Edge enviados nesta revisão.
+
+- Teste de configuração renomeado para deployment.spec.cjs, de acordo com check:config.
+- Validador do toolkit reconhece __tests__ sem liberar nomes arbitrários e mantém a proibição de Python.
+- Recuperação volta a ler snapshots do journal e valida caminhos/propriedade antes de restaurar arquivos; instalação protege recursos do outro toolkit.
+- Detecção recusa pacotes mistos sem escopo explícito; help não exige projeto; rollback reconhece layouts anteriores seguros.
+- Catálogo regenerado a partir dos cinco perfis frontend; E2E usa React e o basePath real, mantendo localhost e bloqueio de rede externa.
+- Documentação e instruções do editor alinhadas aos diretórios reais; recurso gerenciado de segurança atualizado sem sobrescrever customizações.
+
+Dependências públicas de validação foram preparadas isoladamente; package-lock, registry, certificados e arquivos de ambiente do projeto foram preservados. Ambiente local: Node 24.19.0 e Next 16.4.3; isso não substitui validação com o lockfile/mirror corporativo. E2E completo e Windows/VDI continuam pendentes; 16 casos descobertos não significam 16 casos aprovados.
+
+Resultados desta rodada: Jest 384 testes em 41 suítes; toolkit 43 testes; configuração 2 testes; lint sem warnings; typecheck, build/postbuild e smoke HTTP standalone passaram. Playwright reconheceu 16 casos no diretório atualizado; não houve execução completa desses casos nem validação de VDI/Windows nesta rodada. Doctor preserva o aviso do agente externo frontend_engineering_expert; nenhuma customização foi removida para silenciá-lo.

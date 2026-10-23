@@ -23,6 +23,12 @@ function inspectProject(project) {
           ? 'react'
           : null
 
+  const backend = ['@nestjs/core', 'express', 'fastify'].some(
+    (name) => dependencies[name]
+  )
+  if (web && backend)
+    throw new Error('Mixed frontend/backend package; choose the application and --profile explicitly')
+
   if (!web)
     throw new Error(
       'Node/Nest backend review moved to https://github.com/thataspinola/backend-code-reviewer'

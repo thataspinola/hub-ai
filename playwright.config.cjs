@@ -1,5 +1,8 @@
 const { defineConfig, devices } = require('@playwright/test')
 
+const basePath = '/react-ssr-corp-hubv-painel-administrativo'
+const baseURL = `http://localhost:3100${basePath}/`
+
 module.exports = defineConfig({
   testDir: './__tests__/e2e',
   fullyParallel: false,
@@ -7,7 +10,7 @@ module.exports = defineConfig({
   workers: 1,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: 'http://localhost:3100',
+    baseURL,
     trace: 'retain-on-failure',
     serviceWorkers: 'block',
   },
@@ -22,7 +25,7 @@ module.exports = defineConfig({
   ],
   webServer: {
     command: 'npm run dev -- --hostname localhost --port 3100',
-    url: 'http://localhost:3100',
+    url: baseURL,
     reuseExistingServer: false,
     timeout: 120000,
   },

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "1.8.0",
+  "version": "2.0.0",
   "profiles": [
     {
       "name": "angular",
@@ -72,45 +72,6 @@
       ]
     },
     {
-      "name": "node",
-      "setup": "Copilot Setup",
-      "capabilities": [
-        "delivery",
-        "e2e",
-        "events",
-        "security"
-      ],
-      "files": [
-        ".github/agents/copilot-setup.agent.md",
-        ".github/agents/node-code-reviewer.agent.md",
-        ".github/skills/gitlab-delivery/SKILL.md",
-        ".github/skills/node-architecture/SKILL.md",
-        ".github/skills/node-architecture/references/patterns.md",
-        ".github/skills/node-automated-testing/SKILL.md",
-        ".github/skills/node-automated-testing/assets/automation-plan.md",
-        ".github/skills/node-automated-testing/references/matrix.md",
-        ".github/skills/node-delivery/SKILL.md",
-        ".github/skills/node-delivery/references/patterns.md",
-        ".github/skills/node-e2e/SKILL.md",
-        ".github/skills/node-e2e/assets/e2e-plan.md",
-        ".github/skills/node-e2e/references/scenarios.md",
-        ".github/skills/node-event-contracts/SKILL.md",
-        ".github/skills/node-event-contracts/references/patterns.md",
-        ".github/skills/node-security/SKILL.md",
-        ".github/skills/node-security/references/patterns.md",
-        ".github/skills/node-testing/SKILL.md",
-        ".github/skills/node-testing/references/nestjs.md",
-        ".github/skills/node-testing/references/patterns.md",
-        ".github/skills/rdm-description/SKILL.md",
-        ".github/skills/rdm-description/assets/rdm-example.md",
-        ".github/skills/rdm-description/assets/rdm.template.md",
-        ".github/templates/agent.template.md",
-        ".github/templates/node-agents.template.md",
-        ".github/templates/node-instructions.template.md",
-        ".github/templates/skill.template.md"
-      ]
-    },
-    {
       "name": "react",
       "setup": "Copilot Setup",
       "capabilities": [],
@@ -152,16 +113,9 @@
   "resources": [
     {
       "kind": "agents",
-      "id": "node-code-reviewer",
-      "name": "Node Code Reviewer",
-      "description": "Revisar código backend Node.js, Lambdas, contratos, OAuth/mTLS, testes e empacotamento. Usar para PR, branch, arquivo ou pacote Node.",
-      "source": "codigo-a-ser-transcrito/resources/agents/node-code-reviewer.agent.md"
-    },
-    {
-      "kind": "agents",
       "id": "copilot-setup",
       "name": "Copilot Setup",
-      "description": "Configurar Copilot para frontend Angular, React, Next.js, Vue e backend Node.js/NestJS. Usar para full setup, instructions, AGENTS.md, skills e agentes por aplicação.",
+      "description": "Configurar Copilot para frontend Angular, React, Next.js, Vue. Usar para full setup, instructions, AGENTS.md, skills e agentes por aplicação.",
       "source": "resources/frontend/agents/copilot-setup.agent.md"
     },
     {
@@ -316,77 +270,14 @@
       "id": "gitlab-delivery",
       "name": "gitlab-delivery",
       "description": "Revisar merge requests, pipelines GitLab CI e entrega Jenkins. Usar para CI/CD, diffs de MR, evidências de validação e integração de checks.",
-      "source": "codigo-a-ser-transcrito/resources/skills/gitlab-delivery"
-    },
-    {
-      "kind": "skills",
-      "id": "node-architecture",
-      "name": "node-architecture",
-      "description": "Organizar e implementar backends Node.js, handlers, controllers, activities, factories, APIs e serviços. Usar ao criar ou alterar pacotes CommonJS/ESM, integrações e módulos compartilhados.",
-      "source": "codigo-a-ser-transcrito/resources/skills/node-architecture"
-    },
-    {
-      "kind": "skills",
-      "id": "node-automated-testing",
-      "name": "node-automated-testing",
-      "description": "Criar e organizar suítes automatizadas Node.js e gates de CI por pacote. Usar para testes automated, regressão, contratos, matriz de execução e relatórios automatizados.",
-      "source": "codigo-a-ser-transcrito/resources/skills/node-automated-testing"
-    },
-    {
-      "kind": "skills",
-      "id": "node-delivery",
-      "name": "node-delivery",
-      "description": "Revisar entrega de backends Node.js/Lambda com múltiplos pacotes, dependências de produção, Terraform e CI/CD corporativo. Usar para empacotamento, checks de infraestrutura, runbooks e prontidão.",
-      "source": "codigo-a-ser-transcrito/resources/skills/node-delivery"
-    },
-    {
-      "kind": "skills",
-      "id": "node-e2e",
-      "name": "node-e2e",
-      "description": "Criar e revisar testes E2E de backends Node.js, fluxos Lambda/EventBridge/SQS/SNS e integrações HTTP. Usar para validar jornadas completas, smoke tests e evidências de ambiente.",
-      "source": "codigo-a-ser-transcrito/resources/skills/node-e2e"
-    },
-    {
-      "kind": "skills",
-      "id": "node-event-contracts",
-      "name": "node-event-contracts",
-      "description": "Criar ou revisar contratos assíncronos Node.js com EventBridge, SQS, SNS e Lambda. Usar para schemas, publicação, retries, DLQ, idempotência e falhas parciais.",
-      "source": "codigo-a-ser-transcrito/resources/skills/node-event-contracts"
-    },
-    {
-      "kind": "skills",
-      "id": "node-security",
-      "name": "node-security",
-      "description": "Revisar segurança de backend Node.js, OAuth, tokens, mTLS, secrets, logs, configuração e IAM. Usar para autenticação, integrações HTTP, armazenamento de tokens e fronteiras de confiança.",
-      "source": "codigo-a-ser-transcrito/resources/skills/node-security"
-    },
-    {
-      "kind": "skills",
-      "id": "node-testing",
-      "name": "node-testing",
-      "description": "Criar e executar testes backend Node.js por pacote, Jest ou runner real do projeto, mocks AWS/HTTP e contratos entre serviços. Usar para testes unitários, integração, funcionais, E2E e cobertura.",
-      "source": "codigo-a-ser-transcrito/resources/skills/node-testing"
+      "source": "tooling/web-code-reviewer/resources/skills/gitlab-delivery"
     },
     {
       "kind": "skills",
       "id": "rdm-description",
       "name": "rdm-description",
       "description": "Gera descrição de RDM (Requisição de Mudança) a partir de uma branch git. Use quando criar RDM, descrever mudança, requisição de mudança, change request, mudança de infra, mudança de código, branch feature, histórico git para RDM.",
-      "source": "codigo-a-ser-transcrito/resources/skills/rdm-description"
-    },
-    {
-      "kind": "templates",
-      "id": "node-agents",
-      "name": "node-agents",
-      "description": null,
-      "source": "codigo-a-ser-transcrito/resources/templates/node-agents.template.md"
-    },
-    {
-      "kind": "templates",
-      "id": "node-instructions",
-      "name": "node-instructions",
-      "description": null,
-      "source": "codigo-a-ser-transcrito/resources/templates/node-instructions.template.md"
+      "source": "tooling/web-code-reviewer/resources/skills/rdm-description"
     }
   ]
 }

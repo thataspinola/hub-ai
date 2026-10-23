@@ -63,7 +63,7 @@ npm ci
 npm run dev
 ```
 
-Abrir `http://localhost:3000/`.
+Abrir `http://localhost:3000/react-ssr-corp-hubv-painel-administrativo/`.
 
 Os nomes de variáveis e a integração existente estão em `node-env.d.ts`, `config/` e no código de sessão/providers.
 
@@ -319,3 +319,9 @@ O refresh usa o issuer/client ID/client secret existentes, renova antes do venci
 Formulários/importações e dados persistidos passam por validação estrutural. Falhas de armazenamento aparecem na interface; o índice não sobrescreve conteúdo corrompido e uma falha de gravação tenta restaurar o documento anterior. IndexedDB confirma sucesso apenas após o commit da transação e trata abortos. localStorage não oferece transações entre chaves: preservar backup e validar quotas/recuperação no ambiente real.
 
 Os toolkits reconhecem seus estados separados e impedem sobrescrita de recursos do outro. Journals de recuperação não podem apontar para código da aplicação.
+
+## Reorganização de testes — 2026-10-23
+
+Os diretórios __tests__/config e __tests__/e2e são executados pelos respectivos scripts; Jest mantém a suíte da aplicação, e o toolkit usa tooling/web-code-reviewer/__tests__/tooling. Novos testes e arquivos realocados usam .spec; os .test Jest existentes continuam válidos. O E2E mantém localhost e usa /react-ssr-corp-hubv-painel-administrativo/ conforme next.config.ts. Consultar [validação atualizada](docs/local-validation.md) para resultados e limites.
+
+Resultados desta rodada: Jest 384 testes em 41 suítes; toolkit 43 testes; configuração 2 testes; lint sem warnings; typecheck, build/postbuild e smoke HTTP standalone passaram. Playwright reconheceu 16 casos no diretório atualizado; não houve execução completa desses casos nem validação de VDI/Windows nesta rodada. Doctor preserva o aviso do agente externo frontend_engineering_expert; nenhuma customização foi removida para silenciá-lo.

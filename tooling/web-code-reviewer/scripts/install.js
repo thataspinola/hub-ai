@@ -36,9 +36,25 @@ function atomicWrite(dest, data) {
   }
 }
 
+function foreignFiles(target) {
+  const file = safePath(target, '.github/backend-reviewer-lock.json')
+  if (!fs.existsSync(file)) return {}
+  const state = JSON.parse(fs.readFileSync(file, 'utf8'))
+  if (
+    state.schema !== 1 ||
+    !state.files ||
+    typeof state.files !== 'object' ||
+    Array.isArray(state.files)
+  )
+    throw new Error('Invalid other toolkit state')
+  return state.files
+}
+
 function recover(target, write = atomicWrite) {
   const journal = safePath(target, JOURNAL)
   if (!fs.existsSync(journal)) return false
+
+  const snapshots = JSON.parse(fs.readFileSync(journal, 'utf8')).before
 
   if (!snapshots || Array.isArray(snapshots) || typeof snapshots !== 'object')
     throw new Error('Invalid recovery journal')
@@ -63,11 +79,14 @@ function recover(target, write = atomicWrite) {
     for (const name of Object.keys(beforeState.files || {})) allowed.add(name)
   }
 
+  const otherFiles = foreignFiles(target)
   const decoded = {}
 
   for (const [name, encoded] of Object.entries(snapshots)) {
     if (name !== STATE && !/^\.github\/(agents|skills|templates)\//.test(name))
       throw new Error('Invalid recovery path')
+    if (!allowed.has(name) || Object.hasOwn(otherFiles, name))
+      throw new Error('Invalid recovery path or other toolkit ownership')
 
     safePath(target, name)
 
@@ -128,6 +147,7 @@ function install(args, write = atomicWrite, log = console.log) {
     log(
       'node scripts/install.js PROJECT [--profile auto|angular|react|nextjs|vue|frontend] [--capabilities base|LIST] [--dry-run] [--overwrite] [--migrate] [--recover]'
     )
+    return
   }
 
   if (!args.project) throw new Error('Project path required')
@@ -286,6 +306,11 @@ function install(args, write = atomicWrite, log = console.log) {
       )
     }
   }
+
+  const otherFiles = foreignFiles(target)
+  for (const name of Object.keys(operations))
+    if (Object.hasOwn(otherFiles, name))
+      conflicts.push(`${name} (owned by another toolkit)`)
 
   if (conflicts.length)
     throw new Error('No files written. Conflicts:\n' + conflicts.join('\n'))

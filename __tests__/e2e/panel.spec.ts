@@ -22,9 +22,9 @@ test('dashboard navigates to the reviewer and filters profiles', async ({
   await expect(
     page.getByRole('heading', { name: 'Code Reviewer', exact: true })
   ).toBeVisible()
-  await page.getByLabel('Perfil').selectOption('node')
+  await page.getByLabel('Perfil').selectOption('react')
   await expect(
-    page.getByRole('heading', { name: 'Node Code Reviewer', exact: true })
+    page.getByRole('heading', { name: 'Web Code Reviewer', exact: true })
   ).toBeVisible()
   await page.getByLabel('Buscar recursos').fill('no-matching-resource')
   await expect(page.getByRole('status')).toHaveText('0 recursos encontrados')

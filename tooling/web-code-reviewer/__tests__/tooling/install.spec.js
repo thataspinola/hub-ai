@@ -218,3 +218,30 @@ test('recovery rejects a forged application-file snapshot before any write', (t)
     'application preserved'
   )
 })
+
+test('help works without a project and performs no writes', () => {
+  const output = []
+  install({ help: true }, undefined, (line) => output.push(line))
+  assert.match(output.join('\n'), /PROJECT/)
+})
+
+test('recovery rejects unknown resources before restoring any file', (t) => {
+  const dir = temp(t)
+  const name = '.github/agents/unknown.agent.md'
+  put(dir, name, 'custom resource')
+  put(dir, '.hub-ai-transaction.json', JSON.stringify({ before: { [name]: null } }))
+  assert.throws(() => run(dir, { recover: true }), /Invalid recovery path/)
+  assert.equal(fs.readFileSync(path.join(dir, name), 'utf8'), 'custom resource')
+})
+
+test('install and recovery preserve files owned by the backend toolkit', (t) => {
+  const dir = temp(t)
+  const name = '.github/agents/copilot-setup.agent.md'
+  put(dir, name, 'backend-owned resource')
+  put(dir, '.github/backend-reviewer-lock.json', JSON.stringify({ schema: 1, files: { [name]: 'owned' } }))
+  assert.throws(() => run(dir, { overwrite: true }), /owned by another toolkit/)
+  assert.equal(fs.readFileSync(path.join(dir, name), 'utf8'), 'backend-owned resource')
+  put(dir, '.hub-ai-transaction.json', JSON.stringify({ before: { [name]: null } }))
+  assert.throws(() => run(dir, { recover: true }), /other toolkit ownership/)
+  assert.equal(fs.readFileSync(path.join(dir, name), 'utf8'), 'backend-owned resource')
+})
