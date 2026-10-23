@@ -26,7 +26,7 @@ A CLI não executa uma revisão com IA, não chama um modelo e não publica come
 | Ferramentas/reviewer | Node 22+; Git para obter fontes remotas                                                           |
 | Ambiente corporativo | Registry e certificado configurados em `.npmrc`, acesso aos serviços pelo ambiente autorizado/VDI |
 
-Versões completas e ranges estão nos manifests e lockfiles de cada escopo. Não usar Python nem adicionar arquivos `.py`. Não alterar `.env`, registry ou certificados para contornar restrições de acesso.
+Versões completas e ranges estão nos manifests e lockfiles de cada escopo.
 
 ## Estrutura
 
@@ -63,9 +63,9 @@ npm ci
 npm run dev
 ```
 
-Abrir `http://localhost:3000/react-ssr-corp-hubv-painel-administrativo`.
+Abrir `http://localhost:3000/`.
 
-O lockfile corporativo foi recuperado da branch HPC e deve ser preservado. A autenticação, APIs e AppConfig exigem as configurações reais do ambiente; consultar a equipe responsável para provisioná-las, sem inserir credenciais no repositório. Os nomes de variáveis e a integração existente estão em `node-env.d.ts`, `config/` e no código de sessão/providers.
+Os nomes de variáveis e a integração existente estão em `node-env.d.ts`, `config/` e no código de sessão/providers.
 
 | Comando na raiz                      | Finalidade                                                   |
 | ------------------------------------ | ------------------------------------------------------------ |
@@ -97,20 +97,20 @@ npm run test:e2e:list
 npm run test:e2e
 ```
 
-Playwright inicia uma instância nova em `127.0.0.1:3100`, com o basePath real. Cada teste usa contexto limpo, bloqueia service workers e requisições a outros hosts/portas e intercepta a sessão como anônima. Não há bypass de autenticação no código da aplicação. As quatro jornadas cobrem catálogo/perfis do reviewer, flags, criação/persistência de formulário e recomendações.
+Playwright inicia uma instância nova em `localhost:3100`, com o basePath real. Cada teste usa contexto limpo, bloqueia service workers e requisições a outros hosts/portas e intercepta a sessão como anônima. Não há bypass de autenticação no código da aplicação. As quatro jornadas cobrem catálogo/perfis do reviewer, flags, criação/persistência de formulário e recomendações.
 
 A execução padrão inclui quatro projetos, com as mesmas jornadas:
 
-| Projeto | Navegador/motor | Comando individual |
-| --- | --- | --- |
-| webkit | WebKit do Playwright, perfil Desktop Safari | npm run test:e2e:webkit |
+| Projeto | Navegador/motor                                | Comando individual       |
+| ------- | ---------------------------------------------- | ------------------------ |
+| webkit  | WebKit do Playwright, perfil Desktop Safari    | npm run test:e2e:webkit  |
 | firefox | Firefox compatível distribuído pelo Playwright | npm run test:e2e:firefox |
-| chrome | Google Chrome instalado, canal chrome | npm run test:e2e:chrome |
-| edge | Microsoft Edge instalado, canal msedge | npm run test:e2e:edge |
+| chrome  | Google Chrome instalado, canal chrome          | npm run test:e2e:chrome  |
+| edge    | Microsoft Edge instalado, canal msedge         | npm run test:e2e:edge    |
 
 WebKit não roda dentro dos outros navegadores. Chrome e Edge usam seus próprios canais Chromium; Firefox usa seu motor. Playwright não automatiza o aplicativo Safari instalado: o projeto webkit testa seu motor compatível, sem certificar Safari real. Se a homologação exigir Safari real, será necessária uma execução separada em ambiente Apple com ferramenta compatível.
 
-npm run test:e2e:install instala apenas WebKit e Firefox compatíveis com a versão fixada do Playwright. Chrome e Edge devem estar instalados e aprovados no ambiente; quando necessário, provisioná-los pelo processo autorizado. O comando npx playwright install chrome msedge altera instalações de navegadores e não faz parte da preparação automática deste projeto. Em Linux, dependências de sistema podem exigir npx playwright install-deps webkit firefox pelo processo autorizado. A variável HUB_AI_E2E_CHROMIUM_PATH não é utilizada.
+npm run test:e2e:install instala apenas WebKit e Firefox compatíveis com a versão fixada do Playwright. Chrome e Edge devem estar instalados e aprovados no ambiente; quando necessário, provisioná-los pelo processo autorizado. O comando npx playwright install chrome msedge altera instalações de navegadores e não faz parte da preparação automática deste projeto. Em Linux, dependências de sistema podem exigir npx playwright install-deps webkit firefox pelo processo autorizado.
 
 Não versionar caminhos da máquina ou credenciais em `.env`, nem apontar esses casos locais para um ambiente real. As jornadas controladas não validam autorização ou integrações corporativas.
 
@@ -204,6 +204,7 @@ O rollback exige estado de instalação e uma fonte compatível (1.6+), aplica a
 Em uma transação interrompida, inspecionar o diagnóstico e confirmar que o processo anterior terminou antes de recuperar:
 
 ```sh
+HUB_AI_NEW_REF=SHA_COMPLETO_DA_NOVA_VERSAO
 node tools/code-reviewer.cjs recover --project /caminho/aplicacao --ref "$HUB_AI_NEW_REF"
 node tools/code-reviewer.cjs doctor --project /caminho/aplicacao --ref "$HUB_AI_NEW_REF"
 ```
@@ -291,19 +292,10 @@ Resultados históricos locais da versão 1.8.0, em Node 24.19.0/Linux, registrad
 
 A validação usou dependências públicas isoladas, preservando registry/certificado corporativos. O download padrão do Chromium falhou nesse ambiente; na execução anterior, os E2E passaram com Chromium 153 alternativo. Na reexecução atual esse executável não está disponível, portanto os quatro casos não puderam iniciar. A combinação validada de lint foi ESLint 9.39.4 com eslint-config-next 16.2.2; ESLint 10 apresentou incompatibilidade com plugins. Atualizar essas dependências em conjunto e validar antes de adotar.
 
-Continuam pendentes, fora deste ambiente:
-
-- Descoberta/execução efetiva dos agentes no editor e avaliação semântica com relatório bruto/adjudicação humana.
-- Instalação pelo mirror corporativo, certificado e disponibilidade do WebKit e suas dependências aprovadas.
-- Keycloak, AppConfig, APIs, AWS, credenciais e autorização reais.
-- Provisionamento, compatibilidade do chart/pipeline e deploy pelo processo corporativo existente.
-- Rotação de eventuais credenciais históricas utilizadas, pelos responsáveis.
-
 Mocks, testes locais e audit não certificam integrações ou produção. Não foi realizado acesso à VDI. Os documentos de contexto/validação anteriores mantêm evidências históricas; para resultados atuais, usar esta matriz e o [status das melhorias](docs/improvements-status.md).
 
 ## Documentação complementar
 
-- [Validação local sem VDI](docs/local-validation.md)
 - [Status das melhorias e pendências externas](docs/improvements-status.md)
 - [Avaliação do reviewer](docs/reviewer-evaluation.md)
 
@@ -326,25 +318,4 @@ O refresh usa o issuer/client ID/client secret existentes, renova antes do venci
 
 Formulários/importações e dados persistidos passam por validação estrutural. Falhas de armazenamento aparecem na interface; o índice não sobrescreve conteúdo corrompido e uma falha de gravação tenta restaurar o documento anterior. IndexedDB confirma sucesso apenas após o commit da transação e trata abortos. localStorage não oferece transações entre chaves: preservar backup e validar quotas/recuperação no ambiente real.
 
-Os toolkits reconhecem seus estados separados e impedem sobrescrita de recursos do outro. O Setup backend usa nome próprio. Journals de recuperação não podem apontar para código da aplicação.
-
-## Divisão atual dos projetos (2.0.0)
-
-O hub-ai mantém o painel e a revisão frontend. Perfil Node, skills/agente backend, exemplos Node/Nest e avaliações backend foram retirados deste checkout. APIs/BFFs, Node vanilla, NestJS, Lambda e eventos são cobertos pelo [backend-code-reviewer](https://github.com/thataspinola/backend-code-reviewer).
-
-A antiga pasta codigo-a-ser-transcrito foi eliminada; ferramentas necessárias ficam em tooling/web-code-reviewer. Instalações frontend mantêm os mesmos destinos e estado. Instalações backend antigas são recusadas sem alteração automática. Consultar [migração](docs/reviewer-migration.md) e [estrutura](docs/structure-and-naming.md). Use uma revisão 2.0.0 aprovada para novos setups; os números 1.8.0 acima são históricos.
-
-## Limpeza de escopo — 2026-10-13 (2.0.0)
-
-Removidos perfil/agente/skills/templates backend, exemplos Node/Nest e avaliações Node. Ferramentas necessárias movidas para tooling/web-code-reviewer; codigo-a-ser-transcrito eliminada. Catálogo frontend e Setup instalado atualizados. README e guias de uso/migração dos dois projetos revisados.
-
-Validação atual: 42 testes do toolkit frontend, 384 testes/41 suítes Jest do painel, configuração/lint/typecheck, build/postbuild e smoke standalone passaram. Doctor mantém apenas o aviso do agente frontend_engineering_expert externo preservado. E2E/editor/integrações reais não foram reexecutados nesta limpeza. Números e exemplos Node/Nest anteriores são históricos; validação backend pertence ao projeto independente.
-
-
-## E2E com WebKit — 2026-10-21
-
-Playwright agora usa webkit/Desktop Safari. Configuração carregada e quatro jornadas listadas; execução pendente porque faltam bibliotecas de sistema neste ambiente. Ver [validação local](docs/local-validation.md). Os resultados Chromium anteriores são históricos.
-
-## Matriz E2E — 2026-10-21
-
-A configuração passou a WebKit/Safari, Firefox, Google Chrome e Microsoft Edge. Foram descobertos 16 casos; a execução E2E completa permanece pendente do ambiente com dependências/navegadores aprovados. Ver comandos e limites na seção E2E e em docs/local-validation.md.
+Os toolkits reconhecem seus estados separados e impedem sobrescrita de recursos do outro. Journals de recuperação não podem apontar para código da aplicação.

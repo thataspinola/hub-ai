@@ -1,0 +1,319 @@
+'use strict'
+
+const test = require('node:test'),
+  assert = require('node:assert/strict')
+const fs = require('node:fs'),
+  path = require('node:path'),
+  os = require('node:os')
+const { execFileSync, spawnSync } = require('node:child_process')
+
+const { parse, checkout, run } = require('../../../../tools/code-reviewer.cjs')
+const { REPOSITORY_ROOT, ROOT, digest } = require('../../scripts/hub-resources')
+
+const temp = (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hub-cli-'))
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }))
+  return dir
+}
+
+const put = (dir, file, text) => {
+  const dest = path.join(dir, file)
+  fs.mkdirSync(path.dirname(dest), { recursive: true })
+  fs.writeFileSync(dest, text)
+  return dest
+}
+
+const project = (t) => {
+  const dir = temp(t)
+
+  put(
+    dir,
+    'package.json',
+    JSON.stringify({ dependencies: { next: '16', react: '19' } })
+  )
+
+  return dir
+}
+
+const local = (dir, extra = {}) => ({
+  command: 'setup',
+  project: dir,
+  source: REPOSITORY_ROOT,
+  ...extra,
+})
+
+test('CLI requires immutable remote revision and rejects invalid options', () => {
+  assert.throws(() => parse(['setup', '--ref', 'main']), /immutable/)
+  assert.throws(() => parse(['setup']), /immutable/)
+
+  assert.throws(
+    () => parse(['setup', '--source', '.', '--ref', 'a'.repeat(40)]),
+    /combined/
+  )
+
+  assert.throws(() => parse(['setup', '--source', '.', '--unknown']), /Unknown/)
+  assert.equal(parse(['setup', '--ref', 'a'.repeat(40)]).project, '.')
+})
+
+test('CLI setup detects Next and preview does not modify destination', (t) => {
+  const dir = project(t),
+    before = fs.readdirSync(dir)
+
+  run(local(dir, { 'dry-run': true }), () => {})
+  assert.deepEqual(fs.readdirSync(dir), before)
+  put(dir, 'AGENTS.md', 'consumer guidelines')
+  put(dir, '.github/copilot-instructions.md', 'consumer instructions')
+  run(local(dir), () => {})
+
+  assert.equal(
+    JSON.parse(fs.readFileSync(path.join(dir, '.github/hub-ai-lock.json')))
+      .profile,
+    'nextjs'
+  )
+
+  assert.equal(
+    fs.readFileSync(path.join(dir, 'AGENTS.md'), 'utf8'),
+    'consumer guidelines'
+  )
+
+  assert.equal(
+    fs.readFileSync(path.join(dir, '.github/copilot-instructions.md'), 'utf8'),
+    'consumer instructions'
+  )
+})
+
+test('safe update replaces unchanged managed files and refuses local customizations atomically', (t) => {
+  const dir = project(t)
+  run(local(dir), () => {})
+  const stateFile = path.join(dir, '.github/hub-ai-lock.json')
+
+  const name = '.github/skills/react-patterns/SKILL.md',
+    file = path.join(dir, name)
+
+  const current = fs.readFileSync(file, 'utf8')
+  // Simulate an earlier installed release with its recorded checksum.
+  fs.writeFileSync(file, current + '\nOlder managed version\n')
+  const state = JSON.parse(fs.readFileSync(stateFile))
+  state.files[name] = digest(fs.readFileSync(file))
+  fs.writeFileSync(stateFile, JSON.stringify(state))
+  run(local(dir, { command: 'update' }), () => {})
+  assert.equal(fs.readFileSync(file, 'utf8'), current)
+  fs.writeFileSync(file, 'consumer customization')
+  const lockBefore = fs.readFileSync(stateFile, 'utf8')
+  const missing = path.join(dir, '.github/skills/web-testing/SKILL.md')
+  fs.unlinkSync(missing)
+
+  assert.throws(
+    () => run(local(dir, { command: 'update' }), () => {}),
+    /Conflicts/
+  )
+
+  assert.equal(fs.readFileSync(file, 'utf8'), 'consumer customization')
+  assert.equal(fs.existsSync(missing), false)
+  assert.equal(fs.readFileSync(stateFile, 'utf8'), lockBefore)
+})
+
+test('update requires installation and preserves selected capabilities', (t) => {
+  const dir = project(t)
+
+  assert.throws(
+    () => run(local(dir, { command: 'update' }), () => {}),
+    /ENOENT/
+  )
+
+  run(local(dir, { capabilities: 'base' }), () => {})
+  run(local(dir, { command: 'update' }), () => {})
+
+  assert.deepEqual(
+    JSON.parse(fs.readFileSync(path.join(dir, '.github/hub-ai-lock.json')))
+      .capabilities,
+    []
+  )
+})
+
+test('Git checkout pins content, reuses cache offline and rejects changed cache', (t) => {
+  const source = temp(t),
+    cache = temp(t)
+
+  const git = (args) =>
+    execFileSync('git', ['-C', source, ...args], { encoding: 'utf8' }).trim()
+
+  git(['init', '--quiet'])
+  put(source, 'resource.txt', 'fixed version')
+  git(['add', 'resource.txt'])
+
+  git([
+    '-c',
+    'user.name=Test',
+    '-c',
+    'user.email=test@local',
+    'commit',
+    '--quiet',
+    '-m',
+    'test: fixture',
+  ])
+
+  const ref = git(['rev-parse', 'HEAD']),
+    args = { repo: source, ref, cache }
+
+  const dir = checkout(args)
+
+  assert.equal(
+    fs.readFileSync(path.join(dir, 'resource.txt'), 'utf8'),
+    'fixed version'
+  )
+
+  fs.renameSync(source, source + '-unavailable')
+
+  t.after(() =>
+    fs.rmSync(source + '-unavailable', { recursive: true, force: true })
+  )
+
+  assert.equal(checkout(args), dir)
+  fs.writeFileSync(path.join(dir, 'resource.txt'), 'changed')
+  assert.throws(() => checkout(args), /Cached source changed/)
+})
+
+test('CLI subprocess installs with no npm dependencies and returns failure for mixed stack', (t) => {
+  const dir = project(t)
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      path.join(REPOSITORY_ROOT, 'tools/code-reviewer.cjs'),
+      'setup',
+      '--source',
+      REPOSITORY_ROOT,
+      '--project',
+      dir,
+    ],
+    { encoding: 'utf8' }
+  )
+
+  assert.equal(result.status, 0, result.stderr)
+  const unsupported = temp(t)
+
+  put(
+    unsupported,
+    'package.json',
+    JSON.stringify({ dependencies: { react: '19', '@nestjs/core': '11' } })
+  )
+
+  const failed = spawnSync(
+    process.execPath,
+    [
+      path.join(REPOSITORY_ROOT, 'tools/code-reviewer.cjs'),
+      'setup',
+      '--source',
+      REPOSITORY_ROOT,
+      '--project',
+      unsupported,
+    ],
+    { encoding: 'utf8' }
+  )
+
+  assert.equal(failed.status, 1)
+  assert.equal(fs.existsSync(path.join(unsupported, '.github')), false)
+})
+
+test('complete Git-source installation records pinned SHA without installing dependencies', (t) => {
+  const source = temp(t),
+    cache = temp(t),
+    dir = project(t)
+
+  fs.cpSync(ROOT, path.join(source, 'tooling/web-code-reviewer'), {
+    recursive: true,
+    filter: (p) =>
+      !['node_modules', 'dist', 'coverage', '.git'].includes(path.basename(p)),
+  })
+
+  fs.cpSync(
+    path.join(REPOSITORY_ROOT, 'resources/frontend'),
+    path.join(source, 'resources/frontend'),
+    { recursive: true }
+  )
+
+  const git = (args) =>
+    execFileSync('git', ['-C', source, ...args], { encoding: 'utf8' }).trim()
+
+  git(['init', '--quiet'])
+  git(['add', 'tooling/web-code-reviewer', 'resources/frontend'])
+
+  git([
+    '-c',
+    'user.name=Test',
+    '-c',
+    'user.email=test@local',
+    'commit',
+    '--quiet',
+    '-m',
+    'test: reviewer fixture',
+  ])
+
+  const ref = git(['rev-parse', 'HEAD'])
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      path.join(REPOSITORY_ROOT, 'tools/code-reviewer.cjs'),
+      'setup',
+      '--project',
+      dir,
+      '--repo',
+      source,
+      '--ref',
+      ref,
+      '--cache',
+      cache,
+    ],
+    { encoding: 'utf8' }
+  )
+
+  assert.equal(result.status, 0, result.stderr)
+
+  const state = JSON.parse(
+    fs.readFileSync(path.join(dir, '.github/hub-ai-lock.json'))
+  )
+
+  assert.equal(state.source_commit, ref)
+  assert.equal(state.profile, 'nextjs')
+
+  assert.ok(
+    fs.existsSync(path.join(dir, '.github/skills/react-patterns/SKILL.md'))
+  )
+
+  assert.equal(fs.existsSync(path.join(dir, 'node_modules')), false)
+})
+
+test('rollback keeps consumer customizations protected and version runs offline', (t) => {
+  const dir = project(t)
+  run(local(dir), () => {})
+
+  const name = '.github/skills/react-patterns/SKILL.md',
+    dest = path.join(dir, name),
+    content = fs.readFileSync(dest, 'utf8')
+
+  fs.writeFileSync(dest, content + '\nNewer managed revision\n')
+
+  const stateFile = path.join(dir, '.github/hub-ai-lock.json'),
+    state = JSON.parse(fs.readFileSync(stateFile))
+
+  state.files[name] = digest(fs.readFileSync(dest))
+  fs.writeFileSync(stateFile, JSON.stringify(state))
+  run(local(dir, { command: 'rollback' }), () => {})
+  assert.equal(fs.readFileSync(dest, 'utf8'), content)
+  fs.writeFileSync(dest, 'consumer customization')
+
+  assert.throws(
+    () => run(local(dir, { command: 'rollback' }), () => {}),
+    /Conflicts/
+  )
+
+  const output = []
+  run(parse(['version']), (text) => output.push(text))
+
+  assert.equal(
+    output[0],
+    fs.readFileSync(path.join(ROOT, 'VERSION'), 'utf8').trim()
+  )
+})

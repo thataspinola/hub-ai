@@ -8,7 +8,7 @@
   },
   "scripts": {
     "validate": "node scripts/validate.js",
-    "test": "node --test tests/tooling/*.test.js",
+    "test": "node --test __tests__/tooling/*.spec.js",
     "check": "npm run validate && npm test",
     "install:profile": "node scripts/install.js",
     "doctor": "node scripts/doctor.js",

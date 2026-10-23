@@ -17,7 +17,7 @@ ESLint usa a CLI e flat config do Next, sem next lint/FlatCompat. A combinação
 
 ## E2E controlados
 
-Playwright inicia um servidor novo em 127.0.0.1:3100 com o basePath real. Não reutiliza uma instância externa. Cada teste usa um contexto limpo, bloqueia service workers e requisições a outros hosts/portas, e intercepta a sessão como anônima. Não há bypass de autenticação no código da aplicação.
+Playwright inicia um servidor novo em localhost:3100 com o basePath real. Não reutiliza uma instância externa. Cada teste usa um contexto limpo, bloqueia service workers e requisições a outros hosts/portas, e intercepta a sessão como anônima. Não há bypass de autenticação no código da aplicação.
 
 As jornadas cobrem catálogo/perfis do reviewer, persistência e busca de flags com fixture local, criação/persistência de formulário e catálogo de recomendações. São quatro casos locais; não substituem testes de autorização, serviços reais e integração corporativa.
 
@@ -48,7 +48,6 @@ Jest 384/41 suítes, configuração 2, toolkit 43, Node 8 e Nest 18 passaram. Bu
 Removidos perfil/agente/skills/templates backend, exemplos Node/Nest e avaliações Node. Ferramentas necessárias movidas para tooling/web-code-reviewer; codigo-a-ser-transcrito eliminada. Catálogo frontend e Setup instalado atualizados. README e guias de uso/migração dos dois projetos revisados.
 
 Validação atual: 42 testes do toolkit frontend, 384 testes/41 suítes Jest do painel, configuração/lint/typecheck, build/postbuild e smoke standalone passaram. Doctor mantém apenas o aviso do agente frontend_engineering_expert externo preservado. E2E/editor/integrações reais não foram reexecutados nesta limpeza. Números e exemplos Node/Nest anteriores são históricos; validação backend pertence ao projeto independente.
-
 
 ## WebKit no Playwright — 2026-10-21
 

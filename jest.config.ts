@@ -36,7 +36,13 @@ const config: Config = {
   testEnvironment: 'jsdom',
 
   // Ignore dist/
-  testPathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/tooling/web-code-reviewer/', '<rootDir>/resources/frontend/evaluations/', '<rootDir>/tests/e2e/', '<rootDir>/tests/config/'],
+  testPathIgnorePatterns: [
+    '<rootDir>/dist/',
+    '<rootDir>/tooling/web-code-reviewer/',
+    '<rootDir>/resources/frontend/evaluations/',
+    '<rootDir>/__tests__/e2e/',
+    '<rootDir>/__tests__/config/',
+  ],
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

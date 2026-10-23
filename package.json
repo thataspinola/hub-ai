@@ -15,7 +15,7 @@
     "test:e2e": "playwright test",
     "test:e2e:list": "playwright test --list",
     "check:local": "npm run check:config && npm run lint && npm run typecheck && npm test -- --runInBand",
-    "check:config": "node --test tests/config/*.test.cjs",
+    "check:config": "node --test __tests__/config/*.spec.cjs",
     "test:standalone": "node tools/smoke-standalone.cjs",
     "test:e2e:install": "playwright install webkit firefox",
     "test:e2e:webkit": "playwright test --project=webkit",

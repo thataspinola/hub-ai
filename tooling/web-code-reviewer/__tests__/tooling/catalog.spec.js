@@ -1,0 +1,42 @@
+'use strict'
+
+const test = require('node:test'),
+  assert = require('node:assert/strict')
+const fs = require('node:fs'),
+  path = require('node:path')
+
+const { REPOSITORY_ROOT } = require('../../scripts/hub-resources')
+const { exportCatalog } = require('../../scripts/export-catalog')
+
+test('exported portal catalog stays consistent with profiles and resources', () => {
+  const catalog = exportCatalog()
+
+  assert.deepEqual(
+    JSON.parse(
+      fs.readFileSync(path.join(REPOSITORY_ROOT, 'src/data/ai-resources.json'))
+    ),
+    catalog
+  )
+
+  assert.deepEqual(
+    catalog.profiles.map((x) => x.name),
+    ['angular', 'frontend', 'nextjs', 'react', 'vue']
+  )
+
+  assert.equal(
+    catalog.resources.filter((x) => x.source.endsWith('copilot-setup.agent.md'))
+      .length,
+    1
+  )
+
+  const next = catalog.profiles.find((x) => x.name === 'nextjs')
+  assert.ok(next.files.includes('.github/skills/nextjs-patterns/SKILL.md'))
+
+  assert.equal(
+    next.files.some((x) => x.includes('node-testing')),
+    false
+  )
+
+  for (const resource of catalog.resources)
+    assert.ok(fs.existsSync(path.join(REPOSITORY_ROOT, resource.source)))
+})

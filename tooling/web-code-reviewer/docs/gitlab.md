@@ -1,8 +1,10 @@
 # GitLab, Jenkins e validação do toolkit
 
+# TODO -> ajustar para como se ja estivesse no ambiente dentro da VDI
+
 Os recursos mantêm suporte a consumidores GitLab/Jenkins. O repositório de trabalho atual continua sendo o GitHub autorizado pelo usuário. Não inferir acesso a um GitLab corporativo nem alterar o caminho de entrega existente.
 
-A aplicação atual contém pom.xml/config/, mas não versiona .gitlab-ci.yml ou Jenkinsfile nesta revisão. O toolkit não depende de um CI inexistente: sua validação YAML de .gitlab-ci.yml só ocorre quando esse arquivo existir dentro do módulo. Não recriar a pipeline antiga na raiz nem afirmar que um runner executou verificações locais.
+A aplicação atual contém config/, mas não versiona .gitlab-ci.yml ou Jenkinsfile nesta revisão. O toolkit não depende de um CI inexistente: sua validação YAML de .gitlab-ci.yml só ocorre quando esse arquivo existir dentro do módulo. Não recriar a pipeline antiga na raiz nem afirmar que um runner executou verificações locais.
 
 Gates locais preparados para serem chamados no pipeline aprovado:
 

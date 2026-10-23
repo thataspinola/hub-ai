@@ -6,13 +6,13 @@ Ler agent.md e as instruções mais específicas antes de alterar arquivos. Pres
 
 ## Frontend real
 
-A aplicação usa Next.js App Router, React, TypeScript, Tailwind, Radix UI e Zustand. Fontes em src/, testes da aplicação em __tests__/. Manter aliases @/*, rotas, basePath, DTOs/tipos e fronteiras cliente/servidor existentes. Zustand/localStorage/IndexedDB devem permanecer em contextos client-safe. Tratar imports/exports de JSON de formulários, flags e recomendações como contratos; validar entradas e preservar dados existentes.
+A aplicação usa Next.js App Router, React, TypeScript, Tailwind, Radix UI e Zustand. Fontes em src/, testes da aplicação em **tests**/. Manter aliases @/\*, rotas, basePath, DTOs/tipos e fronteiras cliente/servidor existentes. Zustand/localStorage/IndexedDB devem permanecer em contextos client-safe. Tratar imports/exports de JSON de formulários, flags e recomendações como contratos; validar entradas e preservar dados existentes.
 
 A autenticação existente usa NextAuth/Keycloak. Não registrar tokens, secrets ou dados pessoais nem presumir que a presença de uma sessão equivale a autorização. Não substituir a sessão, provider de flags, estrutura de formulários ou stores de recomendações pelo exemplo backend.
 
 ## Validação
 
-Usar Jest e React Testing Library adotados pelo projeto. Verificar package.json e configurações antes de executar scripts. npm test/build da raiz pertencem à aplicação; registry e certificados corporativos podem exigir a VDI. Não trocar Jest por outro runner. A suíte Playwright autorizada fica em tests/e2e, com servidor localhost e bloqueio de rede externa. Não reduzir gates, criar scripts fictícios ou ocultar falhas.
+Usar Jest e React Testing Library adotados pelo projeto. Verificar package.json e configurações antes de executar scripts. npm test/build da raiz pertencem à aplicação; registry e certificados corporativos podem exigir a VDI. Não trocar Jest por outro runner. A suíte Playwright autorizada fica em **tests**/e2e, com servidor localhost e bloqueio de rede externa. Não reduzir gates, criar scripts fictícios ou ocultar falhas.
 
 As ferramentas compartilhadas estão em tooling/web-code-reviewer; recursos frontend em resources/frontend; configuração ativa do editor em .github. Backend Node/Nest e exemplos são mantidos no backend-code-reviewer. Não incluir ferramentas ou fixtures na suíte/build Next. Validar o toolkit separadamente com npm --prefix tooling/web-code-reviewer run check.
 

@@ -4,7 +4,7 @@
 
 - Recursos centralizados em resources/agents, resources/skills e resources/templates; perfis selecionam recursos sem duplicá-los.
 - Copilot Setup único para Angular, React, Next.js, Vue e backend Node/NestJS.
-- Templates com sufixo .template.md, testes em tests/ e nomes kebab-case; acessibility corrigido para accessibility.
+- Templates com sufixo .template.md, testes em **tests**/ e nomes kebab-case; acessibility corrigido para accessibility.
 - Migração conservadora de nomes antigos e validação automática de nomenclatura e setup compartilhado.
 
 ## 1.3.0

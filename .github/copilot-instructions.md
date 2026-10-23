@@ -1,6 +1,6 @@
 # Hub AI — painel administrativo
 
-Aplicação @porto/react-ssr-corp-hubv-painel-administrativo. Stack declarada: Next.js ^16.2.2, React ^19, TypeScript, Tailwind ^4 e Zustand ^5. Fontes em src/, testes em __tests__/. Preservar os requisitos de Node e scripts da aplicação; o toolkit usa Node 22+ independentemente.
+Aplicação @porto/react-ssr-corp-hubv-painel-administrativo. Stack declarada: Next.js ^16.2.2, React ^19, TypeScript, Tailwind ^4 e Zustand ^5. Fontes em src/, testes em **tests**/. Preservar os requisitos de Node e scripts da aplicação; o toolkit usa Node 22+ independentemente.
 
 Ler AGENTS.md e agent.md. Priorizar o código e os contratos reais: App Router, server/client boundaries, NextAuth/Keycloak, feature flags via strategy localStorage/AppConfig, builder de formulários e recomendações com persistência local. Não impor arquitetura Nest/backend ao painel nem tratar exemplos como serviços reais.
 
@@ -12,4 +12,4 @@ tooling/web-code-reviewer contém as ferramentas frontend; fixtures e ferramenta
 
 Não criar arquivos .py. Não inserir secrets, tokens, CPF real ou certificados em logs/fixtures. Não editar .env. Respeitar VDI e a infraestrutura/pipeline existente, sem deploy automático. Reportar validações realizadas e limites; mocks locais não comprovam Keycloak, AppConfig ou deploy.
 
-Validação local autorizada: npm run check:local, npm run build e npm run test:e2e. E2E em tests/e2e usa fixtures locais e bloqueia hosts externos. O catálogo é apresentado na página /code-reviewer, sem enviar código a um modelo. Não declarar VDI, autenticação real ou deploy validados com base nesses checks.
+Validação local autorizada: npm run check:local, npm run build e npm run test:e2e. E2E em **tests**/e2e usa fixtures locais e bloqueia hosts externos. O catálogo é apresentado na página /code-reviewer, sem enviar código a um modelo. Não declarar VDI, autenticação real ou deploy validados com base nesses checks.

@@ -35,7 +35,7 @@
     "v0-form-wizard-builder-main",
     "v0-paine-de-recomendacoes-ky",
     "tooling/web-code-reviewer",
-    "tests/e2e",
+    "__tests__/e2e",
     "resources/frontend/evaluations"
   ]
 }
