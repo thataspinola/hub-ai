@@ -22,7 +22,7 @@ Usar Copilot Setup e Web Code Reviewer da configuração instalada. Consultar .g
 
 ## Entrega e evidências
 
-Preservar pom.xml/config/ e o fluxo corporativo existente. Não executar deploy ou acessar Keycloak/AppConfig/serviços corporativos fora do ambiente autorizado. Reportar arquivos, comandos executados, resultados e pendências; não declarar funcionamento em produção ou no editor sem evidência.
+Preservar config/ e o fluxo de entrega corporativo existente. Não executar deploy ou acessar Keycloak/AppConfig/serviços corporativos fora do ambiente autorizado. Reportar arquivos, comandos executados, resultados e pendências; não declarar funcionamento em produção ou no editor sem evidência.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

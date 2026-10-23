@@ -12,7 +12,7 @@ Referência de leitura: main 48304b7, em 2026-10-08. Reinspecionar package.json 
 | Feature flags | Strategy localStorage/AppConfig Agent, context/hydration e polling em src/lib/feature-flags |
 | Formulários | Builder, stores e tipos em src/lib/form-wizard e src/components/wizard-builder |
 | Recomendações | Stores/IndexedDB/tipos e componentes administrativos em src/lib/recommendations e src/components/portal-admin |
-| Entrega | pom.xml e config/ existentes; não há .gitlab-ci.yml ou Jenkinsfile versionado nesta revisão |
+| Entrega | Configurações em config/ e scripts de build/postbuild no package.json; não há .gitlab-ci.yml ou Jenkinsfile versionado nesta revisão |
 
 Preservar todo o código novo. Recursos e exemplos Node/Nest são mantidos no backend-code-reviewer; não existem neste toolkit frontend. O perfil correto da aplicação atual é nextjs, com web-quality, web-testing, security, gitlab-delivery, nextjs-patterns e react-patterns.
 

@@ -11,7 +11,7 @@
 | tooling/web-code-reviewer/ | Instalador, diagnóstico, validação e avaliação frontend |
 | resources/frontend/        | Perfis, agentes, skills, templates e fixtures frontend  |
 | .github/                   | Configuração instalada do editor                        |
-| config/ e pom.xml          | Entrega corporativa existente                           |
+| config/          | Entrega corporativa existente                           |
 | docs/                      | Uso, migração e evidências                              |
 
 Recursos usam kebab-case: papel.agent.md, documento.template.md e nome/SKILL.md. README.md, AGENTS.md e VERSION mantêm nomes convencionais. Não renomear componentes/rotas da aplicação por associação com o padrão de recursos.
