@@ -344,6 +344,6 @@ Os toolkits reconhecem seus estados separados e impedem sobrescrita de recursos 
 
 ## Reorganização de testes — 2026-10-23
 
-Os diretórios __tests__/config e __tests__/e2e são executados pelos respectivos scripts; Jest mantém a suíte da aplicação, e o toolkit usa tooling/web-code-reviewer/__tests__/tooling. Novos testes e arquivos realocados usam .spec; os .test Jest existentes continuam válidos. O E2E mantém localhost e usa /react-ssr-corp-hubv-painel-administrativo/ conforme next.config.ts. Consultar [validação atualizada](docs/local-validation.md) para resultados e limites.
+Os diretórios \_\_tests\_\_/config e \_\_tests\_\_/e2e são executados pelos respectivos scripts; Jest mantém a suíte da aplicação, e o toolkit usa tooling/web-code-reviewer/\_\_tests\_\_/tooling. Novos testes e arquivos realocados usam .spec; os .test Jest existentes continuam válidos. O E2E mantém localhost e usa /react-ssr-corp-hubv-painel-administrativo/ conforme next.config.ts. Consultar [validação atualizada](docs/local-validation.md) para resultados e limites.
 
 Resultados desta rodada: Jest 384 testes em 41 suítes; toolkit 43 testes; configuração 2 testes; lint sem warnings; typecheck, build/postbuild e smoke HTTP standalone passaram. Playwright reconheceu 16 casos no diretório atualizado; não houve execução completa desses casos nem validação de VDI/Windows nesta rodada. Doctor preserva o aviso do agente externo frontend_engineering_expert; nenhuma customização foi removida para silenciá-lo.
