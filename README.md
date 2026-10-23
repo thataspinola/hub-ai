@@ -56,6 +56,28 @@ O painel, o toolkit e o exemplo Nest têm manifests e dependências próprios. A
 
 ## Configurar e executar o painel
 
+Copiar o [modelo de variáveis](.env.example) para `.env.local` e preencher apenas com valores aprovados. O arquivo real permanece ignorado pelo Git.
+
+PowerShell:
+
+```powershell
+Copy-Item .env.example .env.local
+```
+
+Git Bash/Linux/macOS:
+
+```sh
+cp .env.example .env.local
+```
+
+Gerar `NEXTAUTH_SECRET` localmente e copiar a saída para seu `.env.local`:
+
+```sh
+node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
+```
+
+O modelo inclui NextAuth/Keycloak, API, autorização administrativa e AppConfig. Login e chamadas reais exigem configurações válidas; os campos vazios não fornecem acesso ao ambiente corporativo. Manter `FEATURE_FLAGS_PROVIDER=localStorage` para flags locais. Ao usar `appconfig`, preencher os três IDs e conferir o endpoint do agent. Não expor credenciais em variáveis `NEXT_PUBLIC_*` nem versionar arquivos de ambiente reais.
+
 Executar a partir da raiz, no ambiente com acesso corporativo aprovado:
 
 ```sh
