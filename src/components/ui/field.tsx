@@ -9,19 +9,13 @@ function FieldGroup({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="field-group"
-      className={cn(
-        'flex w-full flex-col gap-4',
-        className,
-      )}
+      className={cn('flex w-full flex-col gap-4', className)}
       {...props}
     />
   )
 }
 
-function Field({
-  className,
-  ...props
-}: React.ComponentProps<'div'>) {
+function Field({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       role="group"
@@ -39,17 +33,10 @@ function FieldLabel({
   return (
     <Label
       data-slot="field-label"
-      className={cn(
-        'text-sm font-medium leading-snug',
-        className,
-      )}
+      className={cn('text-sm font-medium leading-snug', className)}
       {...props}
     />
   )
 }
 
-export {
-  Field,
-  FieldLabel,
-  FieldGroup,
-}
+export { Field, FieldLabel, FieldGroup }

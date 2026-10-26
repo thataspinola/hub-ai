@@ -1,16 +1,48 @@
-"use client"
+'use client'
 
-import type React from "react"
-import { useState, useCallback } from "react"
-import { Trash2, GripVertical, Type, AlignLeft, TextCursorInput, ChevronDown, Circle, CheckSquare, ChevronUp, ChevronDownIcon, CreditCard, Award as IdCard, Building2, Phone, GitFork, ExternalLink, Zap, AlertTriangle, MapPin, UserRound, ShieldCheck, Mail } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { useFormStore, isFieldElement, isActionElement } from "@/lib/form-wizard/form-store"
-import { Button } from "@/components/ui/button"
-import type { FormElement, FormStep, ElementType, LibraryItem } from "@/lib/form-wizard/types"
-import { DEPRECATED_ELEMENT_TYPES } from "@/lib/form-wizard/types"
+import type React from 'react'
+import { useState, useCallback } from 'react'
+import {
+  Trash2,
+  GripVertical,
+  Type,
+  AlignLeft,
+  TextCursorInput,
+  ChevronDown,
+  Circle,
+  CheckSquare,
+  ChevronUp,
+  ChevronDownIcon,
+  CreditCard,
+  Award as IdCard,
+  Building2,
+  Phone,
+  GitFork,
+  ExternalLink,
+  Zap,
+  AlertTriangle,
+  MapPin,
+  UserRound,
+  ShieldCheck,
+  Mail,
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
+import {
+  useFormStore,
+  isFieldElement,
+  isActionElement,
+} from '@/lib/form-wizard/form-store'
+import { Button } from '@/components/ui/button'
+import type {
+  FormElement,
+  FormStep,
+  ElementType,
+  LibraryItem,
+} from '@/lib/form-wizard/types'
+import { DEPRECATED_ELEMENT_TYPES } from '@/lib/form-wizard/types'
 
-import { PlansPreview } from "@/components/wizard-builder/plans-carousel"
-import type { PlansConfig } from "@/lib/form-wizard/types"
+import { PlansPreview } from '@/components/wizard-builder/plans-carousel'
+import type { PlansConfig } from '@/lib/form-wizard/types'
 
 const elementIcons: Record<string, React.ElementType> = {
   TITLE: Type,
@@ -35,25 +67,25 @@ const elementIcons: Record<string, React.ElementType> = {
 }
 
 const elementLabels: Record<string, string> = {
-  TITLE: "Title",
-  PARAGRAPH: "Paragraph",
-  TEXT_INPUT: "Text Input",
-  SELECT: "Select",
-  RADIO: "Radio",
-  CHECKBOX: "Checkbox",
-  SUCCESS_SCREEN: "Success Screen (Deprecated)",
-  GO_TO_CHECKOUT: "Go To Checkout (Deprecated)",
-  CONDITIONAL_ROUTE: "Conditional Route",
-  NAVIGATION: "Navigation",
-  SERVICE_CALL: "Service Call",
-  PLANS: "Plans",
-  CPF_INPUT: "CPF",
-  CNPJ_INPUT: "CNPJ",
-  PHONE_INPUT: "Phone",
-  CEP_INPUT: "CEP",
-  SOCIAL_NAME_INPUT: "Nome Social",
-  PRIVACY_POLICY: "Política de Privacidade",
-  EMAIL_INPUT: "E-mail",
+  TITLE: 'Title',
+  PARAGRAPH: 'Paragraph',
+  TEXT_INPUT: 'Text Input',
+  SELECT: 'Select',
+  RADIO: 'Radio',
+  CHECKBOX: 'Checkbox',
+  SUCCESS_SCREEN: 'Success Screen (Deprecated)',
+  GO_TO_CHECKOUT: 'Go To Checkout (Deprecated)',
+  CONDITIONAL_ROUTE: 'Conditional Route',
+  NAVIGATION: 'Navigation',
+  SERVICE_CALL: 'Service Call',
+  PLANS: 'Plans',
+  CPF_INPUT: 'CPF',
+  CNPJ_INPUT: 'CNPJ',
+  PHONE_INPUT: 'Phone',
+  CEP_INPUT: 'CEP',
+  SOCIAL_NAME_INPUT: 'Nome Social',
+  PRIVACY_POLICY: 'Política de Privacidade',
+  EMAIL_INPUT: 'E-mail',
 }
 
 interface CanvasElementProps {
@@ -80,50 +112,64 @@ function CanvasElement({
   onDragEnd,
 }: CanvasElementProps) {
   const Icon = elementIcons[element.type]
-  const isDeprecated = DEPRECATED_ELEMENT_TYPES.includes(element.type as (typeof DEPRECATED_ELEMENT_TYPES)[number])
+  const isDeprecated = DEPRECATED_ELEMENT_TYPES.includes(
+    element.type as (typeof DEPRECATED_ELEMENT_TYPES)[number]
+  )
   const isField = isFieldElement(element.type)
-  const isPlan = element.type === "PLANS"
+  const isPlan = element.type === 'PLANS'
   const isAction = isActionElement(element.type)
 
   const getPreviewText = () => {
     const config = element.config as unknown as Record<string, unknown>
-    if (element.type === "TITLE" || element.type === "PARAGRAPH") {
-      return (config.text as string) || ""
+    if (element.type === 'TITLE' || element.type === 'PARAGRAPH') {
+      return (config.text as string) || ''
     }
     if (isField) {
-      return (config.label as string) || ""
+      return (config.label as string) || ''
     }
-    if (element.type === "SUCCESS_SCREEN") {
-      return "Deprecated - please remove"
+    if (element.type === 'SUCCESS_SCREEN') {
+      return 'Deprecated - please remove'
     }
-    if (element.type === "GO_TO_CHECKOUT") {
-      return "Deprecated - please remove"
+    if (element.type === 'GO_TO_CHECKOUT') {
+      return 'Deprecated - please remove'
     }
-    if (element.type === "PLANS") {
+    if (element.type === 'PLANS') {
       return null
     }
-    if (element.type === "CONDITIONAL_ROUTE") {
-      const routeConfig = config as { label?: string; fieldName?: string; operator?: string; value?: string; targetStepSlug?: string }
-      const label = routeConfig.label ? `[${routeConfig.label}] ` : ""
+    if (element.type === 'CONDITIONAL_ROUTE') {
+      const routeConfig = config as {
+        label?: string
+        fieldName?: string
+        operator?: string
+        value?: string
+        targetStepSlug?: string
+      }
+      const label = routeConfig.label ? `[${routeConfig.label}] ` : ''
       if (routeConfig.fieldName && routeConfig.targetStepSlug) {
-        const op = routeConfig.operator === "NOT_EQUALS" ? "!=" : "="
+        const op = routeConfig.operator === 'NOT_EQUALS' ? '!=' : '='
         return `${label}If ${routeConfig.fieldName} ${op} "${routeConfig.value}" → ${routeConfig.targetStepSlug}`
       }
       return `${label}Not configured`
     }
-    if (element.type === "NAVIGATION") {
+    if (element.type === 'NAVIGATION') {
       const navConfig = config as { label?: string; url?: string }
-      return navConfig.url ? `[${navConfig.label || "Navigate"}] → ${navConfig.url}` : `[${navConfig.label || "Navigate"}] Not configured`
+      return navConfig.url
+        ? `[${navConfig.label || 'Navigate'}] → ${navConfig.url}`
+        : `[${navConfig.label || 'Navigate'}] Not configured`
     }
-    if (element.type === "SERVICE_CALL") {
-      const serviceConfig = config as { label?: string; service?: string; targetStepSlugOnSuccess?: string }
-      const label = serviceConfig.label ? `[${serviceConfig.label}] ` : ""
+    if (element.type === 'SERVICE_CALL') {
+      const serviceConfig = config as {
+        label?: string
+        service?: string
+        targetStepSlugOnSuccess?: string
+      }
+      const label = serviceConfig.label ? `[${serviceConfig.label}] ` : ''
       if (serviceConfig.service && serviceConfig.targetStepSlugOnSuccess) {
         return `${label}${serviceConfig.service} → ${serviceConfig.targetStepSlugOnSuccess}`
       }
-      return `${label}${serviceConfig.service || "Not configured"}`
+      return `${label}${serviceConfig.service || 'Not configured'}`
     }
-    return ""
+    return ''
   }
 
   return (
@@ -137,12 +183,14 @@ function CanvasElement({
         onSelect()
       }}
       className={cn(
-        "group relative flex items-center gap-3 rounded-md border bg-background p-2.5 transition-all",
-        isSelected ? "border-primary ring-2 ring-primary/20" : "border-border hover:border-muted-foreground/40",
-        isDeprecated && "border-amber-500/50 bg-amber-500/5 opacity-70",
-        isPlan && "border-amber-500/50 bg-amber-500/5",
-        isAction && !isDeprecated && "border-violet-500/50 bg-violet-500/5",
-        "cursor-pointer",
+        'group relative flex items-center gap-3 rounded-md border bg-background p-2.5 transition-all',
+        isSelected
+          ? 'border-primary ring-2 ring-primary/20'
+          : 'border-border hover:border-muted-foreground/40',
+        isDeprecated && 'border-amber-500/50 bg-amber-500/5 opacity-70',
+        isPlan && 'border-amber-500/50 bg-amber-500/5',
+        isAction && !isDeprecated && 'border-violet-500/50 bg-violet-500/5',
+        'cursor-pointer'
       )}
     >
       <div className="cursor-grab text-muted-foreground hover:text-foreground active:cursor-grabbing">
@@ -150,17 +198,25 @@ function CanvasElement({
       </div>
       <div
         className={cn(
-          "flex h-7 w-7 shrink-0 items-center justify-center rounded",
-          isDeprecated ? "bg-amber-500/20 text-amber-600" : "bg-muted text-muted-foreground",
-          isPlan && "bg-amber-500/20 text-amber-600",
-          isAction && !isDeprecated && "bg-violet-500/20 text-violet-600",
+          'flex h-7 w-7 shrink-0 items-center justify-center rounded',
+          isDeprecated
+            ? 'bg-amber-500/20 text-amber-600'
+            : 'bg-muted text-muted-foreground',
+          isPlan && 'bg-amber-500/20 text-amber-600',
+          isAction && !isDeprecated && 'bg-violet-500/20 text-violet-600'
         )}
       >
         {Icon && <Icon className="h-3.5 w-3.5" />}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium leading-none">{elementLabels[element.type]}</p>
-        {getPreviewText() && <p className="mt-0.5 truncate text-xs text-muted-foreground">{getPreviewText()}</p>}
+        <p className="text-sm font-medium leading-none">
+          {elementLabels[element.type]}
+        </p>
+        {getPreviewText() && (
+          <p className="mt-0.5 truncate text-xs text-muted-foreground">
+            {getPreviewText()}
+          </p>
+        )}
         {isPlan && (
           <div className="mt-2">
             <PlansPreview
@@ -194,9 +250,12 @@ interface StepCardProps {
   onSelectStep: () => void
   onSelectElement: (elementId: string) => void
   onDeleteElement: (elementId: string) => void
-  onMoveStep: (direction: "up" | "down") => void
+  onMoveStep: (direction: 'up' | 'down') => void
   onDeleteStep: () => void
-  canAddElement: (stepId: string, elementType: ElementType) => { allowed: boolean; reason?: string }
+  canAddElement: (
+    stepId: string,
+    elementType: ElementType
+  ) => { allowed: boolean; reason?: string }
   onDrop: (e: React.DragEvent, stepId: string) => void
 }
 
@@ -220,23 +279,26 @@ function StepCard({
   const handleElementDragStart = useCallback(
     (e: React.DragEvent, index: number) => {
       e.dataTransfer.setData(
-        "application/json",
+        'application/json',
         JSON.stringify({
-          type: "canvas",
+          type: 'canvas',
           sourceStepId: step.id,
           sourceIndex: index,
-        }),
+        })
       )
-      e.dataTransfer.effectAllowed = "move"
+      e.dataTransfer.effectAllowed = 'move'
     },
-    [step.id],
+    [step.id]
   )
 
-  const handleElementDragOver = useCallback((e: React.DragEvent, index: number) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragOverIndex(index)
-  }, [])
+  const handleElementDragOver = useCallback(
+    (e: React.DragEvent, index: number) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setDragOverIndex(index)
+    },
+    []
+  )
 
   const handleElementDragEnd = useCallback(() => {
     setDragOverIndex(null)
@@ -248,9 +310,13 @@ function StepCard({
       e.stopPropagation()
 
       try {
-        const data = JSON.parse(e.dataTransfer.getData("application/json"))
+        const data = JSON.parse(e.dataTransfer.getData('application/json'))
 
-        if (data.type === "canvas" && data.sourceStepId === step.id && dragOverIndex !== null) {
+        if (
+          data.type === 'canvas' &&
+          data.sourceStepId === step.id &&
+          dragOverIndex !== null
+        ) {
           reorderElements(step.id, data.sourceIndex, dragOverIndex)
         } else {
           onDrop(e, step.id)
@@ -261,7 +327,7 @@ function StepCard({
 
       setDragOverIndex(null)
     },
-    [step.id, dragOverIndex, reorderElements, onDrop],
+    [step.id, dragOverIndex, reorderElements, onDrop]
   )
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -274,21 +340,25 @@ function StepCard({
       onDrop={handleStepDrop}
       onDragOver={handleDragOver}
       className={cn(
-        "rounded-lg border-2 bg-card transition-all",
-        isSelected ? "border-primary shadow-sm" : "border-border hover:border-muted-foreground/40",
+        'rounded-lg border-2 bg-card transition-all',
+        isSelected
+          ? 'border-primary shadow-sm'
+          : 'border-border hover:border-muted-foreground/40'
       )}
     >
       <div
         className={cn(
-          "flex items-center justify-between px-4 py-3 border-b",
-          isSelected ? "bg-primary/5" : "bg-muted/30",
+          'flex items-center justify-between px-4 py-3 border-b',
+          isSelected ? 'bg-primary/5' : 'bg-muted/30'
         )}
       >
         <div className="flex items-center gap-3">
           <div
             className={cn(
-              "flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold",
-              isSelected ? "bg-primary text-primary-foreground" : "bg-muted-foreground/20 text-muted-foreground",
+              'flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold',
+              isSelected
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-muted-foreground/20 text-muted-foreground'
             )}
           >
             {stepNumber}
@@ -306,7 +376,7 @@ function StepCard({
             className="h-7 w-7"
             onClick={(e) => {
               e.stopPropagation()
-              onMoveStep("up")
+              onMoveStep('up')
             }}
             disabled={stepNumber === 1}
           >
@@ -318,7 +388,7 @@ function StepCard({
             className="h-7 w-7"
             onClick={(e) => {
               e.stopPropagation()
-              onMoveStep("down")
+              onMoveStep('down')
             }}
             disabled={stepNumber === totalSteps}
           >
@@ -342,8 +412,10 @@ function StepCard({
         {step.elements.length === 0 ? (
           <div
             className={cn(
-              "flex items-center justify-center rounded-md border-2 border-dashed py-6 text-sm text-muted-foreground transition-colors",
-              dragOverIndex !== null ? "border-primary bg-primary/5" : "border-muted-foreground/25",
+              'flex items-center justify-center rounded-md border-2 border-dashed py-6 text-sm text-muted-foreground transition-colors',
+              dragOverIndex !== null
+                ? 'border-primary bg-primary/5'
+                : 'border-muted-foreground/25'
             )}
             onDragOver={(e) => {
               e.preventDefault()
@@ -378,8 +450,10 @@ function StepCard({
               }}
               onDragLeave={() => setDragOverIndex(null)}
               className={cn(
-                "rounded-md border-2 border-dashed py-2 text-center text-xs text-muted-foreground transition-colors",
-                dragOverIndex === step.elements.length ? "border-primary bg-primary/5" : "border-transparent",
+                'rounded-md border-2 border-dashed py-2 text-center text-xs text-muted-foreground transition-colors',
+                dragOverIndex === step.elements.length
+                  ? 'border-primary bg-primary/5'
+                  : 'border-transparent'
               )}
             >
               Drop to add
@@ -407,23 +481,23 @@ export function StepCanvas() {
   const sortedSteps = [...form.steps].sort((a, b) => a.order - b.order)
 
   const handleMoveStep = useCallback(
-    (stepIndex: number, direction: "up" | "down") => {
-      const newIndex = direction === "up" ? stepIndex - 1 : stepIndex + 1
+    (stepIndex: number, direction: 'up' | 'down') => {
+      const newIndex = direction === 'up' ? stepIndex - 1 : stepIndex + 1
       if (newIndex >= 0 && newIndex < form.steps.length) {
         reorderSteps(stepIndex, newIndex)
       }
     },
-    [form.steps.length, reorderSteps],
+    [form.steps.length, reorderSteps]
   )
 
   const handleStepDrop = useCallback(
     (e: React.DragEvent, stepId: string) => {
       try {
-        const data = JSON.parse(e.dataTransfer.getData("application/json"))
+        const data = JSON.parse(e.dataTransfer.getData('application/json'))
 
-        if (data.type === "library") {
+        if (data.type === 'library') {
           const item = data.item as LibraryItem
-          if (item.type === "STEP") {
+          if (item.type === 'STEP') {
             return
           }
           const { allowed } = canAddElement(stepId, item.type as ElementType)
@@ -435,31 +509,36 @@ export function StepCanvas() {
         // Invalid drag data
       }
     },
-    [addElement, canAddElement],
+    [addElement, canAddElement]
   )
 
   const handleCanvasDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault()
       try {
-        const data = JSON.parse(e.dataTransfer.getData("application/json"))
-        if (data.type === "library" && data.item?.type === "STEP") {
+        const data = JSON.parse(e.dataTransfer.getData('application/json'))
+        if (data.type === 'library' && data.item?.type === 'STEP') {
           addStep()
         }
       } catch {
         // Invalid drag data
       }
     },
-    [addStep],
+    [addStep]
   )
 
   return (
-    <div className="flex flex-1 flex-col bg-muted/20" onDrop={handleCanvasDrop} onDragOver={(e) => e.preventDefault()}>
+    <div
+      className="flex flex-1 flex-col bg-muted/20"
+      onDrop={handleCanvasDrop}
+      onDragOver={(e) => e.preventDefault()}
+    >
       <div className="flex items-center justify-between border-b bg-background px-6 py-3">
         <div>
           <h2 className="font-semibold">Wizard Steps</h2>
           <p className="text-xs text-muted-foreground">
-            {form.steps.length} step{form.steps.length !== 1 ? "s" : ""} configured
+            {form.steps.length} step{form.steps.length !== 1 ? 's' : ''}{' '}
+            configured
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={addStep}>

@@ -1,42 +1,79 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { useRecommendationStore } from "@/lib/recommendations/store"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
-import { Empty } from "@/components/ui/empty"
-import { RecommendationProductForm } from "./RecommendationProductForm"
-import { Plus, Pencil, Trash2, Search, Package, Tags, ExternalLink } from "lucide-react"
-import Image from "next/image"
-import type { Product } from "@/lib/recommendations/types"
+import { useState } from 'react'
+import { useRecommendationStore } from '@/lib/recommendations/store'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from '@/components/ui/dialog'
+import { Empty } from '@/components/ui/empty'
+import { RecommendationProductForm } from './RecommendationProductForm'
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  Search,
+  Package,
+  Tags,
+  ExternalLink,
+} from 'lucide-react'
+import Image from 'next/image'
+import type { Product } from '@/lib/recommendations/types'
 
 export function RecommendationCatalog() {
-  const { data, addProduct, updateProduct, deleteProduct, addCategory, deleteCategory } = useRecommendationStore()
+  const {
+    data,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    addCategory,
+    deleteCategory,
+  } = useRecommendationStore()
   const { products, categories } = data.catalog
-  
+
   const [productFormOpen, setProductFormOpen] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | undefined>()
-  const [searchQuery, setSearchQuery] = useState("")
-  const [categoryFilter, setCategoryFilter] = useState<string>("all")
-  
-  const [newCategoryName, setNewCategoryName] = useState("")
+  const [searchQuery, setSearchQuery] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState<string>('all')
+
+  const [newCategoryName, setNewCategoryName] = useState('')
   const [categoryDialogOpen, setCategoryDialogOpen] = useState(false)
-  
+
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
   const [productToDelete, setProductToDelete] = useState<string | null>(null)
   const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null)
-  const [deleteCategoryConfirmOpen, setDeleteCategoryConfirmOpen] = useState(false)
+  const [deleteCategoryConfirmOpen, setDeleteCategoryConfirmOpen] =
+    useState(false)
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.url.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = categoryFilter === "all" || product.category === categoryFilter
+    const matchesCategory =
+      categoryFilter === 'all' || product.category === categoryFilter
     return matchesSearch && matchesCategory
   })
 
@@ -68,9 +105,12 @@ export function RecommendationCatalog() {
   }
 
   const handleAddCategory = () => {
-    if (newCategoryName.trim() && !categories.includes(newCategoryName.trim())) {
+    if (
+      newCategoryName.trim() &&
+      !categories.includes(newCategoryName.trim())
+    ) {
       addCategory(newCategoryName.trim())
-      setNewCategoryName("")
+      setNewCategoryName('')
       setCategoryDialogOpen(false)
     }
   }
@@ -112,17 +152,22 @@ export function RecommendationCatalog() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <CardTitle>Produtos</CardTitle>
-                  <CardDescription>Gerencie o catálogo de produtos para recomendações</CardDescription>
+                  <CardDescription>
+                    Gerencie o catálogo de produtos para recomendações
+                  </CardDescription>
                 </div>
                 <Button
-                  onClick={() => { setEditingProduct(undefined); setProductFormOpen(true) }}
+                  onClick={() => {
+                    setEditingProduct(undefined)
+                    setProductFormOpen(true)
+                  }}
                   className="bg-indigo-600 hover:bg-indigo-700"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Adicionar Produto
                 </Button>
               </div>
-              
+
               <div className="flex flex-col gap-3 sm:flex-row mt-4">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
@@ -151,7 +196,11 @@ export function RecommendationCatalog() {
               {filteredProducts.length === 0 ? (
                 <Empty
                   title="Nenhum produto encontrado"
-                  description={products.length === 0 ? "Adicione seu primeiro produto ao catálogo" : "Tente ajustar os filtros de busca"}
+                  description={
+                    products.length === 0
+                      ? 'Adicione seu primeiro produto ao catálogo'
+                      : 'Tente ajustar os filtros de busca'
+                  }
                 />
               ) : (
                 <div className="rounded-md border border-slate-200">
@@ -178,12 +227,16 @@ export function RecommendationCatalog() {
                                   height={40}
                                   className="h-10 w-10 rounded object-cover bg-slate-100"
                                   onError={(e) => {
-                                    (e.target as HTMLImageElement).style.display = "none"
+                                    ;(
+                                      e.target as HTMLImageElement
+                                    ).style.display = 'none'
                                   }}
                                 />
                               )}
                               <div className="min-w-0">
-                                <p className="font-medium truncate max-w-xs">{product.name}</p>
+                                <p className="font-medium truncate max-w-xs">
+                                  {product.name}
+                                </p>
                                 <a
                                   href={product.url}
                                   target="_blank"
@@ -191,7 +244,9 @@ export function RecommendationCatalog() {
                                   className="text-xs text-slate-400 hover:text-indigo-500 truncate max-w-xs flex items-center gap-1"
                                 >
                                   <ExternalLink className="h-3 w-3 shrink-0" />
-                                  <span className="truncate">{product.url}</span>
+                                  <span className="truncate">
+                                    {product.url}
+                                  </span>
                                 </a>
                               </div>
                             </div>
@@ -202,8 +257,15 @@ export function RecommendationCatalog() {
                           <TableCell>
                             {product.price ? (
                               <span className="text-sm">
-                                {product.price.prefix && <span className="text-slate-400">{product.price.prefix} </span>}
-                                {product.price.value.toLocaleString("pt-BR", { style: "currency", currency: product.price.currency })}
+                                {product.price.prefix && (
+                                  <span className="text-slate-400">
+                                    {product.price.prefix}{' '}
+                                  </span>
+                                )}
+                                {product.price.value.toLocaleString('pt-BR', {
+                                  style: 'currency',
+                                  currency: product.price.currency,
+                                })}
                               </span>
                             ) : (
                               <span className="text-slate-400 text-sm">-</span>
@@ -212,21 +274,36 @@ export function RecommendationCatalog() {
                           <TableCell>
                             <div className="flex flex-wrap gap-1">
                               {product.badges?.map((badge, i) => (
-                                <Badge key={i} variant="secondary" className="text-xs">
+                                <Badge
+                                  key={i}
+                                  variant="secondary"
+                                  className="text-xs"
+                                >
                                   {badge.text}
                                 </Badge>
                               ))}
-                              {(!product.badges || product.badges.length === 0) && (
-                                <span className="text-slate-400 text-sm">-</span>
+                              {(!product.badges ||
+                                product.badges.length === 0) && (
+                                <span className="text-slate-400 text-sm">
+                                  -
+                                </span>
                               )}
                             </div>
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-2">
-                              <Button variant="ghost" size="icon" onClick={() => handleEditProduct(product)}>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleEditProduct(product)}
+                              >
                                 <Pencil className="h-4 w-4" />
                               </Button>
-                              <Button variant="ghost" size="icon" onClick={() => handleDeleteProduct(product.url)}>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleDeleteProduct(product.url)}
+                              >
                                 <Trash2 className="h-4 w-4 text-red-500" />
                               </Button>
                             </div>
@@ -247,7 +324,9 @@ export function RecommendationCatalog() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <CardTitle>Categorias</CardTitle>
-                  <CardDescription>Gerencie as categorias de produtos</CardDescription>
+                  <CardDescription>
+                    Gerencie as categorias de produtos
+                  </CardDescription>
                 </div>
                 <Button
                   onClick={() => setCategoryDialogOpen(true)}
@@ -282,7 +361,11 @@ export function RecommendationCatalog() {
                         size="icon"
                         onClick={() => handleDeleteCategory(category)}
                         disabled={productsInCategory(category) > 0}
-                        title={productsInCategory(category) > 0 ? "Remova os produtos desta categoria primeiro" : "Excluir categoria"}
+                        title={
+                          productsInCategory(category) > 0
+                            ? 'Remova os produtos desta categoria primeiro'
+                            : 'Excluir categoria'
+                        }
                       >
                         <Trash2 className="h-4 w-4 text-red-500" />
                       </Button>
@@ -312,19 +395,28 @@ export function RecommendationCatalog() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Adicionar Categoria</DialogTitle>
-            <DialogDescription>Digite o nome da nova categoria</DialogDescription>
+            <DialogDescription>
+              Digite o nome da nova categoria
+            </DialogDescription>
           </DialogHeader>
           <Input
             value={newCategoryName}
             onChange={(e) => setNewCategoryName(e.target.value)}
             placeholder="Nome da categoria"
-            onKeyDown={(e) => e.key === "Enter" && handleAddCategory()}
+            onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
           />
           <DialogFooter>
-            <Button variant="outline" onClick={() => setCategoryDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setCategoryDialogOpen(false)}
+            >
               Cancelar
             </Button>
-            <Button onClick={handleAddCategory} disabled={!newCategoryName.trim()} className="bg-indigo-600 hover:bg-indigo-700">
+            <Button
+              onClick={handleAddCategory}
+              disabled={!newCategoryName.trim()}
+              className="bg-indigo-600 hover:bg-indigo-700"
+            >
               Adicionar
             </Button>
           </DialogFooter>
@@ -337,11 +429,15 @@ export function RecommendationCatalog() {
           <DialogHeader>
             <DialogTitle>Confirmar Exclusão</DialogTitle>
             <DialogDescription>
-              Tem certeza que deseja excluir este produto? Esta ação não pode ser desfeita.
+              Tem certeza que deseja excluir este produto? Esta ação não pode
+              ser desfeita.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteConfirmOpen(false)}
+            >
               Cancelar
             </Button>
             <Button variant="destructive" onClick={confirmDeleteProduct}>
@@ -352,16 +448,23 @@ export function RecommendationCatalog() {
       </Dialog>
 
       {/* Delete Category Confirmation */}
-      <Dialog open={deleteCategoryConfirmOpen} onOpenChange={setDeleteCategoryConfirmOpen}>
+      <Dialog
+        open={deleteCategoryConfirmOpen}
+        onOpenChange={setDeleteCategoryConfirmOpen}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirmar Exclusão</DialogTitle>
             <DialogDescription>
-              Tem certeza que deseja excluir a categoria &quot;{categoryToDelete}&quot;? Esta ação não pode ser desfeita.
+              Tem certeza que deseja excluir a categoria &quot;
+              {categoryToDelete}&quot;? Esta ação não pode ser desfeita.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteCategoryConfirmOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteCategoryConfirmOpen(false)}
+            >
               Cancelar
             </Button>
             <Button variant="destructive" onClick={confirmDeleteCategory}>

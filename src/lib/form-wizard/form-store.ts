@@ -319,6 +319,7 @@ export const useFormStore = create<FormState>()(
 
             return { ...step, ...updates }
           })
+
           return { form: { ...state.form, steps } }
         }),
 
@@ -580,8 +581,19 @@ export const useFormStore = create<FormState>()(
 
       saveFormToStorage: () => {
         const state = get()
-        try { saveForm(state.form); set({ storageError: null }); return true }
-        catch { set({ storageError: 'Não foi possível salvar: armazenamento indisponível, cheio ou dados inválidos.' }); return false }
+
+        try {
+          saveForm(state.form)
+          set({ storageError: null })
+          return true
+        } catch {
+          set({
+            storageError:
+              'Não foi possível salvar: armazenamento indisponível, cheio ou dados inválidos.',
+          })
+
+          return false
+        }
       },
 
       exportForm: () => JSON.stringify(get().form, null, 2),

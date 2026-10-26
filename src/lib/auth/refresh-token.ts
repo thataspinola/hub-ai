@@ -2,6 +2,7 @@ import type { JWT } from 'next-auth/jwt'
 import { createHash } from 'node:crypto'
 
 const pending = new Map<string, { expires: number; promise: Promise<JWT> }>()
+
 const failed = (token: JWT): JWT => ({
   ...token,
   access_token: undefined,
@@ -19,11 +20,14 @@ export async function refreshAccessToken(
     !config.clientSecret
   )
     return failed(token)
+
   let endpoint: URL
+
   try {
     endpoint = new URL(
       config.issuer.replace(/\/$/, '') + '/protocol/openid-connect/token'
     )
+
     if (
       endpoint.protocol !== 'https:' &&
       !(
@@ -36,8 +40,10 @@ export async function refreshAccessToken(
   } catch {
     return failed(token)
   }
+
   for (const [key, entry] of pending)
     if (entry.expires <= now) pending.delete(key)
+
   const key = createHash('sha256')
     .update(
       JSON.stringify([
@@ -48,8 +54,10 @@ export async function refreshAccessToken(
       ])
     )
     .digest('hex')
+
   const existing = pending.get(key)
   if (existing) return { ...token, ...(await existing.promise) }
+
   const promise = (async (): Promise<JWT> => {
     try {
       const response = await fetch(endpoint, {
@@ -65,8 +73,10 @@ export async function refreshAccessToken(
           client_secret: config.clientSecret,
         }),
       })
+
       if (!response.ok) return failed(token)
       const result = await response.json()
+
       if (
         typeof result.access_token !== 'string' ||
         !result.access_token ||
@@ -75,6 +85,7 @@ export async function refreshAccessToken(
         !Number.isFinite(result.expires_in)
       )
         return failed(token)
+
       return {
         ...token,
         access_token: result.access_token,
@@ -93,6 +104,7 @@ export async function refreshAccessToken(
       return failed(token)
     }
   })()
+
   if (pending.size < 100) pending.set(key, { expires: now + 10_000, promise })
   return promise
 }

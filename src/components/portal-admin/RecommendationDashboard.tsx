@@ -1,18 +1,18 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
-import { useRecommendationStore } from "@/lib/recommendations/store"
-import { Badge } from "@/components/ui/badge"
-import { Loader2, Package, Settings2, FileJson2 } from "lucide-react"
-import { motion } from "motion/react"
-import { RecommendationCatalog } from "./RecommendationCatalog"
-import { RecommendationRules } from "./RecommendationRules"
-import { RecommendationImportExport } from "./RecommendationImportExport"
-import { Toaster } from "@/components/ui/sonner"
+import { useState, useEffect } from 'react'
+import { useRecommendationStore } from '@/lib/recommendations/store'
+import { Badge } from '@/components/ui/badge'
+import { Loader2, Package, Settings2, FileJson2 } from 'lucide-react'
+import { motion } from 'motion/react'
+import { RecommendationCatalog } from './RecommendationCatalog'
+import { RecommendationRules } from './RecommendationRules'
+import { RecommendationImportExport } from './RecommendationImportExport'
+import { Toaster } from '@/components/ui/sonner'
 
 export function RecommendationDashboard() {
   const { data, isLoading, loadFromStorage } = useRecommendationStore()
-  const [activeTab, setActiveTab] = useState("catalog")
+  const [activeTab, setActiveTab] = useState('catalog')
 
   useEffect(() => {
     loadFromStorage()
@@ -21,15 +21,25 @@ export function RecommendationDashboard() {
   const stats = {
     products: data.catalog.products.length,
     categories: data.catalog.categories.length,
-    rules: Object.keys(data.recommendationRules.types.affinity_manual.maps.byCategory).length +
-           Object.keys(data.recommendationRules.types.affinity_manual.maps.byUrl).length,
-    slots: Object.keys(data.recommendationRules.types.context_slot.slots).length,
+    rules:
+      Object.keys(
+        data.recommendationRules.types.affinity_manual.maps.byCategory
+      ).length +
+      Object.keys(data.recommendationRules.types.affinity_manual.maps.byUrl)
+        .length,
+    slots: Object.keys(data.recommendationRules.types.context_slot.slots)
+      .length,
   }
 
   const tabs = [
-    { id: "catalog", label: "Catálogo", icon: Package, badge: stats.products },
-    { id: "rules", label: "Regras", icon: Settings2, badge: stats.rules },
-    { id: "import-export", label: "Importar/Exportar", icon: FileJson2, badge: null },
+    { id: 'catalog', label: 'Catálogo', icon: Package, badge: stats.products },
+    { id: 'rules', label: 'Regras', icon: Settings2, badge: stats.rules },
+    {
+      id: 'import-export',
+      label: 'Importar/Exportar',
+      icon: FileJson2,
+      badge: null,
+    },
   ]
 
   if (isLoading) {
@@ -53,7 +63,9 @@ export function RecommendationDashboard() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-slate-800">Recomendações</h1>
-        <p className="text-slate-500 mt-1">Gestão de catálogo e regras de recomendação de produtos</p>
+        <p className="text-slate-500 mt-1">
+          Gestão de catálogo e regras de recomendação de produtos
+        </p>
       </div>
 
       {/* Stats */}
@@ -64,7 +76,9 @@ export function RecommendationDashboard() {
         </div>
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
           <p className="text-sm text-slate-500">Categorias</p>
-          <p className="text-2xl font-bold text-slate-800">{stats.categories}</p>
+          <p className="text-2xl font-bold text-slate-800">
+            {stats.categories}
+          </p>
         </div>
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
           <p className="text-sm text-slate-500">Regras de Afinidade</p>
@@ -97,7 +111,7 @@ export function RecommendationDashboard() {
                   {tab.label}
                   {tab.badge !== null && (
                     <Badge
-                      variant={isActive ? "default" : "secondary"}
+                      variant={isActive ? 'default' : 'secondary'}
                       className={`text-xs ${isActive ? 'bg-indigo-100 text-indigo-700 hover:bg-indigo-100' : ''}`}
                     >
                       {tab.badge}
@@ -110,9 +124,9 @@ export function RecommendationDashboard() {
         </div>
 
         <div className="p-6">
-          {activeTab === "catalog" && <RecommendationCatalog />}
-          {activeTab === "rules" && <RecommendationRules />}
-          {activeTab === "import-export" && <RecommendationImportExport />}
+          {activeTab === 'catalog' && <RecommendationCatalog />}
+          {activeTab === 'rules' && <RecommendationRules />}
+          {activeTab === 'import-export' && <RecommendationImportExport />}
         </div>
       </div>
 

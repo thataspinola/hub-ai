@@ -35,6 +35,9 @@ export class AppConfigProvider implements FeatureFlagDataProvider {
   }
 
   async fetchFlags(): Promise<FlagValueMap> {
+    // TODO: Configurar applicationId, environmentId e configurationProfileId
+    // via variáveis de ambiente quando o AppConfig Agent estiver disponível.
+    //
     // O Agent retorna o payload no formato:
     // {
     //   "flag_key": { "enabled": true, "attribute1": "value1", ... },
@@ -59,7 +62,21 @@ export class AppConfigProvider implements FeatureFlagDataProvider {
       }
 
       const data: unknown = await response.json()
-      if (!data || typeof data !== 'object' || Array.isArray(data) || !Object.values(data).every(entry => entry && typeof entry === 'object' && !Array.isArray(entry) && typeof entry.enabled === 'boolean')) throw new Error('Invalid AppConfig flag payload')
+
+      if (
+        !data ||
+        typeof data !== 'object' ||
+        Array.isArray(data) ||
+        !Object.values(data).every(
+          (entry) =>
+            entry &&
+            typeof entry === 'object' &&
+            !Array.isArray(entry) &&
+            typeof entry.enabled === 'boolean'
+        )
+      )
+        throw new Error('Invalid AppConfig flag payload')
+
       return data as FlagValueMap
     } finally {
       clearTimeout(timeout)

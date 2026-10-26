@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import { useEffect } from "react"
-import { ComponentLibrary } from "./component-library"
-import { StepCanvas } from "./step-canvas"
-import { PropertiesPanel } from "./properties-panel"
-import { Toolbar } from "./toolbar"
-import { useFormStore } from "@/lib/form-wizard/form-store"
+import { useEffect } from 'react'
+import { ComponentLibrary } from './component-library'
+import { StepCanvas } from './step-canvas'
+import { PropertiesPanel } from './properties-panel'
+import { Toolbar } from './toolbar'
+import { useFormStore } from '@/lib/form-wizard/form-store'
 
 export function WizardBuilder() {
   const form = useFormStore((s) => s.form)
@@ -27,7 +27,7 @@ export function WizardBuilder() {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
+      if (document.visibilityState === 'hidden') {
         saveFormToStorage()
       }
     }
@@ -36,12 +36,12 @@ export function WizardBuilder() {
       saveFormToStorage()
     }
 
-    document.addEventListener("visibilitychange", handleVisibilityChange)
-    window.addEventListener("beforeunload", handleBeforeUnload)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('beforeunload', handleBeforeUnload)
 
     return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange)
-      window.removeEventListener("beforeunload", handleBeforeUnload)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('beforeunload', handleBeforeUnload)
     }
   }, [saveFormToStorage])
 

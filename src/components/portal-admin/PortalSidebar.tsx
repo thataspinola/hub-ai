@@ -1,55 +1,77 @@
-"use client";
+'use client'
 
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { 
-  LayoutDashboard, 
-  Flag, 
+import React from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import {
+  LayoutDashboard,
+  Flag,
   LogOut,
   Wand2,
   Star,
-  ScanSearch
-} from 'lucide-react';
+  ScanSearch,
+} from 'lucide-react'
 
 export const PortalSidebar: React.FC = () => {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/' },
-    { id: 'feature-flags', label: 'Feature Flags', icon: Flag, href: '/feature-flags' },
-    { id: 'form-wizard', label: 'Form Wizard', icon: Wand2, href: '/form-wizard' },
-    { id: 'code-reviewer', label: 'Code Reviewer', icon: ScanSearch, href: '/code-reviewer' },
-    { id: 'recommendations', label: 'Recommendations', icon: Star, href: '/recommendations' },
-  ];
+    {
+      id: 'feature-flags',
+      label: 'Feature Flags',
+      icon: Flag,
+      href: '/feature-flags',
+    },
+    {
+      id: 'form-wizard',
+      label: 'Form Wizard',
+      icon: Wand2,
+      href: '/form-wizard',
+    },
+    {
+      id: 'code-reviewer',
+      label: 'Code Reviewer',
+      icon: ScanSearch,
+      href: '/code-reviewer',
+    },
+    {
+      id: 'recommendations',
+      label: 'Recommendations',
+      icon: Star,
+      href: '/recommendations',
+    },
+  ]
 
   return (
     <aside className="w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col h-screen sticky top-0">
       <div className="p-6 border-b border-slate-800">
         <h1 className="text-xl font-bold flex items-center gap-2">
-          <span className="w-8 h-8 bg-indigo-500 rounded flex items-center justify-center text-white">A</span>
+          <span className="w-8 h-8 bg-indigo-500 rounded flex items-center justify-center text-white">
+            A
+          </span>
           PortalAdm
         </h1>
       </div>
-      
+
       <nav className="flex-1 p-4 space-y-1">
         {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = pathname === item.href;
+          const Icon = item.icon
+          const isActive = pathname === item.href
           return (
             <Link
               key={item.id}
               href={item.href}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                isActive 
-                  ? 'bg-indigo-600/10 text-indigo-400 border-l-4 border-indigo-500' 
+                isActive
+                  ? 'bg-indigo-600/10 text-indigo-400 border-l-4 border-indigo-500'
                   : 'text-slate-400 hover:bg-slate-800 hover:text-white'
               }`}
             >
               <Icon size={20} />
               <span className="font-medium">{item.label}</span>
             </Link>
-          );
+          )
         })}
       </nav>
 
@@ -60,7 +82,9 @@ export const PortalSidebar: React.FC = () => {
           </div>
           <div className="overflow-hidden">
             <p className="text-sm font-medium truncate">Jane Doe</p>
-            <p className="text-xs text-slate-400 truncate">Administrador do Sistema</p>
+            <p className="text-xs text-slate-400 truncate">
+              Administrador do Sistema
+            </p>
           </div>
         </div>
         <button className="mt-4 w-full flex items-center gap-2 px-4 py-2 text-xs text-slate-500 hover:text-white transition-colors">
@@ -69,5 +93,5 @@ export const PortalSidebar: React.FC = () => {
         </button>
       </div>
     </aside>
-  );
-};
+  )
+}

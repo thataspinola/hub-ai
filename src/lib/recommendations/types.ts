@@ -8,12 +8,12 @@ export interface Price {
 
 export interface CTA {
   text: string
-  style: "primary" | "secondary"
+  style: 'primary' | 'secondary'
 }
 
 export interface Badge {
   text: string
-  variant: "success" | "warning" | "info" | "default"
+  variant: 'success' | 'warning' | 'info' | 'default'
 }
 
 export interface Product {
@@ -35,7 +35,7 @@ export interface Catalog {
 
 // Affinity types
 export interface AffinityTarget {
-  targetType: "url" | "category"
+  targetType: 'url' | 'category'
   targetId: string
   weight: number
 }
@@ -94,7 +94,7 @@ export interface SameCategory {
 
 // Campaign Target (similar to AffinityTarget)
 export interface CampaignTarget {
-  targetType: "url" | "category"
+  targetType: 'url' | 'category'
   targetId: string
   weight: number
 }
@@ -171,29 +171,61 @@ export interface RecommendationData {
 }
 
 // Rule types for UI
-export type RuleType = 
-  | "same_category" 
-  | "affinity_manual" 
-  | "history_recent" 
-  | "popularity_global" 
-  | "campaign"
-  | "context_slot"
-  | "profile_static"
+export type RuleType =
+  | 'same_category'
+  | 'affinity_manual'
+  | 'history_recent'
+  | 'popularity_global'
+  | 'campaign'
+  | 'context_slot'
+  | 'profile_static'
 
-export const RULE_TYPES: { value: RuleType; label: string; description: string }[] = [
-  { value: "same_category", label: "Mesma Categoria", description: "Recomenda produtos da mesma categoria do item atual" },
-  { value: "affinity_manual", label: "Afinidade Manual", description: "Afinidade curada entre categorias e/ou URLs específicas" },
-  { value: "history_recent", label: "Histórico Recente", description: "Recomenda baseado no histórico do usuário" },
-  { value: "popularity_global", label: "Popularidade Global", description: "Ranking global de URLs mais populares" },
-  { value: "campaign", label: "Campanha", description: "Recomenda produtos baseados no ID da campanha (utm_campaign)" },
-  { value: "context_slot", label: "Slots de Contexto", description: "Config por slot/página: define cascata e limites" },
-  { value: "profile_static", label: "Perfil Estático", description: "Escolhe cascata com base em perfil simples" },
+export const RULE_TYPES: {
+  value: RuleType
+  label: string
+  description: string
+}[] = [
+  {
+    value: 'same_category',
+    label: 'Mesma Categoria',
+    description: 'Recomenda produtos da mesma categoria do item atual',
+  },
+  {
+    value: 'affinity_manual',
+    label: 'Afinidade Manual',
+    description: 'Afinidade curada entre categorias e/ou URLs específicas',
+  },
+  {
+    value: 'history_recent',
+    label: 'Histórico Recente',
+    description: 'Recomenda baseado no histórico do usuário',
+  },
+  {
+    value: 'popularity_global',
+    label: 'Popularidade Global',
+    description: 'Ranking global de URLs mais populares',
+  },
+  {
+    value: 'campaign',
+    label: 'Campanha',
+    description: 'Recomenda produtos baseados no ID da campanha (utm_campaign)',
+  },
+  {
+    value: 'context_slot',
+    label: 'Slots de Contexto',
+    description: 'Config por slot/página: define cascata e limites',
+  },
+  {
+    value: 'profile_static',
+    label: 'Perfil Estático',
+    description: 'Escolhe cascata com base em perfil simples',
+  },
 ]
 
 export const CASCADE_OPTIONS = [
-  { value: "history_recent", label: "Histórico Recente" },
-  { value: "affinity_manual", label: "Afinidade Manual" },
-  { value: "same_category", label: "Mesma Categoria" },
-  { value: "campaign", label: "Campanha" },
-  { value: "popularity_global", label: "Popularidade Global" },
+  { value: 'history_recent', label: 'Histórico Recente' },
+  { value: 'affinity_manual', label: 'Afinidade Manual' },
+  { value: 'same_category', label: 'Mesma Categoria' },
+  { value: 'campaign', label: 'Campanha' },
+  { value: 'popularity_global', label: 'Popularidade Global' },
 ]

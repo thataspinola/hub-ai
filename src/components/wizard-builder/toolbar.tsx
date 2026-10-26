@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import { useState, useEffect, useCallback } from "react"
-import Link from "next/link"
-import { useFormStore, validateSlug } from "@/lib/form-wizard/form-store"
-import { getFormsIndex } from "@/lib/form-wizard/forms-storage"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useState, useEffect, useCallback } from 'react'
+import Link from 'next/link'
+import { useFormStore, validateSlug } from '@/lib/form-wizard/form-store'
+import { getFormsIndex } from '@/lib/form-wizard/forms-storage'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   Dialog,
   DialogContent,
@@ -13,8 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Badge } from "@/components/ui/badge"
+} from '@/components/ui/dialog'
+import { Badge } from '@/components/ui/badge'
 import {
   AlertCircle,
   RotateCcw,
@@ -26,8 +26,8 @@ import {
   Check,
   Download,
   Upload,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export function Toolbar() {
   const form = useFormStore((s) => s.form)
@@ -42,7 +42,7 @@ export function Toolbar() {
   const storageError = useFormStore((s) => s.storageError)
 
   const [showJson, setShowJson] = useState(false)
-  const [importJson, setImportJson] = useState("")
+  const [importJson, setImportJson] = useState('')
   const [showImport, setShowImport] = useState(false)
   const [importError, setImportError] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
@@ -68,19 +68,19 @@ export function Toolbar() {
   }
 
   const handleSlugChange = (value: string) => {
-    const formatted = value.toLowerCase().replace(/[^a-z0-9-]/g, "")
+    const formatted = value.toLowerCase().replace(/[^a-z0-9-]/g, '')
     setLocalSlug(formatted)
 
     const validation = validateSlug(formatted)
     if (!validation.valid) {
-      setSlugError(validation.error || "Invalid slug")
+      setSlugError(validation.error || 'Invalid slug')
       return
     }
 
     const index = getFormsIndex()
     const otherSlugs = index.filter((f) => f.id !== form.id).map((f) => f.slug)
     if (otherSlugs.includes(formatted)) {
-      setSlugError("Slug must be unique")
+      setSlugError('Slug must be unique')
       return
     }
 
@@ -99,11 +99,11 @@ export function Toolbar() {
 
   const handleExport = () => {
     const json = exportForm()
-    const blob = new Blob([json], { type: "application/json" })
+    const blob = new Blob([json], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
+    const a = document.createElement('a')
     a.href = url
-    a.download = `${form.name.toLowerCase().replace(/\s+/g, "-")}.json`
+    a.download = `${form.name.toLowerCase().replace(/\s+/g, '-')}.json`
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -113,9 +113,9 @@ export function Toolbar() {
     const success = importForm(importJson)
     if (success) {
       setShowImport(false)
-      setImportJson("")
+      setImportJson('')
     } else {
-      setImportError("Invalid JSON format. Please check your input.")
+      setImportError('Invalid JSON format. Please check your input.')
     }
   }
 
@@ -141,16 +141,24 @@ export function Toolbar() {
             <Input
               value={localSlug}
               onChange={(e) => handleSlugChange(e.target.value)}
-              className={cn("h-6 w-40 font-mono text-xs", slugError && "border-destructive")}
+              className={cn(
+                'h-6 w-40 font-mono text-xs',
+                slugError && 'border-destructive'
+              )}
               placeholder="form-slug"
             />
-            {slugError && <span className="text-xs text-destructive">{slugError}</span>}
+            {slugError && (
+              <span className="text-xs text-destructive">{slugError}</span>
+            )}
           </div>
         </div>
 
         <Badge
-          variant={isValid ? "default" : "destructive"}
-          className={cn("gap-1", isValid ? "bg-accent text-accent-foreground hover:bg-accent/80" : "")}
+          variant={isValid ? 'default' : 'destructive'}
+          className={cn(
+            'gap-1',
+            isValid ? 'bg-accent text-accent-foreground hover:bg-accent/80' : ''
+          )}
         >
           {isValid ? (
             <>
@@ -160,14 +168,18 @@ export function Toolbar() {
           ) : (
             <>
               <AlertCircle className="h-3 w-3" />
-              {errors.length} issue{errors.length !== 1 && "s"}
+              {errors.length} issue{errors.length !== 1 && 's'}
             </>
           )}
         </Badge>
 
         {lastSaved && (
           <span className="text-xs text-muted-foreground">
-            Saved {lastSaved.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+            Saved{' '}
+            {lastSaved.toLocaleTimeString('pt-BR', {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
           </span>
         )}
       </div>
@@ -183,11 +195,16 @@ export function Toolbar() {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Validation Issues</DialogTitle>
-                <DialogDescription>Fix these issues before publishing your form</DialogDescription>
+                <DialogDescription>
+                  Fix these issues before publishing your form
+                </DialogDescription>
               </DialogHeader>
               <div className="space-y-2">
                 {errors.map((error, index) => (
-                  <div key={index} className="flex items-start gap-2 rounded-md bg-destructive/10 p-3 text-sm">
+                  <div
+                    key={index}
+                    className="flex items-start gap-2 rounded-md bg-destructive/10 p-3 text-sm"
+                  >
                     <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
                     <span>{error}</span>
                   </div>
@@ -197,9 +214,14 @@ export function Toolbar() {
           </Dialog>
         )}
 
-        <Button variant="outline" size="sm" onClick={handleSave} disabled={isSaving}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleSave}
+          disabled={isSaving}
+        >
           <Save className="mr-1 h-3 w-3" />
-          {isSaving ? "Saving..." : "Save"}
+          {isSaving ? 'Saving...' : 'Save'}
         </Button>
 
         {/* View JSON Dialog */}
@@ -215,7 +237,9 @@ export function Toolbar() {
               <div className="flex items-center justify-between">
                 <div>
                   <DialogTitle>Form JSON Structure</DialogTitle>
-                  <DialogDescription>Current form configuration in JSON format</DialogDescription>
+                  <DialogDescription>
+                    Current form configuration in JSON format
+                  </DialogDescription>
                 </div>
                 <Button
                   variant="outline"
@@ -270,7 +294,9 @@ export function Toolbar() {
               <p className="text-xs text-destructive">{importError}</p>
             )}
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setShowImport(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setShowImport(false)}>
+                Cancel
+              </Button>
               <Button onClick={handleImport}>Import</Button>
             </div>
           </DialogContent>
@@ -281,7 +307,12 @@ export function Toolbar() {
           Export
         </Button>
 
-        <Button variant="ghost" size="sm" onClick={resetForm} className="text-muted-foreground">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={resetForm}
+          className="text-muted-foreground"
+        >
           <RotateCcw className="mr-1 h-3 w-3" />
           Reset
         </Button>

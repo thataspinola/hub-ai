@@ -1,13 +1,28 @@
-"use client"
+'use client'
 
-import { useFormStore, validateSlug } from "@/lib/form-wizard/form-store"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Switch } from "@/components/ui/switch"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Trash2, Plus, AlertCircle, ChevronDown, ChevronRight, Star, Check, X } from "lucide-react"
+import { useFormStore, validateSlug } from '@/lib/form-wizard/form-store'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
+import { Switch } from '@/components/ui/switch'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  Trash2,
+  Plus,
+  AlertCircle,
+  ChevronDown,
+  ChevronRight,
+  Star,
+  Check,
+  X,
+} from 'lucide-react'
 import type {
   TitleConfig,
   ParagraphConfig,
@@ -31,9 +46,9 @@ import type {
   SocialNameInputConfig,
   PrivacyPolicyConfig,
   EmailInputConfig,
-} from "@/lib/form-wizard/types"
-import { cn } from "@/lib/utils"
-import { useState } from "react"
+} from '@/lib/form-wizard/types'
+import { cn } from '@/lib/utils'
+import { useEffect, useState } from 'react'
 
 function StepProperties() {
   const form = useFormStore((s) => s.form)
@@ -42,33 +57,35 @@ function StepProperties() {
   const deleteStep = useFormStore((s) => s.deleteStep)
 
   const step = form.steps.find((s) => s.id === selectedStepId)
-  const [localSlug, setLocalSlug] = useState(step?.slug || "")
+  const [localSlug, setLocalSlug] = useState(step?.slug || '')
   const [slugError, setSlugError] = useState<string | null>(null)
 
-  const identity = step ? `${step.id}:${step.slug}` : ""
-  const [previousIdentity, setPreviousIdentity] = useState(identity)
-  if (previousIdentity !== identity) {
-    setPreviousIdentity(identity)
-    setLocalSlug(step?.slug || "")
-    setSlugError(null)
-  }
+  useEffect(() => {
+    if (step) {
+      setLocalSlug(step.slug)
+      setSlugError(null)
+    }
+  }, [step])
 
   if (!step) return null
 
   const handleSlugChange = (value: string) => {
-    const formatted = value.toLowerCase().replace(/[^a-z0-9-]/g, "")
+    const formatted = value.toLowerCase().replace(/[^a-z0-9-]/g, '')
     setLocalSlug(formatted)
-
     const validation = validateSlug(formatted)
+
     if (!validation.valid) {
-      setSlugError(validation.error || "Invalid slug")
+      setSlugError(validation.error || 'Invalid slug')
       return
     }
 
     // Check uniqueness
-    const otherSlugs = form.steps.filter((s) => s.id !== step.id).map((s) => s.slug)
+    const otherSlugs = form.steps
+      .filter((s) => s.id !== step.id)
+      .map((s) => s.slug)
+
     if (otherSlugs.includes(formatted)) {
-      setSlugError("Slug must be unique")
+      setSlugError('Slug must be unique')
       return
     }
 
@@ -112,7 +129,7 @@ function StepProperties() {
             id="step-slug"
             value={localSlug}
             onChange={(e) => handleSlugChange(e.target.value)}
-            className={cn("mt-1", slugError && "border-destructive")}
+            className={cn('mt-1', slugError && 'border-destructive')}
           />
           {slugError && (
             <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
@@ -120,14 +137,20 @@ function StepProperties() {
               {slugError}
             </p>
           )}
-          <p className="mt-1 text-xs text-muted-foreground">URL path: /{localSlug}</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            URL path: /{localSlug}
+          </p>
         </div>
 
         <div>
           <Label htmlFor="step-back">Back Navigation</Label>
           <Select
-            value={step.backStepSlug || "_none_"}
-            onValueChange={(value) => updateStep(step.id, { backStepSlug: value === "_none_" ? "" : value })}
+            value={step.backStepSlug || '_none_'}
+            onValueChange={(value) =>
+              updateStep(step.id, {
+                backStepSlug: value === '_none_' ? '' : value,
+              })
+            }
           >
             <SelectTrigger className="mt-1">
               <SelectValue placeholder="No back button" />
@@ -144,7 +167,8 @@ function StepProperties() {
             </SelectContent>
           </Select>
           <p className="mt-1 text-xs text-muted-foreground">
-            Which step the back arrow navigates to. Leave empty to hide the back button.
+            Which step the back arrow navigates to. Leave empty to hide the back
+            button.
           </p>
         </div>
 
@@ -156,7 +180,15 @@ function StepProperties() {
   )
 }
 
-function TitleProperties({ stepId, elementId, config }: { stepId: string; elementId: string; config: TitleConfig }) {
+function TitleProperties({
+  stepId,
+  elementId,
+  config,
+}: {
+  stepId: string
+  elementId: string
+  config: TitleConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -166,7 +198,9 @@ function TitleProperties({ stepId, elementId, config }: { stepId: string; elemen
         <Textarea
           id="title-text"
           value={config.text}
-          onChange={(e) => updateElement(stepId, elementId, { text: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { text: e.target.value })
+          }
           className="mt-1"
           rows={2}
         />
@@ -174,8 +208,12 @@ function TitleProperties({ stepId, elementId, config }: { stepId: string; elemen
       <div>
         <Label htmlFor="title-size">Size</Label>
         <Select
-          value={config.size || "lg"}
-          onValueChange={(value) => updateElement(stepId, elementId, { size: value as TitleConfig["size"] })}
+          value={config.size || 'lg'}
+          onValueChange={(value) =>
+            updateElement(stepId, elementId, {
+              size: value as TitleConfig['size'],
+            })
+          }
         >
           <SelectTrigger className="mt-1">
             <SelectValue />
@@ -196,7 +234,11 @@ function ParagraphProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: ParagraphConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: ParagraphConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -205,7 +247,9 @@ function ParagraphProperties({
       <Textarea
         id="para-text"
         value={config.text}
-        onChange={(e) => updateElement(stepId, elementId, { text: e.target.value })}
+        onChange={(e) =>
+          updateElement(stepId, elementId, { text: e.target.value })
+        }
         className="mt-1"
         rows={4}
       />
@@ -217,7 +261,11 @@ function TextInputProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: TextInputConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: TextInputConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -227,7 +275,9 @@ function TextInputProperties({
         <Input
           id="input-label"
           value={config.label}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -236,7 +286,9 @@ function TextInputProperties({
         <Input
           id="input-placeholder"
           value={config.placeholder}
-          onChange={(e) => updateElement(stepId, elementId, { placeholder: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { placeholder: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -245,7 +297,9 @@ function TextInputProperties({
         <Switch
           id="input-required"
           checked={config.required}
-          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+          onCheckedChange={(checked) =>
+            updateElement(stepId, elementId, { required: checked })
+          }
         />
       </div>
     </div>
@@ -261,10 +315,17 @@ function OptionsEditor({
 }) {
   const addOption = () => {
     const newIndex = options.length + 1
-    onChange([...options, { label: `Option ${newIndex}`, value: `option-${newIndex}` }])
+    onChange([
+      ...options,
+      { label: `Option ${newIndex}`, value: `option-${newIndex}` },
+    ])
   }
 
-  const updateOption = (index: number, field: "label" | "value", value: string) => {
+  const updateOption = (
+    index: number,
+    field: 'label' | 'value',
+    value: string
+  ) => {
     const newOptions = [...options]
     newOptions[index] = { ...newOptions[index], [field]: value }
     onChange(newOptions)
@@ -283,21 +344,31 @@ function OptionsEditor({
           <Input
             placeholder="Label"
             value={option.label}
-            onChange={(e) => updateOption(index, "label", e.target.value)}
+            onChange={(e) => updateOption(index, 'label', e.target.value)}
             className="flex-1"
           />
           <Input
             placeholder="Value"
             value={option.value}
-            onChange={(e) => updateOption(index, "value", e.target.value)}
+            onChange={(e) => updateOption(index, 'value', e.target.value)}
             className="flex-1"
           />
-          <Button variant="ghost" size="icon" onClick={() => removeOption(index)} disabled={options.length <= 1}>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => removeOption(index)}
+            disabled={options.length <= 1}
+          >
             <Trash2 className="h-3 w-3" />
           </Button>
         </div>
       ))}
-      <Button variant="outline" size="sm" onClick={addOption} className="w-full bg-transparent">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={addOption}
+        className="w-full bg-transparent"
+      >
         <Plus className="mr-1 h-3 w-3" />
         Add Option
       </Button>
@@ -305,7 +376,15 @@ function OptionsEditor({
   )
 }
 
-function SelectProperties({ stepId, elementId, config }: { stepId: string; elementId: string; config: SelectConfig }) {
+function SelectProperties({
+  stepId,
+  elementId,
+  config,
+}: {
+  stepId: string
+  elementId: string
+  config: SelectConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -315,7 +394,9 @@ function SelectProperties({ stepId, elementId, config }: { stepId: string; eleme
         <Input
           id="select-label"
           value={config.label}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -324,15 +405,28 @@ function SelectProperties({ stepId, elementId, config }: { stepId: string; eleme
         <Switch
           id="select-required"
           checked={config.required}
-          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+          onCheckedChange={(checked) =>
+            updateElement(stepId, elementId, { required: checked })
+          }
         />
       </div>
-      <OptionsEditor options={config.options} onChange={(options) => updateElement(stepId, elementId, { options })} />
+      <OptionsEditor
+        options={config.options}
+        onChange={(options) => updateElement(stepId, elementId, { options })}
+      />
     </div>
   )
 }
 
-function RadioProperties({ stepId, elementId, config }: { stepId: string; elementId: string; config: RadioConfig }) {
+function RadioProperties({
+  stepId,
+  elementId,
+  config,
+}: {
+  stepId: string
+  elementId: string
+  config: RadioConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -342,7 +436,9 @@ function RadioProperties({ stepId, elementId, config }: { stepId: string; elemen
         <Input
           id="radio-label"
           value={config.label}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -351,10 +447,15 @@ function RadioProperties({ stepId, elementId, config }: { stepId: string; elemen
         <Switch
           id="radio-required"
           checked={config.required}
-          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+          onCheckedChange={(checked) =>
+            updateElement(stepId, elementId, { required: checked })
+          }
         />
       </div>
-      <OptionsEditor options={config.options} onChange={(options) => updateElement(stepId, elementId, { options })} />
+      <OptionsEditor
+        options={config.options}
+        onChange={(options) => updateElement(stepId, elementId, { options })}
+      />
     </div>
   )
 }
@@ -363,7 +464,11 @@ function CheckboxProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: CheckboxConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: CheckboxConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -373,7 +478,9 @@ function CheckboxProperties({
         <Input
           id="checkbox-label"
           value={config.label}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -382,7 +489,9 @@ function CheckboxProperties({
         <Switch
           id="checkbox-required"
           checked={config.required}
-          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+          onCheckedChange={(checked) =>
+            updateElement(stepId, elementId, { required: checked })
+          }
         />
       </div>
     </div>
@@ -393,7 +502,11 @@ function CPFInputProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: CPFInputConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: CPFInputConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -403,7 +516,9 @@ function CPFInputProperties({
         <Input
           id="cpf-label"
           value={config.label}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -412,7 +527,9 @@ function CPFInputProperties({
         <Input
           id="cpf-placeholder"
           value={config.placeholder}
-          onChange={(e) => updateElement(stepId, elementId, { placeholder: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { placeholder: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -421,7 +538,9 @@ function CPFInputProperties({
         <Switch
           id="cpf-required"
           checked={config.required}
-          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+          onCheckedChange={(checked) =>
+            updateElement(stepId, elementId, { required: checked })
+          }
         />
       </div>
       <div className="rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
@@ -437,7 +556,11 @@ function CNPJInputProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: CNPJInputConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: CNPJInputConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -447,7 +570,9 @@ function CNPJInputProperties({
         <Input
           id="cnpj-label"
           value={config.label}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -456,7 +581,9 @@ function CNPJInputProperties({
         <Input
           id="cnpj-placeholder"
           value={config.placeholder}
-          onChange={(e) => updateElement(stepId, elementId, { placeholder: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { placeholder: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -465,7 +592,9 @@ function CNPJInputProperties({
         <Switch
           id="cnpj-required"
           checked={config.required}
-          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+          onCheckedChange={(checked) =>
+            updateElement(stepId, elementId, { required: checked })
+          }
         />
       </div>
       <div className="rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
@@ -481,7 +610,11 @@ function PhoneInputProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: PhoneInputConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: PhoneInputConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -491,7 +624,9 @@ function PhoneInputProperties({
         <Input
           id="phone-label"
           value={config.label}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -500,7 +635,9 @@ function PhoneInputProperties({
         <Input
           id="phone-placeholder"
           value={config.placeholder}
-          onChange={(e) => updateElement(stepId, elementId, { placeholder: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { placeholder: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -509,7 +646,9 @@ function PhoneInputProperties({
         <Switch
           id="phone-required"
           checked={config.required}
-          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+          onCheckedChange={(checked) =>
+            updateElement(stepId, elementId, { required: checked })
+          }
         />
       </div>
       <div className="flex items-center justify-between">
@@ -517,7 +656,9 @@ function PhoneInputProperties({
         <Switch
           id="phone-international"
           checked={config.allowInternational || false}
-          onCheckedChange={(checked) => updateElement(stepId, elementId, { allowInternational: checked })}
+          onCheckedChange={(checked) =>
+            updateElement(stepId, elementId, { allowInternational: checked })
+          }
         />
       </div>
       <div className="rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
@@ -533,7 +674,11 @@ function CEPInputProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: CEPInputConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: CEPInputConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -543,7 +688,9 @@ function CEPInputProperties({
         <Input
           id="cep-label"
           value={config.label}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -552,7 +699,9 @@ function CEPInputProperties({
         <Input
           id="cep-placeholder"
           value={config.placeholder}
-          onChange={(e) => updateElement(stepId, elementId, { placeholder: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { placeholder: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -561,7 +710,9 @@ function CEPInputProperties({
         <Switch
           id="cep-required"
           checked={config.required}
-          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+          onCheckedChange={(checked) =>
+            updateElement(stepId, elementId, { required: checked })
+          }
         />
       </div>
       <div className="rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
@@ -577,7 +728,11 @@ function SocialNameInputProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: SocialNameInputConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: SocialNameInputConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -587,7 +742,9 @@ function SocialNameInputProperties({
         <Input
           id="social-name-label"
           value={config.label}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -596,7 +753,9 @@ function SocialNameInputProperties({
         <Input
           id="social-name-placeholder"
           value={config.placeholder}
-          onChange={(e) => updateElement(stepId, elementId, { placeholder: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { placeholder: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -605,7 +764,9 @@ function SocialNameInputProperties({
         <Switch
           id="social-name-required"
           checked={config.required}
-          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+          onCheckedChange={(checked) =>
+            updateElement(stepId, elementId, { required: checked })
+          }
         />
       </div>
     </div>
@@ -616,7 +777,11 @@ function PrivacyPolicyProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: PrivacyPolicyConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: PrivacyPolicyConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -626,7 +791,9 @@ function PrivacyPolicyProperties({
         <Input
           id="privacy-label"
           value={config.label}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -634,8 +801,10 @@ function PrivacyPolicyProperties({
         <Label htmlFor="privacy-url">Policy URL</Label>
         <Input
           id="privacy-url"
-          value={config.policyUrl || ""}
-          onChange={(e) => updateElement(stepId, elementId, { policyUrl: e.target.value })}
+          value={config.policyUrl || ''}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { policyUrl: e.target.value })
+          }
           placeholder="https://..."
           className="mt-1"
         />
@@ -645,7 +814,9 @@ function PrivacyPolicyProperties({
         <Switch
           id="privacy-required"
           checked={config.required}
-          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+          onCheckedChange={(checked) =>
+            updateElement(stepId, elementId, { required: checked })
+          }
         />
       </div>
       <div className="rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
@@ -659,7 +830,11 @@ function EmailInputProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: EmailInputConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: EmailInputConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
 
   return (
@@ -669,7 +844,9 @@ function EmailInputProperties({
         <Input
           id="email-label"
           value={config.label}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -678,7 +855,9 @@ function EmailInputProperties({
         <Input
           id="email-placeholder"
           value={config.placeholder}
-          onChange={(e) => updateElement(stepId, elementId, { placeholder: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { placeholder: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -687,7 +866,9 @@ function EmailInputProperties({
         <Switch
           id="email-required"
           checked={config.required}
-          onCheckedChange={(checked) => updateElement(stepId, elementId, { required: checked })}
+          onCheckedChange={(checked) =>
+            updateElement(stepId, elementId, { required: checked })
+          }
         />
       </div>
       <div className="rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
@@ -703,12 +884,22 @@ function DeprecatedElementNotice({ elementType }: { elementType: string }) {
       <div className="rounded-md bg-amber-500/10 border border-amber-500/30 p-3 text-xs text-amber-700">
         <p className="font-semibold mb-1">Deprecated Element</p>
         <p>
-          The <span className="font-mono">{elementType}</span> element is deprecated. Please remove it and use the new Actions instead:
+          The <span className="font-mono">{elementType}</span> element is
+          deprecated. Please remove it and use the new Actions instead:
         </p>
         <ul className="mt-2 list-disc list-inside space-y-1">
-          <li><span className="font-medium">Navigation</span> - Link to a URL or path</li>
-          <li><span className="font-medium">Service Call</span> - Call a service and route based on result</li>
-          <li><span className="font-medium">Conditional Route</span> - Route based on field values</li>
+          <li>
+            <span className="font-medium">Navigation</span> - Link to a URL or
+            path
+          </li>
+          <li>
+            <span className="font-medium">Service Call</span> - Call a service
+            and route based on result
+          </li>
+          <li>
+            <span className="font-medium">Conditional Route</span> - Route based
+            on field values
+          </li>
         </ul>
       </div>
     </div>
@@ -719,7 +910,11 @@ function NavigationProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: NavigationConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: NavigationConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
   const form = useFormStore((s) => s.form)
 
@@ -738,8 +933,10 @@ function NavigationProperties({
         <Label htmlFor="nav-label">Button Label</Label>
         <Input
           id="nav-label"
-          value={config.label || ""}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          value={config.label || ''}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
           placeholder="Navigate"
         />
@@ -748,8 +945,10 @@ function NavigationProperties({
       <div>
         <Label htmlFor="nav-url">Target Step</Label>
         <Select
-          value={config.url || ""}
-          onValueChange={(value) => updateElement(stepId, elementId, { url: value })}
+          value={config.url || ''}
+          onValueChange={(value) =>
+            updateElement(stepId, elementId, { url: value })
+          }
         >
           <SelectTrigger className="mt-1">
             <SelectValue placeholder="Select target step" />
@@ -771,7 +970,7 @@ function NavigationProperties({
         <div className="rounded-md border bg-muted/50 p-3">
           <p className="text-xs font-medium mb-1">Preview:</p>
           <p className="text-xs text-muted-foreground">
-            Button &ldquo;{config.label || "Navigate"}&rdquo; will go to{" "}
+            Button &ldquo;{config.label || 'Navigate'}&rdquo; will go to{' '}
             <span className="font-mono text-foreground">/{config.url}</span>
           </p>
         </div>
@@ -784,7 +983,11 @@ function ServiceCallProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: ServiceCallConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: ServiceCallConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
   const form = useFormStore((s) => s.form)
 
@@ -793,36 +996,63 @@ function ServiceCallProperties({
     name: s.name,
   }))
 
-  const serviceOptions: { value: ServiceType; label: string; description: string }[] = [
-    { value: "eligibility", label: "Eligibility", description: "Check if the customer is eligible" },
-    { value: "cotation", label: "Cotation", description: "Get a price quote for the customer" },
-    { value: "proposal", label: "Proposal", description: "Submit a proposal for the customer" },
-    { value: "simulation", label: "Simulation", description: "Run a simulation for the customer" },
+  const serviceOptions: {
+    value: ServiceType
+    label: string
+    description: string
+  }[] = [
+    {
+      value: 'eligibility',
+      label: 'Eligibility',
+      description: 'Check if the customer is eligible',
+    },
+    {
+      value: 'cotation',
+      label: 'Cotation',
+      description: 'Get a price quote for the customer',
+    },
+    {
+      value: 'proposal',
+      label: 'Proposal',
+      description: 'Submit a proposal for the customer',
+    },
+    {
+      value: 'simulation',
+      label: 'Simulation',
+      description: 'Run a simulation for the customer',
+    },
   ]
 
   return (
     <div className="space-y-4">
       <div className="rounded-md bg-violet-500/10 p-3 text-xs text-violet-600">
-        Call an external service and route the user based on the result. If the service returns success, the user navigates to the configured step.
+        Call an external service and route the user based on the result. If the
+        service returns success, the user navigates to the configured step.
       </div>
 
       <div>
         <Label htmlFor="service-label">Button Label</Label>
         <Input
           id="service-label"
-          value={config.label || ""}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          value={config.label || ''}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
           placeholder="Submit"
         />
-        <p className="mt-1 text-xs text-muted-foreground">The text displayed on the action button</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          The text displayed on the action button
+        </p>
       </div>
 
       <div>
         <Label htmlFor="service-type">Service</Label>
         <Select
-          value={config.service || "eligibility"}
-          onValueChange={(value) => updateElement(stepId, elementId, { service: value as ServiceType })}
+          value={config.service || 'eligibility'}
+          onValueChange={(value) =>
+            updateElement(stepId, elementId, { service: value as ServiceType })
+          }
         >
           <SelectTrigger className="mt-1">
             <SelectValue placeholder="Select a service" />
@@ -837,7 +1067,10 @@ function ServiceCallProperties({
         </Select>
         {config.service && (
           <p className="mt-1 text-xs text-muted-foreground">
-            {serviceOptions.find((o) => o.value === config.service)?.description}
+            {
+              serviceOptions.find((o) => o.value === config.service)
+                ?.description
+            }
           </p>
         )}
       </div>
@@ -845,8 +1078,10 @@ function ServiceCallProperties({
       <div>
         <Label htmlFor="service-target">Target Step (on Success)</Label>
         <Select
-          value={config.targetStepSlugOnSuccess || ""}
-          onValueChange={(value) => updateElement(stepId, elementId, { targetStepSlugOnSuccess: value })}
+          value={config.targetStepSlugOnSuccess || ''}
+          onValueChange={(value) =>
+            updateElement(stepId, elementId, { targetStepSlugOnSuccess: value })
+          }
         >
           <SelectTrigger className="mt-1">
             <SelectValue placeholder="Select target step" />
@@ -860,7 +1095,8 @@ function ServiceCallProperties({
           </SelectContent>
         </Select>
         <p className="mt-1 text-xs text-muted-foreground">
-          The step to navigate to when the service returns a successful response.
+          The step to navigate to when the service returns a successful
+          response.
         </p>
       </div>
 
@@ -868,10 +1104,14 @@ function ServiceCallProperties({
         <div className="rounded-md border bg-muted/50 p-3">
           <p className="text-xs font-medium mb-1">Flow Preview:</p>
           <p className="text-xs text-muted-foreground">
-            Call <span className="font-mono text-foreground">{config.service}</span> service
+            Call{' '}
+            <span className="font-mono text-foreground">{config.service}</span>{' '}
+            service
             <br />
-            On success → go to{" "}
-            <span className="font-mono text-foreground">/{config.targetStepSlugOnSuccess}</span>
+            On success → go to{' '}
+            <span className="font-mono text-foreground">
+              /{config.targetStepSlugOnSuccess}
+            </span>
           </p>
         </div>
       )}
@@ -883,7 +1123,11 @@ function ConditionalRouteProperties({
   stepId,
   elementId,
   config,
-}: { stepId: string; elementId: string; config: ConditionalRouteConfig }) {
+}: {
+  stepId: string
+  elementId: string
+  config: ConditionalRouteConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
   const form = useFormStore((s) => s.form)
 
@@ -892,7 +1136,7 @@ function ConditionalRouteProperties({
   form.steps.forEach((step) => {
     step.elements.forEach((element) => {
       const elConfig = element.config as unknown as Record<string, unknown>
-      if (elConfig.name && typeof elConfig.name === "string") {
+      if (elConfig.name && typeof elConfig.name === 'string') {
         allFields.push({
           name: elConfig.name,
           label: (elConfig.label as string) || elConfig.name,
@@ -911,33 +1155,42 @@ function ConditionalRouteProperties({
   return (
     <div className="space-y-4">
       <div className="rounded-md bg-violet-500/10 p-3 text-xs text-violet-600">
-        Configure a condition to redirect the user to a different step based on their input.
+        Configure a condition to redirect the user to a different step based on
+        their input.
       </div>
 
       <div>
         <Label htmlFor="condition-label">Button Label</Label>
         <Input
           id="condition-label"
-          value={config.label || ""}
-          onChange={(e) => updateElement(stepId, elementId, { label: e.target.value })}
+          value={config.label || ''}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { label: e.target.value })
+          }
           className="mt-1"
           placeholder="Continue"
         />
-        <p className="mt-1 text-xs text-muted-foreground">The text displayed on the action button</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          The text displayed on the action button
+        </p>
       </div>
 
       <div>
         <Label htmlFor="condition-field">Field to Compare</Label>
         <Select
-          value={config.fieldName || ""}
-          onValueChange={(value) => updateElement(stepId, elementId, { fieldName: value })}
+          value={config.fieldName || ''}
+          onValueChange={(value) =>
+            updateElement(stepId, elementId, { fieldName: value })
+          }
         >
           <SelectTrigger className="mt-1">
             <SelectValue placeholder="Select a field" />
           </SelectTrigger>
           <SelectContent>
             {allFields.length === 0 ? (
-              <SelectItem value="" disabled>No fields available</SelectItem>
+              <SelectItem value="" disabled>
+                No fields available
+              </SelectItem>
             ) : (
               allFields.map((field) => (
                 <SelectItem key={field.name} value={field.name}>
@@ -947,14 +1200,20 @@ function ConditionalRouteProperties({
             )}
           </SelectContent>
         </Select>
-        <p className="mt-1 text-xs text-muted-foreground">The field value to check</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          The field value to check
+        </p>
       </div>
 
       <div>
         <Label htmlFor="condition-operator">Operator</Label>
         <Select
-          value={config.operator || "EQUALS"}
-          onValueChange={(value) => updateElement(stepId, elementId, { operator: value as ConditionalOperator })}
+          value={config.operator || 'EQUALS'}
+          onValueChange={(value) =>
+            updateElement(stepId, elementId, {
+              operator: value as ConditionalOperator,
+            })
+          }
         >
           <SelectTrigger className="mt-1">
             <SelectValue />
@@ -970,19 +1229,25 @@ function ConditionalRouteProperties({
         <Label htmlFor="condition-value">Value to Compare</Label>
         <Input
           id="condition-value"
-          value={config.value || ""}
-          onChange={(e) => updateElement(stepId, elementId, { value: e.target.value })}
+          value={config.value || ''}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { value: e.target.value })
+          }
           className="mt-1"
           placeholder="Enter value..."
         />
-        <p className="mt-1 text-xs text-muted-foreground">The value to match against</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          The value to match against
+        </p>
       </div>
 
       <div>
         <Label htmlFor="condition-target">Target Step (if TRUE)</Label>
         <Select
-          value={config.targetStepSlug || ""}
-          onValueChange={(value) => updateElement(stepId, elementId, { targetStepSlug: value })}
+          value={config.targetStepSlug || ''}
+          onValueChange={(value) =>
+            updateElement(stepId, elementId, { targetStepSlug: value })
+          }
         >
           <SelectTrigger className="mt-1">
             <SelectValue placeholder="Select target step" />
@@ -1003,8 +1268,10 @@ function ConditionalRouteProperties({
       <div>
         <Label htmlFor="condition-fallback">Fallback Step (if FALSE)</Label>
         <Select
-          value={config.fallbackStepSlug || ""}
-          onValueChange={(value) => updateElement(stepId, elementId, { fallbackStepSlug: value })}
+          value={config.fallbackStepSlug || ''}
+          onValueChange={(value) =>
+            updateElement(stepId, elementId, { fallbackStepSlug: value })
+          }
         >
           <SelectTrigger className="mt-1">
             <SelectValue placeholder="Select fallback step" />
@@ -1027,15 +1294,26 @@ function ConditionalRouteProperties({
         <div className="rounded-md border bg-muted/50 p-3">
           <p className="text-xs font-medium mb-2">Rule Preview:</p>
           <p className="text-xs text-muted-foreground">
-            If <span className="font-mono text-foreground">{config.fieldName}</span>{" "}
-            {config.operator === "NOT_EQUALS" ? "!=" : "="}{" "}
-            <span className="font-mono text-foreground">&ldquo;{config.value}&rdquo;</span>
+            If{' '}
+            <span className="font-mono text-foreground">
+              {config.fieldName}
+            </span>{' '}
+            {config.operator === 'NOT_EQUALS' ? '!=' : '='}{' '}
+            <span className="font-mono text-foreground">
+              &ldquo;{config.value}&rdquo;
+            </span>
             <br />
-            <span className="text-emerald-600">TRUE</span> → <span className="font-mono text-foreground">/{config.targetStepSlug}</span>
+            <span className="text-emerald-600">TRUE</span> →{' '}
+            <span className="font-mono text-foreground">
+              /{config.targetStepSlug}
+            </span>
             {config.fallbackStepSlug && (
               <>
                 <br />
-                <span className="text-amber-600">FALSE</span> → <span className="font-mono text-foreground">/{config.fallbackStepSlug}</span>
+                <span className="text-amber-600">FALSE</span> →{' '}
+                <span className="font-mono text-foreground">
+                  /{config.fallbackStepSlug}
+                </span>
               </>
             )}
           </p>
@@ -1045,9 +1323,19 @@ function ConditionalRouteProperties({
   )
 }
 
-function PlansProperties({ stepId, elementId, config }: { stepId: string; elementId: string; config: PlansConfig }) {
+function PlansProperties({
+  stepId,
+  elementId,
+  config,
+}: {
+  stepId: string
+  elementId: string
+  config: PlansConfig
+}) {
   const updateElement = useFormStore((s) => s.updateElement)
-  const [expandedPlanId, setExpandedPlanId] = useState<string | null>(config.plans[0]?.id || null)
+  const [expandedPlanId, setExpandedPlanId] = useState<string | null>(
+    config.plans[0]?.id || null
+  )
 
   const generateId = () => Math.random().toString(36).substring(2, 11)
 
@@ -1055,21 +1343,23 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
     const newPlan: Plan = {
       id: generateId(),
       name: `Plan ${config.plans.length + 1}`,
-      description: "Plan description",
+      description: 'Plan description',
       price: 49,
-      currency: "BRL",
+      currency: 'BRL',
       installments: 1,
       installmentPrice: 49,
-      buttonText: "Select Plan",
+      buttonText: 'Select Plan',
       highlighted: false,
-      benefits: [{ id: generateId(), text: "Feature 1", included: true }],
+      benefits: [{ id: generateId(), text: 'Feature 1', included: true }],
     }
     updateElement(stepId, elementId, { plans: [...config.plans, newPlan] })
     setExpandedPlanId(newPlan.id)
   }
 
   const updatePlan = (planId: string, updates: Partial<Plan>) => {
-    const updatedPlans = config.plans.map((p) => (p.id === planId ? { ...p, ...updates } : p))
+    const updatedPlans = config.plans.map((p) =>
+      p.id === planId ? { ...p, ...updates } : p
+    )
     updateElement(stepId, elementId, { plans: updatedPlans })
   }
 
@@ -1087,16 +1377,22 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
     if (!plan) return
     const newBenefit: PlanBenefit = {
       id: generateId(),
-      text: "New benefit",
+      text: 'New benefit',
       included: true,
     }
     updatePlan(planId, { benefits: [...plan.benefits, newBenefit] })
   }
 
-  const updateBenefit = (planId: string, benefitId: string, updates: Partial<PlanBenefit>) => {
+  const updateBenefit = (
+    planId: string,
+    benefitId: string,
+    updates: Partial<PlanBenefit>
+  ) => {
     const plan = config.plans.find((p) => p.id === planId)
     if (!plan) return
-    const updatedBenefits = plan.benefits.map((b) => (b.id === benefitId ? { ...b, ...updates } : b))
+    const updatedBenefits = plan.benefits.map((b) =>
+      b.id === benefitId ? { ...b, ...updates } : b
+    )
     updatePlan(planId, { benefits: updatedBenefits })
   }
 
@@ -1114,7 +1410,9 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
         <Input
           id="plans-title"
           value={config.title}
-          onChange={(e) => updateElement(stepId, elementId, { title: e.target.value })}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { title: e.target.value })
+          }
           className="mt-1"
         />
       </div>
@@ -1122,7 +1420,12 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label>Plans ({config.plans.length})</Label>
-          <Button variant="outline" size="sm" onClick={addPlan} className="h-7 text-xs bg-transparent">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={addPlan}
+            className="h-7 text-xs bg-transparent"
+          >
             <Plus className="mr-1 h-3 w-3" />
             Add Plan
           </Button>
@@ -1135,9 +1438,9 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
               <div
                 key={plan.id}
                 className={cn(
-                  "rounded-md border transition-all",
-                  isExpanded ? "border-primary bg-primary/5" : "border-border",
-                  plan.highlighted && "ring-1 ring-amber-500/50",
+                  'rounded-md border transition-all',
+                  isExpanded ? 'border-primary bg-primary/5' : 'border-border',
+                  plan.highlighted && 'ring-1 ring-amber-500/50'
                 )}
               >
                 {/* Plan Header */}
@@ -1155,7 +1458,9 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
                     <span className="font-medium text-sm">
                       Plan {index + 1}: {plan.name}
                     </span>
-                    {plan.highlighted && <Star className="h-3 w-3 fill-amber-500 text-amber-500" />}
+                    {plan.highlighted && (
+                      <Star className="h-3 w-3 fill-amber-500 text-amber-500" />
+                    )}
                   </div>
                   <span className="text-xs text-muted-foreground">
                     {plan.currency} {plan.price}
@@ -1170,7 +1475,9 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
                         <Label className="text-xs">Name</Label>
                         <Input
                           value={plan.name}
-                          onChange={(e) => updatePlan(plan.id, { name: e.target.value })}
+                          onChange={(e) =>
+                            updatePlan(plan.id, { name: e.target.value })
+                          }
                           className="mt-1 h-8 text-sm"
                         />
                       </div>
@@ -1178,7 +1485,9 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
                         <Label className="text-xs">Currency</Label>
                         <Select
                           value={plan.currency}
-                          onValueChange={(value) => updatePlan(plan.id, { currency: value })}
+                          onValueChange={(value) =>
+                            updatePlan(plan.id, { currency: value })
+                          }
                         >
                           <SelectTrigger className="mt-1 h-8 text-sm">
                             <SelectValue />
@@ -1196,7 +1505,9 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
                       <Label className="text-xs">Description</Label>
                       <Textarea
                         value={plan.description}
-                        onChange={(e) => updatePlan(plan.id, { description: e.target.value })}
+                        onChange={(e) =>
+                          updatePlan(plan.id, { description: e.target.value })
+                        }
                         className="mt-1 text-sm"
                         rows={2}
                       />
@@ -1208,7 +1519,11 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
                         <Input
                           type="number"
                           value={plan.price}
-                          onChange={(e) => updatePlan(plan.id, { price: Number(e.target.value) })}
+                          onChange={(e) =>
+                            updatePlan(plan.id, {
+                              price: Number(e.target.value),
+                            })
+                          }
                           className="mt-1 h-8 text-sm"
                         />
                       </div>
@@ -1233,7 +1548,8 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
 
                     {(plan.installments || 1) > 1 && (
                       <div className="rounded bg-muted/50 p-2 text-xs text-muted-foreground">
-                        {plan.installments}x of {plan.currency} {(plan.price / (plan.installments || 1)).toFixed(2)}
+                        {plan.installments}x of {plan.currency}{' '}
+                        {(plan.price / (plan.installments || 1)).toFixed(2)}
                       </div>
                     )}
 
@@ -1241,7 +1557,9 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
                       <Label className="text-xs">Button Text</Label>
                       <Input
                         value={plan.buttonText}
-                        onChange={(e) => updatePlan(plan.id, { buttonText: e.target.value })}
+                        onChange={(e) =>
+                          updatePlan(plan.id, { buttonText: e.target.value })
+                        }
                         className="mt-1 h-8 text-sm"
                       />
                     </div>
@@ -1250,7 +1568,9 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
                       <Label className="text-xs">Highlight this plan</Label>
                       <Switch
                         checked={plan.highlighted || false}
-                        onCheckedChange={(checked) => updatePlan(plan.id, { highlighted: checked })}
+                        onCheckedChange={(checked) =>
+                          updatePlan(plan.id, { highlighted: checked })
+                        }
                       />
                     </div>
 
@@ -1271,22 +1591,37 @@ function PlansProperties({ stepId, elementId, config }: { stepId: string; elemen
 
                       <div className="space-y-1.5">
                         {plan.benefits.map((benefit) => (
-                          <div key={benefit.id} className="flex items-center gap-2">
+                          <div
+                            key={benefit.id}
+                            className="flex items-center gap-2"
+                          >
                             <button
                               type="button"
-                              onClick={() => updateBenefit(plan.id, benefit.id, { included: !benefit.included })}
+                              onClick={() =>
+                                updateBenefit(plan.id, benefit.id, {
+                                  included: !benefit.included,
+                                })
+                              }
                               className={cn(
-                                "flex h-5 w-5 shrink-0 items-center justify-center rounded",
+                                'flex h-5 w-5 shrink-0 items-center justify-center rounded',
                                 benefit.included
-                                  ? "bg-emerald-500/20 text-emerald-600"
-                                  : "bg-destructive/20 text-destructive",
+                                  ? 'bg-emerald-500/20 text-emerald-600'
+                                  : 'bg-destructive/20 text-destructive'
                               )}
                             >
-                              {benefit.included ? <Check className="h-3 w-3" /> : <X className="h-3 w-3" />}
+                              {benefit.included ? (
+                                <Check className="h-3 w-3" />
+                              ) : (
+                                <X className="h-3 w-3" />
+                              )}
                             </button>
                             <Input
                               value={benefit.text}
-                              onChange={(e) => updateBenefit(plan.id, benefit.id, { text: e.target.value })}
+                              onChange={(e) =>
+                                updateBenefit(plan.id, benefit.id, {
+                                  text: e.target.value,
+                                })
+                              }
                               className="h-7 text-xs flex-1"
                             />
                             <Button
@@ -1339,33 +1674,39 @@ function ElementProperties() {
 
   if (!element) return null
 
-const elementTypeLabels: Record<string, string> = {
-  TITLE: "Title",
-  PARAGRAPH: "Paragraph",
-  TEXT_INPUT: "Text Input",
-  SELECT: "Select",
-  RADIO: "Radio",
-  CHECKBOX: "Checkbox",
-  SUCCESS_SCREEN: "Success Screen (Deprecated)",
-  GO_TO_CHECKOUT: "Go To Checkout (Deprecated)",
-  CONDITIONAL_ROUTE: "Conditional Route",
-  NAVIGATION: "Navigation",
-  SERVICE_CALL: "Service Call",
-  PLANS: "Plans",
-  CPF_INPUT: "CPF Input",
-  CNPJ_INPUT: "CNPJ Input",
-  PHONE_INPUT: "Phone Input",
-  CEP_INPUT: "CEP Input",
-  SOCIAL_NAME_INPUT: "Nome Social Input",
-  PRIVACY_POLICY: "Política de Privacidade",
-  EMAIL_INPUT: "E-mail Input",
-}
+  const elementTypeLabels: Record<string, string> = {
+    TITLE: 'Title',
+    PARAGRAPH: 'Paragraph',
+    TEXT_INPUT: 'Text Input',
+    SELECT: 'Select',
+    RADIO: 'Radio',
+    CHECKBOX: 'Checkbox',
+    SUCCESS_SCREEN: 'Success Screen (Deprecated)',
+    GO_TO_CHECKOUT: 'Go To Checkout (Deprecated)',
+    CONDITIONAL_ROUTE: 'Conditional Route',
+    NAVIGATION: 'Navigation',
+    SERVICE_CALL: 'Service Call',
+    PLANS: 'Plans',
+    CPF_INPUT: 'CPF Input',
+    CNPJ_INPUT: 'CNPJ Input',
+    PHONE_INPUT: 'Phone Input',
+    CEP_INPUT: 'CEP Input',
+    SOCIAL_NAME_INPUT: 'Nome Social Input',
+    PRIVACY_POLICY: 'Política de Privacidade',
+    EMAIL_INPUT: 'E-mail Input',
+  }
 
   const renderProperties = () => {
     switch (element.type) {
-      case "TITLE":
-        return <TitleProperties stepId={selectedStepId} elementId={element.id} config={element.config as TitleConfig} />
-      case "PARAGRAPH":
+      case 'TITLE':
+        return (
+          <TitleProperties
+            stepId={selectedStepId}
+            elementId={element.id}
+            config={element.config as TitleConfig}
+          />
+        )
+      case 'PARAGRAPH':
         return (
           <ParagraphProperties
             stepId={selectedStepId}
@@ -1373,7 +1714,7 @@ const elementTypeLabels: Record<string, string> = {
             config={element.config as ParagraphConfig}
           />
         )
-      case "TEXT_INPUT":
+      case 'TEXT_INPUT':
         return (
           <TextInputProperties
             stepId={selectedStepId}
@@ -1381,13 +1722,23 @@ const elementTypeLabels: Record<string, string> = {
             config={element.config as TextInputConfig}
           />
         )
-      case "SELECT":
+      case 'SELECT':
         return (
-          <SelectProperties stepId={selectedStepId} elementId={element.id} config={element.config as SelectConfig} />
+          <SelectProperties
+            stepId={selectedStepId}
+            elementId={element.id}
+            config={element.config as SelectConfig}
+          />
         )
-      case "RADIO":
-        return <RadioProperties stepId={selectedStepId} elementId={element.id} config={element.config as RadioConfig} />
-      case "CHECKBOX":
+      case 'RADIO':
+        return (
+          <RadioProperties
+            stepId={selectedStepId}
+            elementId={element.id}
+            config={element.config as RadioConfig}
+          />
+        )
+      case 'CHECKBOX':
         return (
           <CheckboxProperties
             stepId={selectedStepId}
@@ -1395,11 +1746,11 @@ const elementTypeLabels: Record<string, string> = {
             config={element.config as CheckboxConfig}
           />
         )
-      case "SUCCESS_SCREEN":
+      case 'SUCCESS_SCREEN':
         return <DeprecatedElementNotice elementType="Success Screen" />
-      case "GO_TO_CHECKOUT":
+      case 'GO_TO_CHECKOUT':
         return <DeprecatedElementNotice elementType="Go To Checkout" />
-      case "NAVIGATION":
+      case 'NAVIGATION':
         return (
           <NavigationProperties
             stepId={selectedStepId}
@@ -1407,7 +1758,7 @@ const elementTypeLabels: Record<string, string> = {
             config={element.config as NavigationConfig}
           />
         )
-      case "SERVICE_CALL":
+      case 'SERVICE_CALL':
         return (
           <ServiceCallProperties
             stepId={selectedStepId}
@@ -1415,7 +1766,7 @@ const elementTypeLabels: Record<string, string> = {
             config={element.config as ServiceCallConfig}
           />
         )
-      case "CONDITIONAL_ROUTE":
+      case 'CONDITIONAL_ROUTE':
         return (
           <ConditionalRouteProperties
             stepId={selectedStepId}
@@ -1423,9 +1774,15 @@ const elementTypeLabels: Record<string, string> = {
             config={element.config as ConditionalRouteConfig}
           />
         )
-      case "PLANS":
-        return <PlansProperties stepId={selectedStepId} elementId={element.id} config={element.config as PlansConfig} />
-      case "CPF_INPUT":
+      case 'PLANS':
+        return (
+          <PlansProperties
+            stepId={selectedStepId}
+            elementId={element.id}
+            config={element.config as PlansConfig}
+          />
+        )
+      case 'CPF_INPUT':
         return (
           <CPFInputProperties
             stepId={selectedStepId}
@@ -1433,7 +1790,7 @@ const elementTypeLabels: Record<string, string> = {
             config={element.config as CPFInputConfig}
           />
         )
-      case "CNPJ_INPUT":
+      case 'CNPJ_INPUT':
         return (
           <CNPJInputProperties
             stepId={selectedStepId}
@@ -1441,7 +1798,7 @@ const elementTypeLabels: Record<string, string> = {
             config={element.config as CNPJInputConfig}
           />
         )
-      case "PHONE_INPUT":
+      case 'PHONE_INPUT':
         return (
           <PhoneInputProperties
             stepId={selectedStepId}
@@ -1449,7 +1806,7 @@ const elementTypeLabels: Record<string, string> = {
             config={element.config as PhoneInputConfig}
           />
         )
-      case "CEP_INPUT":
+      case 'CEP_INPUT':
         return (
           <CEPInputProperties
             stepId={selectedStepId}
@@ -1457,7 +1814,7 @@ const elementTypeLabels: Record<string, string> = {
             config={element.config as CEPInputConfig}
           />
         )
-      case "SOCIAL_NAME_INPUT":
+      case 'SOCIAL_NAME_INPUT':
         return (
           <SocialNameInputProperties
             stepId={selectedStepId}
@@ -1465,7 +1822,7 @@ const elementTypeLabels: Record<string, string> = {
             config={element.config as SocialNameInputConfig}
           />
         )
-      case "PRIVACY_POLICY":
+      case 'PRIVACY_POLICY':
         return (
           <PrivacyPolicyProperties
             stepId={selectedStepId}
@@ -1473,7 +1830,7 @@ const elementTypeLabels: Record<string, string> = {
             config={element.config as PrivacyPolicyConfig}
           />
         )
-      case "EMAIL_INPUT":
+      case 'EMAIL_INPUT':
         return (
           <EmailInputProperties
             stepId={selectedStepId}
@@ -1520,7 +1877,9 @@ export function PropertiesPanel() {
         ) : selectedStepId ? (
           <StepProperties />
         ) : (
-          <p className="text-sm text-muted-foreground">Select a step or element to edit its properties</p>
+          <p className="text-sm text-muted-foreground">
+            Select a step or element to edit its properties
+          </p>
         )}
       </div>
     </div>

@@ -44,7 +44,6 @@ export function setProvider(provider: FeatureFlagDataProvider | null): void {
 
 function getProvider(): FeatureFlagDataProvider {
   if (providerOverride) return providerOverride
-
   return configuredFlagProvider()
 }
 
