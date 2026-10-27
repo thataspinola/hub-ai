@@ -101,16 +101,16 @@ O arquivo `data.json` e o coracao do sistema. Ele contem duas secoes principais:
 
 #### Campos do Produto
 
-| Campo | Tipo | Obrigatorio | Descricao |
-|-------|------|-------------|-----------|
-| `url` | string | Sim | Identificador unico (path ou URL completa) |
-| `name` | string | Sim | Nome de exibicao do produto |
-| `category` | string | Sim | Categoria do produto |
-| `description` | string | Nao | Descricao curta |
-| `image` | string | Nao | URL da imagem |
-| `price` | object | Nao | Informacoes de preco |
-| `cta` | object | Nao | Configuracao do botao de acao |
-| `badges` | array | Nao | Lista de badges/etiquetas |
+| Campo         | Tipo   | Obrigatorio | Descricao                                  |
+| ------------- | ------ | ----------- | ------------------------------------------ |
+| `url`         | string | Sim         | Identificador unico (path ou URL completa) |
+| `name`        | string | Sim         | Nome de exibicao do produto                |
+| `category`    | string | Sim         | Categoria do produto                       |
+| `description` | string | Nao         | Descricao curta                            |
+| `image`       | string | Nao         | URL da imagem                              |
+| `price`       | object | Nao         | Informacoes de preco                       |
+| `cta`         | object | Nao         | Configuracao do botao de acao              |
+| `badges`      | array  | Nao         | Lista de badges/etiquetas                  |
 
 ### Regras de Recomendacao (`recommendationRules`)
 
@@ -158,6 +158,7 @@ Recomenda produtos da mesma categoria do item atual.
 ```
 
 **Funcionamento:**
+
 1. Identifica a categoria do produto atual (via URL)
 2. Busca todos os produtos da mesma categoria
 3. Retorna ate `maxCandidates` produtos
@@ -178,12 +179,20 @@ Permite definir relacoes explicitas entre categorias e/ou URLs especificas.
       "byCategory": {
         "Seguros": [
           { "targetType": "category", "targetId": "Financeiro", "weight": 90 },
-          { "targetType": "url", "targetId": "/produto/consorcio", "weight": 85 }
+          {
+            "targetType": "url",
+            "targetId": "/produto/consorcio",
+            "weight": 85
+          }
         ]
       },
       "byUrl": {
         "/produto/seguro-auto": [
-          { "targetType": "url", "targetId": "/produto/seguro-residencial", "weight": 95 },
+          {
+            "targetType": "url",
+            "targetId": "/produto/seguro-residencial",
+            "weight": 95
+          },
           { "targetType": "category", "targetId": "Assistencia", "weight": 80 }
         ]
       }
@@ -198,19 +207,21 @@ Permite definir relacoes explicitas entre categorias e/ou URLs especificas.
 #### Tipos de Afinidade
 
 **Por Categoria (`byCategory`):**
+
 - Define afinidades para todos os produtos de uma categoria
 - Quando usuario visita qualquer produto de "Seguros", aplica as afinidades configuradas
 
 **Por URL (`byUrl`):**
+
 - Define afinidades especificas para um produto
 - Maior precisao, prioridade sobre categoria
 
 #### Tipos de Destino
 
-| `targetType` | Descricao |
-|--------------|-----------|
-| `category` | Expande para todas as URLs da categoria destino |
-| `url` | URL especifica de um produto |
+| `targetType` | Descricao                                       |
+| ------------ | ----------------------------------------------- |
+| `category`   | Expande para todas as URLs da categoria destino |
+| `url`        | URL especifica de um produto                    |
 
 #### Peso (`weight`)
 
@@ -239,6 +250,7 @@ Recomenda baseado no historico de navegacao do usuario.
 ```
 
 **Funcionamento:**
+
 1. Widget armazena URLs visitadas em `localStorage`
 2. Engine consulta historico e aplica afinidades dos itens visitados
 3. Combina afinidades para gerar recomendacoes personalizadas
@@ -273,6 +285,7 @@ Ranking manual de produtos mais populares.
 ```
 
 **Funcionamento:**
+
 - Lista ordenada de URLs (primeiro = mais popular)
 - Usado como fallback quando outras estrategias nao geram candidatos suficientes
 - Ranking pode ser definido manualmente no painel
@@ -292,7 +305,11 @@ Recomendacoes personalizadas por campanha de marketing.
         "description": "Campanha Black Friday",
         "targets": [
           { "targetType": "category", "targetId": "Promocoes", "weight": 100 },
-          { "targetType": "url", "targetId": "/produto/seguro-promo", "weight": 95 }
+          {
+            "targetType": "url",
+            "targetId": "/produto/seguro-promo",
+            "weight": 95
+          }
         ]
       },
       "lancamento-produto": {
@@ -329,10 +346,7 @@ https://site.com/pagina?utm_campaign=black-friday-2024
 Pode ser definido diretamente no script:
 
 ```html
-<script 
-  src="widget.js"
-  data-reco-campaign="black-friday-2024">
-</script>
+<script src="widget.js" data-reco-campaign="black-friday-2024"></script>
 ```
 
 ---
@@ -348,7 +362,12 @@ Slots permitem configurar diferentes comportamentos por pagina/contexto.
     "slots": {
       "pdp_related": {
         "name": "Produtos Relacionados (PDP)",
-        "cascade": ["affinity_manual", "same_category", "campaign", "popularity_global"],
+        "cascade": [
+          "affinity_manual",
+          "same_category",
+          "campaign",
+          "popularity_global"
+        ],
         "limit": 12,
         "minItems": 4
       },
@@ -371,11 +390,11 @@ Slots permitem configurar diferentes comportamentos por pagina/contexto.
 
 ### Configuracao do Slot
 
-| Campo | Descricao |
-|-------|-----------|
-| `name` | Nome descritivo do slot |
-| `cascade` | Lista ordenada de estrategias a aplicar |
-| `limit` | Maximo de recomendacoes a exibir |
+| Campo      | Descricao                                              |
+| ---------- | ------------------------------------------------------ |
+| `name`     | Nome descritivo do slot                                |
+| `cascade`  | Lista ordenada de estrategias a aplicar                |
+| `limit`    | Maximo de recomendacoes a exibir                       |
 | `minItems` | Minimo de itens (fallback para popular se nao atingir) |
 
 ### Sistema de Cascata
@@ -441,11 +460,13 @@ O painel utiliza **IndexedDB** para persistencia:
 ### Funcionalidades
 
 #### Catalogo
+
 - Adicionar/editar/remover produtos
 - Gerenciar categorias
 - Configurar precos, imagens, badges
 
 #### Regras
+
 - Configurar afinidades por categoria e URL
 - Definir pesos de priorizacao
 - Gerenciar ranking de popularidade
@@ -453,12 +474,14 @@ O painel utiliza **IndexedDB** para persistencia:
 - Configurar slots de contexto
 
 #### Import/Export
+
 - Importar JSON existente
 - Exportar configuracao atual
 - Visualizar estrutura JSON
 - Resetar para valores padrao
 
 #### Preview
+
 - Visualizar recomendacoes em tempo real
 - Testar diferentes slots
 - Simular campanhas
@@ -483,18 +506,18 @@ O painel sincroniza automaticamente com abas de preview abertas via `BroadcastCh
 
 ### Arquivos
 
-| Arquivo | Descricao |
-|---------|-----------|
+| Arquivo     | Descricao                                              |
+| ----------- | ------------------------------------------------------ |
 | `widget.js` | Script principal que carrega e renderiza recomendacoes |
-| `engine.js` | Motor de recomendacao (processa regras) |
-| `style.css` | Estilos do widget |
-| `data.json` | Configuracao (catalogo + regras) |
+| `engine.js` | Motor de recomendacao (processa regras)                |
+| `style.css` | Estilos do widget                                      |
+| `data.json` | Configuracao (catalogo + regras)                       |
 
 ### Integracao Basica
 
 ```html
-<script 
-  async 
+<script
+  async
   src="https://seu-cdn.com/widget.js"
   data-reco-instance="2.0.0"
   data-reco-engine="https://seu-cdn.com/engine.js"
@@ -504,45 +527,45 @@ O painel sincroniza automaticamente com abas de preview abertas via `BroadcastCh
   data-reco-anchor="#recommendations-container"
   data-reco-anchor-mode="append"
   data-reco-limit="12"
-  data-reco-title="Produtos Relacionados">
-</script>
+  data-reco-title="Produtos Relacionados"
+></script>
 ```
 
 ### Atributos do Script
 
 #### Obrigatorios
 
-| Atributo | Descricao |
-|----------|-----------|
-| `data-reco-engine` | URL do engine.js |
-| `data-reco-data` | URL do data.json |
-| `data-reco-slot` | ID do slot de contexto |
+| Atributo           | Descricao                      |
+| ------------------ | ------------------------------ |
+| `data-reco-engine` | URL do engine.js               |
+| `data-reco-data`   | URL do data.json               |
+| `data-reco-slot`   | ID do slot de contexto         |
 | `data-reco-anchor` | Seletor CSS do elemento ancora |
 
 #### Opcionais
 
-| Atributo | Default | Descricao |
-|----------|---------|-----------|
-| `data-reco-instance` | - | Versao/ID da instancia |
-| `data-reco-css` | - | URL do arquivo de estilos |
-| `data-reco-anchor-mode` | `after` | `append` (dentro) ou `after` (apos) |
-| `data-reco-anchor-retry` | `2000` | Tempo (ms) para aguardar ancora |
-| `data-reco-limit` | `12` | Maximo de recomendacoes |
-| `data-reco-loading-ms` | `300` | Tempo de loading antes de render |
-| `data-reco-title` | `Recomendacoes` | Titulo do bloco |
-| `data-reco-layout` | `grid` | Layout (`grid` ou `carousel`) |
-| `data-reco-cta-text` | `Saiba mais` | Texto do botao |
-| `data-reco-cta-style` | `primary` | Estilo do botao |
-| `data-reco-max-width` | `1336px` | Largura maxima do widget |
-| `data-reco-margin-bottom` | `48px` | Margem inferior |
-| `data-reco-history` | `true` | Habilitar historico (`0` para desligar) |
-| `data-reco-use-query` | `0` | Incluir query string na URL |
-| `data-reco-context-url` | - | URL de contexto manual (override) |
-| `data-reco-campaign` | - | ID de campanha manual (override) |
+| Atributo                  | Default         | Descricao                               |
+| ------------------------- | --------------- | --------------------------------------- |
+| `data-reco-instance`      | -               | Versao/ID da instancia                  |
+| `data-reco-css`           | -               | URL do arquivo de estilos               |
+| `data-reco-anchor-mode`   | `after`         | `append` (dentro) ou `after` (apos)     |
+| `data-reco-anchor-retry`  | `2000`          | Tempo (ms) para aguardar ancora         |
+| `data-reco-limit`         | `12`            | Maximo de recomendacoes                 |
+| `data-reco-loading-ms`    | `300`           | Tempo de loading antes de render        |
+| `data-reco-title`         | `Recomendacoes` | Titulo do bloco                         |
+| `data-reco-layout`        | `grid`          | Layout (`grid` ou `carousel`)           |
+| `data-reco-cta-text`      | `Saiba mais`    | Texto do botao                          |
+| `data-reco-cta-style`     | `primary`       | Estilo do botao                         |
+| `data-reco-max-width`     | `1336px`        | Largura maxima do widget                |
+| `data-reco-margin-bottom` | `48px`          | Margem inferior                         |
+| `data-reco-history`       | `true`          | Habilitar historico (`0` para desligar) |
+| `data-reco-use-query`     | `0`             | Incluir query string na URL             |
+| `data-reco-context-url`   | -               | URL de contexto manual (override)       |
+| `data-reco-campaign`      | -               | ID de campanha manual (override)        |
 
 ### Fluxo de Execucao
 
-```
+```bash
 1. Widget.js carrega
        │
        ▼
@@ -573,15 +596,16 @@ Permite exibir recomendacoes baseadas em um produto especifico, mesmo estando em
 
 ```html
 <!-- Em qualquer pagina, mostra recomendacoes como se estivesse em /produto/seguro-auto -->
-<script 
+<script
   src="widget.js"
   data-reco-slot="pdp_related"
   data-reco-context-url="/produto/seguro-auto"
-  data-reco-anchor="#container">
-</script>
+  data-reco-anchor="#container"
+></script>
 ```
 
 **Casos de uso:**
+
 - Sites parceiros exibindo recomendacoes de produtos
 - Landing pages com contexto especifico
 - Emails com recomendacoes personalizadas
@@ -589,7 +613,8 @@ Permite exibir recomendacoes baseadas em um produto especifico, mesmo estando em
 ### Layouts
 
 #### Grid (padrao)
-```
+
+```bash
 ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
 │     │ │     │ │     │ │     │
 │ P1  │ │ P2  │ │ P3  │ │ P4  │
@@ -603,7 +628,8 @@ Permite exibir recomendacoes baseadas em um produto especifico, mesmo estando em
 ```
 
 #### Carousel
-```
+
+```bash
      ◀ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ▶
        │     │ │     │ │     │ │     │
        │ P1  │ │ P2  │ │ P3  │ │ P4  │
@@ -620,32 +646,32 @@ Permite exibir recomendacoes baseadas em um produto especifico, mesmo estando em
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Minha Loja</title>
-</head>
-<body>
-  <main>
-    <h1>Detalhes do Produto</h1>
-    <!-- Conteudo da pagina -->
-    
-    <!-- Container para recomendacoes -->
-    <div id="recommendations"></div>
-  </main>
+  <head>
+    <title>Minha Loja</title>
+  </head>
+  <body>
+    <main>
+      <h1>Detalhes do Produto</h1>
+      <!-- Conteudo da pagina -->
 
-  <!-- Widget de recomendacoes -->
-  <script 
-    async 
-    src="https://cdn.exemplo.com/systasi/widget.js"
-    data-reco-engine="https://cdn.exemplo.com/systasi/engine.js"
-    data-reco-data="https://cdn.exemplo.com/systasi/data.json"
-    data-reco-css="https://cdn.exemplo.com/systasi/style.css"
-    data-reco-slot="pdp_related"
-    data-reco-anchor="#recommendations"
-    data-reco-anchor-mode="append"
-    data-reco-limit="8"
-    data-reco-title="Voce tambem pode gostar">
-  </script>
-</body>
+      <!-- Container para recomendacoes -->
+      <div id="recommendations"></div>
+    </main>
+
+    <!-- Widget de recomendacoes -->
+    <script
+      async
+      src="https://cdn.exemplo.com/systasi/widget.js"
+      data-reco-engine="https://cdn.exemplo.com/systasi/engine.js"
+      data-reco-data="https://cdn.exemplo.com/systasi/data.json"
+      data-reco-css="https://cdn.exemplo.com/systasi/style.css"
+      data-reco-slot="pdp_related"
+      data-reco-anchor="#recommendations"
+      data-reco-anchor-mode="append"
+      data-reco-limit="8"
+      data-reco-title="Voce tambem pode gostar"
+    ></script>
+  </body>
 </html>
 ```
 
@@ -654,22 +680,31 @@ Permite exibir recomendacoes baseadas em um produto especifico, mesmo estando em
 ```html
 <!-- Recomendacoes do PDP -->
 <div id="pdp-reco"></div>
-<script src="widget.js" data-reco-slot="pdp_related" data-reco-anchor="#pdp-reco"></script>
+<script
+  src="widget.js"
+  data-reco-slot="pdp_related"
+  data-reco-anchor="#pdp-reco"
+></script>
 
 <!-- Upsell no carrinho -->
 <div id="cart-reco"></div>
-<script src="widget.js" data-reco-slot="cart_upsell" data-reco-anchor="#cart-reco"></script>
+<script
+  src="widget.js"
+  data-reco-slot="cart_upsell"
+  data-reco-anchor="#cart-reco"
+></script>
 ```
 
 ### Debugging
 
 Adicione `?debug=1` na URL para ativar logs no console:
 
-```
+```bash
 https://site.com/produto?debug=1
 ```
 
 Logs incluem:
+
 - Configuracao carregada
 - Input do engine
 - Candidatos gerados por cada estrategia

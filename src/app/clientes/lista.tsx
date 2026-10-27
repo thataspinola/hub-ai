@@ -5,6 +5,7 @@ export default function Lista({ clientes }: { clientes: Cliente[] }) {
     return (
       <div>
         <h2 style={{ textAlign: 'center' }}>Lista de clientes</h2>
+
         {clientes.map((cliente) => (
           <div key={cliente.codigo}>
             <span>
