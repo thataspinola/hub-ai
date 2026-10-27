@@ -24,6 +24,12 @@ Usar Copilot Setup e Web Code Reviewer da configuração instalada. Consultar .g
 
 Preservar config/ e o fluxo de entrega corporativo existente. Não executar deploy ou acessar Keycloak/AppConfig/serviços corporativos fora do ambiente autorizado. Reportar arquivos, comandos executados, resultados e pendências; não declarar funcionamento em produção ou no editor sem evidência.
 
+## Separação de responsabilidades
+
+Consultar docs/architecture.md antes de ampliar os módulos administrativos. Manter os componentes públicos como composição: editores de formulário em wizard-builder/properties, flags em portal-admin/feature-flag-crud e recomendações em portal-admin/recommendation-rules. Não misturar I/O do browser com regras de domínio.
+
+Recomendações usam actions por capacidade, modelo de dados e contratos de persistência/preview; adapters concretos ficam em browser-adapters.ts. Preservar chaves, schemas e assinaturas públicas. Novas dependências de I/O devem ser injetáveis e testadas com falhas controladas. Não desativar regras de lint para evitar separação de responsabilidades.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know

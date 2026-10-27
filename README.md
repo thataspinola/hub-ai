@@ -351,3 +351,9 @@ Resultados desta rodada: Jest 384 testes em 41 suítes; toolkit 43 testes; confi
 ## Validação após os ajustes de 2026-10-27
 
 Preservados o layout com Navbar/Footer e as remoções recebidas. Correções pontuais alinham navegação, contexto de flags, autenticação/logout e persistência dos formulários. Passaram 389 testes Jest, 43 do toolkit, dois checks de configuração, lint, typecheck, build e smoke HTTP. Os 16 casos E2E foram listados; execução completa e integrações reais continuam pendentes. Detalhes em [validação local](docs/local-validation.md).
+
+## Arquitetura e manutenção
+
+Os editores de formulários, flags e recomendações estão separados por responsabilidade. O estado de recomendações compõe ações de domínio e adapters de persistência/preview; os componentes públicos e formatos de dados foram preservados. Consulte [arquitetura e aplicação de SOLID](docs/architecture.md) para limites e orientações de evolução.
+
+Validação da refatoração: 398 testes Jest, 43 do toolkit, lint, typecheck, build e smoke passaram. A execução E2E completa e as integrações reais permanecem pendentes.
