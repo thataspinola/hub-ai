@@ -77,3 +77,9 @@ Base: main 168cb44da67ce3800836e31a08bdd8a387883ed6. Mantidos a formatação, os
 Dependências públicas de validação foram preparadas isoladamente; package-lock, registry, certificados e arquivos de ambiente do projeto foram preservados. Ambiente local: Node 24.19.0 e Next 16.4.3; isso não substitui validação com o lockfile/mirror corporativo. E2E completo e Windows/VDI continuam pendentes; 16 casos descobertos não significam 16 casos aprovados.
 
 Resultados desta rodada: Jest 384 testes em 41 suítes; toolkit 43 testes; configuração 2 testes; lint sem warnings; typecheck, build/postbuild e smoke HTTP standalone passaram. Playwright reconheceu 16 casos no diretório atualizado; não houve execução completa desses casos nem validação de VDI/Windows nesta rodada. Doctor preserva o aviso do agente externo frontend_engineering_expert; nenhuma customização foi removida para silenciá-lo.
+
+## Ajustes mínimos após as alterações — 2026-10-27
+
+Base recebida: main 71b49810bb10682a84d9c76a57fbd4889d60df3e. Preservados as telas, a Navbar/Footer, a formatação e as remoções feitas nesta revisão. Corrigidos os links para rotas existentes, o contexto de feature flags, o login Keycloak, a renovação de sessão/roles e o logout POST com NEXTAUTH_LOGOUT. A criação de formulário mantém inicialização única e não redireciona se a persistência falhar. Ajustes locais de estado/identificadores e uso da versão IndexedDB corrigem os erros de lint sem desativar regras.
+
+Validação: check:local passou, com 389 testes Jest/42 suítes e dois checks de configuração; toolkit 43 testes; build/postbuild e smoke HTTP standalone passaram. Playwright listou 16 casos. E2E completo, Safari real, Windows/VDI e integrações corporativas continuam pendentes. Dependências públicas de validação usadas isoladamente; lockfile e configurações corporativas preservados.

@@ -28,12 +28,13 @@ export default async function Clientes() {
   const session = await getServerSession(authOptions)
 
   if (session) {
+    let clientes: Cliente[]
     try {
-      const clientes = await getAllClients()
-      return <Lista clientes={clientes} />
+      clientes = await getAllClients()
     } catch {
       return <p>Ops! Houve um erro ao buscar a lista de clientes</p>
     }
+    return <Lista clientes={clientes} />
   } else {
     return <p>Para buscar os clientes você precisa estar autenticado</p>
   }

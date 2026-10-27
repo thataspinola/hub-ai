@@ -16,7 +16,7 @@ Referência de leitura: main 48304b7, em 2026-10-08. Reinspecionar package.json 
 
 Preservar todo o código novo. Recursos e exemplos Node/Nest são mantidos no backend-code-reviewer; não existem neste toolkit frontend. O perfil correto da aplicação atual é nextjs, com web-quality, web-testing, security, gitlab-delivery, nextjs-patterns e react-patterns.
 
-Copilot Setup deve inventariar src/__tests__/ e configurações da aplicação; excluir este toolkit e seus exemplos do inventário de stack. O agente frontend já versionado na raiz continua preservado. Recursos do hub recomendam usar o runner instalado (Jest nesta aplicação), sem instalar Vitest, MSW ou Playwright apenas por constarem em orientações genéricas.
+Copilot Setup deve inventariar src/, __tests__/ e configurações da aplicação; excluir este toolkit e seus exemplos do inventário de stack. O agente frontend já versionado na raiz continua preservado. Recursos do hub recomendam usar o runner instalado (Jest nesta aplicação), sem instalar Vitest, MSW ou Playwright apenas por constarem em orientações genéricas.
 
 ## Validação e limites
 

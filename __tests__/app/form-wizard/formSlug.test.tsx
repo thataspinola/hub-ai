@@ -57,6 +57,7 @@ import EditFormPage from '@/app/form-wizard/[formSlug]/page'
 describe('EditFormPage', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    mockSaveFormToStorage.mockReset()
     mockParams = { formSlug: 'test-form' }
     mockGetFormsIndex.mockReturnValue([])
   })
@@ -94,4 +95,12 @@ describe('EditFormPage', () => {
     // NewFormHandler shows a loading state while setting up the new form
     expect(screen.getByText('Creating new form...')).toBeInTheDocument()
   })
+})
+
+it('keeps a new form open when persistence fails', () => {
+  mockParams = { formSlug: 'new' }
+  mockSaveFormToStorage.mockReturnValue(false)
+  render(<EditFormPage />)
+  expect(mockSaveFormToStorage).toHaveBeenCalled()
+  expect(mockRouterReplace).not.toHaveBeenCalled()
 })

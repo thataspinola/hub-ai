@@ -4,6 +4,7 @@ import { PublicEnvScript } from 'next-runtime-env'
 import Footer from '@/components/footer'
 import Navbar from '@/components/navbar'
 import SessionProviderWrapper from '@/components/session-provider-wrapper'
+import { FeatureFlagProvider } from '@/lib/feature-flags/client'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -24,9 +25,13 @@ export default function RootLayout({
       </head>
       <body>
         <SessionProviderWrapper>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          <FeatureFlagProvider
+            providerName={process.env.FEATURE_FLAGS_PROVIDER === 'appconfig' ? 'appconfig' : 'localStorage'}
+          >
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </FeatureFlagProvider>
         </SessionProviderWrapper>
       </body>
     </html>

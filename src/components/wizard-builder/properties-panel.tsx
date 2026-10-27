@@ -48,7 +48,7 @@ import type {
   EmailInputConfig,
 } from '@/lib/form-wizard/types'
 import { cn } from '@/lib/utils'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 function StepProperties() {
   const form = useFormStore((s) => s.form)
@@ -60,12 +60,12 @@ function StepProperties() {
   const [localSlug, setLocalSlug] = useState(step?.slug || '')
   const [slugError, setSlugError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (step) {
-      setLocalSlug(step.slug)
-      setSlugError(null)
-    }
-  }, [step])
+  const [previousStep, setPreviousStep] = useState(step)
+  if (step !== previousStep) {
+    setPreviousStep(step)
+    setLocalSlug(step?.slug || '')
+    setSlugError(null)
+  }
 
   if (!step) return null
 

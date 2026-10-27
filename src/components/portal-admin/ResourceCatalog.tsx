@@ -32,6 +32,15 @@ export function ResourceCatalog() {
           Recursos de revisão para uso no Copilot. Toolkit {catalog.version}.
         </p>
       </header>
+      <p>
+        Para APIs, BFFs, Node e NestJS, use o{' '}
+        <a
+          className="underline"
+          href="https://github.com/thataspinola/backend-code-reviewer"
+        >
+          Backend Code Reviewer
+        </a>.
+      </p>
 
       <div className="flex flex-wrap gap-4">
         <label className="grid gap-1">
