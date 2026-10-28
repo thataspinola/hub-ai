@@ -10,7 +10,14 @@
     "resources/frontend/skills/web-testing",
     "resources/frontend/skills/security",
     "resources/skills/gitlab-delivery",
-    "resources/frontend/skills/angular-patterns"
+    "resources/frontend/skills/angular-patterns",
+    "resources/frontend/skills/accessibility",
+    "resources/frontend/skills/code-quality",
+    "resources/frontend/skills/code-review",
+    "resources/frontend/skills/code-standards",
+    "resources/frontend/skills/performance",
+    "resources/frontend/skills/unit-testing",
+    "resources/skills/rdm-description"
   ],
   "templates": [
     "resources/frontend/templates/web-instructions.template.md",
