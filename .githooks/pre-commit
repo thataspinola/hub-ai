@@ -1,0 +1,2 @@
+#!/bin/sh
+node tools/automation/cli.cjs docs --check

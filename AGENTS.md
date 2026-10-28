@@ -39,3 +39,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Manutenção automatizada
+
+Consultar docs/automation.md. Manter referência com npm run docs:generate e validar com npm run verify. Usar Conventional Commits; documentar incompatibilidades. Não editar referência gerada manualmente, sobrescrever hooks ou instalar hooks/alterar CI dos consumidores silenciosamente. CHANGELOG.md mantém notas editoriais; diário em reports/change-journal.md é regenerável.

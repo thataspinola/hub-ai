@@ -1,0 +1,2 @@
+#!/bin/sh
+node tools/automation/cli.cjs commit-file "$1"

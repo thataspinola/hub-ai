@@ -357,3 +357,7 @@ Preservados o layout com Navbar/Footer e as remoções recebidas. Correções po
 Os editores de formulários, flags e recomendações estão separados por responsabilidade. O estado de recomendações compõe ações de domínio e adapters de persistência/preview; os componentes públicos e formatos de dados foram preservados. Consulte [arquitetura e aplicação de SOLID](docs/architecture.md) para limites e orientações de evolução.
 
 Validação da refatoração: 398 testes Jest, 43 do toolkit, lint, typecheck, build e smoke passaram. A execução E2E completa e as integrações reais permanecem pendentes.
+
+## Automação de documentação e histórico
+
+Consulte o [guia de automação](docs/automation.md) e a [referência gerada](docs/generated/reference.md). Execute `npm run hooks:install` uma vez por clone e `npm run verify` para validar documentação, automações e checks existentes. `npm run changelog` gera o diário do Git; `CHANGELOG.md` mantém as notas editoriais.

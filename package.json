@@ -21,7 +21,16 @@
     "test:e2e:webkit": "playwright test --project=webkit",
     "test:e2e:firefox": "playwright test --project=firefox",
     "test:e2e:chrome": "playwright test --project=chrome",
-    "test:e2e:edge": "playwright test --project=edge"
+    "test:e2e:edge": "playwright test --project=edge",
+    "docs:generate": "node tools/automation/cli.cjs docs",
+    "docs:check": "node tools/automation/cli.cjs docs --check",
+    "changelog": "node tools/automation/cli.cjs changelog",
+    "commits:check": "node tools/automation/cli.cjs commits",
+    "release:plan": "node tools/automation/cli.cjs release-plan",
+    "hooks:install": "node tools/automation/cli.cjs hooks",
+    "test:automation": "node --test __tests__/config/automation.spec.cjs",
+    "verify": "npm run docs:check && npm run check:local && npm --prefix tooling/web-code-reviewer run check",
+    "maintenance": "npm run docs:generate && npm run changelog"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
