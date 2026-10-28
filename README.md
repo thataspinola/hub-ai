@@ -1,5 +1,7 @@
 # Hub AI — painel administrativo e Code Reviewer
 
+> **Primeiro acesso?** Consulte o [guia Comece aqui](docs/getting-started.md) para instalar e configurar o painel ou o Code Reviewer, com exemplos de Windows/Git Bash, primeira revisão, FAQ e solução de problemas. Para os projetos independentes: [Frontend Code Reviewer](https://github.com/thataspinola/frontend-code-reviewer/blob/main/docs/getting-started.md) e [Backend Code Reviewer](https://github.com/thataspinola/backend-code-reviewer/blob/main/docs/getting-started.md).
+
 O `hub-ai` reúne uma aplicação administrativa em Next.js/React e recursos reutilizáveis de revisão de código com IA. O painel possui módulos de feature flags, criação de formulários e administração de recomendações. O Code Reviewer disponibiliza agentes, skills e orientações para uso no editor, com uma CLI para instalar e atualizar esses recursos em outros projetos.
 
 A aplicação foi inicialmente gerada pelo Tech Store. Seu nome técnico é `@porto/react-ssr-corp-hubv-painel-administrativo`.
