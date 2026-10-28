@@ -18,7 +18,7 @@ As ferramentas compartilhadas estão em tooling/web-code-reviewer; recursos fron
 
 ## Recursos do Copilot
 
-Usar Copilot Setup e Web Code Reviewer da configuração instalada. Consultar .github/hub-ai-lock.json e apenas as skills aplicáveis: nextjs-patterns, react-patterns, web-quality, web-testing, security e gitlab-delivery. Preservar o agente frontend já existente. A pasta .github é formato do editor; não define o provedor da entrega.
+Usar Copilot Setup e Web Code Reviewer da configuração instalada. Consultar .github/hub-ai-lock.json e todas as skills instaladas aplicáveis, compartilhadas e específicas do framework. Registrar lacunas. Verificar SOLID, Clean Code, duplicação, código morto, code smells e cobertura real de testes >=90% por métrica, sem confundir testes aprovados com cobertura. Preservar o agente frontend já existente. A pasta .github é formato do editor; não define o provedor da entrega.
 
 ## Entrega e evidências
 
