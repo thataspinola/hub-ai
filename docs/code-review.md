@@ -1,7 +1,7 @@
-# Revisão do painel
+# Revisão do hub-ai
 
-Usar o Web Code Reviewer ativo em .github/agents/web-code-reviewer.agent.md para revisar Next.js/React e os recursos instalados. O agente considera diff/base reais, arquivos completos, fronteiras server/client, contratos, segurança e testes existentes; gera web-code-review.md ou o caminho indicado pelo usuário.
+A revisão de código é realizada exclusivamente pelo agente pessoal [code-reviewer-plug-and-play](https://github.com/thataspinola/code-reviewer-plug-and-play). Consulte [o guia de integração](global-reviewer.md).
 
-Fontes de recursos frontend ficam em resources/frontend. O reviewer legado de React/Next existe apenas como referência nessa árvore; ele não foi instalado sobre o reviewer atual. Node Code Reviewer permanece no toolkit backend para outros consumidores Node/Nest, sem impor arquitetura backend ao painel.
+O painel não contém CLIs, skills, perfis, agentes locais de reviewer ou recursos de avaliação. A rota `/code-reviewer` apresenta apenas um link informativo.
 
-Preservar código novo e agents/instructions locais. Não executar deploy, acessar serviços corporativos ou instalar dependências apenas para produzir relatório. Separar resultados locais de validação real na VDI; não aprovar comportamento de produção com base em mocks.
+No Copilot Chat, selecione `code-reviewer`, solicite revisão do diff real e peça achados fundamentados por arquivo e linha. Respeite `AGENTS.md`, as restrições corporativas e os testes reais do projeto.

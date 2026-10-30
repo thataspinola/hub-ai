@@ -23,7 +23,9 @@ const config: Config = {
     '!src/app/api/**',
   ],
 
-  coverageThreshold: { global: { branches: 90, functions: 90, lines: 90, statements: 90 } },
+  coverageThreshold: {
+    global: { branches: 90, functions: 90, lines: 90, statements: 90 },
+  },
 
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
@@ -40,8 +42,6 @@ const config: Config = {
   // Ignore dist/
   testPathIgnorePatterns: [
     '<rootDir>/dist/',
-    '<rootDir>/tooling/web-code-reviewer/',
-    '<rootDir>/resources/frontend/evaluations/',
     '<rootDir>/__tests__/e2e/',
     '<rootDir>/__tests__/config/',
   ],

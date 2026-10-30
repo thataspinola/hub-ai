@@ -28,9 +28,7 @@ export default defineConfig([
     'playwright-report/**',
     'test-results/**',
     'next-env.d.ts',
-    'tooling/web-code-reviewer/**',
     'examples/**',
-    'resources/**',
     '.github/**',
   ]),
 ])

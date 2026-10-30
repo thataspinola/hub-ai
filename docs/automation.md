@@ -9,7 +9,7 @@ Requisitos: Node e Git conforme package.json. Funciona localmente, inclusive no 
 | npm run docs:check | Falha se a referência estiver desatualizada |
 | npm run changelog | Gera reports/change-journal.md a partir do histórico Git disponível |
 | npm run changelog -- BASE..HEAD | Gera diário apenas do intervalo |
-| npm run commits:check -- BASE..HEAD | Valida os commits novos, sem exigir migração do legado |
+| npm run commits:check -- BASE..HEAD | Valida os commits novos dentro do intervalo informado |
 | npm run release:plan -- BASE..HEAD | Sugere major/minor/patch/none; não modifica versão |
 | npm run hooks:install | Ativa hooks somente neste clone, sem substituir hooks existentes |
 | npm run test:automation | Testa parsing, geração e isolamento dos hooks |

@@ -15,7 +15,6 @@ node tooling/web-code-reviewer/scripts/doctor.js .
 
 O doctor informa arquivos não gerenciados, incluindo o frontend_engineering_expert existente. Essa referência é preservada; não apagá-la para deixar o diagnóstico vazio. Revisar preview/conflitos antes de sobrescrever customizações. Não instalar pipelines, ferramentas de testes ou integrações externas automaticamente. A descoberta/execução efetiva dos agentes deve ser validada no editor.
 
-
 ## Novo fluxo: Code Reviewer pessoal plug-and-play
 
 Para **revisar** sem instalar skills no projeto, use o agente pessoal `code-reviewer` do [repositório centralizado](https://github.com/thataspinola/code-reviewer-plug-and-play). A instalação única usa `node tools/install.cjs` **no checkout central**, nunca no hub-ai. As skills são instaladas em `~/.copilot/skills` e o agente em `~/.github/agents`; atualizações são feitas no checkout central com `--update`. O Copilot Setup legado acima permanece documentado somente para quem precisa administrar as regras locais já instaladas. Consulte [integração e homologação](global-reviewer-integration.md).
