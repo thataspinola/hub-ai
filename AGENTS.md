@@ -48,3 +48,8 @@ Consultar docs/automation.md. Manter referência com npm run docs:generate e val
 ## Analytics e observabilidade
 
 Consultar docs/telemetry-vendor-neutral.md e aplicar as skills analytics-review e observability-review quando houver código ou contrato pertinente. Não presumir fornecedor, não substituir instrumentação existente, não enviar dados sensíveis e não afirmar que eventos/traces chegaram ao destino sem evidência. Atualizar documentação e índice gerado quando recursos mudarem.
+
+
+## POC de agente global
+
+O bootstrap `tools/global-review-poc.cjs` instala um agente no escopo pessoal, sem alterar projetos consumidores. Ver `docs/global-copilot-poc.md`. Preservar isolamento, evitar sobrescrever agentes existentes e nunca afirmar que o Copilot carregou recursos sem teste no editor. Testes de simulação ficam em `__tests__/config/global-review-poc.spec.cjs`.

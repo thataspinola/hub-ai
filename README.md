@@ -368,3 +368,8 @@ Consulte o [guia de automação](docs/automation.md) e a [referência gerada](do
 ## Analytics e observabilidade independentes de fornecedor
 
 Os perfis de revisão incluem as skills `analytics-review` e `observability-review` para avaliar tagueamento, logs, métricas, tracing, privacidade e alertas sem exigir Datadog, Grafana, Prometheus, GTM ou outro serviço. Consulte [o guia de telemetria portável](docs/telemetry-vendor-neutral.md). A revisão não instala SDKs nem comprova coleta em produção.
+
+
+## POC de agente Copilot global
+
+Para utilizar o mesmo agente em projetos frontend independentes sem instalar o toolkit em cada projeto, consulte [a POC de agente pessoal](docs/global-copilot-poc.md). Prévia: `npm run copilot:global:preview`; instalação central: `npm run copilot:global:install`; simulação isolada: `npm run test:global-review-poc`. O suporte real deve ser validado no VS Code/Copilot; esta POC não cobre backend.
