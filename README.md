@@ -359,3 +359,13 @@ Os perfis de revisão incluem as skills `analytics-review` e `observability-revi
 ## Code Reviewer com instalação única
 
 Os reviewers frontend/backend foram centralizados no projeto independente [code-reviewer-plug-and-play](https://github.com/thataspinola/code-reviewer-plug-and-play). Instale o agente pessoal uma vez seguindo o guia do repositório; use `code-reviewer` no Copilot Chat sem copiar ferramentas para o hub-ai nem outros consumidores. Os antigos scripts de POC global deste repositório foram retirados.
+
+
+## Code Reviewer Plug and Play — versão consolidada
+
+O reviewer recomendado para novas análises de frontend e backend é o [code-reviewer-plug-and-play](https://github.com/thataspinola/code-reviewer-plug-and-play), com skills originais migradas e instalação única no perfil pessoal. No hub-ai, execute `npm run reviewer:doctor` para verificar a presença do agente e das skills; selecione `code-reviewer` no Copilot Chat. Consulte [o guia de adoção](docs/global-reviewer.md). O toolkit frontend legado e os agentes locais continuam preservados para compatibilidade. A validação real de descoberta/execução no VS Code/VDI permanece necessária.
+
+
+## Auditoria de limpeza e redundâncias
+
+Executar `npm run audit:repo` para conferir scripts, arquivos essenciais, links locais e duplicações de skills legadas. O resultado e as decisões de preservação por compatibilidade estão em [docs/repository-audit.md](docs/repository-audit.md). A existência de um reviewer global não autoriza apagar automaticamente o toolkit legado enquanto houver interfaces e testes dependentes.

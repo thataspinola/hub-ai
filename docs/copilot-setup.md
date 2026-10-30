@@ -1,5 +1,8 @@
 # Copilot Setup deste projeto
 
+> **Revisão global atual:** [code-reviewer-plug-and-play](global-reviewer.md), com instalação pessoal única. Este documento descreve o **Copilot Setup local legado**, preservado para compatibilidade; não é necessário executá-lo para usar o agente pessoal `code-reviewer`.
+
+
 O [Copilot Setup](../resources/frontend/agents/copilot-setup.agent.md) está ativo em .github/agents/copilot-setup.agent.md. As origens de agentes/skills/templates/perfis frontend ficam em resources/frontend, fora de tooling/web-code-reviewer.
 
 O painel usa o perfil nextjs, com React, web-quality, web-testing, security e gitlab-delivery. Sua sessão NextAuth/Keycloak, flags, formulários e recomendações permanecem no código original. Instructions e AGENTS concretos foram gerados na raiz; não há placeholders pendentes.

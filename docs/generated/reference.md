@@ -9,10 +9,11 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 
 | Comando | Execução |
 | --- | --- |
+| npm run audit:repo | node tools/audit-repository.cjs |
 | npm run build | next build |
 | npm run changelog | node tools/automation/cli.cjs changelog |
 | npm run check:config | node --test \_\_tests\_\_/config/\*.spec.cjs |
-| npm run check:local | npm run check:config && npm run lint && npm run typecheck && npm test -- --runInBand |
+| npm run check:local | npm run check:config && npm run audit:repo && npm run lint && npm run typecheck && npm test -- --runInBand |
 | npm run commits:check | node tools/automation/cli.cjs commits |
 | npm run dev | next dev --turbopack |
 | npm run docs:check | node tools/automation/cli.cjs docs --check |
@@ -22,6 +23,7 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 | npm run maintenance | npm run docs:generate && npm run changelog |
 | npm run postbuild | node tools/postbuild.cjs |
 | npm run release:plan | node tools/automation/cli.cjs release-plan |
+| npm run reviewer:doctor | node tools/check-global-reviewer.cjs |
 | npm run start | node dist/react-ssr-corp-hubv-painel-administrativo/standalone/server.js |
 | npm run test | jest |
 | npm run test:automation | node --test \_\_tests\_\_/config/automation.spec.cjs |
@@ -40,7 +42,7 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 ## Guias e recursos
 
 - [.github/agents/copilot-setup.agent.md](../../.github/agents/copilot-setup.agent.md)
-- [.github/agents/frontend\_engineering\_expert.agent.md](../../.github/agents/frontend%5C_engineering%5C_expert.agent.md)
+- [.github/agents/frontend\_engineering\_expert.agent.md](../../.github/agents/frontend_engineering_expert.agent.md)
 - [.github/agents/web-code-reviewer.agent.md](../../.github/agents/web-code-reviewer.agent.md)
 - [.github/copilot-instructions.md](../../.github/copilot-instructions.md)
 - [.github/skills/gitlab-delivery/SKILL.md](../../.github/skills/gitlab-delivery/SKILL.md)
@@ -65,8 +67,11 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 - [docs/code-reviewer-cli.md](../../docs/code-reviewer-cli.md)
 - [docs/copilot-setup.md](../../docs/copilot-setup.md)
 - [docs/current-project.md](../../docs/current-project.md)
+- [docs/getting-started.md](../../docs/getting-started.md)
+- [docs/global-reviewer.md](../../docs/global-reviewer.md)
 - [docs/improvements-status.md](../../docs/improvements-status.md)
 - [docs/local-validation.md](../../docs/local-validation.md)
+- [docs/repository-audit.md](../../docs/repository-audit.md)
 - [docs/reviewer-evaluation.md](../../docs/reviewer-evaluation.md)
 - [docs/reviewer-migration.md](../../docs/reviewer-migration.md)
 - [docs/structure-and-naming.md](../../docs/structure-and-naming.md)
