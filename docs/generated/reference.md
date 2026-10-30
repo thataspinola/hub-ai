@@ -9,10 +9,11 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 
 | Comando | Execução |
 | --- | --- |
+| npm run audit:repo | node tools/audit-repository.cjs |
 | npm run build | next build |
 | npm run changelog | node tools/automation/cli.cjs changelog |
 | npm run check:config | node --test \_\_tests\_\_/config/\*.spec.cjs |
-| npm run check:local | npm run check:config && npm run lint && npm run typecheck && npm test -- --runInBand |
+| npm run check:local | npm run check:config && npm run audit:repo && npm run lint && npm run typecheck && npm test -- --runInBand |
 | npm run commits:check | node tools/automation/cli.cjs commits |
 | npm run dev | next dev --turbopack |
 | npm run docs:check | node tools/automation/cli.cjs docs --check |
@@ -70,6 +71,7 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 - [docs/global-reviewer.md](../../docs/global-reviewer.md)
 - [docs/improvements-status.md](../../docs/improvements-status.md)
 - [docs/local-validation.md](../../docs/local-validation.md)
+- [docs/repository-audit.md](../../docs/repository-audit.md)
 - [docs/reviewer-evaluation.md](../../docs/reviewer-evaluation.md)
 - [docs/reviewer-migration.md](../../docs/reviewer-migration.md)
 - [docs/structure-and-naming.md](../../docs/structure-and-naming.md)
