@@ -53,3 +53,8 @@ Consultar docs/telemetry-vendor-neutral.md e aplicar as skills analytics-review 
 ## Code Reviewer centralizado
 
 Para revisão global, utilizar o projeto separado `thataspinola/code-reviewer-plug-and-play`. Não recriar instaladores pessoais no hub-ai, não copiar skills no consumidor e respeitar AGENTS.md e políticas da VDI. Os recursos próprios do painel e suas revisões locais permanecem preservados.
+
+
+## Reviewer global centralizado (novo fluxo)
+
+Para revisões manuais do workspace no Copilot, preferir o agente pessoal `code-reviewer` instalado uma única vez a partir de `thataspinola/code-reviewer-plug-and-play`. Suas skills frontend/backend ficam no perfil pessoal do Copilot, não no repositório consumidor. Não copiar recursos, reinstalar CLI, substituir `.github` ou modificar a aplicação para habilitar o agente. Respeitar as regras Next.js/React, NextAuth/Keycloak, Jest, Playwright e os AGENTS locais. A configuração legada do painel permanece intacta por compatibilidade; ver `docs/global-reviewer-integration.md`. Não alegar homologação no VS Code sem teste real.
