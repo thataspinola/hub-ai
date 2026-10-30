@@ -40,8 +40,6 @@ const config: Config = {
   // Ignore dist/
   testPathIgnorePatterns: [
     '<rootDir>/dist/',
-    '<rootDir>/tooling/web-code-reviewer/',
-    '<rootDir>/resources/frontend/evaluations/',
     '<rootDir>/__tests__/e2e/',
     '<rootDir>/__tests__/config/',
   ],
