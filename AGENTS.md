@@ -50,16 +50,6 @@ Consultar docs/automation.md. Manter referência com npm run docs:generate e val
 Consultar docs/telemetry-vendor-neutral.md e aplicar as skills analytics-review e observability-review quando houver código ou contrato pertinente. Não presumir fornecedor, não substituir instrumentação existente, não enviar dados sensíveis e não afirmar que eventos/traces chegaram ao destino sem evidência. Atualizar documentação e índice gerado quando recursos mudarem.
 
 
-## POC de agente global
+## Code Reviewer centralizado
 
-O bootstrap `tools/global-review-poc.cjs` instala um agente no escopo pessoal, sem alterar projetos consumidores. Ver `docs/global-copilot-poc.md`. Preservar isolamento, evitar sobrescrever agentes existentes e nunca afirmar que o Copilot carregou recursos sem teste no editor. Testes de simulação ficam em `__tests__/config/global-review-poc.spec.cjs`.
-
-
-## POC backend global com consumidor real
-
-Validar `tools/global-review-poc.cjs --backend-source` contra as instruções e arquitetura inventariadas de `porto_connectivity`, conforme `docs/global-backend-porto-connectivity-poc.md`. Não alterar o projeto consumidor, não assumir NestJS, não consultar AWS fora da VDI e não certificar execução real do Copilot por simulação.
-
-
-## Instalação centralizada front/back
-
-O agente pessoal gerado por `tools/global-review-poc.cjs` detecta `front/` e `back/` como fontes independentes de skills no mesmo repositório. Ver `docs/unified-global-reviewer.md`. Preservar as instruções do consumidor, não copiar recursos para seus projetos, não sobrescrever agentes não gerenciados e testar isolamento em `__tests__/config/global-monorepo-review.spec.cjs`.
+Para revisão global, utilizar o projeto separado `thataspinola/code-reviewer-plug-and-play`. Não recriar instaladores pessoais no hub-ai, não copiar skills no consumidor e respeitar AGENTS.md e políticas da VDI. Os recursos próprios do painel e suas revisões locais permanecem preservados.
