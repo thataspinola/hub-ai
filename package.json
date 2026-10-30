@@ -30,6 +30,7 @@
     "hooks:install": "node tools/automation/cli.cjs hooks",
     "test:automation": "node --test __tests__/config/automation.spec.cjs",
     "test:global-review-poc": "node --test __tests__/config/global-review-poc.spec.cjs",
+    "test:global-backend-poc": "node --test __tests__/config/global-backend-poc.spec.cjs",
     "copilot:global:preview": "node tools/global-review-poc.cjs --dry-run",
     "copilot:global:install": "node tools/global-review-poc.cjs",
     "verify": "npm run docs:check && npm run check:local && npm --prefix tooling/web-code-reviewer run check",
