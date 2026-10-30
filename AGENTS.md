@@ -43,3 +43,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Manutenção automatizada
 
 Consultar docs/automation.md. Manter referência com npm run docs:generate e validar com npm run verify. Usar Conventional Commits; documentar incompatibilidades. Não editar referência gerada manualmente, sobrescrever hooks ou instalar hooks/alterar CI dos consumidores silenciosamente. CHANGELOG.md mantém notas editoriais; diário em reports/change-journal.md é regenerável.
+
+
+## Analytics e observabilidade
+
+Consultar docs/telemetry-vendor-neutral.md e aplicar as skills analytics-review e observability-review quando houver código ou contrato pertinente. Não presumir fornecedor, não substituir instrumentação existente, não enviar dados sensíveis e não afirmar que eventos/traces chegaram ao destino sem evidência. Atualizar documentação e índice gerado quando recursos mudarem.
