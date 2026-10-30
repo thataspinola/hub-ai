@@ -77,6 +77,7 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 - [docs/reviewer-migration.md](../../docs/reviewer-migration.md)
 - [docs/structure-and-naming.md](../../docs/structure-and-naming.md)
 - [docs/telemetry-vendor-neutral.md](../../docs/telemetry-vendor-neutral.md)
+- [docs/unified-global-reviewer.md](../../docs/unified-global-reviewer.md)
 - [docs/validation-current.md](../../docs/validation-current.md)
 - [resources/frontend/agents/copilot-setup.agent.md](../../resources/frontend/agents/copilot-setup.agent.md)
 - [resources/frontend/agents/frontend-code-reviewer.agent.md](../../resources/frontend/agents/frontend-code-reviewer.agent.md)
