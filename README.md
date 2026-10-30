@@ -373,3 +373,18 @@ Os perfis de revisão incluem as skills `analytics-review` e `observability-revi
 ## Code Reviewer com instalação única
 
 Os reviewers frontend/backend foram centralizados no projeto independente [code-reviewer-plug-and-play](https://github.com/thataspinola/code-reviewer-plug-and-play). Instale o agente pessoal uma vez seguindo o guia do repositório; use `code-reviewer` no Copilot Chat sem copiar ferramentas para o hub-ai nem outros consumidores. Os antigos scripts de POC global deste repositório foram retirados.
+
+
+## Code Reviewer global — instalação única (versão 1.1)
+
+O fluxo recomendado para revisar o painel e outros projetos pelo Copilot é o [code-reviewer-plug-and-play](https://github.com/thataspinola/code-reviewer-plug-and-play), que reúne as skills frontend/backend originais. Instale **uma única vez no perfil pessoal**, sem executar instaladores ou copiar recursos para cada consumidor:
+
+```bash
+git clone https://github.com/thataspinola/code-reviewer-plug-and-play.git
+cd code-reviewer-plug-and-play
+npm run check
+node tools/install.cjs --dry-run
+node tools/install.cjs
+```
+
+Abra o `hub-ai` no VS Code, selecione o agente pessoal `code-reviewer` e peça **revisar**. Para atualizar skills, atualize o checkout central e execute `node tools/install.cjs --update`. O fluxo antigo de `tools/code-reviewer.cjs` e `tooling/web-code-reviewer` permanece disponível apenas para manutenção/compatibilidade das instalações já existentes; não é necessário para a instalação pessoal nova. Detalhes em [docs/global-reviewer-integration.md](docs/global-reviewer-integration.md). A descoberta efetiva pelo Copilot ainda exige validação no editor.
