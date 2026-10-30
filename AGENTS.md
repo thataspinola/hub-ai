@@ -53,3 +53,8 @@ Consultar docs/telemetry-vendor-neutral.md e aplicar as skills analytics-review 
 ## Code Reviewer centralizado
 
 Para revisão global, utilizar o projeto separado `thataspinola/code-reviewer-plug-and-play`. Não recriar instaladores pessoais no hub-ai, não copiar skills no consumidor e respeitar AGENTS.md e políticas da VDI. Os recursos próprios do painel e suas revisões locais permanecem preservados.
+
+
+## Verificação do reviewer pessoal
+
+Novas revisões devem utilizar o agente global de `thataspinola/code-reviewer-plug-and-play`, com skills pessoais front/back. `npm run reviewer:doctor` verifica a presença dos recursos sem modificar o perfil ou o consumidor. Preservar os agentes locais e a CLI legada para compatibilidade; não executar instalador global silenciosamente. Consultar `docs/global-reviewer.md` e registrar validação real no Copilot separadamente dos testes Node.
