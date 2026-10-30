@@ -1,26 +1,26 @@
 # Hub AI — painel administrativo
 
-Aplicação corporativa Next.js 16, React 19 e TypeScript para painel administrativo, clientes, feature flags, formulários dinâmicos e recomendações. O repositório **não distribui nem instala Code Reviewers**. Revisões de código usam exclusivamente o agente pessoal independente [code-reviewer-plug-and-play](https://github.com/thataspinola/code-reviewer-plug-and-play).
+Aplicação corporativa Next.js/React/TypeScript com autenticação NextAuth/Keycloak, clientes, feature flags, formulários dinâmicos e recomendações.
 
-## Pré-requisitos
+## Executar
 
-Node.js conforme `package.json`, npm, Git e acesso corporativo autorizado (VDI quando necessário). Configurar `.env.local` a partir de `.env.example` com os valores permitidos de NextAuth/Keycloak e demais integrações. Não versionar segredos nem substituir certificados/registry corporativos.
+Requer Node.js e npm conforme `package.json`, além de acesso aos serviços corporativos autorizados. Configure variáveis em `.env.local` a partir de `.env.example`, sem versionar credenciais.
 
 ```bash
 npm ci
 npm run dev
 ```
 
-A aplicação utiliza o prefixo `/react-ssr-corp-hubv-painel-administrativo`. Para gerar e executar o artefato standalone:
+O basePath da aplicação é `/react-ssr-corp-hubv-painel-administrativo`. Para entrega standalone:
 
 ```bash
 npm run build
 npm start
 ```
 
-Sem credenciais e serviços reais, autenticação e integrações corporativas podem não funcionar localmente.
+O pós-build em `scripts/postbuild.cjs` prepara os assets do servidor standalone; `npm run test:standalone` verifica a rota e os assets localmente.
 
-## Qualidade e testes
+## Validar
 
 ```bash
 npm run check:config
@@ -31,19 +31,20 @@ npm run build
 npm run test:e2e:list
 ```
 
-Os testes de unidade e integração existentes utilizam Jest e React Testing Library; E2E usa Playwright. Execução real de E2E requer browsers e ambiente preparados. `npm run verify` reúne checks locais e verificação de documentação; `npm run reviewer:doctor` apenas confere a instalação pessoal do agente, sem alterar o projeto.
+Testes da aplicação usam Jest/React Testing Library e Playwright para E2E. O acesso corporativo depende da VDI autorizada. Não interpretar scripts declarados como testes já executados.
 
-## Code Reviewer Plug and Play
+## Revisão de código
 
-Instale o reviewer uma única vez no perfil pessoal, seguindo [o guia de consumo](docs/global-reviewer.md). No Copilot Chat do VS Code, selecione `code-reviewer` e solicite revisão. A rota `/code-reviewer` deste painel é apenas um link informativo para o projeto independente; não hospeda catálogo, skills, CLI ou motor de revisão.
+O hub-ai usa o agente pessoal independente [Code Reviewer Plug and Play](https://github.com/thataspinola/code-reviewer-plug-and-play). A instalação e atualização acontecem **no projeto do reviewer**, fora deste repositório. A rota `/code-reviewer` é apenas informativa. Consulte [o guia de uso](docs/global-reviewer.md).
 
-## Organização e documentação
+## Estrutura
 
-- `src/app`: rotas e APIs do painel, autenticação, clientes, flags, formulários e recomendações
-- `src/components`: componentes do painel
-- `src/lib`: regras, provedores, stores e persistência
-- `__tests__`: testes do aplicativo e configuração
-- `tools`: automação documental, pós-build, smoke e verificação pessoal do reviewer
-- `docs`: arquitetura, operação, validação, automação e integração com o reviewer externo
+- `src/`: rotas, componentes, contratos, stores e serviços do painel
+- `__tests__/`: testes de unidade, integração, configuração e E2E
+- `scripts/`: pós-build e teste de inicialização standalone do painel
+- `config/`: configuração de entrega
+- `docs/architecture.md`: arquitetura e contratos
+- `docs/getting-started.md`: instalação e execução
+- `docs/global-reviewer.md`: uso do reviewer externo
 
-Consulte [arquitetura](docs/architecture.md), [guia inicial](docs/getting-started.md), [automação](docs/automation.md) e [referência gerada](docs/generated/reference.md). Alterações devem seguir Conventional Commits e atualizar `CHANGELOG.md`. CI/CD corporativo GitLab/Jenkins e serviços AWS só devem ser validados na VDI autorizada.
+Alterações seguem Conventional Commits e atualizam `CHANGELOG.md` quando necessário. CI/CD corporativo permanece sob GitLab/Jenkins.
