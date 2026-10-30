@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-10-30 — hub-ai apenas como consumidor do reviewer externo
+
+- Removidos os recursos internos de distribuição e avaliação dos antigos frontend/backend code-reviewers: toolkit, skills, perfis, templates, locks, agentes locais de revisão e CLIs.
+- Substituído o catálogo embarcado pela página informativa que aponta para o `code-reviewer-plug-and-play`, preservando a rota do painel.
+- Atualizados testes da página, scripts de verificação, instruções Copilot, README, AGENTS e guias de uso; referência documental regenerada.
+- Mantidos autenticação, APIs, formulários, feature flags, recomendações e integração corporativa do painel.
+- O `reviewer:doctor` permanece apenas como diagnóstico pessoal sem instalar nada no projeto.
+- Validação de lint, Jest, typecheck, build, E2E e VDI deve ser comprovada por execução; não presumir aprovação.
+
+
 ## 2026-10-30 — auditoria de redundâncias e qualidade
 
 - Adicionado `npm run audit:repo` e testes de inventário de scripts, referências e skills duplicadas.
