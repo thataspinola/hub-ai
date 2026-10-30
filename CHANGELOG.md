@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-30 — auditoria de redundâncias e qualidade
+
+- Adicionado `npm run audit:repo` e testes de inventário de scripts, referências e skills duplicadas.
+- Integrado audit aos checks locais e documentada a classificação de recursos legados preservados por compatibilidade.
+- Sem remoções destrutivas de autenticação, painel, Copilot Setup ou toolkit legado; pendências de homologação registradas.
+
 ## 2026-10-30 — adoção do Code Reviewer Plug and Play
 
 - Integrado o fluxo de instalação única de skills frontend/backend e agente pessoal do projeto `code-reviewer-plug-and-play`.
