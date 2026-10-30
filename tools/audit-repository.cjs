@@ -4,7 +4,6 @@ const fs=require('node:fs')
 const path=require('node:path')
 const root=path.resolve(__dirname,'..')
 const IGNORE=new Set(['node_modules','.git','.next','dist','coverage','playwright-report','test-results'])
-const SOURCE_EXT=/\.(?:[cm]?[jt]sx?|json|md|ya?ml|scss|css)$/
 function walk(dir=root){
  if(!fs.existsSync(dir))return []
  return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>{
