@@ -11,11 +11,9 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 | --- | --- |
 | npm run build | next build |
 | npm run changelog | node tools/automation/cli.cjs changelog |
-| npm run check:config | node --test __tests__/config/*.spec.cjs |
+| npm run check:config | node --test \_\_tests\_\_/config/\*.spec.cjs |
 | npm run check:local | npm run check:config && npm run lint && npm run typecheck && npm test -- --runInBand |
 | npm run commits:check | node tools/automation/cli.cjs commits |
-| npm run copilot:global:install | node tools/global-review-poc.cjs |
-| npm run copilot:global:preview | node tools/global-review-poc.cjs --dry-run |
 | npm run dev | next dev --turbopack |
 | npm run docs:check | node tools/automation/cli.cjs docs --check |
 | npm run docs:generate | node tools/automation/cli.cjs docs |
@@ -26,7 +24,7 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 | npm run release:plan | node tools/automation/cli.cjs release-plan |
 | npm run start | node dist/react-ssr-corp-hubv-painel-administrativo/standalone/server.js |
 | npm run test | jest |
-| npm run test:automation | node --test __tests__/config/automation.spec.cjs |
+| npm run test:automation | node --test \_\_tests\_\_/config/automation.spec.cjs |
 | npm run test:e2e | playwright test |
 | npm run test:e2e:chrome | playwright test --project=chrome |
 | npm run test:e2e:edge | playwright test --project=edge |
@@ -34,8 +32,6 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 | npm run test:e2e:install | playwright install webkit firefox |
 | npm run test:e2e:list | playwright test --list |
 | npm run test:e2e:webkit | playwright test --project=webkit |
-| npm run test:global-backend-poc | node --test __tests__/config/global-backend-poc.spec.cjs |
-| npm run test:global-review-poc | node --test __tests__/config/global-review-poc.spec.cjs |
 | npm run test:standalone | node tools/smoke-standalone.cjs |
 | npm run test:watch | jest --watch |
 | npm run typecheck | tsc --noEmit |
@@ -69,15 +65,12 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 - [docs/code-reviewer-cli.md](../../docs/code-reviewer-cli.md)
 - [docs/copilot-setup.md](../../docs/copilot-setup.md)
 - [docs/current-project.md](../../docs/current-project.md)
-- [docs/global-backend-porto-connectivity-poc.md](../../docs/global-backend-porto-connectivity-poc.md)
-- [docs/global-copilot-poc.md](../../docs/global-copilot-poc.md)
 - [docs/improvements-status.md](../../docs/improvements-status.md)
 - [docs/local-validation.md](../../docs/local-validation.md)
 - [docs/reviewer-evaluation.md](../../docs/reviewer-evaluation.md)
 - [docs/reviewer-migration.md](../../docs/reviewer-migration.md)
 - [docs/structure-and-naming.md](../../docs/structure-and-naming.md)
 - [docs/telemetry-vendor-neutral.md](../../docs/telemetry-vendor-neutral.md)
-- [docs/unified-global-reviewer.md](../../docs/unified-global-reviewer.md)
 - [docs/validation-current.md](../../docs/validation-current.md)
 - [resources/frontend/agents/copilot-setup.agent.md](../../resources/frontend/agents/copilot-setup.agent.md)
 - [resources/frontend/agents/frontend-code-reviewer.agent.md](../../resources/frontend/agents/frontend-code-reviewer.agent.md)
