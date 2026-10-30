@@ -9,36 +9,37 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 
 | Comando | Execução |
 | --- | --- |
-| npm run \\|b\\|u\\|i\\|l\\|d\\| | \\|n\\|e\\|x\\|t\\| \\|b\\|u\\|i\\|l\\|d\\| |
-| npm run \\|c\\|h\\|a\\|n\\|g\\|e\\|l\\|o\\|g\\| | \\|n\\|o\\|d\\|e\\| \\|t\\|o\\|o\\|l\\|s\\|/\\|a\\|u\\|t\\|o\\|m\\|a\\|t\\|i\\|o\\|n\\|/\\|c\\|l\\|i\\|.\\|c\\|j\\|s\\| \\|c\\|h\\|a\\|n\\|g\\|e\\|l\\|o\\|g\\| |
-| npm run \\|c\\|h\\|e\\|c\\|k\\|:\\|c\\|o\\|n\\|f\\|i\\|g\\| | \\|n\\|o\\|d\\|e\\| \\|-\\|-\\|t\\|e\\|s\\|t\\| \\|_\\|_\\|t\\|e\\|s\\|t\\|s\\|_\\|_\\|/\\|c\\|o\\|n\\|f\\|i\\|g\\|/\\|*\\|.\\|s\\|p\\|e\\|c\\|.\\|c\\|j\\|s\\| |
-| npm run \\|c\\|h\\|e\\|c\\|k\\|:\\|l\\|o\\|c\\|a\\|l\\| | \\|n\\|p\\|m\\| \\|r\\|u\\|n\\| \\|c\\|h\\|e\\|c\\|k\\|:\\|c\\|o\\|n\\|f\\|i\\|g\\| \\|&\\|&\\| \\|n\\|p\\|m\\| \\|r\\|u\\|n\\| \\|l\\|i\\|n\\|t\\| \\|&\\|&\\| \\|n\\|p\\|m\\| \\|r\\|u\\|n\\| \\|t\\|y\\|p\\|e\\|c\\|h\\|e\\|c\\|k\\| \\|&\\|&\\| \\|n\\|p\\|m\\| \\|t\\|e\\|s\\|t\\| \\|-\\|-\\| \\|-\\|-\\|r\\|u\\|n\\|I\\|n\\|B\\|a\\|n\\|d\\| |
-| npm run \\|c\\|o\\|m\\|m\\|i\\|t\\|s\\|:\\|c\\|h\\|e\\|c\\|k\\| | \\|n\\|o\\|d\\|e\\| \\|t\\|o\\|o\\|l\\|s\\|/\\|a\\|u\\|t\\|o\\|m\\|a\\|t\\|i\\|o\\|n\\|/\\|c\\|l\\|i\\|.\\|c\\|j\\|s\\| \\|c\\|o\\|m\\|m\\|i\\|t\\|s\\| |
-| npm run \\|c\\|o\\|p\\|i\\|l\\|o\\|t\\|:\\|g\\|l\\|o\\|b\\|a\\|l\\|:\\|i\\|n\\|s\\|t\\|a\\|l\\|l\\| | \\|n\\|o\\|d\\|e\\| \\|t\\|o\\|o\\|l\\|s\\|/\\|g\\|l\\|o\\|b\\|a\\|l\\|-\\|r\\|e\\|v\\|i\\|e\\|w\\|-\\|p\\|o\\|c\\|.\\|c\\|j\\|s\\| |
-| npm run \\|c\\|o\\|p\\|i\\|l\\|o\\|t\\|:\\|g\\|l\\|o\\|b\\|a\\|l\\|:\\|p\\|r\\|e\\|v\\|i\\|e\\|w\\| | \\|n\\|o\\|d\\|e\\| \\|t\\|o\\|o\\|l\\|s\\|/\\|g\\|l\\|o\\|b\\|a\\|l\\|-\\|r\\|e\\|v\\|i\\|e\\|w\\|-\\|p\\|o\\|c\\|.\\|c\\|j\\|s\\| \\|-\\|-\\|d\\|r\\|y\\|-\\|r\\|u\\|n\\| |
-| npm run \\|d\\|e\\|v\\| | \\|n\\|e\\|x\\|t\\| \\|d\\|e\\|v\\| \\|-\\|-\\|t\\|u\\|r\\|b\\|o\\|p\\|a\\|c\\|k\\| |
-| npm run \\|d\\|o\\|c\\|s\\|:\\|c\\|h\\|e\\|c\\|k\\| | \\|n\\|o\\|d\\|e\\| \\|t\\|o\\|o\\|l\\|s\\|/\\|a\\|u\\|t\\|o\\|m\\|a\\|t\\|i\\|o\\|n\\|/\\|c\\|l\\|i\\|.\\|c\\|j\\|s\\| \\|d\\|o\\|c\\|s\\| \\|-\\|-\\|c\\|h\\|e\\|c\\|k\\| |
-| npm run \\|d\\|o\\|c\\|s\\|:\\|g\\|e\\|n\\|e\\|r\\|a\\|t\\|e\\| | \\|n\\|o\\|d\\|e\\| \\|t\\|o\\|o\\|l\\|s\\|/\\|a\\|u\\|t\\|o\\|m\\|a\\|t\\|i\\|o\\|n\\|/\\|c\\|l\\|i\\|.\\|c\\|j\\|s\\| \\|d\\|o\\|c\\|s\\| |
-| npm run \\|h\\|o\\|o\\|k\\|s\\|:\\|i\\|n\\|s\\|t\\|a\\|l\\|l\\| | \\|n\\|o\\|d\\|e\\| \\|t\\|o\\|o\\|l\\|s\\|/\\|a\\|u\\|t\\|o\\|m\\|a\\|t\\|i\\|o\\|n\\|/\\|c\\|l\\|i\\|.\\|c\\|j\\|s\\| \\|h\\|o\\|o\\|k\\|s\\| |
-| npm run \\|l\\|i\\|n\\|t\\| | \\|e\\|s\\|l\\|i\\|n\\|t\\| \\|.\\| \\|-\\|-\\|m\\|a\\|x\\|-\\|w\\|a\\|r\\|n\\|i\\|n\\|g\\|s\\|=\\|0\\| |
-| npm run \\|m\\|a\\|i\\|n\\|t\\|e\\|n\\|a\\|n\\|c\\|e\\| | \\|n\\|p\\|m\\| \\|r\\|u\\|n\\| \\|d\\|o\\|c\\|s\\|:\\|g\\|e\\|n\\|e\\|r\\|a\\|t\\|e\\| \\|&\\|&\\| \\|n\\|p\\|m\\| \\|r\\|u\\|n\\| \\|c\\|h\\|a\\|n\\|g\\|e\\|l\\|o\\|g\\| |
-| npm run \\|p\\|o\\|s\\|t\\|b\\|u\\|i\\|l\\|d\\| | \\|n\\|o\\|d\\|e\\| \\|t\\|o\\|o\\|l\\|s\\|/\\|p\\|o\\|s\\|t\\|b\\|u\\|i\\|l\\|d\\|.\\|c\\|j\\|s\\| |
-| npm run \\|r\\|e\\|l\\|e\\|a\\|s\\|e\\|:\\|p\\|l\\|a\\|n\\| | \\|n\\|o\\|d\\|e\\| \\|t\\|o\\|o\\|l\\|s\\|/\\|a\\|u\\|t\\|o\\|m\\|a\\|t\\|i\\|o\\|n\\|/\\|c\\|l\\|i\\|.\\|c\\|j\\|s\\| \\|r\\|e\\|l\\|e\\|a\\|s\\|e\\|-\\|p\\|l\\|a\\|n\\| |
-| npm run \\|s\\|t\\|a\\|r\\|t\\| | \\|n\\|o\\|d\\|e\\| \\|d\\|i\\|s\\|t\\|/\\|r\\|e\\|a\\|c\\|t\\|-\\|s\\|s\\|r\\|-\\|c\\|o\\|r\\|p\\|-\\|h\\|u\\|b\\|v\\|-\\|p\\|a\\|i\\|n\\|e\\|l\\|-\\|a\\|d\\|m\\|i\\|n\\|i\\|s\\|t\\|r\\|a\\|t\\|i\\|v\\|o\\|/\\|s\\|t\\|a\\|n\\|d\\|a\\|l\\|o\\|n\\|e\\|/\\|s\\|e\\|r\\|v\\|e\\|r\\|.\\|j\\|s\\| |
-| npm run \\|t\\|e\\|s\\|t\\| | \\|j\\|e\\|s\\|t\\| |
-| npm run \\|t\\|e\\|s\\|t\\|:\\|a\\|u\\|t\\|o\\|m\\|a\\|t\\|i\\|o\\|n\\| | \\|n\\|o\\|d\\|e\\| \\|-\\|-\\|t\\|e\\|s\\|t\\| \\|_\\|_\\|t\\|e\\|s\\|t\\|s\\|_\\|_\\|/\\|c\\|o\\|n\\|f\\|i\\|g\\|/\\|a\\|u\\|t\\|o\\|m\\|a\\|t\\|i\\|o\\|n\\|.\\|s\\|p\\|e\\|c\\|.\\|c\\|j\\|s\\| |
-| npm run \\|t\\|e\\|s\\|t\\|:\\|e\\|2\\|e\\| | \\|p\\|l\\|a\\|y\\|w\\|r\\|i\\|g\\|h\\|t\\| \\|t\\|e\\|s\\|t\\| |
-| npm run \\|t\\|e\\|s\\|t\\|:\\|e\\|2\\|e\\|:\\|c\\|h\\|r\\|o\\|m\\|e\\| | \\|p\\|l\\|a\\|y\\|w\\|r\\|i\\|g\\|h\\|t\\| \\|t\\|e\\|s\\|t\\| \\|-\\|-\\|p\\|r\\|o\\|j\\|e\\|c\\|t\\|=\\|c\\|h\\|r\\|o\\|m\\|e\\| |
-| npm run \\|t\\|e\\|s\\|t\\|:\\|e\\|2\\|e\\|:\\|e\\|d\\|g\\|e\\| | \\|p\\|l\\|a\\|y\\|w\\|r\\|i\\|g\\|h\\|t\\| \\|t\\|e\\|s\\|t\\| \\|-\\|-\\|p\\|r\\|o\\|j\\|e\\|c\\|t\\|=\\|e\\|d\\|g\\|e\\| |
-| npm run \\|t\\|e\\|s\\|t\\|:\\|e\\|2\\|e\\|:\\|f\\|i\\|r\\|e\\|f\\|o\\|x\\| | \\|p\\|l\\|a\\|y\\|w\\|r\\|i\\|g\\|h\\|t\\| \\|t\\|e\\|s\\|t\\| \\|-\\|-\\|p\\|r\\|o\\|j\\|e\\|c\\|t\\|=\\|f\\|i\\|r\\|e\\|f\\|o\\|x\\| |
-| npm run \\|t\\|e\\|s\\|t\\|:\\|e\\|2\\|e\\|:\\|i\\|n\\|s\\|t\\|a\\|l\\|l\\| | \\|p\\|l\\|a\\|y\\|w\\|r\\|i\\|g\\|h\\|t\\| \\|i\\|n\\|s\\|t\\|a\\|l\\|l\\| \\|w\\|e\\|b\\|k\\|i\\|t\\| \\|f\\|i\\|r\\|e\\|f\\|o\\|x\\| |
-| npm run \\|t\\|e\\|s\\|t\\|:\\|e\\|2\\|e\\|:\\|l\\|i\\|s\\|t\\| | \\|p\\|l\\|a\\|y\\|w\\|r\\|i\\|g\\|h\\|t\\| \\|t\\|e\\|s\\|t\\| \\|-\\|-\\|l\\|i\\|s\\|t\\| |
-| npm run \\|t\\|e\\|s\\|t\\|:\\|e\\|2\\|e\\|:\\|w\\|e\\|b\\|k\\|i\\|t\\| | \\|p\\|l\\|a\\|y\\|w\\|r\\|i\\|g\\|h\\|t\\| \\|t\\|e\\|s\\|t\\| \\|-\\|-\\|p\\|r\\|o\\|j\\|e\\|c\\|t\\|=\\|w\\|e\\|b\\|k\\|i\\|t\\| |
-| npm run \\|t\\|e\\|s\\|t\\|:\\|g\\|l\\|o\\|b\\|a\\|l\\|-\\|r\\|e\\|v\\|i\\|e\\|w\\|-\\|p\\|o\\|c\\| | \\|n\\|o\\|d\\|e\\| \\|-\\|-\\|t\\|e\\|s\\|t\\| \\|_\\|_\\|t\\|e\\|s\\|t\\|s\\|_\\|_\\|/\\|c\\|o\\|n\\|f\\|i\\|g\\|/\\|g\\|l\\|o\\|b\\|a\\|l\\|-\\|r\\|e\\|v\\|i\\|e\\|w\\|-\\|p\\|o\\|c\\|.\\|s\\|p\\|e\\|c\\|.\\|c\\|j\\|s\\| |
-| npm run \\|t\\|e\\|s\\|t\\|:\\|s\\|t\\|a\\|n\\|d\\|a\\|l\\|o\\|n\\|e\\| | \\|n\\|o\\|d\\|e\\| \\|t\\|o\\|o\\|l\\|s\\|/\\|s\\|m\\|o\\|k\\|e\\|-\\|s\\|t\\|a\\|n\\|d\\|a\\|l\\|o\\|n\\|e\\|.\\|c\\|j\\|s\\| |
-| npm run \\|t\\|e\\|s\\|t\\|:\\|w\\|a\\|t\\|c\\|h\\| | \\|j\\|e\\|s\\|t\\| \\|-\\|-\\|w\\|a\\|t\\|c\\|h\\| |
-| npm run \\|t\\|y\\|p\\|e\\|c\\|h\\|e\\|c\\|k\\| | \\|t\\|s\\|c\\| \\|-\\|-\\|n\\|o\\|E\\|m\\|i\\|t\\| |
-| npm run \\|v\\|e\\|r\\|i\\|f\\|y\\| | \\|n\\|p\\|m\\| \\|r\\|u\\|n\\| \\|d\\|o\\|c\\|s\\|:\\|c\\|h\\|e\\|c\\|k\\| \\|&\\|&\\| \\|n\\|p\\|m\\| \\|r\\|u\\|n\\| \\|c\\|h\\|e\\|c\\|k\\|:\\|l\\|o\\|c\\|a\\|l\\| \\|&\\|&\\| \\|n\\|p\\|m\\| \\|-\\|-\\|p\\|r\\|e\\|f\\|i\\|x\\| \\|t\\|o\\|o\\|l\\|i\\|n\\|g\\|/\\|w\\|e\\|b\\|-\\|c\\|o\\|d\\|e\\|-\\|r\\|e\\|v\\|i\\|e\\|w\\|e\\|r\\| \\|r\\|u\\|n\\| \\|c\\|h\\|e\\|c\\|k\\| |
+| npm run build | next build |
+| npm run changelog | node tools/automation/cli.cjs changelog |
+| npm run check:config | node --test __tests__/config/*.spec.cjs |
+| npm run check:local | npm run check:config && npm run lint && npm run typecheck && npm test -- --runInBand |
+| npm run commits:check | node tools/automation/cli.cjs commits |
+| npm run copilot:global:install | node tools/global-review-poc.cjs |
+| npm run copilot:global:preview | node tools/global-review-poc.cjs --dry-run |
+| npm run dev | next dev --turbopack |
+| npm run docs:check | node tools/automation/cli.cjs docs --check |
+| npm run docs:generate | node tools/automation/cli.cjs docs |
+| npm run hooks:install | node tools/automation/cli.cjs hooks |
+| npm run lint | eslint . --max-warnings=0 |
+| npm run maintenance | npm run docs:generate && npm run changelog |
+| npm run postbuild | node tools/postbuild.cjs |
+| npm run release:plan | node tools/automation/cli.cjs release-plan |
+| npm run start | node dist/react-ssr-corp-hubv-painel-administrativo/standalone/server.js |
+| npm run test | jest |
+| npm run test:automation | node --test __tests__/config/automation.spec.cjs |
+| npm run test:e2e | playwright test |
+| npm run test:e2e:chrome | playwright test --project=chrome |
+| npm run test:e2e:edge | playwright test --project=edge |
+| npm run test:e2e:firefox | playwright test --project=firefox |
+| npm run test:e2e:install | playwright install webkit firefox |
+| npm run test:e2e:list | playwright test --list |
+| npm run test:e2e:webkit | playwright test --project=webkit |
+| npm run test:global-backend-poc | node --test __tests__/config/global-backend-poc.spec.cjs |
+| npm run test:global-review-poc | node --test __tests__/config/global-review-poc.spec.cjs |
+| npm run test:standalone | node tools/smoke-standalone.cjs |
+| npm run test:watch | jest --watch |
+| npm run typecheck | tsc --noEmit |
+| npm run verify | npm run docs:check && npm run check:local && npm --prefix tooling/web-code-reviewer run check |
 
 ## Guias e recursos
 
@@ -68,6 +69,7 @@ Este índice descreve comandos e documentos versionados; arquitetura e contratos
 - [docs/code-reviewer-cli.md](../../docs/code-reviewer-cli.md)
 - [docs/copilot-setup.md](../../docs/copilot-setup.md)
 - [docs/current-project.md](../../docs/current-project.md)
+- [docs/global-backend-porto-connectivity-poc.md](../../docs/global-backend-porto-connectivity-poc.md)
 - [docs/global-copilot-poc.md](../../docs/global-copilot-poc.md)
 - [docs/improvements-status.md](../../docs/improvements-status.md)
 - [docs/local-validation.md](../../docs/local-validation.md)
