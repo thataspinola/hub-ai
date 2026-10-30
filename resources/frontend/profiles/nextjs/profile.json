@@ -11,7 +11,16 @@
     "resources/frontend/skills/security",
     "resources/skills/gitlab-delivery",
     "resources/frontend/skills/nextjs-patterns",
-    "resources/frontend/skills/react-patterns"
+    "resources/frontend/skills/react-patterns",
+    "resources/frontend/skills/accessibility",
+    "resources/frontend/skills/code-quality",
+    "resources/frontend/skills/code-review",
+    "resources/frontend/skills/code-standards",
+    "resources/frontend/skills/performance",
+    "resources/frontend/skills/unit-testing",
+    "resources/skills/rdm-description",
+    "resources/frontend/skills/analytics-review",
+    "resources/frontend/skills/observability-review"
   ],
   "templates": [
     "resources/frontend/templates/web-instructions.template.md",

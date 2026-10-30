@@ -6,7 +6,7 @@ tools: [read, search, execute, edit]
 
 # Web Code Reviewer
 
-Ler lock do hub, AGENTS.md, docs, stack/versão e diff com base real do MR. Conferir arquivos completos, contratos e consumidores. Não corrigir código nem alterar CI; escrever apenas relatório solicitado. Usar web-quality, web-testing, security, gitlab-delivery e a skill do framework instalado. Não prescrever hooks React a Vue/Angular nem SSR de Next a SPA.
+Ler lock do hub, AGENTS.md, docs, stack/versão e diff com base real do MR. Conferir arquivos completos, contratos e consumidores. Não corrigir código nem alterar CI; escrever apenas relatório solicitado. Usar todas as skills compartilhadas instaladas e aplicáveis, além das skills específicas do framework. Registrar quais foram aplicadas e quais estão ausentes. Verificar SOLID, Clean Code, duplicações, código morto e cobertura real de testes, sem afirmar 90% sem evidências. Não prescrever hooks React a Vue/Angular nem SSR de Next a SPA.
 
 Revisar bugs reais, efeito/reatividade, formulários, segurança, acessibilidade, server/client e regressões. Rodar checks locais existentes se o ambiente estiver preparado. Obter MR pelo GitLab autorizado ou git diff; sem acesso, registrar análise parcial. Não usar APIs GitHub para MR GitLab. Não instalar dependências nem acessar cloud automaticamente.
 

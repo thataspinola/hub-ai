@@ -13,7 +13,7 @@ export async function initDB(): Promise<IDBDatabase> {
   if (opening) return opening
 
   opening = new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, 1)
+    const request = indexedDB.open(DB_NAME, DB_VERSION)
 
     request.onerror = () => {
       reject(new Error('Failed to open IndexedDB'))

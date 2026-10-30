@@ -56,3 +56,18 @@ describe('Navbar', () => {
     expect(logoLink).toBeInTheDocument()
   })
 })
+
+it('links to the existing application routes', () => {
+  render(<Navbar />)
+  const routes = {
+    'Clientes': '/clientes',
+    'Recomendações': '/recommendations',
+    'Portal Admin': '/',
+    'Feature Flags': '/feature-flags',
+    'Form Wizard': '/form-wizard',
+    'Code Reviewer': '/code-reviewer',
+  }
+  for (const [name, href] of Object.entries(routes)) {
+    expect(screen.getByRole('link', { name })).toHaveAttribute('href', href)
+  }
+})

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { useHydrated } from '@/lib/use-hydrated'
 import {
@@ -151,11 +151,6 @@ function FormWizardList() {
 
   const [deleteSlug, setDeleteSlug] = useState<string | null>(null)
   const [previewForm, setPreviewForm] = useState<Form | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    loadForms()
-  }, [])
 
   const loadForms = () => {
     const index = getFormsIndex()
@@ -167,7 +162,6 @@ function FormWizardList() {
       )
     )
 
-    setIsLoading(false)
   }
 
   const handleDuplicate = (slug: string) => {
@@ -201,16 +195,6 @@ function FormWizardList() {
       hour: '2-digit',
       minute: '2-digit',
     })
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="animate-pulse text-muted-foreground">
-          Loading forms...
-        </div>
-      </div>
-    )
   }
 
   return (

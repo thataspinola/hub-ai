@@ -1,5 +1,7 @@
 # Hub AI — painel administrativo e Code Reviewer
 
+> **Primeiro acesso?** Consulte o [guia Comece aqui](docs/getting-started.md) para instalar e configurar o painel ou o Code Reviewer, com exemplos de Windows/Git Bash, primeira revisão, FAQ e solução de problemas. Para os projetos independentes: [Frontend Code Reviewer](https://github.com/thataspinola/frontend-code-reviewer/blob/main/docs/getting-started.md) e [Backend Code Reviewer](https://github.com/thataspinola/backend-code-reviewer/blob/main/docs/getting-started.md).
+
 O `hub-ai` reúne uma aplicação administrativa em Next.js/React e recursos reutilizáveis de revisão de código com IA. O painel possui módulos de feature flags, criação de formulários e administração de recomendações. O Code Reviewer disponibiliza agentes, skills e orientações para uso no editor, com uma CLI para instalar e atualizar esses recursos em outros projetos.
 
 A aplicação foi inicialmente gerada pelo Tech Store. Seu nome técnico é `@porto/react-ssr-corp-hubv-painel-administrativo`.
@@ -347,3 +349,22 @@ Os toolkits reconhecem seus estados separados e impedem sobrescrita de recursos 
 Os diretórios \_\_tests\_\_/config e \_\_tests\_\_/e2e são executados pelos respectivos scripts; Jest mantém a suíte da aplicação, e o toolkit usa tooling/web-code-reviewer/\_\_tests\_\_/tooling. Novos testes e arquivos realocados usam .spec; os .test Jest existentes continuam válidos. O E2E mantém localhost e usa /react-ssr-corp-hubv-painel-administrativo/ conforme next.config.ts. Consultar [validação atualizada](docs/local-validation.md) para resultados e limites.
 
 Resultados desta rodada: Jest 384 testes em 41 suítes; toolkit 43 testes; configuração 2 testes; lint sem warnings; typecheck, build/postbuild e smoke HTTP standalone passaram. Playwright reconheceu 16 casos no diretório atualizado; não houve execução completa desses casos nem validação de VDI/Windows nesta rodada. Doctor preserva o aviso do agente externo frontend_engineering_expert; nenhuma customização foi removida para silenciá-lo.
+
+## Validação após os ajustes de 2026-10-27
+
+Preservados o layout com Navbar/Footer e as remoções recebidas. Correções pontuais alinham navegação, contexto de flags, autenticação/logout e persistência dos formulários. Passaram 389 testes Jest, 43 do toolkit, dois checks de configuração, lint, typecheck, build e smoke HTTP. Os 16 casos E2E foram listados; execução completa e integrações reais continuam pendentes. Detalhes em [validação local](docs/local-validation.md).
+
+## Arquitetura e manutenção
+
+Os editores de formulários, flags e recomendações estão separados por responsabilidade. O estado de recomendações compõe ações de domínio e adapters de persistência/preview; os componentes públicos e formatos de dados foram preservados. Consulte [arquitetura e aplicação de SOLID](docs/architecture.md) para limites e orientações de evolução.
+
+Validação da refatoração: 398 testes Jest, 43 do toolkit, lint, typecheck, build e smoke passaram. A execução E2E completa e as integrações reais permanecem pendentes.
+
+## Automação de documentação e histórico
+
+Consulte o [guia de automação](docs/automation.md) e a [referência gerada](docs/generated/reference.md). Execute `npm run hooks:install` uma vez por clone e `npm run verify` para validar documentação, automações e checks existentes. `npm run changelog` gera o diário do Git; `CHANGELOG.md` mantém as notas editoriais.
+
+
+## Analytics e observabilidade independentes de fornecedor
+
+Os perfis de revisão incluem as skills `analytics-review` e `observability-review` para avaliar tagueamento, logs, métricas, tracing, privacidade e alertas sem exigir Datadog, Grafana, Prometheus, GTM ou outro serviço. Consulte [o guia de telemetria portável](docs/telemetry-vendor-neutral.md). A revisão não instala SDKs nem comprova coleta em produção.

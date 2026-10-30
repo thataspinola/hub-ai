@@ -34,9 +34,15 @@ export default function Navbar() {
       <div>
         <Link href="/clientes">Clientes</Link>
         <span>|</span>
-        <Link href="/recomendacoes">Recomendações</Link>
+        <Link href="/recommendations">Recomendações</Link>
         <span>|</span>
-        <Link href="/portal-admin">Portal Admin</Link>
+        <Link href="/">Portal Admin</Link>
+        <span>|</span>
+        <Link href="/feature-flags">Feature Flags</Link>
+        <span>|</span>
+        <Link href="/form-wizard">Form Wizard</Link>
+        <span>|</span>
+        <Link href="/code-reviewer">Code Reviewer</Link>
         <span>|</span>
         <Auth />
       </div>

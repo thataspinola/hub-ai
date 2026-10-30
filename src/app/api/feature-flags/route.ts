@@ -23,7 +23,7 @@ export async function GET() {
     return Response.json(await getFeatureFlags(), {
       headers: { 'Cache-Control': 'no-store' }
     })
-  } catch (error) {
+  } catch {
     return Response.json(
       { error: 'Feature flags unavailable' },
       { status: 503 }

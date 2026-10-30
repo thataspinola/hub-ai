@@ -23,6 +23,8 @@ const config: Config = {
     '!src/app/api/**',
   ],
 
+  coverageThreshold: { global: { branches: 90, functions: 90, lines: 90, statements: 90 } },
+
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
 

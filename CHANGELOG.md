@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-27 — separação de responsabilidades
+
+- Editores separados por domínio e hook de comportamento para o CRUD de flags.
+- Store de recomendações composto por ações e contratos de persistência/preview.
+- Fila de gravações por instância, falha de sincronização explícita e criação idempotente de campanhas.
+- Contratos públicos preservados e arquitetura documentada.
+
 ## 2026-10-23 — integração dos ajustes da main
 
 - Alinhamento dos caminhos de testes, catálogo e basePath dos E2E.
@@ -44,3 +51,9 @@
 ## Base anterior
 
 Commits 49d3f6c e anteriores distribuíam recursos sem lock/versionamento: atualização não identifica automaticamente a propriedade dos arquivos antigos. Revisar esses arquivos manualmente.
+
+## Automação de manutenção — 2026-10-28
+
+- Referência de comandos/guias gerada e verificação de atualização.
+- Diário Git regenerável, Conventional Commits, planejamento de versão e hooks locais opcionais.
+- Comando verify e testes de regressão das automações; instruções de integração com GitLab/Jenkins.

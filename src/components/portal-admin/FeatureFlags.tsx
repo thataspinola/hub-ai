@@ -91,11 +91,12 @@ function FeatureFlagsContent() {
         )
       )
     } else {
+      const id = crypto.randomUUID()
       const flag: FeatureFlag = {
-        id: Date.now().toString(),
+        id,
         name: newFlag.name || 'Nova Flag',
         description: newFlag.description || '',
-        key: newFlag.key || `flag_${Date.now()}`,
+        key: newFlag.key || `flag_${id}`,
         status: newFlag.enabled ? 'Ativado' : 'Desativado',
         traffic: newFlag.traffic || '0%',
         owner: newFlag.owner || 'Engenharia',

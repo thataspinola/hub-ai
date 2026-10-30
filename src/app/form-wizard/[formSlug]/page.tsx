@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useFormStore } from '@/lib/form-wizard/form-store'
 import {
@@ -54,36 +54,27 @@ function StoredForm({ slug }: { slug: string }) {
 function NewFormHandler() {
   const router = useRouter()
   const resetForm = useFormStore((state) => state.resetForm)
-  const form = useFormStore((s) => s.form)
-  const saveFormToStorage = useFormStore((s) => s.saveFormToStorage)
-  const [initialized, setInitialized] = useState(false)
+  const initialized = useRef(false)
+  const storageError = useFormStore((s) => s.storageError)
 
   useEffect(() => {
+    if (initialized.current) return
+    initialized.current = true
     resetForm()
-    setInitialized(true)
-  }, [resetForm])
-
-  useEffect(() => {
-    if (!initialized) return
-    const index = getFormsIndex()
-    const existingSlugs = index.map((f: { slug: string }) => f.slug)
-
-    if (!existingSlugs.includes(form.slug)) {
-      saveFormToStorage()
-      router.replace(`/form-wizard/${form.slug}`)
-    } else {
-      const newSlug = generateFormSlug(form.name, existingSlugs)
-
-      useFormStore.setState((state) => ({
-        form: {...state.form, slug: newSlug}
-      }))
+    const state = useFormStore.getState()
+    const existingSlugs = getFormsIndex().map((entry) => entry.slug)
+    if (existingSlugs.includes(state.form.slug)) {
+      state.setFormSlug(generateFormSlug(state.form.name, existingSlugs))
     }
-  }, [initialized, form.slug, form.name, saveFormToStorage, router])
+    const current = useFormStore.getState()
+    if (current.saveFormToStorage() === false) return
+    router.replace(`/form-wizard/${current.form.slug}`)
+  }, [resetForm, router])
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <div className="animate-pulse text-muted-foreground">
-        Creating new form...
+      <div className="animate-pulse text-muted-foreground" role={storageError ? 'alert' : undefined}>
+        {storageError || 'Creating new form...'}
       </div>
     </div>
   )
