@@ -26,3 +26,8 @@ A versão 2.0.0 recusa profile node antes de escrever. Não converter esse estad
 5. Executar doctor e conferir Backend Copilot Setup/Backend Code Reviewer.
 
 Não há transferência automática entre estados. Os instaladores recusam sobrescrever recursos pertencentes ao outro toolkit; isso evita perda silenciosa de personalizações. O hub-ai não altera instalações consumidoras durante esta limpeza.
+
+
+## Migração recomendada para uso pessoal único (2026-10-30)
+
+O novo projeto [code-reviewer-plug-and-play](https://github.com/thataspinola/code-reviewer-plug-and-play) consolidou as skills e perfis dos reviewers frontend/backend. Para **novos usos de revisão pelo Copilot**, prefira instalar uma vez o agente e skills pessoais com `node tools/install.cjs` no clone central; não execute as CLIs antigas em cada consumidor. As instruções anteriores nesta página continuam válidas para manutenção e migração cuidadosa de instalações legadas, que **não devem ser removidas automaticamente**. Ver [guia de integração](global-reviewer-integration.md).
