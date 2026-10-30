@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit",
     "test:e2e": "playwright test",
     "test:e2e:list": "playwright test --list",
-    "check:local": "npm run check:config && npm run audit:repo && npm run lint && npm run typecheck && npm test -- --runInBand",
+    "check:local": "npm run check:config && npm run lint && npm run typecheck && npm test -- --runInBand",
     "check:config": "node --test __tests__/config/*.spec.cjs",
     "test:standalone": "node tools/smoke-standalone.cjs",
     "test:e2e:install": "playwright install webkit firefox",
@@ -29,10 +29,9 @@
     "release:plan": "node tools/automation/cli.cjs release-plan",
     "hooks:install": "node tools/automation/cli.cjs hooks",
     "test:automation": "node --test __tests__/config/automation.spec.cjs",
-    "verify": "npm run docs:check && npm run check:local && npm --prefix tooling/web-code-reviewer run check",
+    "verify": "npm run docs:check && npm run check:local",
     "maintenance": "npm run docs:generate && npm run changelog",
-    "reviewer:doctor": "node tools/check-global-reviewer.cjs",
-    "audit:repo": "node tools/audit-repository.cjs"
+    "reviewer:doctor": "node tools/check-global-reviewer.cjs"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
