@@ -1,6 +1,6 @@
 'use strict'
 const test = require('node:test'), assert = require('node:assert/strict'), fs = require('node:fs'), path = require('node:path'), os = require('node:os')
-const { prepare, DIST } = require('../../tools/postbuild.cjs')
+const { prepare, DIST } = require('../../scripts/postbuild.cjs')
 test('both pipeline filename variants have identical, secret-free configuration', () => {
   for (const env of ['dev', 'hml', 'prd']) {
     const yaml = fs.readFileSync(`config/values_${env}.yaml`, 'utf8')
