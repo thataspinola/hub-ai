@@ -1,65 +1,15 @@
-# Diretrizes do painel Hub AI
+# Hub AI — instruções para agentes
 
-## Escopo e preservação
+Este repositório é exclusivamente o painel administrativo Next.js/React. O Code Reviewer é **externo**, no repositório `thataspinola/code-reviewer-plug-and-play`, instalado uma vez no perfil pessoal do Copilot. Não criar, instalar ou copiar agentes, skills, perfis, templates, catálogos ou CLIs de revisão neste repositório.
 
-Ler agent.md e as instruções mais específicas antes de alterar arquivos. Preservar o código novo da aplicação. Não editar .env/.npmrc, certificados ou configurações corporativas para contornar o ambiente. Não excluir arquivos para silenciar erro de lint/typecheck.
+## Código e arquitetura
 
-## Frontend real
-
-A aplicação usa Next.js App Router, React, TypeScript, Tailwind, Radix UI e Zustand. Fontes em src/, testes da aplicação em `__tests__/`. Manter aliases @/\*, rotas, basePath, DTOs/tipos e fronteiras cliente/servidor existentes. Zustand/localStorage/IndexedDB devem permanecer em contextos client-safe. Tratar imports/exports de JSON de formulários, flags e recomendações como contratos; validar entradas e preservar dados existentes.
-
-A autenticação existente usa NextAuth/Keycloak. Não registrar tokens, secrets ou dados pessoais nem presumir que a presença de uma sessão equivale a autorização. Não substituir a sessão, provider de flags, estrutura de formulários ou stores de recomendações pelo exemplo backend.
+Preservar contratos de autenticação NextAuth/Keycloak, rotas, basePath, sessão, feature flags, formulários dinâmicos, recomendações, configuração de entrega e CI/CD corporativo GitLab/Jenkins. Respeitar boundaries server/client, segurança, SOLID, Clean Code, acessibilidade e padrões existentes. Não alterar variáveis de ambiente, certificados, registry ou credenciais. Não acessar serviços corporativos fora da VDI.
 
 ## Validação
 
-Usar Jest e React Testing Library adotados pelo projeto. Verificar package.json e configurações antes de executar scripts. npm test/build da raiz pertencem à aplicação; registry e certificados corporativos podem exigir a VDI. Não trocar Jest por outro runner. A suíte Playwright autorizada fica em `__tests__/e2e`, com servidor localhost e bloqueio de rede externa. Não reduzir gates, criar scripts fictícios ou ocultar falhas.
+Usar os scripts reais do `package.json`: `npm run check:config`, `npm run lint`, `npm run typecheck`, `npm test -- --runInBand`, `npm run build` e Playwright quando disponível. Testes do aplicativo usam Jest/React Testing Library; não migrar de runner por pressuposição. Não afirmar cobertura ou homologação sem evidência.
 
-As ferramentas compartilhadas estão em tooling/web-code-reviewer; recursos frontend em resources/frontend; configuração ativa do editor em .github. Backend Node/Nest e exemplos são mantidos no backend-code-reviewer. Não incluir ferramentas ou fixtures na suíte/build Next. Validar o toolkit separadamente com npm --prefix tooling/web-code-reviewer run check.
+## Manutenção
 
-## Recursos do Copilot
-
-Usar Copilot Setup e Web Code Reviewer da configuração instalada. Consultar .github/hub-ai-lock.json e todas as skills instaladas aplicáveis, compartilhadas e específicas do framework. Registrar lacunas. Verificar SOLID, Clean Code, duplicação, código morto, code smells e cobertura real de testes >=90% por métrica, sem confundir testes aprovados com cobertura. Preservar o agente frontend já existente. A pasta .github é formato do editor; não define o provedor da entrega.
-
-## Entrega e evidências
-
-Preservar config/ e o fluxo de entrega corporativo existente. Não executar deploy ou acessar Keycloak/AppConfig/serviços corporativos fora do ambiente autorizado. Reportar arquivos, comandos executados, resultados e pendências; não declarar funcionamento em produção ou no editor sem evidência.
-
-## Separação de responsabilidades
-
-Consultar docs/architecture.md antes de ampliar os módulos administrativos. Manter os componentes públicos como composição: editores de formulário em wizard-builder/properties, flags em portal-admin/feature-flag-crud e recomendações em portal-admin/recommendation-rules. Não misturar I/O do browser com regras de domínio.
-
-Recomendações usam actions por capacidade, modelo de dados e contratos de persistência/preview; adapters concretos ficam em browser-adapters.ts. Preservar chaves, schemas e assinaturas públicas. Novas dependências de I/O devem ser injetáveis e testadas com falhas controladas. Não desativar regras de lint para evitar separação de responsabilidades.
-
-<!-- BEGIN:nextjs-agent-rules -->
-
-## This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
-
-## Manutenção automatizada
-
-Consultar docs/automation.md. Manter referência com npm run docs:generate e validar com npm run verify. Usar Conventional Commits; documentar incompatibilidades. Não editar referência gerada manualmente, sobrescrever hooks ou instalar hooks/alterar CI dos consumidores silenciosamente. CHANGELOG.md mantém notas editoriais; diário em reports/change-journal.md é regenerável.
-
-
-## Analytics e observabilidade
-
-Consultar docs/telemetry-vendor-neutral.md e aplicar as skills analytics-review e observability-review quando houver código ou contrato pertinente. Não presumir fornecedor, não substituir instrumentação existente, não enviar dados sensíveis e não afirmar que eventos/traces chegaram ao destino sem evidência. Atualizar documentação e índice gerado quando recursos mudarem.
-
-
-## Code Reviewer centralizado
-
-Para revisão global, utilizar o projeto separado `thataspinola/code-reviewer-plug-and-play`. Não recriar instaladores pessoais no hub-ai, não copiar skills no consumidor e respeitar AGENTS.md e políticas da VDI. Os recursos próprios do painel e suas revisões locais permanecem preservados.
-
-
-## Verificação do reviewer pessoal
-
-Novas revisões devem utilizar o agente global de `thataspinola/code-reviewer-plug-and-play`, com skills pessoais front/back. `npm run reviewer:doctor` verifica a presença dos recursos sem modificar o perfil ou o consumidor. Preservar os agentes locais e a CLI legada para compatibilidade; não executar instalador global silenciosamente. Consultar `docs/global-reviewer.md` e registrar validação real no Copilot separadamente dos testes Node.
-
-
-## Auditoria de recursos legados
-
-Antes de remover scripts, skills ou agentes do toolkit antigo, consultar `docs/repository-audit.md`, executar `npm run audit:repo` e comprovar ausência de consumidores e regressões. Não apagar configuração local do Copilot Setup nem componentes do painel apenas por existir o reviewer global.
+Testes fora de `src`, em `__tests__`; seguir a nomenclatura do código existente. Atualizar README, documentos afetados, referência gerada (`npm run docs:generate`) e CHANGELOG. Conventional Commits para commits. Não adicionar ferramentas de revisão ao projeto. `npm run reviewer:doctor` é um check somente de leitura do perfil pessoal, não instala nem valida execução real do Copilot.

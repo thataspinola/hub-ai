@@ -1,31 +1,5 @@
-# Evidência histórica — integração de 2026-10-08
+# Validação atual
 
-O conteúdo abaixo registra versões anteriores à separação 2.0.0; exemplos backend não existem mais neste checkout. Para comandos atuais, usar README e docs/code-reviewer-cli.md.
+Comandos do painel: `npm run check:config`, `npm run lint`, `npm run typecheck`, `npm test -- --runInBand`, `npm run build`, `npm run test:e2e:list` e `npm run verify`.
 
-## Validação da integração — 2026-10-08
-
-Base remota: main 48304b7. Ferramentas do toolkit 1.5.0 executadas em Node 24.19.0/Linux, com dependências locais previamente preparadas; instalação corporativa da aplicação não foi executada.
-
-| Check                                                            | Resultado                                                                             |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| YAML/frontmatter, nomes, perfis, links e catálogo                | Passou                                                                                |
-| Testes das ferramentas, auto profile e preservação do consumidor | 33 passaram                                                                           |
-| Exemplo Node                                                     | 8 passaram                                                                            |
-| Exemplo Nest local HTTP                                          | 18 passaram                                                                           |
-| Typecheck/build/smoke do exemplo Nest                            | Passaram                                                                              |
-| Gates de cobertura do exemplo Nest                               | Passaram, 100% apenas no pequeno exemplo                                              |
-| Avaliação sintética histórica                                    | Recall/precision 1, sem nova avaliação semântica                                      |
-| Inspeção da aplicação da raiz                                    | nextjs; lock inicialmente vazio, recuperado posteriormente da HPC; scripts declarados |
-| Preview de instalação na aplicação atual                         | Selecionou nextjs, não escreveu arquivos                                              |
-
-Comandos a partir da raiz:
-
-```sh
-npm --prefix tooling/web-code-reviewer run check
-npm --prefix tooling/web-code-reviewer run project:inspect
-node tooling/web-code-reviewer/scripts/install.js . --dry-run
-```
-
-O novo código em src/, **tests**/, config/, public/ e o agente frontend existente permanece preservado. Além das exclusões de escopo em tsconfig.json/jest.config.ts, foram adicionados recursos frontend, configurações Copilot/AGENTS/instructions e catálogo JSON. O material anterior foi movido para esses caminhos; dependências, scripts e lockfile da aplicação não foram substituídos.
-
-Pendente: npm test/build da aplicação, registry/certificado corporativo, Keycloak/AppConfig reais, descoberta no editor e GitLab/Jenkins. Executar essas verificações na VDI/ambiente autorizado. Estes resultados não certificam deploy nem a aplicação Next completa. O catálogo JSON é uma interface de dados preparada; a página /code-reviewer agora consome o catálogo, sem executar revisões.
+`npm run reviewer:doctor` verifica somente a instalação pessoal do reviewer externo. Os testes reais de Copilot e serviços corporativos devem ser realizados no VS Code/VDI autorizado. Resultados históricos não certificam o estado atual.
