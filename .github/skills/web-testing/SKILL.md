@@ -1,6 +1,6 @@
 ---
 name: web-testing
-description: "Criar testes unitários, de componentes, automatizados e E2E web em Angular, React, Next.js e Vue. Usar para regressão, jornada de usuário, testes e gates GitLab/Jenkins."
+description: 'Criar testes unitários, de componentes, automatizados e E2E web em Angular, React, Next.js e Vue. Usar para regressão, jornada de usuário, testes e gates GitLab/Jenkins.'
 ---
 
 # web-testing

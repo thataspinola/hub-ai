@@ -34,4 +34,3 @@ Este repositório inclui customizações Copilot:
 
 - Ver `README.md` para estrutura e fluxo do projeto
 - Ver `src/hooks/` para padrões de implementação
-

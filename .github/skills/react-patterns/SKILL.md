@@ -1,6 +1,6 @@
 ---
 name: react-patterns
-description: "Implementar e revisar aplicações React. Usar para setup, arquitetura, componentes, dados, testes e correções específicas deste framework."
+description: 'Implementar e revisar aplicações React. Usar para setup, arquitetura, componentes, dados, testes e correções específicas deste framework.'
 ---
 
 # Padrões React

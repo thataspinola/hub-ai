@@ -1,9 +1,11 @@
 ---
-name: "{{AGENT_NAME}}"
-description: "{{DESCRIPTION}}. Keywords: {{KEYWORDS}}."
-tools: ["{{TOOLS}}"]
-argument-hint: "{{ARGUMENT_HINT}}"
+name: '{{AGENT_NAME}}'
+description: '{{DESCRIPTION}}. Keywords: {{KEYWORDS}}.'
+tools: ['{{TOOLS}}']
+argument-hint: '{{ARGUMENT_HINT}}'
 ---
+
+# {{AGENT_NAME}}
 
 Você é um **{{ROLE}}** especializado em {{SPECIALIZATION}}.
 

@@ -2,21 +2,21 @@
 
 Referência de leitura: main 48304b7, em 2026-10-08. Reinspecionar package.json e os arquivos reais após mudanças; versões abaixo são ranges declarados, não versões instaladas certificadas.
 
-| Aspecto | Evidência na raiz |
-| --- | --- |
-| Aplicação | @porto/react-ssr-corp-hubv-painel-administrativo |
-| Frontend | Next ^16.2.2, React ^19, App Router e TypeScript |
-| Testes | Jest ^30.3.0, React Testing Library, __tests__/ e jest.config.ts |
-| UI/estado | Tailwind ^4.2.1, Radix UI, Zustand ^5.0.12 |
-| Sessão | NextAuth e provider Keycloak em src/app/api/auth/[...nextauth]/auth-options.ts |
-| Feature flags | Strategy localStorage/AppConfig Agent, context/hydration e polling em src/lib/feature-flags |
-| Formulários | Builder, stores e tipos em src/lib/form-wizard e src/components/wizard-builder |
-| Recomendações | Stores/IndexedDB/tipos e componentes administrativos em src/lib/recommendations e src/components/portal-admin |
-| Entrega | Configurações em config/ e scripts de build/postbuild no package.json; não há .gitlab-ci.yml ou Jenkinsfile versionado nesta revisão |
+| Aspecto       | Evidência na raiz                                                                                                                    |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Aplicação     | @porto/react-ssr-corp-hubv-painel-administrativo                                                                                     |
+| Frontend      | Next ^16.2.2, React ^19, App Router e TypeScript                                                                                     |
+| Testes        | Jest ^30.3.0, React Testing Library, **tests**/ e jest.config.ts                                                                     |
+| UI/estado     | Tailwind ^4.2.1, Radix UI, Zustand ^5.0.12                                                                                           |
+| Sessão        | NextAuth e provider Keycloak em src/app/api/auth/[...nextauth]/auth-options.ts                                                       |
+| Feature flags | Strategy localStorage/AppConfig Agent, context/hydration e polling em src/lib/feature-flags                                          |
+| Formulários   | Builder, stores e tipos em src/lib/form-wizard e src/components/wizard-builder                                                       |
+| Recomendações | Stores/IndexedDB/tipos e componentes administrativos em src/lib/recommendations e src/components/portal-admin                        |
+| Entrega       | Configurações em config/ e scripts de build/postbuild no package.json; não há .gitlab-ci.yml ou Jenkinsfile versionado nesta revisão |
 
 Preservar todo o código novo. Recursos e exemplos Node/Nest são mantidos no backend-code-reviewer; não existem neste toolkit frontend. O perfil correto da aplicação atual é nextjs, com web-quality, web-testing, security, gitlab-delivery, nextjs-patterns e react-patterns.
 
-Copilot Setup deve inventariar src/__tests__/ e configurações da aplicação; excluir este toolkit e seus exemplos do inventário de stack. O agente frontend já versionado na raiz continua preservado. Recursos do hub recomendam usar o runner instalado (Jest nesta aplicação), sem instalar Vitest, MSW ou Playwright apenas por constarem em orientações genéricas.
+Copilot Setup deve inventariar src/**tests**/ e configurações da aplicação; excluir este toolkit e seus exemplos do inventário de stack. O agente frontend já versionado na raiz continua preservado. Recursos do hub recomendam usar o runner instalado (Jest nesta aplicação), sem instalar Vitest, MSW ou Playwright apenas por constarem em orientações genéricas.
 
 ## Validação e limites
 

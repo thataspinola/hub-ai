@@ -138,9 +138,7 @@ useEffect(() => {
 // ✅ Abort controller para requests
 useEffect(() => {
   const controller = new AbortController()
-
   fetchData({ signal: controller.signal })
-
   return () => controller.abort()
 }, [])
 ```

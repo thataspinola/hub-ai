@@ -1,6 +1,6 @@
 ---
-name: "{{SKILL_NAME}}"
-description: "{{DESCRIPTION}}. Keywords: {{KEYWORDS}}."
+name: '{{SKILL_NAME}}'
+description: '{{DESCRIPTION}}. Keywords: {{KEYWORDS}}.'
 ---
 
 # {{TITLE}}

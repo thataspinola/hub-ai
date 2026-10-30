@@ -1,8 +1,8 @@
 # Divisão dos reviewers e migração
 
-| Projeto | Escopo | CLI |
-| --- | --- | --- |
-| hub-ai | Painel e revisão frontend Angular/React/Next.js/Vue | node tools/code-reviewer.cjs |
+| Projeto               | Escopo                                               | CLI                           |
+| --------------------- | ---------------------------------------------------- | ----------------------------- |
+| hub-ai                | Painel e revisão frontend Angular/React/Next.js/Vue  | node tools/code-reviewer.cjs  |
 | backend-code-reviewer | APIs/BFFs, Node vanilla/NestJS, Lambda/eventos/infra | node bin/backend-reviewer.cjs |
 
 Não é necessário GitLab/Jenkins para usar os agentes no editor. CI e código dos consumidores são preservados. Em monorepo, preferir instalação por diretório de aplicação.

@@ -2,33 +2,33 @@
 
 ## Implementado
 
-| Item | Resultado |
-| --- | --- |
-| Lint | ESLint CLI/flat config; corrigidos imports, mocks, valores impuros em render e sincronização de estado |
-| TypeScript | Script typecheck e caminhos relativos para tipos gerados; toolkit/Nest/E2E isolados |
-| Hidratação | Stores de browser inicializam após hidratação consistente; slug edita/reset sincronizados sem effects redundantes |
-| Formulário novo | Uma inicialização por montagem, slug único e persistência antes de navegar |
-| Entrega | distDir relativo, postbuild Node com static/public, start via standalone/server.js e smoke HTTP local |
-| Configuração | Pares .yaml/.yml idênticos, nomes de variáveis alinhados e secret embutido removido |
-| Catálogo | Página /code-reviewer com perfis, busca e instruções de uso, acessível pela sidebar |
-| E2E | Quatro jornadas locais, contextos limpos, sessão controlada e bloqueio de requisições externas |
-| CLI | version/rollback com SHA explícito, conflitos protegidos e testes de reversão |
-| Avaliação | Casos frontend defeituoso/limpo e pontuação humana de recall, precision, omissões e falsos positivos |
+| Item            | Resultado                                                                                                         |
+| --------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Lint            | ESLint CLI/flat config; corrigidos imports, mocks, valores impuros em render e sincronização de estado            |
+| TypeScript      | Script typecheck e caminhos relativos para tipos gerados; toolkit/Nest/E2E isolados                               |
+| Hidratação      | Stores de browser inicializam após hidratação consistente; slug edita/reset sincronizados sem effects redundantes |
+| Formulário novo | Uma inicialização por montagem, slug único e persistência antes de navegar                                        |
+| Entrega         | distDir relativo, postbuild Node com static/public, start via standalone/server.js e smoke HTTP local             |
+| Configuração    | Pares .yaml/.yml idênticos, nomes de variáveis alinhados e secret embutido removido                               |
+| Catálogo        | Página /code-reviewer com perfis, busca e instruções de uso, acessível pela sidebar                               |
+| E2E             | Quatro jornadas locais, contextos limpos, sessão controlada e bloqueio de requisições externas                    |
+| CLI             | version/rollback com SHA explícito, conflitos protegidos e testes de reversão                                     |
+| Avaliação       | Casos frontend defeituoso/limpo e pontuação humana de recall, precision, omissões e falsos positivos              |
 
 ## Evidências locais
 
 Ambiente: Node 24.19.0/Linux; dependências públicas instaladas inicialmente em diretório isolado e depois disponibilizadas localmente, sem alterações em .npmrc/certificados. O lock de entrega mantém URLs do registry corporativo; a disponibilidade de todos os novos pacotes nesse mirror não foi verificada. O lock atualizado resolve Next 16.3.8 dentro do range declarado ^16.2.2.
 
-| Verificação | Resultado |
-| --- | --- |
-| npm run check:local | Passou: configuração, lint sem warnings, typecheck e Jest |
-| Jest do painel | 37 suítes, 370 testes passaram |
-| Checks de configuração/artefatos | 2 passaram |
-| npm run build e postbuild | Passaram, incluindo typecheck do Next |
-| Standalone HTTP smoke | Página Code Reviewer e asset static passaram em localhost |
-| Playwright | 4 casos passaram em localhost |
-| Toolkit + exemplos | 42 ferramentas + 8 Node + 18 Nest = 68 testes passaram |
-| Nest | Typecheck/build/smoke passaram |
+| Verificação                           | Resultado                                                                                             |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| npm run check:local                   | Passou: configuração, lint sem warnings, typecheck e Jest                                             |
+| Jest do painel                        | 37 suítes, 370 testes passaram                                                                        |
+| Checks de configuração/artefatos      | 2 passaram                                                                                            |
+| npm run build e postbuild             | Passaram, incluindo typecheck do Next                                                                 |
+| Standalone HTTP smoke                 | Página Code Reviewer e asset static passaram em localhost                                             |
+| Playwright                            | 4 casos passaram em localhost                                                                         |
+| Toolkit + exemplos                    | 42 ferramentas + 8 Node + 18 Nest = 68 testes passaram                                                |
+| Nest                                  | Typecheck/build/smoke passaram                                                                        |
 | Auditoria de dependências de produção | 0 avisos retornados pelo npm audit público nesta execução; não certifica ausência de vulnerabilidades |
 
 O download padrão de Chromium do Playwright retornou um arquivo inválido neste ambiente. Os quatro E2E foram executados usando Chromium 153.0.8010.0 disponível por uma instalação npm isolada de @sparticuz/chromium e HUB_AI_E2E_CHROMIUM_PATH. Esse pacote não é dependência do projeto. O uso com o navegador padrão do Playwright permanece uma verificação de portabilidade no ambiente do consumidor.
@@ -56,7 +56,6 @@ Removidos perfil/agente/skills/templates backend, exemplos Node/Nest e avaliaç�
 
 Validação atual: 42 testes do toolkit frontend, 384 testes/41 suítes Jest do painel, configuração/lint/typecheck, build/postbuild e smoke standalone passaram. Doctor mantém apenas o aviso do agente frontend_engineering_expert externo preservado. E2E/editor/integrações reais não foram reexecutados nesta limpeza. Números e exemplos Node/Nest anteriores são históricos; validação backend pertence ao projeto independente.
 
-
 ## WebKit no Playwright — 2026-10-21
 
 O projeto E2E padrão passou a webkit/Desktop Safari. Instalar com npm run test:e2e:install e executar npm run test:e2e; test:e2e:list lista as jornadas sem abrir navegador. A variável HUB_AI_E2E_CHROMIUM_PATH foi retirada da configuração. BasePath, servidor localhost, isolamento de contexto e bloqueio de rede externa foram preservados.
@@ -73,10 +72,10 @@ Configuração carregada com Playwright 1.62.1: 16 casos descobertos (quatro jor
 
 ## Ajustes após a reorganização — 2026-10-23
 
-Base: main 168cb44da67ce3800836e31a08bdd8a387883ed6. Mantidos a formatação, os diretórios __tests__, os runners Jest/Playwright/node:test e a matriz WebKit/Firefox/Chrome/Edge enviados nesta revisão.
+Base: main 168cb44da67ce3800836e31a08bdd8a387883ed6. Mantidos a formatação, os diretórios **tests**, os runners Jest/Playwright/node:test e a matriz WebKit/Firefox/Chrome/Edge enviados nesta revisão.
 
 - Teste de configuração renomeado para deployment.spec.cjs, de acordo com check:config.
-- Validador do toolkit reconhece __tests__ sem liberar nomes arbitrários e mantém a proibição de Python.
+- Validador do toolkit reconhece **tests** sem liberar nomes arbitrários e mantém a proibição de Python.
 - Recuperação volta a ler snapshots do journal e valida caminhos/propriedade antes de restaurar arquivos; instalação protege recursos do outro toolkit.
 - Detecção recusa pacotes mistos sem escopo explícito; help não exige projeto; rollback reconhece layouts anteriores seguros.
 - Catálogo regenerado a partir dos cinco perfis frontend; E2E usa React e o basePath real, mantendo localhost e bloqueio de rede externa.

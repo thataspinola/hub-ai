@@ -7,7 +7,7 @@ argument-hint: 'full setup, instructions, AGENTS, skills ou agent <nome> para a 
 
 # Copilot Setup
 
-Agente de configuração dos perfis frontend deste projeto. Para APIs/BFFs, Lambdas e NestJS, usar o Backend Copilot Setup do backend-code-reviewer. Detectar o código real antes de escolher orientações; Node como runtime de build não torna uma aplicação React um backend.
+Agente de configuração dos perfis frontend deste projeto. Para APIs/BFFs, Lambdas e NestJS. Detectar o código real antes de escolher orientações; Node como runtime de build não torna uma aplicação React um backend.
 
 ## Descobrir o escopo
 
@@ -20,33 +20,32 @@ Agente de configuração dos perfis frontend deste projeto. Para APIs/BFFs, Lamb
 
 Consultar somente entradas abaixo que existam na instalação e sejam aplicáveis ao escopo.
 
-| Skill | Finalidade |
-| --- | --- |
-| accessibility | Acessibilidade no frontend legado |
-| code-quality | Qualidade do frontend legado |
-| code-review | Checklist do frontend legado |
-| code-standards | Convenções do frontend legado |
-| performance | Performance do frontend legado |
-| unit-testing | Testes do frontend legado |
-| rdm-description | Mudança e evidências |
-| security | Segurança web e fronteiras cliente/servidor |
-| gitlab-delivery | GitLab, merge requests e Jenkins |
-| web-quality | Qualidade e comandos web |
-| web-testing | Unitários/componentes, automação e E2E web |
-| angular-patterns | Angular, DI e reatividade |
-| react-patterns | React, hooks e estado |
-| nextjs-patterns | Next.js, router e fronteiras cliente/servidor |
-| vue-patterns | Vue e reatividade |
-
+| Skill            | Finalidade                                    |
+| ---------------- | --------------------------------------------- |
+| accessibility    | Acessibilidade no frontend legado             |
+| code-quality     | Qualidade do frontend legado                  |
+| code-review      | Checklist do frontend legado                  |
+| code-standards   | Convenções do frontend legado                 |
+| performance      | Performance do frontend legado                |
+| unit-testing     | Testes do frontend legado                     |
+| rdm-description  | Mudança e evidências                          |
+| security         | Segurança web e fronteiras cliente/servidor   |
+| gitlab-delivery  | GitLab, merge requests e Jenkins              |
+| web-quality      | Qualidade e comandos web                      |
+| web-testing      | Unitários/componentes, automação e E2E web    |
+| angular-patterns | Angular, DI e reatividade                     |
+| react-patterns   | React, hooks e estado                         |
+| nextjs-patterns  | Next.js, router e fronteiras cliente/servidor |
+| vue-patterns     | Vue e reatividade                             |
 
 ## Gerar por perfil
 
 Selecionar os templates existentes em `.github/templates/`, conferindo a lista `files` do lock:
 
-| Perfil instalado | Instructions | AGENTS |
-| --- | --- | --- |
-| angular/react/nextjs/vue | web-instructions.template.md | web-agents.template.md |
-| frontend legado | frontend-instructions.template.md | frontend-agents.template.md |
+| Perfil instalado         | Instructions                      | AGENTS                      |
+| ------------------------ | --------------------------------- | --------------------------- |
+| angular/react/nextjs/vue | web-instructions.template.md      | web-agents.template.md      |
+| frontend legado          | frontend-instructions.template.md | frontend-agents.template.md |
 
 - `instructions`: preencher o template aplicável e atualizar `.github/copilot-instructions.md` com fatos comprovados e comandos reais por pacote.
 - `AGENTS`: gerar/adaptar `AGENTS.md` na raiz ou aplicação indicada. Preservar regras locais e orientação mais específica por diretório.

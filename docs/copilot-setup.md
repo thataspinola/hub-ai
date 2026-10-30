@@ -4,7 +4,7 @@ O [Copilot Setup](../resources/frontend/agents/copilot-setup.agent.md) está ati
 
 O painel usa o perfil nextjs, com React, web-quality, web-testing, security e gitlab-delivery. Sua sessão NextAuth/Keycloak, flags, formulários e recomendações permanecem no código original. Instructions e AGENTS concretos foram gerados na raiz; não há placeholders pendentes.
 
-Selecionar Copilot Setup e solicitar full setup, instructions, AGENTS, skills ou agent <nome>. O agente deve ler o projeto antes de alterar regras, preservar o agente frontend existente e usar o runner real (Jest/React Testing Library). APIs/BFFs e NestJS usam o backend-code-reviewer; rotas de servidor Next.js permanecem neste perfil.
+Selecionar Copilot Setup e solicitar full setup, instructions, AGENTS, skills ou agent `<nome>`. O agente deve ler o projeto antes de alterar regras, preservar o agente frontend existente e usar o runner real (Jest/React Testing Library). APIs/BFFs e NestJS usam o backend-code-reviewer; rotas de servidor Next.js permanecem neste perfil.
 
 Para atualizar recursos, na raiz:
 

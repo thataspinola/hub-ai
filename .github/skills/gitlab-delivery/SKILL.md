@@ -1,6 +1,6 @@
 ---
 name: gitlab-delivery
-description: "Revisar merge requests, pipelines GitLab CI e entrega Jenkins. Usar para CI/CD, diffs de MR, evidências de validação e integração de checks."
+description: 'Revisar merge requests, pipelines GitLab CI e entrega Jenkins. Usar para CI/CD, diffs de MR, evidências de validação e integração de checks.'
 ---
 
 # gitlab-delivery

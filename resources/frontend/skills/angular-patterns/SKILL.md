@@ -1,6 +1,6 @@
 ---
 name: angular-patterns
-description: "Implementar e revisar aplicações Angular. Usar para setup, arquitetura, componentes, dados, testes e correções específicas deste framework."
+description: 'Implementar e revisar aplicações Angular. Usar para setup, arquitetura, componentes, dados, testes e correções específicas deste framework.'
 ---
 
 # Padrões Angular

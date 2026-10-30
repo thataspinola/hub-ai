@@ -56,7 +56,6 @@
 // ✅ Imagem complexa (gráfico)
 <figure>
   <img src="/chat.png" alt="Gráfico de vendas" aria-describedby="chart-description" />
-
   <figcaption id="chart-description">Vendas aumentaram 20% no Q4, passando de R$ 100K par R$ 120K;</figcaption>
 </figure>
 ```
@@ -106,6 +105,10 @@
 // ❌ Pular níveis
 <h1>Título</h1>
 <h2>Subtítulo</h2>
+
+// ❌ Múltiplos h1
+<h1>Título</h1>
+<h1>Subtítulo</h1>
 ```
 
 ## Anúncios de Status
@@ -157,7 +160,9 @@ export const ProgressBar = ({
 // Step indicador
 export const StepIndicador = ({ currentStep, totalSteps }: StepProps) => (
   <nav aria-label="Progresso do formulário">
-    <p className="sr-only">Passo {currentStep} de {totalSteps}</p>
+    <p className="sr-only">
+      Passo {currentStep} de {totalSteps}
+    </p>
     <ol>
       { Array.from({ length: totalSteps}, (_, i) => (
         <li
@@ -247,7 +252,6 @@ $color-placeholder: #999999; // Em fundo branco: ~3.5:1 (ok para UI, não para t
 ### Ferramentas Recomendadas
 
 ```bash
-
 # axe-core para testes automatizados
 npm install --save-dev @axe-core/react
 
@@ -288,4 +292,3 @@ describe('Accessibility', () => {
 - [ ] Verificar em modo de alto contraste
 - [ ] Desativar CSS e verificar estrutura
 - [ ] Verificar com extensão axe DevTools
-

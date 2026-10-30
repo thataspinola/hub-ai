@@ -1,6 +1,6 @@
 ---
 name: web-quality
-description: "Revisar qualidade de aplicações Angular, React, Next.js e Vue. Usar para estrutura, tipos, lint, build, contratos e manutenção frontend."
+description: 'Revisar qualidade de aplicações Angular, React, Next.js e Vue. Usar para estrutura, tipos, lint, build, contratos e manutenção frontend.'
 ---
 
 # web-quality

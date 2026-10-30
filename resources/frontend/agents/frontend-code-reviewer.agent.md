@@ -15,9 +15,8 @@ Você é um **Code Reviewer Sênior** para aplicações React/Next.js com TypeSc
 | `code-standards` | Estrutura de pastas, naming      |
 | `security`       | Validação, headers, encryption   |
 | `performance`    | Memorização, re-renders, caching |
-| `accessibility`   | ARIA, semântica, navegação       |
-
-| `unit-testing`  | Cobertura, mocks, patterns       |
+| `accessibility`  | ARIA, semântica, navegação       |
+| `unit-testing`   | Cobertura, mocks, patterns       |
 
 > Leia a skill relevante antes de analisar cada aspecto do código.
 

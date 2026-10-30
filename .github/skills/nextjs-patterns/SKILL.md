@@ -1,6 +1,6 @@
 ---
 name: nextjs-patterns
-description: "Implementar e revisar aplicações Next.js. Usar para setup, arquitetura, componentes, dados, testes e correções específicas deste framework."
+description: 'Implementar e revisar aplicações Next.js. Usar para setup, arquitetura, componentes, dados, testes e correções específicas deste framework.'
 ---
 
 # Padrões Next.js

@@ -1,10 +1,9 @@
 ---
 name: code-standards
-description: "Padrões e convenções de código frontend. Use para: criar componentes, hooks, services, stores, estrutura de pastas, organização de código. Keywords: padronização, convenção, estrutura, organização, componente, hook, service, store, standards."
+description: 'Padrões e convenções de código frontend. Use para: criar componentes, hooks, services, stores, estrutura de pastas, organização de código. Keywords: padronização, convenção, estrutura, organização, componente, hook, service, store, standards.'
 ---
 
 # Code Standards
-
 
 > Referência reutilizável: confirme stack, versões, scripts e arquivos no projeto alvo antes de aplicar. Os caminhos e exemplos abaixo não comprovam uma implementação existente.
 
@@ -25,7 +24,7 @@ description: "Padrões e convenções de código frontend. Use para: criar compo
 
 ## Estrutura do Projeto
 
-```
+```bash
 src/
 ├── app/          # Rotas Next.js
 ├── components/   # UI reutilizável
@@ -40,7 +39,7 @@ src/
 
 ### Componente
 
-```
+```bash
 Button/
 ├── index.tsx
 ├── types.ts
@@ -51,7 +50,7 @@ Button/
 
 ### Hook
 
-```
+```bash
 useProposal/
 ├── index.ts
 └── types.ts
@@ -61,7 +60,7 @@ useProposal/
 
 ### Service
 
-```
+```bash
 proposal/
 ├── index.ts
 └── types.ts
@@ -71,7 +70,7 @@ proposal/
 
 ### Store
 
-```
+```bash
 lead/
 ├── index.ts
 ├── types.ts
@@ -106,4 +105,3 @@ lead/
 ## Referências
 
 Para templates completos de componente, hook, service e store, consulte [patterns.md](references/patterns.md).
-
