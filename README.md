@@ -373,3 +373,8 @@ Os perfis de revisão incluem as skills `analytics-review` e `observability-revi
 ## POC de agente Copilot global
 
 Para utilizar o mesmo agente em projetos frontend independentes sem instalar o toolkit em cada projeto, consulte [a POC de agente pessoal](docs/global-copilot-poc.md). Prévia: `npm run copilot:global:preview`; instalação central: `npm run copilot:global:install`; simulação isolada: `npm run test:global-review-poc`. O suporte real deve ser validado no VS Code/Copilot; esta POC não cobre backend.
+
+
+### POC backend com porto_connectivity
+
+A ativação global agora aceita `--backend-source CAMINHO_BACKEND_CODE_REVIEWER`, mantendo a mesma seleção `code-reviewer` no Copilot sem copiar recursos ao consumidor. Consulte [o roteiro de teste com quatro Lambdas](docs/global-backend-porto-connectivity-poc.md). A execução real do Copilot no VS Code depende de validação na VDI.

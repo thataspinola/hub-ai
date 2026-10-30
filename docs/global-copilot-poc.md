@@ -33,3 +33,8 @@ O instalador não sobrescreve um agente existente com conteúdo diferente. Para 
 ## Escopo da próxima evolução
 
 Esta POC valida **frontend com hub-ai**. Para um agente único que também revise backend, conectar o checkout independente `backend-code-reviewer` e testar detecção de escopo em monorepos. Não afirmar que a POC atual cobre Node/NestJS. Manter o setup por projeto como alternativa para equipes/CI e ambientes onde agentes pessoais não sejam suportados.
+
+
+## Extensão backend (porto_connectivity)
+
+Para usar o mesmo agente pessoal com skills de Node/Lambdas, utilize `--backend-source ../backend-code-reviewer` no preview/instalação. Veja [POC backend com porto_connectivity](global-backend-porto-connectivity-poc.md). Se o agente pessoal já estiver instalado, o comando bloqueia sobrescrita de conteúdo diferente; migre conscientemente após revisar o arquivo existente.
