@@ -5,10 +5,12 @@ const path = require('node:path')
 const os = require('node:os')
 
 function parse(argv) {
-  const options = { dryRun: false, source: path.resolve(__dirname, '..'), agentDir: path.join(os.homedir(), '.github', 'agents'), backendSource: null }
+  const options = { dryRun: false, source: path.resolve(__dirname, '..'), agentDir: path.join(os.homedir(), '.github', 'agents'), backendSource: null, frontSource: null, update: false }
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i]
     if (arg === '--dry-run') options.dryRun = true
+    else if (arg === '--update') options.update = true
+    else if (arg === '--front-source' && argv[i + 1]) options.frontSource = path.resolve(argv[++i])
     else if (arg === '--source' && argv[i + 1]) options.source = path.resolve(argv[++i])
     else if (arg === '--agent-dir' && argv[i + 1]) options.agentDir = path.resolve(argv[++i])
     else if (arg === '--backend-source' && argv[i + 1]) options.backendSource = path.resolve(argv[++i])
@@ -17,8 +19,8 @@ function parse(argv) {
   return options
 }
 
-function render(source, backendSource = null) {
-  const paths = [
+function render(source, backendSource = null, frontSource = null) {
+  const paths = frontSource ? [] : [
     'AGENTS.md',
     'resources/frontend/skills/analytics-review/SKILL.md',
     'resources/frontend/skills/observability-review/SKILL.md',
@@ -32,7 +34,13 @@ function render(source, backendSource = null) {
       if (!fs.existsSync(path.join(backendSource, relative))) throw new Error('Missing backend resource: ' + relative)
     }
   }
+  if (frontSource) {
+    for (const relative of ['AGENTS.md', 'resources/frontend/skills/analytics-review/SKILL.md', 'resources/frontend/skills/observability-review/SKILL.md']) {
+      if (!fs.existsSync(path.join(frontSource, relative))) throw new Error('Missing frontend resource: ' + relative)
+    }
+  }
   const root = source.replace(/\\/g, '/')
+  const frontRoot = (frontSource || source).replace(/\\/g, '/')
   const backendRoot = backendSource?.replace(/\\/g, '/')
   return [
     '---',
@@ -40,15 +48,18 @@ function render(source, backendSource = null) {
     "description: 'Revisar o projeto aberto com orientações centrais do hub-ai sem instalar recursos no projeto consumidor.'",
     'tools: [read, search, execute]',
     '---',
-    '# Code Reviewer global (POC)',
+    '<!-- managed-by: hub-ai/global-review-poc.cjs -->',
+    '# Code Reviewer global',
     'Ativação: selecione o agente code-reviewer no Copilot Chat e solicite "revisar".',
     'O workspace atualmente aberto é o consumidor; não o substitua pelo diretório do hub-ai.',
     'Leia o AGENTS.md e as instruções locais do consumidor primeiro.',
     'Repositório central, somente leitura: ' + root,
-    'Consulte as skills pertinentes sob ' + root + '/resources/frontend/skills/.',
-    'Leia, quando aplicável, os arquivos analytics-review/SKILL.md, observability-review/SKILL.md e code-standards/SKILL.md.',
+    'Consulte as skills frontend pertinentes sob ' + frontRoot + '/resources/frontend/skills/.',
+    'Para frontend, consulte analytics-review/SKILL.md, observability-review/SKILL.md e as skills específicas do framework.',
+    'Detecte por pacote e arquivos reais: Angular, React, Next.js e Vue são frontend; Node APIs, NestJS, Lambdas e eventos são backend. Monorepos podem conter ambos. Não confunda Node de build com backend.',
     backendRoot ? 'Recursos backend centrais, somente leitura: ' + backendRoot : 'Sem backend-source: sinalize a ausência de skills backend em projetos Node/NestJS.',
     backendRoot ? 'Para Node.js, Lambdas, eventos e NestJS, consulte as skills adequadas sob ' + backendRoot + '/resources/skills/ e os AGENTS do consumidor; escolha por evidência, não imponha NestJS a Node vanilla.' : 'Não alegue cobertura backend quando backend-source estiver ausente.',
+    'Em monorepo, revise front e back separadamente e depois as interfaces compartilhadas, com relatórios por pacote e achados transversais.',
     'Não altere código ou configurações do consumidor. Não copie skills para .github nem instale dependências.',
     'Reporte arquivos, linhas, severidade, evidências, skills utilizadas, lacunas e comandos efetivamente executados.',
     'Nunca afirme execução ou cobertura sem evidências. Não acesse serviços corporativos ou exponha dados sensíveis.',
@@ -58,17 +69,23 @@ function render(source, backendSource = null) {
 
 function install(options) {
   const source = fs.realpathSync(options.source)
-  const backendSource = options.backendSource ? fs.realpathSync(options.backendSource) : null
-  const content = render(source, backendSource)
+  const defaultFront = path.join(source, 'front')
+  const defaultBack = path.join(source, 'back')
+  const frontSource = options.frontSource ? fs.realpathSync(options.frontSource) : fs.existsSync(defaultFront) ? fs.realpathSync(defaultFront) : null
+  const backendSource = options.backendSource ? fs.realpathSync(options.backendSource) : fs.existsSync(defaultBack) ? fs.realpathSync(defaultBack) : null
+  const content = render(source, backendSource, frontSource)
   const destination = path.join(options.agentDir, 'code-reviewer.agent.md')
-  if (fs.existsSync(destination) && fs.readFileSync(destination, 'utf8') !== content) {
-    throw new Error('Agent already exists with different content; refusing overwrite: ' + destination)
+  const existing = fs.existsSync(destination) ? fs.readFileSync(destination, 'utf8') : null
+  if (existing !== null && existing !== content) {
+    if (!options.update || !existing.includes('<!-- managed-by: hub-ai/global-review-poc.cjs -->')) {
+      throw new Error('Agent already exists with different content; refusing overwrite: ' + destination + '. Use --update only for a managed agent.')
+    }
   }
   if (!options.dryRun) {
     fs.mkdirSync(options.agentDir, { recursive: true })
-    fs.writeFileSync(destination, content, { flag: fs.existsSync(destination) ? 'w' : 'wx' })
+    fs.writeFileSync(destination, content, { flag: existing === null ? 'wx' : 'w' })
   }
-  return { destination, source, backendSource, dryRun: options.dryRun, unchanged: fs.existsSync(destination) && fs.readFileSync(destination, 'utf8') === content }
+  return { destination, source, frontSource, backendSource, dryRun: options.dryRun, unchanged: fs.existsSync(destination) && fs.readFileSync(destination, 'utf8') === content }
 }
 
 if (require.main === module) {
