@@ -53,3 +53,8 @@ Consultar docs/telemetry-vendor-neutral.md e aplicar as skills analytics-review 
 ## POC de agente global
 
 O bootstrap `tools/global-review-poc.cjs` instala um agente no escopo pessoal, sem alterar projetos consumidores. Ver `docs/global-copilot-poc.md`. Preservar isolamento, evitar sobrescrever agentes existentes e nunca afirmar que o Copilot carregou recursos sem teste no editor. Testes de simulação ficam em `__tests__/config/global-review-poc.spec.cjs`.
+
+
+## POC backend global com consumidor real
+
+Validar `tools/global-review-poc.cjs --backend-source` contra as instruções e arquitetura inventariadas de `porto_connectivity`, conforme `docs/global-backend-porto-connectivity-poc.md`. Não alterar o projeto consumidor, não assumir NestJS, não consultar AWS fora da VDI e não certificar execução real do Copilot por simulação.
