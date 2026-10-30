@@ -48,7 +48,6 @@ Consultar docs/automation.md. Manter referência com npm run docs:generate e val
 
 Consultar docs/telemetry-vendor-neutral.md e aplicar as skills analytics-review e observability-review quando houver código ou contrato pertinente. Não presumir fornecedor, não substituir instrumentação existente, não enviar dados sensíveis e não afirmar que eventos/traces chegaram ao destino sem evidência. Atualizar documentação e índice gerado quando recursos mudarem.
 
-
 ## Code Reviewer centralizado
 
 Para revisão global, utilizar o projeto separado `thataspinola/code-reviewer-plug-and-play`. Não recriar instaladores pessoais no hub-ai, não copiar skills no consumidor e respeitar AGENTS.md e políticas da VDI. Os recursos próprios do painel e suas revisões locais permanecem preservados.

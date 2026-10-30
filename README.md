@@ -356,7 +356,6 @@ Consulte o [guia de automação](docs/automation.md) e a [referência gerada](do
 
 Os perfis de revisão incluem as skills `analytics-review` e `observability-review` para avaliar tagueamento, logs, métricas, tracing, privacidade e alertas sem exigir Datadog, Grafana, Prometheus, GTM ou outro serviço. Consulte [o guia de telemetria portável](docs/telemetry-vendor-neutral.md). A revisão não instala SDKs nem comprova coleta em produção.
 
-
 ## Code Reviewer com instalação única
 
 Os reviewers frontend/backend foram centralizados no projeto independente [code-reviewer-plug-and-play](https://github.com/thataspinola/code-reviewer-plug-and-play). Instale o agente pessoal uma vez seguindo o guia do repositório; use `code-reviewer` no Copilot Chat sem copiar ferramentas para o hub-ai nem outros consumidores. Os antigos scripts de POC global deste repositório foram retirados.
