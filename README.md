@@ -363,3 +363,8 @@ Validação da refatoração: 398 testes Jest, 43 do toolkit, lint, typecheck, b
 ## Automação de documentação e histórico
 
 Consulte o [guia de automação](docs/automation.md) e a [referência gerada](docs/generated/reference.md). Execute `npm run hooks:install` uma vez por clone e `npm run verify` para validar documentação, automações e checks existentes. `npm run changelog` gera o diário do Git; `CHANGELOG.md` mantém as notas editoriais.
+
+
+## Analytics e observabilidade independentes de fornecedor
+
+Os perfis de revisão incluem as skills `analytics-review` e `observability-review` para avaliar tagueamento, logs, métricas, tracing, privacidade e alertas sem exigir Datadog, Grafana, Prometheus, GTM ou outro serviço. Consulte [o guia de telemetria portável](docs/telemetry-vendor-neutral.md). A revisão não instala SDKs nem comprova coleta em produção.
