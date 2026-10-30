@@ -344,26 +344,13 @@ Formulários/importações e dados persistidos passam por validação estrutural
 
 Os toolkits reconhecem seus estados separados e impedem sobrescrita de recursos do outro. Journals de recuperação não podem apontar para código da aplicação.
 
-## Reorganização de testes — 2026-10-23
-
-Os diretórios \_\_tests\_\_/config e \_\_tests\_\_/e2e são executados pelos respectivos scripts; Jest mantém a suíte da aplicação, e o toolkit usa tooling/web-code-reviewer/\_\_tests\_\_/tooling. Novos testes e arquivos realocados usam .spec; os .test Jest existentes continuam válidos. O E2E mantém localhost e usa /react-ssr-corp-hubv-painel-administrativo/ conforme next.config.ts. Consultar [validação atualizada](docs/local-validation.md) para resultados e limites.
-
-Resultados desta rodada: Jest 384 testes em 41 suítes; toolkit 43 testes; configuração 2 testes; lint sem warnings; typecheck, build/postbuild e smoke HTTP standalone passaram. Playwright reconheceu 16 casos no diretório atualizado; não houve execução completa desses casos nem validação de VDI/Windows nesta rodada. Doctor preserva o aviso do agente externo frontend_engineering_expert; nenhuma customização foi removida para silenciá-lo.
-
-## Validação após os ajustes de 2026-10-27
-
-Preservados o layout com Navbar/Footer e as remoções recebidas. Correções pontuais alinham navegação, contexto de flags, autenticação/logout e persistência dos formulários. Passaram 389 testes Jest, 43 do toolkit, dois checks de configuração, lint, typecheck, build e smoke HTTP. Os 16 casos E2E foram listados; execução completa e integrações reais continuam pendentes. Detalhes em [validação local](docs/local-validation.md).
-
 ## Arquitetura e manutenção
 
 Os editores de formulários, flags e recomendações estão separados por responsabilidade. O estado de recomendações compõe ações de domínio e adapters de persistência/preview; os componentes públicos e formatos de dados foram preservados. Consulte [arquitetura e aplicação de SOLID](docs/architecture.md) para limites e orientações de evolução.
 
-Validação da refatoração: 398 testes Jest, 43 do toolkit, lint, typecheck, build e smoke passaram. A execução E2E completa e as integrações reais permanecem pendentes.
-
 ## Automação de documentação e histórico
 
 Consulte o [guia de automação](docs/automation.md) e a [referência gerada](docs/generated/reference.md). Execute `npm run hooks:install` uma vez por clone e `npm run verify` para validar documentação, automações e checks existentes. `npm run changelog` gera o diário do Git; `CHANGELOG.md` mantém as notas editoriais.
-
 
 ## Analytics e observabilidade independentes de fornecedor
 
