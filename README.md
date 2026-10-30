@@ -370,16 +370,6 @@ Consulte o [guia de automação](docs/automation.md) e a [referência gerada](do
 Os perfis de revisão incluem as skills `analytics-review` e `observability-review` para avaliar tagueamento, logs, métricas, tracing, privacidade e alertas sem exigir Datadog, Grafana, Prometheus, GTM ou outro serviço. Consulte [o guia de telemetria portável](docs/telemetry-vendor-neutral.md). A revisão não instala SDKs nem comprova coleta em produção.
 
 
-## POC de agente Copilot global
+## Code Reviewer com instalação única
 
-Para utilizar o mesmo agente em projetos frontend independentes sem instalar o toolkit em cada projeto, consulte [a POC de agente pessoal](docs/global-copilot-poc.md). Prévia: `npm run copilot:global:preview`; instalação central: `npm run copilot:global:install`; simulação isolada: `npm run test:global-review-poc`. O suporte real deve ser validado no VS Code/Copilot; esta POC não cobre backend.
-
-
-### POC backend com porto_connectivity
-
-A ativação global agora aceita `--backend-source CAMINHO_BACKEND_CODE_REVIEWER`, mantendo a mesma seleção `code-reviewer` no Copilot sem copiar recursos ao consumidor. Consulte [o roteiro de teste com quatro Lambdas](docs/global-backend-porto-connectivity-poc.md). A execução real do Copilot no VS Code depende de validação na VDI.
-
-
-## Instalação global unificada — front e back
-
-O instalador pessoal reconhece automaticamente as pastas `front/` e `back/` dentro deste repositório, gera um único agente `code-reviewer` e não modifica os projetos consumidores. Consulte [o guia de instalação centralizada](docs/unified-global-reviewer.md). Atualização controlada do agente gerado: `node tools/global-review-poc.cjs --update` (apenas arquivos gerenciados). Teste isolado: `node --test __tests__/config/global-monorepo-review.spec.cjs`.
+Os reviewers frontend/backend foram centralizados no projeto independente [code-reviewer-plug-and-play](https://github.com/thataspinola/code-reviewer-plug-and-play). Instale o agente pessoal uma vez seguindo o guia do repositório; use `code-reviewer` no Copilot Chat sem copiar ferramentas para o hub-ai nem outros consumidores. Os antigos scripts de POC global deste repositório foram retirados.
