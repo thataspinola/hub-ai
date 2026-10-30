@@ -30,7 +30,8 @@
     "hooks:install": "node tools/automation/cli.cjs hooks",
     "test:automation": "node --test __tests__/config/automation.spec.cjs",
     "verify": "npm run docs:check && npm run check:local && npm --prefix tooling/web-code-reviewer run check",
-    "maintenance": "npm run docs:generate && npm run changelog"
+    "maintenance": "npm run docs:generate && npm run changelog",
+    "reviewer:doctor": "node tools/check-global-reviewer.cjs"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",

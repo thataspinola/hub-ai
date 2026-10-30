@@ -1,5 +1,8 @@
 # Comece aqui — Hub AI
 
+> **Atualização (2026-10-30):** para novas revisões frontend/backend, utilizar [Code Reviewer Plug and Play](global-reviewer.md), com instalação pessoal única. Os passos de CLI por consumidor descritos abaixo são **legados**, mantidos para compatibilidade. Verifique a instalação com `npm run reviewer:doctor`.
+
+
 O **hub-ai** tem dois usos diferentes: **painel administrativo Next.js** e **ferramentas de Code Reviewer frontend**. Este roteiro ajuda a escolher o caminho certo, configurar o ambiente e executar uma primeira revisão. Para APIs, BFFs, NestJS, Lambdas e eventos, utilize o projeto backend independente.
 
 ## 1. Qual ferramenta devo usar?
