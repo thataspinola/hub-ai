@@ -17,7 +17,9 @@
     "resources/frontend/skills/code-standards",
     "resources/frontend/skills/performance",
     "resources/frontend/skills/unit-testing",
-    "resources/skills/rdm-description"
+    "resources/skills/rdm-description",
+    "resources/frontend/skills/analytics-review",
+    "resources/frontend/skills/observability-review"
   ],
   "templates": [
     "resources/frontend/templates/web-instructions.template.md",

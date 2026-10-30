@@ -13,7 +13,9 @@
     "resources/frontend/skills/performance",
     "resources/skills/rdm-description",
     "resources/frontend/skills/security",
-    "resources/frontend/skills/unit-testing"
+    "resources/frontend/skills/unit-testing",
+    "resources/frontend/skills/analytics-review",
+    "resources/frontend/skills/observability-review"
   ],
   "templates": [
     "resources/frontend/templates/skill.template.md",
