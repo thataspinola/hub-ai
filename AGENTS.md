@@ -58,3 +58,8 @@ O bootstrap `tools/global-review-poc.cjs` instala um agente no escopo pessoal, s
 ## POC backend global com consumidor real
 
 Validar `tools/global-review-poc.cjs --backend-source` contra as instruções e arquitetura inventariadas de `porto_connectivity`, conforme `docs/global-backend-porto-connectivity-poc.md`. Não alterar o projeto consumidor, não assumir NestJS, não consultar AWS fora da VDI e não certificar execução real do Copilot por simulação.
+
+
+## Instalação centralizada front/back
+
+O agente pessoal gerado por `tools/global-review-poc.cjs` detecta `front/` e `back/` como fontes independentes de skills no mesmo repositório. Ver `docs/unified-global-reviewer.md`. Preservar as instruções do consumidor, não copiar recursos para seus projetos, não sobrescrever agentes não gerenciados e testar isolamento em `__tests__/config/global-monorepo-review.spec.cjs`.

@@ -378,3 +378,8 @@ Para utilizar o mesmo agente em projetos frontend independentes sem instalar o t
 ### POC backend com porto_connectivity
 
 A ativação global agora aceita `--backend-source CAMINHO_BACKEND_CODE_REVIEWER`, mantendo a mesma seleção `code-reviewer` no Copilot sem copiar recursos ao consumidor. Consulte [o roteiro de teste com quatro Lambdas](docs/global-backend-porto-connectivity-poc.md). A execução real do Copilot no VS Code depende de validação na VDI.
+
+
+## Instalação global unificada — front e back
+
+O instalador pessoal reconhece automaticamente as pastas `front/` e `back/` dentro deste repositório, gera um único agente `code-reviewer` e não modifica os projetos consumidores. Consulte [o guia de instalação centralizada](docs/unified-global-reviewer.md). Atualização controlada do agente gerado: `node tools/global-review-poc.cjs --update` (apenas arquivos gerenciados). Teste isolado: `node --test __tests__/config/global-monorepo-review.spec.cjs`.
