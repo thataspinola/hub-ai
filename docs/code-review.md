@@ -1,7 +1,7 @@
 # Revisão do painel
 
-Usar o Web Code Reviewer ativo em .github/agents/web-code-reviewer.agent.md para revisar Next.js/React e os recursos instalados. O agente considera diff/base reais, arquivos completos, fronteiras server/client, contratos, segurança e testes existentes; gera web-code-review.md ou o caminho indicado pelo usuário.
+**Caminho recomendado para novas revisões:** agente pessoal `code-reviewer` do repositório [code-reviewer-plug-and-play](https://github.com/thataspinola/code-reviewer-plug-and-play). Instalar uma vez, fora dos consumidores; consultar [o guia de adoção](global-reviewer.md). No hub-ai executar `npm run reviewer:doctor` para conferir a presença local do agente e skills. No Copilot Chat selecionar `code-reviewer` e pedir revisão do diff real contra a base escolhida.
 
-Fontes de recursos frontend ficam em resources/frontend. O reviewer legado de React/Next existe apenas como referência nessa árvore; ele não foi instalado sobre o reviewer atual. Node Code Reviewer permanece no toolkit backend para outros consumidores Node/Nest, sem impor arquitetura backend ao painel.
+**Compatibilidade legada:** o Web Code Reviewer em `.github/agents/web-code-reviewer.agent.md` e os recursos em `resources/frontend` continuam disponíveis para instalações existentes; não precisam ser removidos ou sobrescritos. O agente central cobre Next.js/React do painel e também backends de outros consumidores.
 
-Preservar código novo e agents/instructions locais. Não executar deploy, acessar serviços corporativos ou instalar dependências apenas para produzir relatório. Separar resultados locais de validação real na VDI; não aprovar comportamento de produção com base em mocks.
+Preservar código, autenticação NextAuth/Keycloak, AGENTS locais, testes e CI. Não acessar sistemas corporativos fora da VDI. Relatar achados por arquivo/linha e separar testes efetivamente executados de hipóteses. O doctor não substitui a homologação no editor.
