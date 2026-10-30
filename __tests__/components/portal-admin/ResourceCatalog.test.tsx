@@ -1,23 +1,17 @@
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen } from '@testing-library/react'
-import { ResourceCatalog } from '@/components/portal-admin/ResourceCatalog'
+import { render, screen } from '@testing-library/react'
+import CodeReviewerPage from '@/app/code-reviewer/page'
 
-describe('ResourceCatalog', () => {
-  it('shows the Next profile and filters resources without executing a review', () => {
-    render(<ResourceCatalog />)
+describe('Code Reviewer integration', () => {
+  it('links to the standalone reviewer without embedding skills or installer', () => {
+    render(<CodeReviewerPage />)
     expect(screen.getByRole('heading', { name: 'Code Reviewer' })).toBeInTheDocument()
-    expect(screen.getByLabelText('Perfil')).toHaveValue('nextjs')
-    expect(screen.queryByRole('option', { name: 'node' })).not.toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Backend Code Reviewer' })).toHaveAttribute('href', 'https://github.com/thataspinola/backend-code-reviewer')
-    expect(screen.getByRole('heading', { name: 'nextjs-patterns' })).toBeInTheDocument()
-    fireEvent.change(screen.getByLabelText('Buscar recursos'), { target: { value: 'no-matching-resource' } })
-    expect(screen.getByRole('status')).toHaveTextContent('0 recursos encontrados')
-  })
-  it('selects React resources and updates the install command', () => {
-    render(<ResourceCatalog />)
-    fireEvent.change(screen.getByLabelText('Perfil'), { target: { value: 'react' } })
-    expect(screen.getByRole('heading', { name: 'Web Code Reviewer' })).toBeInTheDocument()
-    expect(screen.queryByRole('heading', { name: 'nextjs-patterns' })).not.toBeInTheDocument()
-    expect(screen.getByText(/node tools\/code-reviewer.cjs setup/)).toHaveTextContent('--profile react')
+    expect(
+      screen.getByRole('link', { name: 'Abrir Code Reviewer Plug and Play' })
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/thataspinola/code-reviewer-plug-and-play'
+    )
+    expect(screen.getByText(/Nenhuma skill é instalada neste painel/)).toBeInTheDocument()
   })
 })
