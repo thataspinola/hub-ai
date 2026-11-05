@@ -47,13 +47,13 @@ export function ModalShell({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-100 transition-all"
+              className="flex-1 min-w-0 h-12 px-6 rounded-2xl font-bold text-slate-600 hover:bg-slate-100 transition-all"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="flex-1 bg-indigo-600 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all"
+              className="flex-1 min-w-0 h-12 bg-indigo-600 text-white px-6 rounded-2xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all"
             >
               {submitLabel}
             </button>
