@@ -2,6 +2,8 @@
 
 ## 2026-10-30 — Hub AI
 
+- Integrado catálogo visual e filtrável de capacidades de revisão na rota /code-reviewer, sem dependências do toolkit local ou instalação de skills.
+
 - Mantidas as funcionalidades do painel administrativo Next.js: autenticação, clientes, feature flags, formulários e recomendações.
 - A rota `/code-reviewer` apresenta a integração informativa com o projeto independente `code-reviewer-plug-and-play`.
 - Simplificadas as configurações, testes e documentação do aplicativo.
