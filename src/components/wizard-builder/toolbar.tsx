@@ -28,6 +28,8 @@ import {
   Upload,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { FormPreview } from './form-preview'
+import { Eye } from 'lucide-react'
 
 export function Toolbar() {
   const form = useFormStore((s) => s.form)
@@ -41,6 +43,7 @@ export function Toolbar() {
 
   const storageError = useFormStore((s) => s.storageError)
 
+  const [showPreview, setShowPreview] = useState(false)
   const [showJson, setShowJson] = useState(false)
   const [importJson, setImportJson] = useState('')
   const [showImport, setShowImport] = useState(false)
@@ -223,6 +226,14 @@ export function Toolbar() {
           <Save className="mr-1 h-3 w-3" />
           {isSaving ? 'Saving...' : 'Save'}
         </Button>
+
+        <Dialog open={showPreview} onOpenChange={setShowPreview}>
+          <DialogTrigger asChild><Button variant="outline" size="sm"><Eye className="mr-1 h-4 w-4" />Visualizar formulário</Button></DialogTrigger>
+          <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+            <DialogHeader><DialogTitle>Pré-visualização da jornada</DialogTitle><DialogDescription>Teste a aparência e navegue pelas etapas sem enviar dados.</DialogDescription></DialogHeader>
+            <FormPreview form={form} />
+          </DialogContent>
+        </Dialog>
 
         {/* View JSON Dialog */}
         <Dialog open={showJson} onOpenChange={setShowJson}>
