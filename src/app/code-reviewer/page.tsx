@@ -1,3 +1,5 @@
+import { ResourceCatalog } from '@/components/portal-admin/ResourceCatalog'
+
 const reviewer = 'https://github.com/thataspinola/code-reviewer-plug-and-play'
 
 export default function CodeReviewerPage() {
@@ -21,6 +23,7 @@ export default function CodeReviewerPage() {
       >
         Abrir Code Reviewer Plug and Play
       </a>
+      <ResourceCatalog />
     </section>
   )
 }
