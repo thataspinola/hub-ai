@@ -4,6 +4,11 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   distDir: '.next',
   basePath: '/react-ssr-corp-hubv-painel-administrativo',
+  async redirects() {
+    return process.env.NODE_ENV === 'development'
+      ? [{ source: '/', destination: '/react-ssr-corp-hubv-painel-administrativo', permanent: false, basePath: false }]
+      : []
+  },
   images: {
     remotePatterns: [
       {
