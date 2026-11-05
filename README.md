@@ -50,3 +50,7 @@ O hub-ai usa o agente pessoal independente [Code Reviewer Plug and Play](https:/
 - `docs/global-reviewer.md`: uso do reviewer externo
 
 Alterações seguem Conventional Commits e atualizam `CHANGELOG.md` quando necessário. CI/CD corporativo permanece sob GitLab/Jenkins.
+
+## Login local de demonstração
+
+Em `.env.local`, configure `HUB_AI_LOCAL_DEMO_AUTH=true` e `NEXT_PUBLIC_HUB_AI_LOCAL_DEMO_AUTH=true`, reinicie `npm run dev` e use **Entrar como demo**. O provedor só existe em desenvolvimento. Ele não fornece credenciais corporativas e não substitui testes de integração com Keycloak.
