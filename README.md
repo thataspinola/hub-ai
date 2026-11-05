@@ -18,7 +18,9 @@ npm run build
 npm start
 ```
 
-O pós-build em `scripts/postbuild.cjs` prepara os assets do servidor standalone; `npm run test:standalone` verifica a rota e os assets localmente.
+No Git Bash/Windows, execute `npm run build` antes de `npm start`. O comando `start` usa `.next/standalone/server.js`.
+
+O Next.js 16 utiliza `distDir: '.next'` para manter os artefatos dentro do workspace. O pós-build em `scripts/postbuild.cjs` copia assets para `.next/standalone/.next/static` e prepara os arquivos públicos; `npm run test:standalone` verifica a rota e os assets localmente.
 
 ## Validar
 
