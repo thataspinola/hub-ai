@@ -16,7 +16,7 @@ async function smoke() {
     [
       path.join(
         __dirname,
-        '../dist/react-ssr-corp-hubv-painel-administrativo/standalone/server.js'
+        '../.next/standalone/server.js'
       ),
     ],
     {

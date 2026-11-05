@@ -7,7 +7,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "postbuild": "node scripts/postbuild.cjs",
-    "start": "node dist/react-ssr-corp-hubv-painel-administrativo/standalone/server.js",
+    "start": "node .next/standalone/server.js",
     "lint": "eslint . --max-warnings=0",
     "test": "jest",
     "test:watch": "jest --watch",

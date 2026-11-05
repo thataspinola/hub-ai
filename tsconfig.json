@@ -32,9 +32,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "next-env.d.ts",
-    "dist/react-ssr-corp-hubv-painel-administrativo/types/**/*.ts",
-    "dist/react-ssr-corp-hubv-painel-administrativo/dev/types/**/*.ts"
+    "next-env.d.ts"
   ],
   "exclude": [
     "node_modules",

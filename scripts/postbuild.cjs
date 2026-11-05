@@ -2,7 +2,7 @@
 
 const fs = require('node:fs')
 const path = require('node:path')
-const DIST = 'dist/react-ssr-corp-hubv-painel-administrativo'
+const DIST = '.next'
 
 function prepare(root = path.resolve(__dirname, '..')) {
   const dist = path.join(root, DIST),
@@ -16,7 +16,7 @@ function prepare(root = path.resolve(__dirname, '..')) {
       'Standalone server/static artifacts missing; run a successful Next build first'
     )
 
-  fs.cpSync(path.join(dist, 'static'), path.join(standalone, DIST, 'static'), {
+  fs.cpSync(path.join(dist, 'static'), path.join(standalone, '.next', 'static'), {
     recursive: true,
   })
 
