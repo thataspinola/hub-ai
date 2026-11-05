@@ -1,11 +1,23 @@
 import { ClientSession } from '@/types/client-session'
 import { AuthOptions } from 'next-auth'
 import KeycloakProvider from 'next-auth/providers/keycloak'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import { env } from 'next-runtime-env'
 import { refreshAccessToken } from '@/lib/auth/refresh-token'
 
 const authOptions: AuthOptions = {
   providers: [
+    ...(process.env.NODE_ENV === 'development' && process.env.HUB_AI_LOCAL_DEMO_AUTH === 'true'
+      ? [CredentialsProvider({
+          id: 'local-demo',
+          name: 'Usuário de demonstração',
+          credentials: {},
+          async authorize() {
+            if (process.env.NODE_ENV !== 'development' || process.env.HUB_AI_LOCAL_DEMO_AUTH !== 'true') return null
+            return { id: 'local-demo', name: 'Usuário de demonstração', email: 'demo@localhost.invalid' }
+          },
+        })]
+      : []),
     KeycloakProvider({
       clientId: env('KEYCLOAK_CLIENT_ID') || '',
       clientSecret: env('KEYCLOAK_CLIENT_SECRET') || '',
@@ -14,6 +26,12 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, account, profile }) {
+      if (account?.provider === 'local-demo' && process.env.NODE_ENV === 'development' && process.env.HUB_AI_LOCAL_DEMO_AUTH === 'true') {
+        token.local_demo = true
+        token.roles = ['demo']
+        return token
+      }
+      if (token.local_demo) return token
       if (account) {
         token.access_token = account.access_token
         token.id_token = account.id_token
@@ -60,6 +78,7 @@ const authOptions: AuthOptions = {
           ? token.roles.filter((role): role is string => typeof role === 'string')
           : [],
         error: typeof token.error === 'string' ? token.error : undefined,
+        ...(process.env.NODE_ENV === 'development' && process.env.HUB_AI_LOCAL_DEMO_AUTH === 'true' && token.local_demo === true ? { local_demo: true } : {}),
       }
 
       return clientSession
