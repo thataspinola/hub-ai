@@ -5,6 +5,8 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
+jest.mock('next/navigation', () => ({ usePathname: () => '/' }))
+
 // Mock next/link
 jest.mock('next/link', () => ({
   __esModule: true,
@@ -46,10 +48,10 @@ describe('Navbar', () => {
   it('renders the Auth component', () => {
     render(<Navbar />)
     // Auth is rendered inline - Login link should appear for unauthenticated user
-    expect(screen.getByText('Login')).toBeInTheDocument()
+    expect(screen.getByText('Login corporativo')).toBeInTheDocument()
   })
 
-  it('renders Porto logo SVG link', () => {
+  it('renders brand home link', () => {
     render(<Navbar />)
     const links = screen.getAllByRole('link')
     const logoLink = links.find(l => l.getAttribute('href') === '/')
@@ -64,7 +66,7 @@ it('links to the existing application routes', () => {
     'Recomendações': '/recommendations',
     'Portal Admin': '/',
     'Feature Flags': '/feature-flags',
-    'Form Wizard': '/form-wizard',
+    'Formulários': '/form-wizard',
     'Code Reviewer': '/code-reviewer',
   }
   for (const [name, href] of Object.entries(routes)) {
