@@ -54,3 +54,17 @@ Alterações seguem Conventional Commits e atualizam `CHANGELOG.md` quando neces
 ## Login local de demonstração
 
 Em `.env.local`, configure `HUB_AI_LOCAL_DEMO_AUTH=true` e `NEXT_PUBLIC_HUB_AI_LOCAL_DEMO_AUTH=true`, reinicie `npm run dev` e use **Entrar como demo**. O provedor só existe em desenvolvimento. Ele não fornece credenciais corporativas e não substitui testes de integração com Keycloak.
+
+
+### Testar Clientes e Recomendações sem Keycloak
+
+No desenvolvimento local, defina em `.env.local`:
+
+```dotenv
+HUB_AI_REQUIRE_AUTH=false
+HUB_AI_LOCAL_DEMO_AUTH=true
+NEXT_PUBLIC_HUB_AI_LOCAL_DEMO_AUTH=true
+FEATURE_FLAGS_PROVIDER=localStorage
+```
+
+Reinicie `npm run dev`. Em **Clientes**, a tela usa três registros explicitamente fictícios e não consulta a API corporativa. Em **Recomendações**, os dados são gerenciados no armazenamento local do navegador. O botão **Entrar como demo** permite testar o estado autenticado da interface, sem conceder um token corporativo. Esse comportamento é restrito a `NODE_ENV=development` e não substitui testes de integração com Keycloak/API.
