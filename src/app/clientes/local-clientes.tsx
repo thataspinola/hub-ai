@@ -19,7 +19,7 @@ function validClients(value: unknown): value is Cliente[] {
   )
 }
 
-export default function LocalClientes() {
+export default function LocalClientes({ mode = 'local' }: { mode?: 'local' | 'api' }) {
   const [clients, setClients] = useState<Cliente[]>([])
   const [ready, setReady] = useState(false)
   const [query, setQuery] = useState('')
@@ -30,6 +30,14 @@ export default function LocalClientes() {
   const [error, setError] = useState('')
 
   useEffect(() => {
+    if (mode === 'api') {
+      fetch('/react-ssr-corp-hubv-painel-administrativo/api/clientes', { cache: 'no-store' })
+        .then(async response => { if (!response.ok) throw new Error('Não foi possível consultar clientes'); return response.json() })
+        .then((data: unknown) => { if (!validClients(data)) throw new Error('Formato de clientes inválido'); setClients(data) })
+        .catch(() => setError('Falha ao carregar clientes da API corporativa.'))
+        .finally(() => setReady(true))
+      return
+    }
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
       if (raw === null) setClients(initialClients)
@@ -42,7 +50,7 @@ export default function LocalClientes() {
       setError('Não foi possível ler os dados locais.')
     }
     setReady(true)
-  }, [])
+  }, [mode])
 
   const filtered = useMemo(() => clients.filter(client =>
     `${client.codigo} ${client.nome} ${client.email}`.toLocaleLowerCase('pt-BR')
@@ -77,7 +85,7 @@ export default function LocalClientes() {
     setOpen(true)
   }
 
-  function save(event: React.FormEvent<HTMLFormElement>) {
+  async function save(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const normalizedName = name.trim()
     const normalizedEmail = email.trim().toLowerCase()
@@ -92,16 +100,39 @@ export default function LocalClientes() {
     const next = editing !== null
       ? clients.map(client => client.codigo === editing ? { ...client, nome: normalizedName, email: normalizedEmail } : client)
       : [...clients, { codigo: Math.max(1000, ...clients.map(client => client.codigo)) + 1, nome: normalizedName, email: normalizedEmail }]
-    if (persist(next)) setOpen(false)
+    if (mode === 'api') {
+      try {
+        const response = await fetch('/react-ssr-corp-hubv-painel-administrativo/api/clientes' + (editing !== null ? '/' + editing : ''), {
+          method: editing !== null ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nome: normalizedName, email: normalizedEmail }),
+        })
+        if (!response.ok) throw new Error('Falha ao salvar cliente na API')
+        const refreshed = await fetch('/react-ssr-corp-hubv-painel-administrativo/api/clientes', { cache: 'no-store' })
+        if (!refreshed.ok) throw new Error('Cliente salvo, mas não foi possível atualizar a lista')
+        const data: unknown = await refreshed.json()
+        if (!validClients(data)) throw new Error('Formato de clientes inválido')
+        setClients(data)
+        setOpen(false)
+        setError('')
+      } catch (cause) { setError(cause instanceof Error ? cause.message : 'Falha ao salvar cliente') }
+    } else if (persist(next)) setOpen(false)
   }
 
-  function remove(client: Cliente) {
+  async function remove(client: Cliente) {
     if (!window.confirm(`Excluir o cliente "${client.nome}"? Esta ação não pode ser desfeita.`)) return
-    persist(clients.filter(item => item.codigo !== client.codigo))
+    if (mode === 'api') {
+      try {
+        const response = await fetch('/react-ssr-corp-hubv-painel-administrativo/api/clientes/' + client.codigo, { method: 'DELETE' })
+        if (!response.ok) throw new Error('Falha ao excluir cliente')
+        setClients(clients.filter(item => item.codigo !== client.codigo))
+        setError('')
+      } catch (cause) { setError(cause instanceof Error ? cause.message : 'Falha ao excluir cliente') }
+    } else persist(clients.filter(item => item.codigo !== client.codigo))
   }
 
   return <section className="mx-auto max-w-6xl space-y-6 px-4 py-8 sm:px-6">
-    <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"><strong>Ambiente de demonstração</strong><p>Cadastros fictícios armazenados apenas neste navegador. Nenhuma informação é enviada à API corporativa.</p></div>
+    <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"><strong>{mode === 'local' ? 'Ambiente de demonstração' : 'Ambiente corporativo'}</strong><p>{mode === 'local' ? 'Cadastros fictícios armazenados apenas neste navegador. Nenhuma informação é enviada à API corporativa.' : 'As alterações são enviadas à API corporativa autenticada.'}</p></div>
     <div className="flex flex-wrap items-center justify-between gap-4">
       <div><h1 className="text-2xl font-bold text-slate-900">Clientes</h1><p className="mt-1 text-sm text-slate-500">{ready ? `${clients.length} cliente(s) cadastrado(s)` : 'Carregando clientes…'}</p></div>
       <button type="button" onClick={startCreate} className="inline-flex items-center gap-2 rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700"><Plus size={18}/> Novo cliente</button>
