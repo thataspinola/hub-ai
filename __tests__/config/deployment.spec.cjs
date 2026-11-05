@@ -16,6 +16,6 @@ test('standalone preparation copies static and public assets and rejects missing
   assert.throws(() => prepare(root), /missing/)
   for (const file of [DIST + '/standalone/server.js', DIST + '/static/chunk.js', 'public/image.txt']) { const dest = path.join(root, file); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.writeFileSync(dest, file) }
   prepare(root)
-  assert.equal(fs.readFileSync(path.join(root, DIST, 'standalone', DIST, 'static/chunk.js'), 'utf8'), DIST + '/static/chunk.js')
+  assert.equal(fs.readFileSync(path.join(root, DIST, 'standalone', '.next', 'static/chunk.js'), 'utf8'), DIST + '/static/chunk.js')
   assert.equal(fs.readFileSync(path.join(root, DIST, 'standalone/public/image.txt'), 'utf8'), 'public/image.txt')
 })
