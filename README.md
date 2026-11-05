@@ -68,3 +68,10 @@ FEATURE_FLAGS_PROVIDER=localStorage
 ```
 
 Reinicie `npm run dev`. Em **Clientes**, a tela usa três registros explicitamente fictícios e não consulta a API corporativa. Em **Recomendações**, os dados são gerenciados no armazenamento local do navegador. O botão **Entrar como demo** permite testar o estado autenticado da interface, sem conceder um token corporativo. Esse comportamento é restrito a `NODE_ENV=development` e não substitui testes de integração com Keycloak/API.
+
+
+### CRUD de Clientes: desenvolvimento e ambiente corporativo
+
+- **Local**: `npm run dev`, `HUB_AI_LOCAL_DEMO_AUTH=true` e `HUB_AI_REQUIRE_AUTH=false` usam dados fictícios no `localStorage`, com cadastro, edição, exclusão e pesquisa.
+- **Integração corporativa**: configure `CLIENTES_API_URL=https://backend-aprovado` (ou `NEXT_PUBLIC_API` existente), `NEXTAUTH_SECRET` e credenciais Keycloak. O servidor usa o token da sessão para consultar `GET /cliente`, criar `POST /cliente`, atualizar `PUT /cliente/{codigo}` e excluir `DELETE /cliente/{codigo}`. Nunca exponha tokens no navegador.
+- **Atenção**: os métodos, URLs, códigos HTTP e formato `{ codigo: number, nome: string, email: string }` são hipóteses baseadas na consulta existente; confirme o contrato real antes de liberar operações de escrita em produção. Teste em homologação com conta autorizada e dados de teste. A aplicação não executa alterações na API corporativa no modo demo.
