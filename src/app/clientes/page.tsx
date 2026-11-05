@@ -5,6 +5,7 @@ import authOptions from '@/app/api/auth/[...nextauth]/auth-options'
 import { Cliente } from '@/types/cliente'
 import { getAccessToken } from '@/utils/session-token-accessor'
 import Lista from './lista'
+import LocalClientes from './local-clientes'
 
 async function getAllClients(): Promise<Cliente[]> {
   const url = `${env('NEXT_PUBLIC_API')}/cliente`
@@ -26,16 +27,8 @@ async function getAllClients(): Promise<Cliente[]> {
 
 const localDemoEnabled = process.env.NODE_ENV === 'development' && process.env.HUB_AI_LOCAL_DEMO_AUTH === 'true'
 
-const demoClientes: Cliente[] = [
-  { codigo: 1001, nome: 'Cliente Exemplo A', email: 'cliente.a@example.invalid' },
-  { codigo: 1002, nome: 'Cliente Exemplo B', email: 'cliente.b@example.invalid' },
-  { codigo: 1003, nome: 'Cliente Exemplo C', email: 'cliente.c@example.invalid' },
-]
-
 export default async function Clientes() {
-  if (localDemoEnabled) {
-    return <section className="mx-auto max-w-5xl space-y-5 px-6 py-8"><div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"><strong>Modo de demonstração local</strong><p>Dados fictícios para testar a interface. Nenhuma chamada à API corporativa será realizada.</p></div><Lista clientes={demoClientes} /></section>
-  }
+  if (localDemoEnabled) return <LocalClientes />
 
   const session = await getServerSession(authOptions)
 
