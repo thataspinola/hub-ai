@@ -2,7 +2,7 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  distDir: 'dist/react-ssr-corp-hubv-painel-administrativo',
+  distDir: '.next',
   basePath: '/react-ssr-corp-hubv-painel-administrativo',
   images: {
     remotePatterns: [
