@@ -30,10 +30,12 @@ export function FlagTable<T extends { id: string }>({
             ))}
           </tr>
         </thead>
+
         <tbody className="divide-y divide-slate-200 bg-white">
           <AnimatePresence mode="popLayout">
             {items.map((item) => renderRow(item))}
           </AnimatePresence>
+
           {items.length === 0 && (
             <tr>
               <td colSpan={columns.length} className="py-12 text-center">
@@ -82,7 +84,7 @@ export function FlagRow({
   onDeleteCancel: () => void
   jsonData: unknown
   extraCells: React.ReactNode
-  colSpan?: number
+  colSpan: number
 }) {
   const cols = colSpan ?? 6
 
@@ -102,26 +104,26 @@ export function FlagRow({
             {flag.description}
           </div>
         </td>
+
         {/* Key */}
-        <td className="px-6 py-4">
-          <span className="text-xs font-mono text-slate-600 bg-slate-100 px-2 py-1 rounded border border-slate-200">
+        <td className="py-4 px-6">
+          <span className="text-xs font-mono text-slate-600 bg-slate-100 px-2 py-1 rounded border boder-slate-200">
             {flag.key}
           </span>
         </td>
+
         {/* Status */}
-        <td className="px-6 py-4">
+        <td className="py-4 px-6">
           <span
-            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-              flag.enabled
-                ? 'bg-green-100 text-green-700'
-                : 'bg-slate-100 text-slate-600'
-            }`}
+            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${flag.enabled ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'}`}
           >
             {flag.enabled ? 'Ativado' : 'Desativado'}
           </span>
         </td>
-        {/* Extra cells injected */}
+
+        {/* Extra Cells */}
         {extraCells}
+
         {/* Actions */}
         <td className="py-4 px-6 text-right">
           <div className="flex items-center justify-end gap-3 relative">
@@ -136,6 +138,7 @@ export function FlagRow({
             >
               <Code size={16} />
             </button>
+
             <button
               onClick={onEdit}
               className="p-1.5 text-slate-300 hover:text-indigo-600 hover:bg-indigo-50 rounded-md transition-all"
@@ -143,6 +146,7 @@ export function FlagRow({
             >
               <Edit2 size={16} />
             </button>
+
             <button
               onClick={onToggle}
               className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${
@@ -150,9 +154,10 @@ export function FlagRow({
               }`}
             >
               <span
-                className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${flag.enabled ? 'translate-x-5' : 'translate-x-1'}`}
-              />
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${flag.enabled ? 'translate-x-5' : 'translate-x-1'}`}
+              ></span>
             </button>
+
             <button
               onClick={onDeleteClick}
               className="p-1.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-md transition-all"
@@ -160,6 +165,7 @@ export function FlagRow({
             >
               <Trash2 size={16} />
             </button>
+
             <AnimatePresence>
               {deleteConfirmId === flag.id && (
                 <motion.div
@@ -169,20 +175,22 @@ export function FlagRow({
                   className="absolute right-0 top-0 bottom-0 z-10 bg-white border-l border-slate-200 flex items-center gap-3 px-4 shadow-xl"
                 >
                   <p className="text-[10px] font-bold text-slate-500 uppercase">
-                    Excluir?
+                    Tem certeza que deseja excluir?
                   </p>
+
                   <div className="flex gap-1">
+                    <button
+                      onClick={onDeleteConfirm}
+                      className="py-1 text-red-500 hover:text-red-700"
+                    >
+                      <Check size={14} />
+                    </button>
+
                     <button
                       onClick={onDeleteCancel}
                       className="p-1 text-slate-400 hover:text-slate-600"
                     >
                       <X size={14} />
-                    </button>
-                    <button
-                      onClick={onDeleteConfirm}
-                      className="p-1 text-red-500 hover:text-red-700"
-                    >
-                      <Check size={14} />
                     </button>
                   </div>
                 </motion.div>
@@ -191,6 +199,7 @@ export function FlagRow({
           </div>
         </td>
       </motion.tr>
+
       {showJsonId === flag.id && (
         <motion.tr
           initial={{ opacity: 0, height: 0 }}

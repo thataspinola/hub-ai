@@ -61,6 +61,7 @@ export const FormBuilder: React.FC = () => {
           <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">
             Elementos Básicos
           </h3>
+
           <div className="space-y-3">
             {elements
               .filter((e) => e.category === 'Básicos')
@@ -76,6 +77,7 @@ export const FormBuilder: React.FC = () => {
                       className="text-slate-500 group-hover:text-indigo-600"
                     />
                   </div>
+
                   <span className="text-sm font-bold text-slate-700">
                     {el.label}
                   </span>
@@ -88,6 +90,7 @@ export const FormBuilder: React.FC = () => {
           <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">
             Elementos Avançados
           </h3>
+
           <div className="space-y-3">
             {elements
               .filter((e) => e.category === 'Avançados')
@@ -103,6 +106,7 @@ export const FormBuilder: React.FC = () => {
                       className="text-slate-500 group-hover:text-indigo-600"
                     />
                   </div>
+
                   <span className="text-sm font-bold text-slate-700">
                     {el.label}
                   </span>
@@ -114,10 +118,12 @@ export const FormBuilder: React.FC = () => {
         <div className="mt-auto p-5 bg-indigo-50 rounded-2xl border border-indigo-100">
           <div className="flex gap-2">
             <Info size={14} className="text-indigo-500 shrink-0 mt-0.5" />
+
             <div>
               <p className="text-[11px] text-indigo-700 font-bold mb-1">
                 Dica Profissional:
               </p>
+
               <p className="text-[10px] text-indigo-600 leading-relaxed">
                 Arraste os elementos diretamente para a tela para começar a
                 construir seu formulário.
@@ -128,8 +134,8 @@ export const FormBuilder: React.FC = () => {
       </aside>
 
       {/* Main Canvas */}
-      <section className="flex-1 overflow-y-auto p-12 relative bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px]">
-        <div className="max-w-2xl mx-auto bg-white min-h-[800px] shadow-2xl shadow-slate-200/50 rounded-3xl border border-slate-200 p-12 flex flex-col">
+      <section className="flex-1 overflow-y-auto p-12 relative bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[24px_24px]">
+        <div className="max-w-2xl mx-auto bg-white min-h-200 shadow-2xl shadow-slate-200/50 rounded-3xl border border-slate-200 p-12 flex flex-col">
           {/* Form Header */}
           <div className="mb-12 pb-10 border-b border-slate-100">
             <input
@@ -137,6 +143,7 @@ export const FormBuilder: React.FC = () => {
               placeholder="Formulário sem Título"
               defaultValue="Pesquisa de Novo Projeto"
             />
+
             <textarea
               className="text-slate-500 border-none focus:ring-0 p-0 w-full resize-none text-lg leading-relaxed placeholder-slate-300"
               placeholder="Descreva o propósito deste projeto e como os dados serão utilizados."
@@ -153,20 +160,24 @@ export const FormBuilder: React.FC = () => {
                 <label className="block text-sm font-black text-slate-700 uppercase tracking-tight">
                   Nome do Projeto
                 </label>
+
                 <GripVertical
                   size={16}
                   className="text-slate-300 cursor-move opacity-0 group-hover:opacity-100 transition-opacity"
                 />
               </div>
+
               <input
                 className="w-full rounded-xl border-slate-200 bg-white py-3 px-4 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all"
                 placeholder="ex: Lançamento de Marketing Q3"
                 type="text"
               />
+
               <div className="absolute -right-14 top-1/2 -translate-y-1/2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
                 <button className="p-2 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 text-slate-400 hover:text-indigo-600 transition-colors">
                   <Settings size={16} />
                 </button>
+
                 <button className="p-2 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors">
                   <Trash2 size={16} />
                 </button>
@@ -179,11 +190,13 @@ export const FormBuilder: React.FC = () => {
                 <label className="block text-sm font-black text-slate-700 uppercase tracking-tight">
                   Nível de Prioridade
                 </label>
+
                 <GripVertical
                   size={16}
                   className="text-slate-300 cursor-move opacity-0 group-hover:opacity-100 transition-opacity"
                 />
               </div>
+
               <div className="relative">
                 <select className="w-full rounded-xl border-slate-200 bg-white py-3 px-4 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none appearance-none transition-all">
                   <option>Baixa</option>
@@ -191,6 +204,7 @@ export const FormBuilder: React.FC = () => {
                   <option>Alta</option>
                   <option>Crítica</option>
                 </select>
+
                 <ChevronDown
                   size={18}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
@@ -204,6 +218,7 @@ export const FormBuilder: React.FC = () => {
                 <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-indigo-100 transition-colors">
                   <Plus size={24} />
                 </div>
+
                 <span className="text-sm font-bold">
                   Arraste ou clique para adicionar
                 </span>
@@ -216,6 +231,7 @@ export const FormBuilder: React.FC = () => {
             <p className="text-xs text-slate-400 font-medium italic">
               O formulário é salvo automaticamente a cada 30s
             </p>
+
             <button className="px-10 py-4 bg-indigo-600 text-white font-black rounded-2xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 active:scale-95 transition-all flex items-center gap-2">
               <Eye size={18} />
               Visualizar
@@ -243,6 +259,7 @@ export const FormBuilder: React.FC = () => {
               />
             )}
           </button>
+
           <button
             onClick={() => setActiveTab('cms')}
             className={`flex-1 py-5 text-xs font-black uppercase tracking-widest transition-all relative ${
@@ -266,6 +283,7 @@ export const FormBuilder: React.FC = () => {
             <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
               Rótulo do Campo
             </label>
+
             <input
               className="w-full rounded-xl border-slate-200 text-sm font-bold py-2.5 px-4 focus:ring-2 focus:ring-indigo-500 outline-none"
               type="text"
@@ -277,6 +295,7 @@ export const FormBuilder: React.FC = () => {
             <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
               Texto de Ajuda
             </label>
+
             <textarea
               className="w-full rounded-xl border-slate-200 text-sm font-medium py-2.5 px-4 focus:ring-2 focus:ring-indigo-500 outline-none h-24 resize-none"
               placeholder="Pequena descrição abaixo do campo"
@@ -288,6 +307,7 @@ export const FormBuilder: React.FC = () => {
             <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
               Validação
             </label>
+
             <div className="space-y-4 mt-4">
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative flex items-center">
@@ -297,10 +317,12 @@ export const FormBuilder: React.FC = () => {
                     className="peer h-5 w-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
                   />
                 </div>
+
                 <span className="text-sm text-slate-700 font-bold group-hover:text-indigo-600 transition-colors">
                   Campo obrigatório
                 </span>
               </label>
+
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative flex items-center">
                   <input
@@ -308,6 +330,7 @@ export const FormBuilder: React.FC = () => {
                     className="peer h-5 w-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
                   />
                 </div>
+
                 <span className="text-sm text-slate-700 font-bold group-hover:text-indigo-600 transition-colors">
                   Somente entradas únicas
                 </span>
@@ -320,21 +343,25 @@ export const FormBuilder: React.FC = () => {
               <Database size={12} />
               Integração CMS
             </h4>
+
             <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-[10px] font-bold text-slate-500 uppercase">
                   Mapear para Tabela
                 </span>
+
                 <span className="px-2 py-0.5 bg-green-100 text-green-700 text-[9px] font-black rounded-full uppercase">
                   Vinculado
                 </span>
               </div>
+
               <div className="relative">
                 <select className="w-full text-xs font-bold rounded-lg border-slate-200 bg-white py-2 px-3 appearance-none outline-none focus:ring-2 focus:ring-indigo-500">
                   <option>column_project_name</option>
                   <option>column_description</option>
                   <option>Criar nova coluna...</option>
                 </select>
+
                 <ChevronDown
                   size={14}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"

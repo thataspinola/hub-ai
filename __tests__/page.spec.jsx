@@ -14,9 +14,13 @@ jest.mock('motion/react', () => ({
 
 import Page from '../src/app/page'
 
+jest.mock('../src/lib/feature-flags/client', () => ({
+  useFeatureFlags: () => ({ flags: {}, isLoading: false, error: null }),
+}))
+
 describe('Page', () => {
   it('renders the Dashboard component', () => {
     render(<Page />)
-    expect(screen.getByText('Visão Geral do Aplicativo')).toBeInTheDocument()
+    expect(screen.getByText('Painel administrativo')).toBeInTheDocument()
   })
 })

@@ -153,7 +153,7 @@ export function AffinityEditor({
                       </div>
                     </AccordionContent>
                   </AccordionItem>
-                ),
+                )
               )}
             </Accordion>
           )}
@@ -178,6 +178,7 @@ export function AffinityEditor({
             </Button>
           </div>
         </CardHeader>
+
         <CardContent>
           {Object.keys(affinityMaps.byUrl).length === 0 ? (
             <Empty
@@ -188,6 +189,7 @@ export function AffinityEditor({
             <Accordion type="multiple" className="w-full">
               {Object.entries(affinityMaps.byUrl).map(([source, targets]) => {
                 const product = products.find((p) => p.url === source)
+
                 return (
                   <AccordionItem key={source} value={source}>
                     <AccordionTrigger className="hover:no-underline">
@@ -200,12 +202,14 @@ export function AffinityEditor({
                         </span>
                       </div>
                     </AccordionTrigger>
+
                     <AccordionContent>
                       <div className="space-y-2 pl-4">
                         {targets.map((target, index) => {
                           const targetProduct = products.find(
-                            (p) => p.url === target.targetId,
+                            (p) => p.url === target.targetId
                           )
+
                           return (
                             <div
                               key={index}
@@ -217,15 +221,18 @@ export function AffinityEditor({
                                     ? 'Categoria:'
                                     : 'URL:'}
                                 </span>
+
                                 <span className="font-medium truncate">
                                   {target.targetType === 'url'
                                     ? targetProduct?.name || target.targetId
                                     : target.targetId}
                                 </span>
+
                                 <Badge variant="secondary" className="shrink-0">
                                   peso: {target.weight}
                                 </Badge>
                               </div>
+
                               <Button
                                 variant="ghost"
                                 size="icon"
@@ -254,20 +261,24 @@ export function AffinityEditor({
               Adicionar Afinidade por{' '}
               {addType === 'category' ? 'Categoria' : 'URL'}
             </DialogTitle>
+
             <DialogDescription>
               Configure a relação de afinidade entre origem e destino
             </DialogDescription>
           </DialogHeader>
+
           <FieldGroup className="gap-4">
             <Field>
               <FieldLabel>
                 Origem ({addType === 'category' ? 'Categoria' : 'URL'})
               </FieldLabel>
+
               {addType === 'category' ? (
                 <Select value={sourceValue} onValueChange={setSourceValue}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione a categoria de origem" />
                   </SelectTrigger>
+
                   <SelectContent>
                     {categories.map((cat) => (
                       <SelectItem key={cat} value={cat}>
@@ -281,6 +292,7 @@ export function AffinityEditor({
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione a URL de origem" />
                   </SelectTrigger>
+
                   <SelectContent>
                     {products.map((p) => (
                       <SelectItem key={p.url} value={p.url}>
@@ -291,8 +303,10 @@ export function AffinityEditor({
                 </Select>
               )}
             </Field>
+
             <Field>
               <FieldLabel>Tipo de Destino</FieldLabel>
+
               <Select
                 value={targetType}
                 onValueChange={(v) => setTargetType(v as 'url' | 'category')}
@@ -300,19 +314,23 @@ export function AffinityEditor({
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
+
                 <SelectContent>
                   <SelectItem value="category">Categoria</SelectItem>
                   <SelectItem value="url">URL</SelectItem>
                 </SelectContent>
               </Select>
             </Field>
+
             <Field>
               <FieldLabel>Destino</FieldLabel>
+
               {targetType === 'category' ? (
                 <Select value={targetValue} onValueChange={setTargetValue}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione a categoria de destino" />
                   </SelectTrigger>
+
                   <SelectContent>
                     {categories.map((cat) => (
                       <SelectItem key={cat} value={cat}>
@@ -326,6 +344,7 @@ export function AffinityEditor({
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione a URL de destino" />
                   </SelectTrigger>
+
                   <SelectContent>
                     {products.map((p) => (
                       <SelectItem key={p.url} value={p.url}>
@@ -336,8 +355,10 @@ export function AffinityEditor({
                 </Select>
               )}
             </Field>
+
             <Field>
               <FieldLabel>Peso (0-100)</FieldLabel>
+
               <Input
                 type="number"
                 value={weight}
@@ -345,15 +366,18 @@ export function AffinityEditor({
                 min={0}
                 max={100}
               />
+
               <p className="text-xs text-slate-500 mt-1">
                 Quanto maior o peso, maior a prioridade
               </p>
             </Field>
           </FieldGroup>
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setAddDialogOpen(false)}>
               Cancelar
             </Button>
+
             <Button
               onClick={handleAdd}
               disabled={!sourceValue || !targetValue}

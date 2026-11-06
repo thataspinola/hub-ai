@@ -112,7 +112,7 @@ export function PlansCarousel({
               key={plan.id}
               onClick={() => onSelect(plan.id)}
               className={cn(
-                'flex-shrink-0 w-[280px] md:w-[300px] rounded-xl border-2 p-5 text-left transition-all snap-center',
+                'shrink-0 w-70 md:w-75 rounded-xl border-2 p-5 text-left transition-all snap-center',
                 selectedPlanId === plan.id
                   ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
                   : 'border-border hover:border-muted-foreground/40',
@@ -160,9 +160,9 @@ export function PlansCarousel({
                       )}
                     >
                       {benefit.included ? (
-                        <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0 text-emerald-500" />
+                        <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0 text-emerald-500" />
                       ) : (
-                        <span className="h-4 w-4 mt-0.5 flex-shrink-0 rounded-full border" />
+                        <span className="h-4 w-4 mt-0.5 shrink-0 rounded-full border" />
                       )}
                       <span className="line-clamp-2">{benefit.text}</span>
                     </li>
@@ -244,7 +244,7 @@ export function PlansPreview({
           <div
             key={plan.id}
             className={cn(
-              'flex-shrink-0 rounded-md border px-2 py-1.5 text-[10px]',
+              'shrink-0 rounded-md border px-2 py-1.5 text-[10px]',
               plan.highlighted && 'border-amber-500/50 bg-amber-500/5'
             )}
           >

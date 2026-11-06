@@ -38,6 +38,7 @@ function StoredForm({ slug }: { slug: string }) {
       <div className="flex min-h-screen flex-col items-center justify-center gap-4">
         <h1 className="text-xl font-bold">Form Not Found</h1>
         <p>The form you are looking for does not exist.</p>
+
         <button
           onClick={() => router.push('/form-wizard')}
           className="text-primary underline"
@@ -63,17 +64,23 @@ function NewFormHandler() {
     resetForm()
     const state = useFormStore.getState()
     const existingSlugs = getFormsIndex().map((entry) => entry.slug)
+
     if (existingSlugs.includes(state.form.slug)) {
       state.setFormSlug(generateFormSlug(state.form.name, existingSlugs))
     }
+
     const current = useFormStore.getState()
-    if (current.saveFormToStorage() === false) return
+    current.saveFormToStorage()
+    if (useFormStore.getState().storageError) return
     router.replace(`/form-wizard/${current.form.slug}`)
   }, [resetForm, router])
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <div className="animate-pulse text-muted-foreground" role={storageError ? 'alert' : undefined}>
+      <div
+        className="animate-pulse text-muted-foreground"
+        role={storageError ? 'alert' : undefined}
+      >
         {storageError || 'Creating new form...'}
       </div>
     </div>

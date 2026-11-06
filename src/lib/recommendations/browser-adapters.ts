@@ -15,7 +15,7 @@ export const indexedDBRecommendationRepository: RecommendationRepository = {
 let broadcastChannel: BroadcastChannel | null = null
 
 export const browserRecommendationPreview: RecommendationPreview = {
-  publish(data) {
+  publish: (data) => {
     if (typeof window === 'undefined') return
     const jsonData = JSON.stringify(data, null, 2)
     localStorage.setItem('recommendation-preview-data', jsonData)

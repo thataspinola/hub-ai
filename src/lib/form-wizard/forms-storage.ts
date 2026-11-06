@@ -36,7 +36,7 @@ export function getFormsIndex(): FormIndexEntry[] {
 
   try {
     const data = localStorage.getItem(FORMS_INDEX_KEY)
-    const parsed: unknown = data ? JSON.parse(data) : []
+    const parsed = data ? JSON.parse(data) : []
     return isFormIndex(parsed) ? parsed : []
   } catch {
     return []
@@ -53,7 +53,7 @@ export function getFormBySlug(slug: string): Form | null {
 
   try {
     const data = localStorage.getItem(`${FORM_PREFIX}${slug}`)
-    const parsed: unknown = data ? JSON.parse(data) : null
+    const parsed = data ? JSON.parse(data) : null
     return isForm(parsed) ? parsed : null
   } catch {
     return null
@@ -74,7 +74,7 @@ export function saveForm(form: Form): void {
 
   if (previousIndex && !isFormIndex(JSON.parse(previousIndex))) {
     throw new Error(
-      'Stored form index is invalid; export or repair it before saving'
+      'Stored form index is invalid; export or repair it before save'
     )
   }
 
@@ -106,7 +106,7 @@ export function saveForm(form: Form): void {
       if (previousForm === null) localStorage.removeItem(key)
       else localStorage.setItem(key, previousForm)
     } catch {
-      /* Keep the original error; storage may be unavailable. */
+      /* Keep the original error; storage may be unavailable */
     }
 
     throw new Error(
@@ -122,9 +122,9 @@ export function saveForm(form: Form): void {
 
   if (oldEntry && oldEntry.slug !== form.slug) {
     try {
-      localStorage.removeItem(FORM_PREFIX + oldEntry.slug)
+      localStorage.removeItem(`${FORM_PREFIX}${oldEntry.slug}`)
     } catch {
-      /* The new document and index are already committed; retain the old backup. */
+      /* The new document and index are already committed; retain the old backup */
     }
   }
 }
@@ -165,7 +165,7 @@ export function getFormResponses(formSlug: string): FormResponses | null {
 
   try {
     const data = localStorage.getItem(`${RESPONSES_PREFIX}${formSlug}`)
-    const parsed: unknown = data ? JSON.parse(data) : null
+    const parsed = data ? JSON.parse(data) : null
     return isFormResponses(parsed) ? parsed : null
   } catch {
     return null
@@ -200,7 +200,7 @@ export function exportFormAsJson(slug: string): string | null {
 export function importFormFromJson(json: string): Form | null {
   try {
     const form = JSON.parse(json) as Form
-    if (!isForm(form)) {
+    if (!form.id || !form.steps || !Array.isArray(form.steps)) {
       return null
     }
 

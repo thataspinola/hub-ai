@@ -161,7 +161,6 @@ function FormWizardList() {
           new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       )
     )
-
   }
 
   const handleDuplicate = (slug: string) => {
@@ -203,10 +202,12 @@ function FormWizardList() {
         <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
           <div>
             <h1 className="text-xl font-bold">Form Wizard Builder</h1>
+
             <p className="text-sm text-muted-foreground">
               Gerencie seus formulários wizard
             </p>
           </div>
+
           <Button asChild>
             <Link href="/form-wizard/new">
               <Plus className="mr-2 h-4 w-4" />
@@ -221,12 +222,15 @@ function FormWizardList() {
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-16 text-center">
               <FileText className="mb-4 h-12 w-12 text-muted-foreground/50" />
+
               <h2 className="mb-2 text-lg font-semibold">
                 Nenhum formulário ainda
               </h2>
+
               <p className="mb-6 text-sm text-muted-foreground">
                 Crie seu primeiro wizard form para começar.
               </p>
+
               <Button asChild>
                 <Link href="/form-wizard/new">
                   <Plus className="mr-2 h-4 w-4" />
@@ -247,15 +251,19 @@ function FormWizardList() {
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                       <FileText className="h-5 w-5" />
                     </div>
+
                     <div>
                       <h3 className="font-semibold">{form.name}</h3>
+
                       <div className="flex items-center gap-3 text-xs text-muted-foreground">
                         <span className="font-mono">/{form.slug}</span>
+
                         <span className="flex items-center gap-1">
                           <Layers className="h-3 w-3" />
                           {form.stepsCount} step
                           {form.stepsCount !== 1 ? 's' : ''}
                         </span>
+
                         <span className="flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
                           {formatDate(form.updatedAt)}
@@ -273,11 +281,13 @@ function FormWizardList() {
                     >
                       <Eye className="h-4 w-4" />
                     </Button>
+
                     <Button variant="ghost" size="sm" asChild title="Editar">
                       <Link href={`/form-wizard/${form.slug}`}>
                         <Edit className="h-4 w-4" />
                       </Link>
                     </Button>
+
                     <Button
                       variant="ghost"
                       size="sm"
@@ -286,6 +296,7 @@ function FormWizardList() {
                     >
                       <Copy className="h-4 w-4" />
                     </Button>
+
                     <Button
                       variant="ghost"
                       size="sm"
@@ -307,13 +318,16 @@ function FormWizardList() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir Formulário</AlertDialogTitle>
+
             <AlertDialogDescription>
               Tem certeza que deseja excluir este formulário? Esta ação não pode
               ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
+
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
+
             <AlertDialogAction
               onClick={handleDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
@@ -339,7 +353,9 @@ function FormWizardList() {
                 <span className="font-mono rounded bg-muted px-2 py-0.5">
                   /{previewForm.slug}
                 </span>
+
                 <span>•</span>
+
                 <span>
                   {previewForm.steps.length} etapa
                   {previewForm.steps.length !== 1 ? 's' : ''}
@@ -353,12 +369,15 @@ function FormWizardList() {
                       <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
                         {stepIndex + 1}
                       </div>
+
                       <div className="flex-1">
                         <p className="text-sm font-semibold">{step.name}</p>
+
                         <p className="text-xs text-muted-foreground font-mono">
                           /{step.slug}
                         </p>
                       </div>
+
                       {step.backStepSlug && (
                         <Badge variant="outline" className="text-xs">
                           ← /{step.backStepSlug}
@@ -372,6 +391,7 @@ function FormWizardList() {
                           const Icon = elementIcons[element.type]
                           const category = getElementCategory(element.type)
                           const preview = getElementPreview(element)
+
                           return (
                             <div
                               key={element.id}
@@ -385,16 +405,19 @@ function FormWizardList() {
                               >
                                 {Icon && <Icon className="h-3.5 w-3.5" />}
                               </div>
+
                               <div className="flex-1 min-w-0">
                                 <span className="text-xs font-medium">
                                   {elementLabels[element.type] || element.type}
                                 </span>
+
                                 {preview && (
                                   <p className="text-xs text-muted-foreground truncate">
                                     {preview}
                                   </p>
                                 )}
                               </div>
+
                               <Badge
                                 variant="secondary"
                                 className={cn(

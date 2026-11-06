@@ -5,7 +5,7 @@ import { ClientSession } from '@/types/client-session'
 export async function getAccessToken(): Promise<string | null> {
   const session: ClientSession | null = await getServerSession(authOptions)
 
-  if (session && !session.error) {
+  if (session) {
     const accessTokenDecrypted = session.access_token
     return accessTokenDecrypted
   }
@@ -16,7 +16,7 @@ export async function getAccessToken(): Promise<string | null> {
 export async function getIdToken(): Promise<string | null> {
   const session: ClientSession | null = await getServerSession(authOptions)
 
-  if (session && !session.error) {
+  if (session) {
     const idTokenDecrypted = session.id_token
     return idTokenDecrypted
   }

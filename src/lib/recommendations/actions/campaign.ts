@@ -7,7 +7,7 @@ export function createCampaignActions({
 }: RecommendationActionContext): Pick<
   RecommendationStore,
   | 'addCampaign'
-  | 'deleteCampaign'
+  | 'removeCampaign'
   | 'addCampaignTarget'
   | 'removeCampaignTarget'
   | 'updateCampaignDescription'
@@ -15,10 +15,8 @@ export function createCampaignActions({
   return {
     addCampaign: (campaignId, description) =>
       set((state) => {
-        const currentCampaign =
-          state.data.recommendationRules.types.campaign.campaigns[campaignId]
-
-        if (currentCampaign) return state
+        if (state.data.recommendationRules.types.campaign.campaigns[campaignId])
+          return state
 
         const newData = {
           ...state.data,
@@ -30,10 +28,7 @@ export function createCampaignActions({
                 ...state.data.recommendationRules.types.campaign,
                 campaigns: {
                   ...state.data.recommendationRules.types.campaign.campaigns,
-                  [campaignId]: {
-                    description: description || '',
-                    targets: [],
-                  },
+                  [campaignId]: { description: description || '', targets: [] },
                 },
               },
             },
@@ -41,11 +36,10 @@ export function createCampaignActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
-    deleteCampaign: (campaignId) =>
+    removeCampaign: (campaignId) =>
       set((state) => {
         const newCampaigns = {
           ...state.data.recommendationRules.types.campaign.campaigns,
@@ -68,7 +62,6 @@ export function createCampaignActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
@@ -100,7 +93,6 @@ export function createCampaignActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
@@ -112,7 +104,7 @@ export function createCampaignActions({
         if (!currentCampaign) return state
 
         const newTargets = currentCampaign.targets.filter(
-          (_, i) => i !== targetIndex,
+          (_, index) => index !== targetIndex
         )
 
         const newData = {
@@ -136,7 +128,6 @@ export function createCampaignActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
@@ -168,7 +159,6 @@ export function createCampaignActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
   }

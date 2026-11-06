@@ -49,6 +49,7 @@ export function SlotsEditor({
       onAddSlot(newSlotId.trim(), newSlotConfig)
       setAddDialogOpen(false)
       setNewSlotId('')
+
       setNewSlotConfig({
         limit: 8,
         minItems: 4,
@@ -59,6 +60,7 @@ export function SlotsEditor({
 
   const moveCascadeUp = (slotId: string, index: number) => {
     const cascade = [...slots[slotId].cascade]
+
     if (index > 0) {
       const temp = cascade[index]
       cascade[index] = cascade[index - 1]
@@ -69,6 +71,7 @@ export function SlotsEditor({
 
   const moveCascadeDown = (slotId: string, index: number) => {
     const cascade = [...slots[slotId].cascade]
+
     if (index < cascade.length - 1) {
       const temp = cascade[index]
       cascade[index] = cascade[index + 1]
@@ -82,10 +85,12 @@ export function SlotsEditor({
       <div className="flex justify-between items-center">
         <div>
           <h3 className="text-lg font-semibold">Slots de Contexto</h3>
+
           <p className="text-sm text-slate-500">
             Configure os slots de exibição com suas cascatas de regras
           </p>
         </div>
+
         <Button
           onClick={() => setAddDialogOpen(true)}
           className="bg-indigo-600 hover:bg-indigo-700"
@@ -107,6 +112,7 @@ export function SlotsEditor({
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-base">{slotId}</CardTitle>
+
                   <Button
                     variant="ghost"
                     size="icon"
@@ -116,10 +122,12 @@ export function SlotsEditor({
                   </Button>
                 </div>
               </CardHeader>
+
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <Field>
                     <FieldLabel className="text-xs">Limite</FieldLabel>
+
                     <Input
                       type="number"
                       value={config.limit}
@@ -132,8 +140,10 @@ export function SlotsEditor({
                       min={1}
                     />
                   </Field>
+
                   <Field>
                     <FieldLabel className="text-xs">Mínimo</FieldLabel>
+
                     <Input
                       type="number"
                       value={config.minItems}
@@ -147,15 +157,18 @@ export function SlotsEditor({
                     />
                   </Field>
                 </div>
+
                 <div>
                   <FieldLabel className="text-xs mb-2 block">
                     Cascata de Regras (ordem de prioridade)
                   </FieldLabel>
+
                   <div className="space-y-1">
                     {config.cascade.map((item, index) => {
                       const option = CASCADE_OPTIONS.find(
-                        (o) => o.value === item,
+                        (o) => o.value === item
                       )
+
                       return (
                         <div
                           key={item}
@@ -171,6 +184,7 @@ export function SlotsEditor({
                             >
                               <ChevronUp className="h-3 w-3" />
                             </Button>
+
                             <Button
                               variant="ghost"
                               size="icon"
@@ -181,12 +195,15 @@ export function SlotsEditor({
                               <ChevronDown className="h-3 w-3" />
                             </Button>
                           </div>
+
                           <span className="text-xs font-medium text-slate-500 w-4">
                             {index + 1}.
                           </span>
+
                           <span className="flex-1 text-sm">
                             {option?.label || item}
                           </span>
+
                           <Button
                             variant="ghost"
                             size="icon"
@@ -195,7 +212,7 @@ export function SlotsEditor({
                               onUpdateSlot(slotId, {
                                 ...config,
                                 cascade: config.cascade.filter(
-                                  (c) => c !== item,
+                                  (c) => c !== item
                                 ),
                               })
                             }
@@ -206,6 +223,7 @@ export function SlotsEditor({
                       )
                     })}
                   </div>
+
                   <div className="mt-2">
                     <Select
                       onValueChange={(value) => {
@@ -219,9 +237,10 @@ export function SlotsEditor({
                       <SelectTrigger className="h-8 text-xs">
                         <SelectValue placeholder="Adicionar regra..." />
                       </SelectTrigger>
+
                       <SelectContent>
                         {CASCADE_OPTIONS.filter(
-                          (o) => !config.cascade.includes(o.value),
+                          (o) => !config.cascade.includes(o.value)
                         ).map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
@@ -241,22 +260,27 @@ export function SlotsEditor({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Adicionar Slot de Contexto</DialogTitle>
+
             <DialogDescription>
               Configure um novo slot para exibição de recomendações
             </DialogDescription>
           </DialogHeader>
+
           <FieldGroup className="gap-4">
             <Field>
               <FieldLabel>ID do Slot</FieldLabel>
+
               <Input
                 value={newSlotId}
                 onChange={(e) => setNewSlotId(e.target.value)}
                 placeholder="ex: pdp_related, home_trending"
               />
             </Field>
+
             <div className="grid grid-cols-2 gap-4">
               <Field>
                 <FieldLabel>Limite</FieldLabel>
+
                 <Input
                   type="number"
                   value={newSlotConfig.limit}
@@ -269,8 +293,10 @@ export function SlotsEditor({
                   min={1}
                 />
               </Field>
+
               <Field>
                 <FieldLabel>Mínimo</FieldLabel>
+
                 <Input
                   type="number"
                   value={newSlotConfig.minItems}
@@ -285,10 +311,12 @@ export function SlotsEditor({
               </Field>
             </div>
           </FieldGroup>
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setAddDialogOpen(false)}>
               Cancelar
             </Button>
+
             <Button
               onClick={handleAdd}
               disabled={!newSlotId.trim()}

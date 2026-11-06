@@ -240,7 +240,7 @@ interface FormState {
   resetForm: () => void
   loadForm: (form: Form) => void
   storageError: string | null
-  saveFormToStorage: () => boolean
+  saveFormToStorage: () => void
   exportForm: () => string
   importForm: (json: string) => boolean
 }
@@ -589,7 +589,7 @@ export const useFormStore = create<FormState>()(
         } catch {
           set({
             storageError:
-              'Não foi possível salvar: armazenamento indisponível, cheio ou dados inválidos.',
+              'Não foi possível salvar: armazenamento indisponível, cheio ou dados inválidos',
           })
 
           return false

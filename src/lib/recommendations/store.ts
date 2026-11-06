@@ -1,6 +1,7 @@
 'use client'
 
 import { create } from 'zustand'
+
 import type { RecommendationData } from './types'
 import type { RecommendationStore } from './store-types'
 import { createEmptyData } from './data-model'
@@ -23,11 +24,11 @@ import { createDefaultsActions } from './actions/defaults'
 export function createRecommendationStore(
   effects: RecommendationEffects = createRecommendationEffects(
     indexedDBRecommendationRepository,
-    browserRecommendationPreview,
-  ),
+    browserRecommendationPreview
+  )
 ) {
   return create<RecommendationStore>((set, get) => {
-    const saveChange = (data: RecommendationData) =>
+    const saveChange = (data: RecommendationData) => {
       effects.scheduleSave(
         data,
         () => get()._setSyncStatus('saving'),
@@ -35,8 +36,10 @@ export function createRecommendationStore(
           get()._setSyncStatus('synced')
           effects.publish(data)
         },
-        () => get()._setSyncStatus('error'),
+        () => get()._setSyncStatus('error')
       )
+    }
+
     const context = {
       set,
       get,
@@ -44,6 +47,7 @@ export function createRecommendationStore(
       load: effects.load,
       publish: effects.publish,
     }
+
     return {
       data: createEmptyData(),
       isDirty: false,

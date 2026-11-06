@@ -1,11 +1,11 @@
 # Code Reviewer Plug and Play
 
-O hub-ai consome o agente pessoal do [Code Reviewer Plug and Play](https://github.com/thataspinola/code-reviewer-plug-and-play). Não há instalação, skills nem ferramentas de revisão dentro do hub-ai.
+O hub-ai consome o agente pessoal do [Code Reviewer Plug and Play](https://gitportoprd.portoseguro.brasil/portocom/hub-vendas/common/code-reviewer-plug-and-play). Não há instalação, skills nem ferramentas de revisão dentro do hub-ai.
 
 No Windows/Git Bash, clone o projeto independente e execute:
 
 ```bash
-git clone https://github.com/thataspinola/code-reviewer-plug-and-play.git
+git clone https://gitportoprd.portoseguro.brasil/portocom/hub-vendas/common/code-reviewer-plug-and-play.git
 cd code-reviewer-plug-and-play
 npm run check
 node tools/install.cjs --dry-run

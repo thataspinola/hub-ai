@@ -13,23 +13,25 @@ export async function proxy(request: NextRequest) {
     ? request.nextUrl.pathname.slice(basePath.length) || '/'
     : request.nextUrl.pathname
 
-  // Auth endpoints, static assets and the informational catalog remain public.
+  // Auth endpoints, static assets and the information catalog remains public.
   if (
     pathname === '/code-reviewer' ||
     pathname.startsWith('/code-reviewer/') ||
-    pathname.startsWith('/api/auth/') ||
     pathname.startsWith('/_next/') ||
+    pathname.startsWith('/api/auth/') ||
     pathname === '/favicon.ico' ||
     pathname === '/background.jpg'
-  )
+  ) {
     return NextResponse.next()
+  }
 
   if (!requiresAdministrativeAuth()) return NextResponse.next()
 
-  if (!process.env.NEXTAUTH_SECRET)
+  if (!process.env.NEXTAUTH_SECRET) {
     return new NextResponse('Authentication configuration unavailable', {
       status: 503,
     })
+  }
 
   const token = await getToken({
     req: request,
@@ -37,8 +39,9 @@ export async function proxy(request: NextRequest) {
   })
 
   if (!canAccessAdministration(token, process.env.HUB_AI_ADMIN_ROLE)) {
-    if (pathname.startsWith('/api/'))
+    if (pathname.startsWith('/api/')) {
       return new NextResponse('Unauthorized', { status: 401 })
+    }
 
     const url = new URL(basePath + '/api/auth/signin', request.url)
     url.searchParams.set('callbackUrl', request.nextUrl.href)

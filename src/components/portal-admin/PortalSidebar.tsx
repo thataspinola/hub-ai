@@ -44,7 +44,7 @@ export const PortalSidebar: React.FC = () => {
   ]
 
   return (
-    <aside className="w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col h-screen sticky top-0">
+    <aside className="w-64 bg-slate-900 text-white shrink-0 flex flex-col h-screen sticky top-0">
       <div className="p-6 border-b border-slate-800">
         <h1 className="text-xl font-bold flex items-center gap-2">
           <span className="w-8 h-8 bg-indigo-500 rounded flex items-center justify-center text-white">
@@ -58,6 +58,7 @@ export const PortalSidebar: React.FC = () => {
         {navItems.map((item) => {
           const Icon = item.icon
           const isActive = pathname === item.href
+
           return (
             <Link
               key={item.id}
@@ -80,13 +81,16 @@ export const PortalSidebar: React.FC = () => {
           <div className="w-10 h-10 rounded-full bg-slate-700 overflow-hidden flex items-center justify-center ring-2 ring-slate-800">
             <span className="text-xs font-bold">JD</span>
           </div>
+
           <div className="overflow-hidden">
             <p className="text-sm font-medium truncate">Jane Doe</p>
+
             <p className="text-xs text-slate-400 truncate">
               Administrador do Sistema
             </p>
           </div>
         </div>
+
         <button className="mt-4 w-full flex items-center gap-2 px-4 py-2 text-xs text-slate-500 hover:text-white transition-colors">
           <LogOut size={14} />
           Sair do Sistema

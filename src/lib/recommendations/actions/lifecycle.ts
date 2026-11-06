@@ -22,7 +22,6 @@ export function createLifecycleActions({
 
         if (storedData) {
           const migratedData = migrateData(storedData)
-
           set({
             data: migratedData,
             isDirty: false,
@@ -40,16 +39,14 @@ export function createLifecycleActions({
       }
     },
 
-    setData: (data) => {
-      set({ data, isDirty: false })
-
+    setData: (data: RecommendationData) => {
+      set({ data, isDirty: true })
       saveChange(data)
     },
 
     resetData: () => {
       const newData = createEmptyData()
-      set({ data: newData, isDirty: false })
-
+      set({ data: newData, isDirty: true })
       saveChange(newData)
     },
 
@@ -58,14 +55,12 @@ export function createLifecycleActions({
         const parsed = JSON.parse(json) as Partial<RecommendationData>
 
         if (!parsed.catalog || !parsed.recommendationRules) {
-          throw new Error('Invalid data structure')
+          throw new Error('Invalid data format')
         }
 
         const migratedData = migrateData(parsed)
-        set({ data: migratedData, isDirty: false })
-
+        set({ data: migratedData, isDirty: true })
         saveChange(migratedData)
-
         return true
       } catch {
         return false

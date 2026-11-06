@@ -1,4 +1,4 @@
-import type { StoreApi } from 'zustand'
+import { StoreApi } from 'zustand'
 import type { RecommendationStore } from '../store-types'
 import type { RecommendationData } from '../types'
 import type { RecommendationEffects } from '../persistence'

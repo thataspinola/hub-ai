@@ -13,12 +13,7 @@ async function smoke() {
 
   const child = spawn(
     process.execPath,
-    [
-      path.join(
-        __dirname,
-        '../.next/standalone/server.js'
-      ),
-    ],
+    [path.join(__dirname, '../.next/standalone/server.js')],
     {
       env: { ...process.env, HOSTNAME: 'localhost', PORT: String(port) },
       stdio: ['ignore', 'pipe', 'pipe'],

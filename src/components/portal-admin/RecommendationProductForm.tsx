@@ -136,6 +136,7 @@ export function RecommendationProductForm({
           <FieldGroup className="gap-4">
             <Field>
               <FieldLabel>URL *</FieldLabel>
+
               <Input
                 value={formData.url || ''}
                 onChange={(e) =>
@@ -148,6 +149,7 @@ export function RecommendationProductForm({
 
             <Field>
               <FieldLabel>Nome *</FieldLabel>
+
               <Input
                 value={formData.name || ''}
                 onChange={(e) =>
@@ -160,6 +162,7 @@ export function RecommendationProductForm({
 
             <Field>
               <FieldLabel>Categoria *</FieldLabel>
+
               {showNewCategory ? (
                 <div className="flex gap-2">
                   <Input
@@ -168,6 +171,7 @@ export function RecommendationProductForm({
                     placeholder="Nome da nova categoria"
                     autoFocus
                   />
+
                   <Button
                     type="button"
                     onClick={confirmNewCategory}
@@ -176,6 +180,7 @@ export function RecommendationProductForm({
                   >
                     Confirmar
                   </Button>
+
                   <Button
                     type="button"
                     variant="outline"
@@ -193,6 +198,7 @@ export function RecommendationProductForm({
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione uma categoria" />
                   </SelectTrigger>
+
                   <SelectContent>
                     {categories.map((cat) => (
                       <SelectItem key={cat} value={cat}>
@@ -207,6 +213,7 @@ export function RecommendationProductForm({
 
             <Field>
               <FieldLabel>Descrição</FieldLabel>
+
               <Textarea
                 value={formData.description || ''}
                 onChange={(e) =>
@@ -222,6 +229,7 @@ export function RecommendationProductForm({
 
             <Field>
               <FieldLabel>URL da Imagem</FieldLabel>
+
               <Input
                 value={formData.imageUrl || ''}
                 onChange={(e) =>
@@ -236,9 +244,11 @@ export function RecommendationProductForm({
               <Label className="text-sm font-medium mb-3 block">
                 Preço (opcional)
               </Label>
+
               <div className="grid grid-cols-3 gap-3">
                 <Field>
                   <FieldLabel className="text-xs">Prefixo</FieldLabel>
+
                   <Input
                     value={formData.price?.prefix || ''}
                     onChange={(e) =>
@@ -255,8 +265,10 @@ export function RecommendationProductForm({
                     placeholder="A partir de"
                   />
                 </Field>
+
                 <Field>
                   <FieldLabel className="text-xs">Valor</FieldLabel>
+
                   <Input
                     type="number"
                     step="0.01"
@@ -275,8 +287,10 @@ export function RecommendationProductForm({
                     placeholder="0.00"
                   />
                 </Field>
+
                 <Field>
                   <FieldLabel className="text-xs">Moeda</FieldLabel>
+
                   <Input
                     value={formData.price?.currency || 'BRL'}
                     onChange={(e) =>
@@ -301,9 +315,11 @@ export function RecommendationProductForm({
               <Label className="text-sm font-medium mb-3 block">
                 CTA (opcional)
               </Label>
+
               <div className="grid grid-cols-2 gap-3">
                 <Field>
                   <FieldLabel className="text-xs">Texto</FieldLabel>
+
                   <Input
                     value={formData.cta?.text || ''}
                     onChange={(e) =>
@@ -318,8 +334,10 @@ export function RecommendationProductForm({
                     placeholder="Agendar"
                   />
                 </Field>
+
                 <Field>
                   <FieldLabel className="text-xs">Estilo</FieldLabel>
+
                   <Select
                     value={formData.cta?.style || 'primary'}
                     onValueChange={(value) =>
@@ -335,6 +353,7 @@ export function RecommendationProductForm({
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
+
                     <SelectContent>
                       {CTA_STYLES.map((style) => (
                         <SelectItem key={style.value} value={style.value}>
@@ -387,6 +406,7 @@ export function RecommendationProductForm({
                   placeholder="Texto do badge"
                   className="flex-1"
                 />
+
                 <Select
                   value={newBadgeVariant}
                   onValueChange={(v) =>
@@ -396,6 +416,7 @@ export function RecommendationProductForm({
                   <SelectTrigger className="w-32">
                     <SelectValue />
                   </SelectTrigger>
+
                   <SelectContent>
                     {BADGE_VARIANTS.map((v) => (
                       <SelectItem key={v.value} value={v.value}>
@@ -404,6 +425,7 @@ export function RecommendationProductForm({
                     ))}
                   </SelectContent>
                 </Select>
+
                 <Button
                   type="button"
                   variant="outline"
@@ -424,6 +446,7 @@ export function RecommendationProductForm({
             >
               Cancelar
             </Button>
+
             <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700">
               {isEditing ? 'Salvar' : 'Adicionar'}
             </Button>

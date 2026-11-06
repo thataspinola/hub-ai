@@ -92,6 +92,7 @@ function FeatureFlagsContent() {
       )
     } else {
       const id = crypto.randomUUID()
+
       const flag: FeatureFlag = {
         id,
         name: newFlag.name || 'Nova Flag',
@@ -119,6 +120,7 @@ function FeatureFlagsContent() {
   const closeModal = () => {
     setIsModalOpen(false)
     setEditingId(null)
+
     setNewFlag({
       name: '',
       description: '',
@@ -164,15 +166,18 @@ function FeatureFlagsContent() {
             ambientes.
           </p>
         </div>
+
         <div className="flex items-center gap-3">
           <div className="flex items-center bg-white border border-slate-200 rounded-lg p-1 shadow-sm">
             <button className="px-4 py-1.5 text-sm font-medium rounded-md bg-indigo-50 text-indigo-600">
               Staging
             </button>
+
             <button className="px-4 py-1.5 text-sm font-medium text-slate-500 hover:text-slate-700">
               Produção
             </button>
           </div>
+
           <button
             onClick={() => setIsModalOpen(true)}
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 shadow-lg shadow-indigo-200"
@@ -190,6 +195,7 @@ function FeatureFlagsContent() {
               className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
               size={18}
             />
+
             <input
               type="text"
               value={searchQuery}
@@ -198,6 +204,7 @@ function FeatureFlagsContent() {
               className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm"
             />
           </div>
+
           <div className="flex gap-2">
             <select
               value={statusFilter}
@@ -218,23 +225,29 @@ function FeatureFlagsContent() {
                 <th className="py-4 px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   Nome da Funcionalidade
                 </th>
+
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   Chave
                 </th>
+
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   Status
                 </th>
+
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   Tráfego %
                 </th>
+
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   Última Modificação
                 </th>
+
                 <th className="relative py-4 px-6 text-right">
                   <span className="sr-only">Ações</span>
                 </th>
               </tr>
             </thead>
+
             <tbody className="divide-y divide-slate-200 bg-white">
               <AnimatePresence mode="popLayout">
                 {filteredFlags.map((flag) => (
@@ -250,15 +263,18 @@ function FeatureFlagsContent() {
                         <div className="font-bold text-slate-900">
                           {flag.name}
                         </div>
+
                         <div className="text-xs text-slate-500 mt-0.5">
                           {flag.description}
                         </div>
                       </td>
+
                       <td className="px-6 py-4">
                         <span className="text-xs font-mono text-slate-600 bg-slate-100 px-2 py-1 rounded border border-slate-200">
                           {flag.key}
                         </span>
                       </td>
+
                       <td className="px-6 py-4">
                         <span
                           className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
@@ -272,12 +288,15 @@ function FeatureFlagsContent() {
                           {flag.enabled ? 'Ativado' : flag.status}
                         </span>
                       </td>
+
                       <td className="px-6 py-4 text-sm text-slate-500 font-medium">
                         {flag.traffic}
                       </td>
+
                       <td className="px-6 py-4 text-sm text-slate-400">
                         {flag.lastModified}
                       </td>
+
                       <td className="py-4 px-6 text-right">
                         <div className="flex items-center justify-end gap-3">
                           <button
@@ -291,6 +310,7 @@ function FeatureFlagsContent() {
                           >
                             <Code size={16} />
                           </button>
+
                           <button
                             onClick={() => openEditModal(flag)}
                             className="p-1.5 text-slate-300 hover:text-indigo-600 hover:bg-indigo-50 rounded-md transition-all"
@@ -298,6 +318,7 @@ function FeatureFlagsContent() {
                           >
                             <Edit2 size={16} />
                           </button>
+
                           <button
                             onClick={() => toggleFlag(flag.id)}
                             className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${
@@ -310,6 +331,7 @@ function FeatureFlagsContent() {
                               }`}
                             />
                           </button>
+
                           <button
                             onClick={() => setDeleteConfirmId(flag.id)}
                             className="p-1.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-md transition-all"
@@ -330,6 +352,7 @@ function FeatureFlagsContent() {
                               <p className="text-[10px] font-bold text-slate-500 uppercase">
                                 Excluir?
                               </p>
+
                               <div className="flex gap-1">
                                 <button
                                   onClick={() => setDeleteConfirmId(null)}
@@ -337,6 +360,7 @@ function FeatureFlagsContent() {
                                 >
                                   <X size={14} />
                                 </button>
+
                                 <button
                                   onClick={() => handleDeleteFlag(flag.id)}
                                   className="p-1 text-red-500 hover:text-red-700"
@@ -349,6 +373,7 @@ function FeatureFlagsContent() {
                         </AnimatePresence>
                       </td>
                     </motion.tr>
+
                     {showJsonId === flag.id && (
                       <motion.tr
                         initial={{ opacity: 0, height: 0 }}
@@ -365,12 +390,14 @@ function FeatureFlagsContent() {
                   </React.Fragment>
                 ))}
               </AnimatePresence>
+
               {filteredFlags.length === 0 && (
                 <tr>
                   <td colSpan={6} className="py-12 text-center">
                     <div className="flex flex-col items-center gap-2 text-slate-400">
                       <AlertCircle size={40} strokeWidth={1.5} />
                       <p className="font-medium">Nenhuma flag encontrada</p>
+
                       <p className="text-xs">
                         Tente ajustar seus filtros ou busca
                       </p>
@@ -394,6 +421,7 @@ function FeatureFlagsContent() {
               onClick={closeModal}
               className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
             />
+
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -404,6 +432,7 @@ function FeatureFlagsContent() {
                 <h3 className="text-xl font-bold text-slate-900">
                   {editingId ? 'Editar Feature Flag' : 'Nova Feature Flag'}
                 </h3>
+
                 <button
                   onClick={closeModal}
                   className="text-slate-400 hover:text-slate-600"
@@ -411,12 +440,14 @@ function FeatureFlagsContent() {
                   <X size={24} />
                 </button>
               </div>
+
               <form onSubmit={handleSaveFlag} className="space-y-5">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                       Nome
                     </label>
+
                     <input
                       required
                       type="text"
@@ -428,10 +459,12 @@ function FeatureFlagsContent() {
                       className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm"
                     />
                   </div>
+
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                       Chave (Key)
                     </label>
+
                     <input
                       required
                       type="text"
@@ -444,10 +477,12 @@ function FeatureFlagsContent() {
                     />
                   </div>
                 </div>
+
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                     Descrição
                   </label>
+
                   <textarea
                     required
                     value={newFlag.description}
@@ -458,11 +493,13 @@ function FeatureFlagsContent() {
                     className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm h-20 resize-none"
                   />
                 </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                       Tráfego (%)
                     </label>
+
                     <input
                       type="text"
                       value={newFlag.traffic}
@@ -473,10 +510,12 @@ function FeatureFlagsContent() {
                       className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm"
                     />
                   </div>
+
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                       Responsável
                     </label>
+
                     <input
                       type="text"
                       value={newFlag.owner}
@@ -488,6 +527,7 @@ function FeatureFlagsContent() {
                     />
                   </div>
                 </div>
+
                 <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
                   <div className="flex items-center gap-3">
                     <div
@@ -495,10 +535,12 @@ function FeatureFlagsContent() {
                     >
                       <Check size={18} />
                     </div>
+
                     <div>
                       <p className="text-sm font-bold text-slate-900">
                         Estado Inicial
                       </p>
+
                       <p className="text-xs text-slate-500">
                         {newFlag.enabled
                           ? 'Ativado por padrão'
@@ -506,6 +548,7 @@ function FeatureFlagsContent() {
                       </p>
                     </div>
                   </div>
+
                   <button
                     type="button"
                     onClick={() =>
@@ -518,6 +561,7 @@ function FeatureFlagsContent() {
                     />
                   </button>
                 </div>
+
                 <div className="flex gap-3 pt-2">
                   <button
                     type="button"
@@ -526,6 +570,7 @@ function FeatureFlagsContent() {
                   >
                     Cancelar
                   </button>
+
                   <button
                     type="submit"
                     className="flex-1 bg-indigo-600 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all"

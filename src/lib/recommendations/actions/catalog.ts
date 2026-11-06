@@ -8,15 +8,15 @@ export function createCatalogActions({
   RecommendationStore,
   | 'addProduct'
   | 'updateProduct'
-  | 'deleteProduct'
+  | 'removeProduct'
   | 'addCategory'
-  | 'deleteCategory'
+  | 'removeCategory'
 > {
   return {
     addProduct: (product) =>
       set((state) => {
         const newCategories = state.data.catalog.categories.includes(
-          product.category,
+          product.category
         )
           ? state.data.catalog.categories
           : [...state.data.catalog.categories, product.category]
@@ -30,7 +30,6 @@ export function createCatalogActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
@@ -41,17 +40,16 @@ export function createCatalogActions({
           catalog: {
             ...state.data.catalog,
             products: state.data.catalog.products.map((p) =>
-              p.url === url ? product : p,
+              p.url === url ? product : p
             ),
           },
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
-    deleteProduct: (url) =>
+    removeProduct: (url) =>
       set((state) => {
         const newData = {
           ...state.data,
@@ -62,7 +60,6 @@ export function createCatalogActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
@@ -77,24 +74,22 @@ export function createCatalogActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
-    deleteCategory: (category) =>
+    removeCategory: (category) =>
       set((state) => {
         const newData = {
           ...state.data,
           catalog: {
             ...state.data.catalog,
             categories: state.data.catalog.categories.filter(
-              (c) => c !== category,
+              (c) => c !== category
             ),
           },
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
   }

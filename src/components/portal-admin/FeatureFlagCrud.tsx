@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import type { FlagCrudStorage } from '@/lib/feature-flags/crud-storage'
 import {
+  ApiFeatureFlagStorage,
   LocalStorageCrudStorage,
   syncProviderStorage,
 } from '@/lib/feature-flags/crud-storage'
@@ -41,8 +42,9 @@ function FeatureFlagCrudContent({
   storage?: FlagCrudStorage
 }) {
   const [storage] = useState<FlagCrudStorage>(
-    () => storageProp ?? new LocalStorageCrudStorage(),
+    () => storageProp ?? new LocalStorageCrudStorage()
   )
+
   const {
     store,
     activeTab,
@@ -64,11 +66,12 @@ function FeatureFlagCrudContent({
     filteredMulti,
     filteredAttr,
     toggleBoolean,
-    toggleMulti,
-    toggleAttr,
+    toggleMultivariant,
+    toggleAttribute,
     handleDelete,
     relativeTime,
   } = useFlagCrud(storage, syncProviderStorage)
+
   const tabs: {
     id: Tab
     label: string
@@ -94,11 +97,12 @@ function FeatureFlagCrudContent({
       count: store.attributeFlags.length,
     },
   ]
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="flex-1 p-8 space-y-8 bg-slate-50 overflow-y-auto"
+      className="flex-1 overflow-y-auto bg-slate-50 p-8"
     >
       {/* Header */}
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -106,10 +110,12 @@ function FeatureFlagCrudContent({
           <h2 className="text-2xl font-bold text-slate-900">
             Gerenciamento de Feature Flags
           </h2>
+
           <p className="text-slate-500 mt-1">
             Administre flags booleanas, multivariantes e com atributos.
           </p>
         </div>
+
         <button
           onClick={() =>
             setModal(
@@ -117,7 +123,7 @@ function FeatureFlagCrudContent({
                 ? { type: 'boolean', editing: null }
                 : activeTab === 'multivariant'
                   ? { type: 'multivariant', editing: null }
-                  : { type: 'attributes', editing: null },
+                  : { type: 'attributes', editing: null }
             )
           }
           className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 shadow-lg shadow-indigo-200 self-start md:self-auto"
@@ -148,6 +154,7 @@ function FeatureFlagCrudContent({
               >
                 {tab.icon}
                 {tab.label}
+
                 <span
                   className={`ml-1 text-xs px-1.5 py-0.5 rounded-full font-bold ${
                     activeTab === tab.id
@@ -160,6 +167,7 @@ function FeatureFlagCrudContent({
               </button>
             ))}
           </div>
+
           <button
             onClick={() => setShowHelp(!showHelp)}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all border ${
@@ -171,6 +179,7 @@ function FeatureFlagCrudContent({
           >
             <HelpCircle size={16} />
             <span className="hidden sm:inline">Como funciona?</span>
+
             <ChevronDown
               size={14}
               className={`transition-transform ${showHelp ? 'rotate-180' : ''}`}
@@ -203,6 +212,7 @@ function FeatureFlagCrudContent({
               className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
               size={18}
             />
+
             <input
               type="text"
               value={searchQuery}
@@ -211,6 +221,7 @@ function FeatureFlagCrudContent({
               className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm"
             />
           </div>
+
           <select
             value={statusFilter}
             onChange={(e) =>
@@ -256,11 +267,13 @@ function FeatureFlagCrudContent({
                     <td className="px-6 py-4 text-sm text-slate-500">
                       {flag.owner}
                     </td>
+
                     <td className="px-6 py-4 text-sm text-slate-400">
                       {relativeTime(flag.updatedAt)}
                     </td>
                   </>
                 }
+                colSpan={0}
               />
             )}
           />
@@ -285,7 +298,7 @@ function FeatureFlagCrudContent({
                 flag={flag}
                 showJsonId={showJsonId}
                 deleteConfirmId={deleteConfirmId}
-                onToggle={() => toggleMulti(flag.id)}
+                onToggle={() => toggleMultivariant(flag.id)}
                 onEdit={() => setModal({ type: 'multivariant', editing: flag })}
                 onShowJson={() =>
                   setShowJsonId(showJsonId === flag.id ? null : flag.id)
@@ -302,9 +315,11 @@ function FeatureFlagCrudContent({
                         {flag.valueType}
                       </span>
                     </td>
+
                     <td className="px-6 py-4 text-sm font-mono text-slate-600">
                       {flag.value}
                     </td>
+
                     <td className="px-6 py-4 text-sm text-slate-500">
                       {flag.variants.length} variantes
                     </td>
@@ -333,7 +348,7 @@ function FeatureFlagCrudContent({
                 flag={flag}
                 showJsonId={showJsonId}
                 deleteConfirmId={deleteConfirmId}
-                onToggle={() => toggleAttr(flag.id)}
+                onToggle={() => toggleAttribute(flag.id)}
                 onEdit={() => setModal({ type: 'attributes', editing: flag })}
                 onShowJson={() =>
                   setShowJsonId(showJsonId === flag.id ? null : flag.id)
@@ -356,6 +371,7 @@ function FeatureFlagCrudContent({
                               {k}: {String(v)}
                             </span>
                           ))}
+
                         {Object.keys(flag.attributes).length > 3 && (
                           <span className="text-[10px] text-slate-400">
                             +{Object.keys(flag.attributes).length - 3}
@@ -363,11 +379,13 @@ function FeatureFlagCrudContent({
                         )}
                       </div>
                     </td>
+
                     <td className="px-6 py-4 text-sm text-slate-500">
                       {flag.owner}
                     </td>
                   </>
                 }
+                colSpan={0}
               />
             )}
           />
@@ -376,55 +394,64 @@ function FeatureFlagCrudContent({
 
       {/* Modals */}
       <AnimatePresence>
-        {modal?.type === 'boolean' && (
-          <BooleanModal
-            editing={modal.editing}
+        {modal && (
+          <FlagModal
+            document={selectedProject}
+            modal={modal}
             onClose={() => setModal(null)}
             onSave={(flag) => {
               const next = { ...store }
+
               if (modal.editing) {
                 next.booleanFlags = store.booleanFlags.map((f) =>
-                  f.id === flag.id ? flag : f,
+                  f.id === flag.id ? flag : f
                 )
               } else {
                 next.booleanFlags = [...store.booleanFlags, flag]
               }
+
               persist(next)
               setModal(null)
             }}
           />
         )}
+
         {modal?.type === 'multivariant' && (
           <MultivariantModal
             editing={modal.editing}
             onClose={() => setModal(null)}
             onSave={(flag) => {
               const next = { ...store }
+
               if (modal.editing) {
                 next.multivariantFlags = store.multivariantFlags.map((f) =>
-                  f.id === flag.id ? flag : f,
+                  f.id === flag.id ? flag : f
                 )
               } else {
                 next.multivariantFlags = [...store.multivariantFlags, flag]
               }
+
               persist(next)
               setModal(null)
             }}
           />
         )}
+
         {modal?.type === 'attributes' && (
           <AttributeModal
             editing={modal.editing}
             onClose={() => setModal(null)}
             onSave={(flag) => {
               const next = { ...store }
+
               if (modal.editing) {
                 next.attributeFlags = store.attributeFlags.map((f) =>
-                  f.id === flag.id ? flag : f,
+                  f.id === flag.id ? flag : f
                 )
               } else {
                 next.attributeFlags = [...store.attributeFlags, flag]
               }
+
               persist(next)
               setModal(null)
             }}

@@ -54,7 +54,8 @@ export function Toolbar() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (saveFormToStorage() !== false) setLastSaved(new Date())
+      saveFormToStorage()
+      if (!useFormStore.getState().storageError) setLastSaved(new Date())
     }, 5000)
 
     return () => clearInterval(interval)
@@ -96,7 +97,8 @@ export function Toolbar() {
 
   const handleSave = useCallback(() => {
     setIsSaving(true)
-    if (saveFormToStorage() !== false) setLastSaved(new Date())
+    saveFormToStorage()
+    setLastSaved(new Date())
     setTimeout(() => setIsSaving(false), 500)
   }, [saveFormToStorage])
 
@@ -228,9 +230,19 @@ export function Toolbar() {
         </Button>
 
         <Dialog open={showPreview} onOpenChange={setShowPreview}>
-          <DialogTrigger asChild><Button variant="outline" size="sm"><Eye className="mr-1 h-4 w-4" />Visualizar formulário</Button></DialogTrigger>
+          <DialogTrigger asChild>
+            <Button variant="outline" size="sm">
+              <Eye className="mr-1 h-4 w-4" />
+              Visualizar formulário
+            </Button>
+          </DialogTrigger>
           <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
-            <DialogHeader><DialogTitle>Pré-visualização da jornada</DialogTitle><DialogDescription>Teste a aparência e navegue pelas etapas sem enviar dados.</DialogDescription></DialogHeader>
+            <DialogHeader>
+              <DialogTitle>Pré-visualização da jornada</DialogTitle>
+              <DialogDescription>
+                Teste a aparência e navegue pelas etapas sem enviar dados.
+              </DialogDescription>
+            </DialogHeader>
             <FormPreview form={form} />
           </DialogContent>
         </Dialog>

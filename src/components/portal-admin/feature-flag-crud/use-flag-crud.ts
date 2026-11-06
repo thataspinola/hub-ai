@@ -9,26 +9,20 @@ import type { Tab, ModalMode } from './types'
 
 export function useFlagCrud(
   storage: FlagCrudStorage,
-  syncProviderStorage: (store: FlagStore) => void,
+  syncProviderStorage: (store: FlagStore) => void
 ) {
   const [store, setStore] = useState<FlagStore>(() => storage.load())
-
   const [activeTab, setActiveTab] = useState<Tab>('boolean')
-
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState<string>('')
 
   const [statusFilter, setStatusFilter] = useState<
     'all' | 'active' | 'inactive'
   >('all')
 
-  const [modal, setModal] = useState<ModalMode>(null)
-
+  const [modal, setModal] = useState<ModalMode | null>(null)
   const [showJsonId, setShowJsonId] = useState<string | null>(null)
-
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
-
-  const [showHelp, setShowHelp] = useState(false)
-
+  const [showHelp, setShowHelp] = useState<boolean>(false)
   const [clock, setClock] = useState(() => Date.now())
 
   useEffect(() => {
@@ -42,7 +36,7 @@ export function useFlagCrud(
       storage.save(next)
       syncProviderStorage(next)
     },
-    [storage, syncProviderStorage],
+    [storage, syncProviderStorage]
   )
 
   const matchesFilter = useCallback(
@@ -51,8 +45,8 @@ export function useFlagCrud(
 
       const matchSearch =
         !q ||
-        flag.name.toLowerCase().includes(q) ||
-        flag.key.toLowerCase().includes(q)
+        flag.key.toLowerCase().includes(q) ||
+        flag.name.toLowerCase().includes(q)
 
       const matchStatus =
         statusFilter === 'all' ||
@@ -61,22 +55,22 @@ export function useFlagCrud(
 
       return matchSearch && matchStatus
     },
-    [searchQuery, statusFilter],
+    [searchQuery, statusFilter]
   )
 
   const filteredBoolean = useMemo(
     () => store.booleanFlags.filter(matchesFilter),
-    [store.booleanFlags, matchesFilter],
+    [store.booleanFlags, matchesFilter]
   )
 
   const filteredMulti = useMemo(
     () => store.multivariantFlags.filter(matchesFilter),
-    [store.multivariantFlags, matchesFilter],
+    [store.multivariantFlags, matchesFilter]
   )
 
   const filteredAttr = useMemo(
     () => store.attributeFlags.filter(matchesFilter),
-    [store.attributeFlags, matchesFilter],
+    [store.attributeFlags, matchesFilter]
   )
 
   function toggleBoolean(id: string) {
@@ -84,30 +78,42 @@ export function useFlagCrud(
       ...store,
       booleanFlags: store.booleanFlags.map((f) =>
         f.id === id
-          ? { ...f, enabled: !f.enabled, updatedAt: new Date().toISOString() }
-          : f,
+          ? {
+              ...f,
+              enabled: !f.enabled,
+              updatedAt: new Date().toISOString(),
+            }
+          : f
       ),
     })
   }
 
-  function toggleMulti(id: string) {
+  function toggleMultivariant(id: string) {
     persist({
       ...store,
       multivariantFlags: store.multivariantFlags.map((f) =>
         f.id === id
-          ? { ...f, enabled: !f.enabled, updatedAt: new Date().toISOString() }
-          : f,
+          ? {
+              ...f,
+              enabled: !f.enabled,
+              updatedAt: new Date().toISOString(),
+            }
+          : f
       ),
     })
   }
 
-  function toggleAttr(id: string) {
+  function toggleAttribute(id: string) {
     persist({
       ...store,
       attributeFlags: store.attributeFlags.map((f) =>
         f.id === id
-          ? { ...f, enabled: !f.enabled, updatedAt: new Date().toISOString() }
-          : f,
+          ? {
+              ...f,
+              enabled: !f.enabled,
+              updatedAt: new Date().toISOString(),
+            }
+          : f
       ),
     })
   }
@@ -115,27 +121,27 @@ export function useFlagCrud(
   function handleDelete(id: string, tab: Tab) {
     const next = { ...store }
 
-    if (tab === 'boolean')
-      next.booleanFlags = store.booleanFlags.filter((f) => f.id !== id)
-    else if (tab === 'multivariant')
-      next.multivariantFlags = store.multivariantFlags.filter(
-        (f) => f.id !== id,
-      )
-    else next.attributeFlags = store.attributeFlags.filter((f) => f.id !== id)
+    if (tab === 'boolean') {
+      next.booleanFlags = next.booleanFlags.filter((f) => f.id !== id)
+    } else if (tab === 'multivariant') {
+      next.multivariantFlags = next.multivariantFlags.filter((f) => f.id !== id)
+    } else {
+      next.attributeFlags = next.attributeFlags.filter((f) => f.id !== id)
+    }
 
     persist(next)
-    setDeleteConfirmId(null)
+    setDeleteConfirmId(id)
   }
 
   function relativeTime(iso: string) {
     const diff = clock - new Date(iso).getTime()
     const minutes = Math.floor(diff / 60000)
     if (minutes < 1) return 'Agora'
-    if (minutes < 60) return `${minutes}m atrás`
+    if (minutes < 60) return `${minutes} minutos atrás`
     const hours = Math.floor(minutes / 60)
-    if (hours < 24) return `${hours}h atrás`
+    if (hours < 24) return `${hours} horas atrás`
     const days = Math.floor(hours / 24)
-    return `${days}d atrás`
+    return `${days} dias atrás`
   }
 
   return {
@@ -159,8 +165,8 @@ export function useFlagCrud(
     filteredMulti,
     filteredAttr,
     toggleBoolean,
-    toggleMulti,
-    toggleAttr,
+    toggleMultivariant,
+    toggleAttribute,
     handleDelete,
     relativeTime,
   }

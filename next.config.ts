@@ -6,7 +6,14 @@ const nextConfig: NextConfig = {
   basePath: '/react-ssr-corp-hubv-painel-administrativo',
   async redirects() {
     return process.env.NODE_ENV === 'development'
-      ? [{ source: '/', destination: '/react-ssr-corp-hubv-painel-administrativo', permanent: false, basePath: false }]
+      ? [
+          {
+            source: '/',
+            destination: '/react-ssr-corp-hubv-painel-administrativo',
+            permanent: false,
+            basePath: false,
+          },
+        ]
       : []
   },
   images: {

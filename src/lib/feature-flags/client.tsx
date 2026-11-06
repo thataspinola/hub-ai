@@ -57,7 +57,7 @@ export function FeatureFlagProvider({
         ? {
             async fetchFlags() {
               const response = await fetch(
-                '/react-ssr-corp-hubv-painel-administrativo/api/feature-flags',
+                '/react-ssr-corp-hubv-painel-administrativo/feature-flags',
                 { cache: 'no-store', signal: AbortSignal.timeout(5000) }
               )
               if (!response.ok) throw new Error('Feature flags unavailable')

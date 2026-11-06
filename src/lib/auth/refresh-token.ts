@@ -1,7 +1,10 @@
 import type { JWT } from 'next-auth/jwt'
 import { createHash } from 'node:crypto'
 
-const pending = new Map<string, { expires: number; promise: Promise<JWT> }>()
+const pending = new Map<
+  string,
+  { expires: number; promise: Promise<JWT | null> }
+>()
 
 const failed = (token: JWT): JWT => ({
   ...token,
@@ -18,8 +21,9 @@ export async function refreshAccessToken(
     typeof token.refresh_token !== 'string' ||
     !config.clientId ||
     !config.clientSecret
-  )
+  ) {
     return failed(token)
+  }
 
   let endpoint: URL
 
@@ -33,16 +37,20 @@ export async function refreshAccessToken(
       !(
         process.env.NODE_ENV !== 'production' &&
         endpoint.protocol === 'http:' &&
-        endpoint.hostname === 'localhost'
+        endpoint
       )
-    )
+    ) {
       return failed(token)
+    }
   } catch {
     return failed(token)
   }
 
-  for (const [key, entry] of pending)
-    if (entry.expires <= now) pending.delete(key)
+  for (const [key, entry] of pending) {
+    if (entry.expires <= now) {
+      pending.delete(key)
+    }
+  }
 
   const key = createHash('sha256')
     .update(
@@ -65,7 +73,9 @@ export async function refreshAccessToken(
         redirect: 'error',
         cache: 'no-store',
         signal: AbortSignal.timeout(5000),
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
         body: new URLSearchParams({
           grant_type: 'refresh_token',
           refresh_token: token.refresh_token as string,
@@ -83,8 +93,9 @@ export async function refreshAccessToken(
         typeof result.expires_in !== 'number' ||
         result.expires_in <= 0 ||
         !Number.isFinite(result.expires_in)
-      )
+      ) {
         return failed(token)
+      }
 
       return {
         ...token,

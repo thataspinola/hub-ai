@@ -37,7 +37,7 @@ O Systasi e um sistema de recomendacao de produtos que funciona de forma totalme
 
 ## Arquitetura
 
-```
+```bash
 ┌─────────────────────────────────────────────────────────────┐
 │                    PAINEL ADMINISTRATIVO                     │
 │  (Gerencia catalogo e regras, persiste em IndexedDB)        │
@@ -331,7 +331,7 @@ Recomendacoes personalizadas por campanha de marketing.
 
 O widget captura automaticamente o parametro `utm_campaign` da URL:
 
-```
+```bash
 https://site.com/pagina?utm_campaign=black-friday-2024
 ```
 
@@ -401,7 +401,7 @@ Slots permitem configurar diferentes comportamentos por pagina/contexto.
 
 A cascata define a ordem de prioridade das estrategias:
 
-```
+```bash
 ┌─────────────────┐
 │ affinity_manual │ ← Primeira tentativa
 └────────┬────────┘
@@ -438,7 +438,7 @@ O painel utiliza **IndexedDB** para persistencia:
 - Persiste entre sessoes e atualizacoes de pagina
 - Nao requer backend ou banco de dados
 
-```
+```bash
 ┌─────────────────────────────────────────┐
 │           PAINEL ADMIN                   │
 │  ┌─────────────────────────────────┐    │
@@ -491,7 +491,7 @@ O painel utiliza **IndexedDB** para persistencia:
 
 O painel sincroniza automaticamente com abas de preview abertas via `BroadcastChannel`:
 
-```
+```bash
 ┌─────────────┐    BroadcastChannel    ┌─────────────┐
 │ Painel Admin│ ──────────────────────▶│   Preview   │
 │             │                        │             │

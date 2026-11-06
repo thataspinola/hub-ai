@@ -61,6 +61,7 @@ export function RecommendationImportExport() {
 
   const handleCopyToClipboard = async () => {
     const jsonString = exportData()
+
     try {
       await navigator.clipboard.writeText(jsonString)
       setCopied(true)
@@ -81,6 +82,7 @@ export function RecommendationImportExport() {
 
     try {
       const success = importData(importText)
+
       if (success) {
         setImportDialogOpen(false)
         setImportText('')
@@ -100,16 +102,18 @@ export function RecommendationImportExport() {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
-
     const reader = new FileReader()
+
     reader.onload = (e) => {
       const text = e.target?.result as string
       setImportText(text)
       setImportDialogOpen(true)
     }
+
     reader.onerror = () => {
       toast.error('Erro ao ler o arquivo')
     }
+
     reader.readAsText(file)
 
     if (fileInputRef.current) {
@@ -124,6 +128,7 @@ export function RecommendationImportExport() {
   }
 
   const jsonPreview = exportData()
+
   const stats = {
     products: data.catalog.products.length,
     categories: data.catalog.categories.length,
@@ -149,32 +154,38 @@ export function RecommendationImportExport() {
             <CardTitle className="text-2xl">{stats.products}</CardTitle>
           </CardHeader>
         </Card>
+
         <Card className="border-slate-200 shadow-sm">
           <CardHeader className="pb-2">
             <CardDescription>Categorias</CardDescription>
             <CardTitle className="text-2xl">{stats.categories}</CardTitle>
           </CardHeader>
         </Card>
+
         <Card className="border-slate-200 shadow-sm">
           <CardHeader className="pb-2">
             <CardDescription>Afinidade (Cat.)</CardDescription>
+
             <CardTitle className="text-2xl">
               {stats.affinityByCategory}
             </CardTitle>
           </CardHeader>
         </Card>
+
         <Card className="border-slate-200 shadow-sm">
           <CardHeader className="pb-2">
             <CardDescription>Afinidade (URL)</CardDescription>
             <CardTitle className="text-2xl">{stats.affinityByUrl}</CardTitle>
           </CardHeader>
         </Card>
+
         <Card className="border-slate-200 shadow-sm">
           <CardHeader className="pb-2">
             <CardDescription>Ranking Global</CardDescription>
             <CardTitle className="text-2xl">{stats.globalRanking}</CardTitle>
           </CardHeader>
         </Card>
+
         <Card className="border-slate-200 shadow-sm">
           <CardHeader className="pb-2">
             <CardDescription>Slots</CardDescription>
@@ -191,10 +202,12 @@ export function RecommendationImportExport() {
               <Download className="h-5 w-5" />
               Exportar Dados
             </CardTitle>
+
             <CardDescription>
               Exporte os dados de configuração para um arquivo JSON
             </CardDescription>
           </CardHeader>
+
           <CardContent className="space-y-4">
             <div className="flex flex-wrap gap-3">
               <Button
@@ -204,6 +217,7 @@ export function RecommendationImportExport() {
                 <FileJson className="h-4 w-4 mr-2" />
                 Baixar JSON
               </Button>
+
               <Button variant="outline" onClick={handleCopyToClipboard}>
                 {copied ? (
                   <Check className="h-4 w-4 mr-2" />
@@ -212,6 +226,7 @@ export function RecommendationImportExport() {
                 )}
                 {copied ? 'Copiado!' : 'Copiar JSON'}
               </Button>
+
               <Button
                 variant="outline"
                 onClick={() => setPreviewDialogOpen(true)}
@@ -220,6 +235,7 @@ export function RecommendationImportExport() {
                 Visualizar
               </Button>
             </div>
+
             <p className="text-sm text-slate-500">
               O arquivo exportado contém o catálogo completo e todas as regras
               de recomendação configuradas.
@@ -233,10 +249,12 @@ export function RecommendationImportExport() {
               <Upload className="h-5 w-5" />
               Importar Dados
             </CardTitle>
+
             <CardDescription>
               Importe dados de um arquivo JSON existente
             </CardDescription>
           </CardHeader>
+
           <CardContent className="space-y-4">
             <div className="flex flex-wrap gap-3">
               <Button
@@ -246,6 +264,7 @@ export function RecommendationImportExport() {
                 <FileJson className="h-4 w-4 mr-2" />
                 Selecionar Arquivo
               </Button>
+
               <Button
                 variant="outline"
                 onClick={() => setImportDialogOpen(true)}
@@ -253,6 +272,7 @@ export function RecommendationImportExport() {
                 <Copy className="h-4 w-4 mr-2" />
                 Colar JSON
               </Button>
+
               <Button
                 variant="destructive"
                 onClick={() => setResetDialogOpen(true)}
@@ -261,10 +281,12 @@ export function RecommendationImportExport() {
                 Resetar
               </Button>
             </div>
+
             <p className="text-sm text-slate-500">
               A importação substituirá todos os dados atuais. Faça backup antes
               de importar.
             </p>
+
             <input
               type="file"
               ref={fileInputRef}
@@ -280,10 +302,12 @@ export function RecommendationImportExport() {
       <Card className="border-slate-200 shadow-sm">
         <CardHeader>
           <CardTitle>Estrutura do JSON</CardTitle>
+
           <CardDescription>
             Visualização da estrutura atual dos dados de recomendação
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <Tabs defaultValue="structure">
             <TabsList>
@@ -295,33 +319,43 @@ export function RecommendationImportExport() {
               <div className="space-y-4 text-sm">
                 <div className="p-4 rounded-lg border border-slate-200 bg-slate-50">
                   <h4 className="font-semibold mb-2">catalog</h4>
+
                   <ul className="ml-4 space-y-1 text-slate-500">
                     <li>
                       products[] - Lista de produtos com url, name, category,
                       etc.
                     </li>
+
                     <li>categories[] - Lista de categorias únicas</li>
                   </ul>
                 </div>
+
                 <div className="p-4 rounded-lg border border-slate-200 bg-slate-50">
                   <h4 className="font-semibold mb-2">recommendationRules</h4>
+
                   <ul className="ml-4 space-y-1 text-slate-500">
                     <li>
                       defaults - Configurações padrão (limit, minItems, filters)
                     </li>
+
                     <li>types.same_category - Regra de mesma categoria</li>
+
                     <li>
                       types.affinity_manual - Afinidades manuais por
                       categoria/URL
                     </li>
+
                     <li>
                       types.history_recent - Configuração do histórico recente
                     </li>
+
                     <li>
                       types.popularity_global - Ranking global de popularidade
                     </li>
+
                     <li>types.campaign - Campanhas por utm_campaign</li>
                     <li>types.context_slot - Slots com cascatas de regras</li>
+
                     <li>
                       types.profile_static - Perfis de usuário (novo/retornante)
                     </li>
@@ -344,15 +378,16 @@ export function RecommendationImportExport() {
       {/* Import Dialog */}
       <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
-          <DialogHeader className="flex-shrink-0">
+          <DialogHeader className="shrink-0">
             <DialogTitle>Importar JSON</DialogTitle>
+
             <DialogDescription>
               Cole o conteúdo do arquivo JSON abaixo para importar os dados
             </DialogDescription>
           </DialogHeader>
 
           {importError && (
-            <Alert variant="destructive" className="flex-shrink-0">
+            <Alert variant="destructive" className="shrink-0">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Erro na importação</AlertTitle>
               <AlertDescription>{importError}</AlertDescription>
@@ -367,11 +402,11 @@ export function RecommendationImportExport() {
                 setImportError(null)
               }}
               placeholder='{"version": "2.0.0", "catalog": {...}, "recommendationRules": {...}}'
-              className="font-mono text-xs h-full min-h-[200px] max-h-[50vh] resize-none"
+              className="font-mono text-xs h-full min-h-50 max-h-[50vh] resize-none"
             />
           </div>
 
-          <DialogFooter className="flex-shrink-0">
+          <DialogFooter className="shrink-0">
             <Button
               variant="outline"
               onClick={() => {
@@ -382,6 +417,7 @@ export function RecommendationImportExport() {
             >
               Cancelar
             </Button>
+
             <Button
               onClick={handleImportFromText}
               className="bg-indigo-600 hover:bg-indigo-700"
@@ -397,15 +433,18 @@ export function RecommendationImportExport() {
         <DialogContent className="max-w-4xl max-h-[80vh]">
           <DialogHeader>
             <DialogTitle>Preview do JSON</DialogTitle>
+
             <DialogDescription>
               Visualização completa dos dados que serão exportados
             </DialogDescription>
           </DialogHeader>
+
           <div className="relative flex-1 overflow-hidden">
             <pre className="p-4 rounded-lg bg-slate-100 overflow-auto max-h-[60vh] text-xs">
               {jsonPreview}
             </pre>
           </div>
+
           <DialogFooter>
             <Button
               variant="outline"
@@ -413,6 +452,7 @@ export function RecommendationImportExport() {
             >
               Fechar
             </Button>
+
             <Button
               onClick={() => {
                 handleCopyToClipboard()
@@ -432,24 +472,29 @@ export function RecommendationImportExport() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirmar Reset</DialogTitle>
+
             <DialogDescription>
               Esta ação irá limpar todos os dados e restaurar os valores padrão.
               Esta ação não pode ser desfeita.
             </DialogDescription>
           </DialogHeader>
+
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Atenção</AlertTitle>
+
             <AlertDescription>
               Você perderá {stats.products} produtos,{' '}
               {stats.affinityByCategory + stats.affinityByUrl} regras de
               afinidade e {stats.globalRanking} itens no ranking global.
             </AlertDescription>
           </Alert>
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setResetDialogOpen(false)}>
               Cancelar
             </Button>
+
             <Button variant="destructive" onClick={handleReset}>
               Confirmar Reset
             </Button>

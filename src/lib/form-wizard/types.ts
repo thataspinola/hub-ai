@@ -1,36 +1,36 @@
 // Form Wizard Builder Types
 
 export type ElementType =
-  | "TITLE"
-  | "PARAGRAPH"
-  | "TEXT_INPUT"
-  | "SELECT"
-  | "RADIO"
-  | "CHECKBOX"
-  | "SUCCESS_SCREEN" // @deprecated - kept for backwards compatibility
-  | "GO_TO_CHECKOUT" // @deprecated - kept for backwards compatibility
-  | "CONDITIONAL_ROUTE"
-  | "NAVIGATION"
-  | "SERVICE_CALL"
-  | "PLANS"
-  | "CPF_INPUT"
-  | "CNPJ_INPUT"
-  | "PHONE_INPUT"
-  | "CEP_INPUT"
-  | "SOCIAL_NAME_INPUT"
-  | "PRIVACY_POLICY"
-  | "EMAIL_INPUT"
+  | 'TITLE'
+  | 'PARAGRAPH'
+  | 'TEXT_INPUT'
+  | 'SELECT'
+  | 'RADIO'
+  | 'CHECKBOX'
+  | 'SUCCESS_SCREEN' // @deprecated - kept for backwards compatibility
+  | 'GO_TO_CHECKOUT' // @deprecated - kept for backwards compatibility
+  | 'CONDITIONAL_ROUTE'
+  | 'NAVIGATION'
+  | 'SERVICE_CALL'
+  | 'PLANS'
+  | 'CPF_INPUT'
+  | 'CNPJ_INPUT'
+  | 'PHONE_INPUT'
+  | 'CEP_INPUT'
+  | 'SOCIAL_NAME_INPUT'
+  | 'PRIVACY_POLICY'
+  | 'EMAIL_INPUT'
 
-export type ServiceType = "eligibility" | "cotation" | "proposal" | "simulation"
+export type ServiceType = 'eligibility' | 'cotation' | 'proposal' | 'simulation'
 
-export interface SelectOption {
+export interface SelectOptionConfig {
   label: string
   value: string
 }
 
 export interface TitleConfig {
   text: string
-  size?: "sm" | "md" | "lg" | "xl"
+  size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
 export interface ParagraphConfig {
@@ -47,14 +47,14 @@ export interface TextInputConfig {
 export interface SelectConfig {
   label: string
   required: boolean
-  options: SelectOption[]
+  options: SelectOptionConfig[]
   name?: string
 }
 
 export interface RadioConfig {
   label: string
   required: boolean
-  options: SelectOption[]
+  options: SelectOptionConfig[]
   name?: string
 }
 
@@ -129,12 +129,12 @@ export interface NavigationConfig {
   url: string
 }
 
-export type ConditionalOperator = "EQUALS" | "NOT_EQUALS"
+export type ConditionalOperatorConfig = 'EQUALS' | 'NOT_EQUALS'
 
 export interface ConditionalRouteConfig {
   label: string
   fieldName: string
-  operator: ConditionalOperator
+  operator: ConditionalOperatorConfig
   value: string
   targetStepSlug: string
   fallbackStepSlug: string
@@ -210,7 +210,7 @@ export interface FormStep {
 }
 
 export interface FormCompletion {
-  type: "FINAL_SUCCESS" | "FINAL_HANDOFF_CHECKOUT"
+  type: 'FINAL_SUCCESS' | 'FINAL_HANDOFF_CHECKOUT'
 }
 
 export interface Form {
@@ -238,18 +238,27 @@ export interface FormIndexEntry {
 }
 
 export interface LibraryItem {
-  type: ElementType | "STEP"
+  type: ElementType | 'STEP'
   label: string
-  category: "structure" | "content" | "fields" | "special-fields" | "plans" | "actions"
+  category:
+    | 'structure'
+    | 'content'
+    | 'fields'
+    | 'special-fields'
+    | 'plans'
+    | 'actions'
   icon: string
 }
 
 // Deprecated element types that may exist in old forms
-export const DEPRECATED_ELEMENT_TYPES = ["SUCCESS_SCREEN", "GO_TO_CHECKOUT"] as const
+export const DEPRECATED_ELEMENT_TYPES = [
+  'SUCCESS_SCREEN',
+  'GO_TO_CHECKOUT',
+] as const
 
 // Drag and drop types
 export interface DragItem {
-  type: "library" | "canvas"
+  type: 'library' | 'canvas'
   item: LibraryItem | FormElement
   sourceStepId?: string
   sourceIndex?: number

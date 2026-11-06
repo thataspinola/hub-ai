@@ -48,6 +48,7 @@ export function FeatureFlagExample() {
           1. Flag Booleana —{' '}
           <code className="text-sm bg-slate-100 px-1 rounded">isEnabled</code>
         </h3>
+
         <p className="text-slate-600">
           <code className="text-sm bg-slate-100 px-1 rounded">
             new_checkout_v2
@@ -63,6 +64,7 @@ export function FeatureFlagExample() {
             {isCheckoutV2 ? 'Habilitada ✓' : 'Desabilitada ✗'}
           </span>
         </p>
+
         {isCheckoutV2 && (
           <div className="mt-2 p-3 bg-green-50 rounded text-green-700 text-sm">
             O novo checkout V2 está ativo! O componente de checkout redesenhado
@@ -79,6 +81,7 @@ export function FeatureFlagExample() {
             getFlagValue&lt;T&gt;
           </code>
         </h3>
+
         <ul className="space-y-1 text-slate-600">
           <li>
             <code className="text-sm bg-slate-100 px-1 rounded">
@@ -89,6 +92,7 @@ export function FeatureFlagExample() {
               &quot;{darkModeVariant}&quot;
             </span>
           </li>
+
           <li>
             <code className="text-sm bg-slate-100 px-1 rounded">
               new_checkout_v2
@@ -107,6 +111,7 @@ export function FeatureFlagExample() {
             getFlagAttributes
           </code>
         </h3>
+
         <p className="text-slate-600 mb-2">
           Atributos de{' '}
           <code className="text-sm bg-slate-100 px-1 rounded">
@@ -114,6 +119,7 @@ export function FeatureFlagExample() {
           </code>
           :
         </p>
+
         {recEngineAttrs ? (
           <pre className="p-3 bg-slate-900 text-green-400 rounded-lg text-sm overflow-x-auto">
             {JSON.stringify(recEngineAttrs, null, 2)}

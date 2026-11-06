@@ -12,19 +12,21 @@ export interface RecommendationPreview {
 export interface RecommendationEffects {
   load: RecommendationRepository['load']
   publish: RecommendationPreview['publish']
+
   scheduleSave(
     data: RecommendationData,
     onStart: () => void,
     onComplete: () => void,
-    onError: () => void,
+    onError: () => void
   ): void
+
   dispose(): void
 }
 
 export function createRecommendationEffects(
   repository: RecommendationRepository,
   preview: RecommendationPreview,
-  delay = 500,
+  delay = 500
 ): RecommendationEffects {
   let timer: ReturnType<typeof setTimeout> | null = null
   let revision = 0
@@ -37,16 +39,16 @@ export function createRecommendationEffects(
       const currentRevision = ++revision
       if (timer) clearTimeout(timer)
       onStart()
-      timer = setTimeout(async () => {
-        timer = null
-        try {
-          const write = writes.then(() => repository.save(data))
-          writes = write.catch(() => undefined)
-          await write
-          if (currentRevision === revision) onComplete()
-        } catch {
-          if (currentRevision === revision) onError()
-        }
+
+      timer = setTimeout(() => {
+        writes = writes
+          .then(() => repository.save(data))
+          .then(() => {
+            if (currentRevision === revision) onComplete()
+          })
+          .catch(() => {
+            if (currentRevision === revision) onError()
+          })
       }, delay)
     },
     dispose() {

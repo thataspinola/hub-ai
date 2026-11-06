@@ -21,12 +21,13 @@ export function TitleProperties({
   elementId: string
   config: TitleConfig
 }) {
-  const updateElement = useFormStore((s) => s.updateElement)
+  const updateElement = useFormStore((state) => state.updateElement)
 
   return (
     <div className="space-y-3">
       <div>
-        <Label htmlFor="title-text">Text</Label>
+        <Label htmlFor="title-text">Title</Label>
+
         <Textarea
           id="title-text"
           value={config.text}
@@ -37,8 +38,10 @@ export function TitleProperties({
           rows={2}
         />
       </div>
+
       <div>
         <Label htmlFor="title-size">Size</Label>
+
         <Select
           value={config.size || 'lg'}
           onValueChange={(value) =>
@@ -48,13 +51,13 @@ export function TitleProperties({
           }
         >
           <SelectTrigger className="mt-1">
-            <SelectValue />
+            <SelectValue placeholder="Select size" />
           </SelectTrigger>
+
           <SelectContent>
-            <SelectItem value="sm">Small</SelectItem>
-            <SelectItem value="md">Medium</SelectItem>
-            <SelectItem value="lg">Large</SelectItem>
-            <SelectItem value="xl">Extra Large</SelectItem>
+            <SelectItem value="small">Small</SelectItem>
+            <SelectItem value="medium">Medium</SelectItem>
+            <SelectItem value="large">Large</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -71,20 +74,23 @@ export function ParagraphProperties({
   elementId: string
   config: ParagraphConfig
 }) {
-  const updateElement = useFormStore((s) => s.updateElement)
+  const updateElement = useFormStore((state) => state.updateElement)
 
   return (
     <div>
-      <Label htmlFor="para-text">Text</Label>
-      <Textarea
-        id="para-text"
-        value={config.text}
-        onChange={(e) =>
-          updateElement(stepId, elementId, { text: e.target.value })
-        }
-        className="mt-1"
-        rows={4}
-      />
+      <div>
+        <Label htmlFor="para-text">Paragraph</Label>
+
+        <Textarea
+          id="para-text"
+          value={config.text}
+          onChange={(e) =>
+            updateElement(stepId, elementId, { text: e.target.value })
+          }
+          className="mt-1"
+          rows={4}
+        />
+      </div>
     </div>
   )
 }

@@ -26,15 +26,15 @@ export function RecommendationRules() {
     removeAffinityByUrl,
     setGlobalRanking,
     addCampaign,
-    deleteCampaign,
+    removeCampaign,
     addCampaignTarget,
     removeCampaignTarget,
     updateCampaignDescription,
     addSlot,
     updateSlot,
-    deleteSlot,
+    removeSlot,
     updateDefaults,
-    updateHistoryRecentParams,
+    updateHistoryRecentsParams,
     updateSameCategoryParams,
   } = useRecommendationStore()
 
@@ -49,22 +49,27 @@ export function RecommendationRules() {
             <Settings className="h-4 w-4" />
             Padrões
           </TabsTrigger>
+
           <TabsTrigger value="affinity" className="gap-2">
             <Link className="h-4 w-4" />
             Afinidade Manual
           </TabsTrigger>
+
           <TabsTrigger value="popularity" className="gap-2">
             <TrendingUp className="h-4 w-4" />
             Popularidade
           </TabsTrigger>
+
           <TabsTrigger value="campaign" className="gap-2">
             <Megaphone className="h-4 w-4" />
             Campanha
           </TabsTrigger>
+
           <TabsTrigger value="slots" className="gap-2">
             <Layers className="h-4 w-4" />
             Slots de Contexto
           </TabsTrigger>
+
           <TabsTrigger value="history" className="gap-2">
             <Clock className="h-4 w-4" />
             Histórico
@@ -108,7 +113,7 @@ export function RecommendationRules() {
             categories={categories}
             products={products}
             onAddCampaign={addCampaign}
-            onDeleteCampaign={deleteCampaign}
+            onDeleteCampaign={removeCampaign}
             onAddCampaignTarget={addCampaignTarget}
             onRemoveCampaignTarget={removeCampaignTarget}
             onUpdateCampaignDescription={updateCampaignDescription}
@@ -120,14 +125,14 @@ export function RecommendationRules() {
             slots={recommendationRules.types.context_slot.slots}
             onAddSlot={addSlot}
             onUpdateSlot={updateSlot}
-            onDeleteSlot={deleteSlot}
+            onDeleteSlot={removeSlot}
           />
         </TabsContent>
 
         <TabsContent value="history" className="mt-6">
           <HistoryEditor
             params={recommendationRules.types.history_recent.params}
-            onUpdate={updateHistoryRecentParams}
+            onUpdate={updateHistoryRecentsParams}
           />
         </TabsContent>
       </Tabs>

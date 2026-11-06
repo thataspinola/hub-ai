@@ -44,7 +44,7 @@ export function RecommendationDashboard() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-indigo-500" />
           <p className="text-slate-500">Carregando dados de recomendações...</p>
@@ -63,6 +63,7 @@ export function RecommendationDashboard() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-slate-800">Recomendações</h1>
+
         <p className="text-slate-500 mt-1">
           Gestão de catálogo e regras de recomendação de produtos
         </p>
@@ -74,16 +75,20 @@ export function RecommendationDashboard() {
           <p className="text-sm text-slate-500">Produtos</p>
           <p className="text-2xl font-bold text-slate-800">{stats.products}</p>
         </div>
+
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
           <p className="text-sm text-slate-500">Categorias</p>
+
           <p className="text-2xl font-bold text-slate-800">
             {stats.categories}
           </p>
         </div>
+
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
           <p className="text-sm text-slate-500">Regras de Afinidade</p>
           <p className="text-2xl font-bold text-slate-800">{stats.rules}</p>
         </div>
+
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
           <p className="text-sm text-slate-500">Slots</p>
           <p className="text-2xl font-bold text-slate-800">{stats.slots}</p>
@@ -97,6 +102,7 @@ export function RecommendationDashboard() {
             {tabs.map((tab) => {
               const Icon = tab.icon
               const isActive = activeTab === tab.id
+
               return (
                 <button
                   key={tab.id}
@@ -109,6 +115,7 @@ export function RecommendationDashboard() {
                 >
                   <Icon className="h-4 w-4" />
                   {tab.label}
+
                   {tab.badge !== null && (
                     <Badge
                       variant={isActive ? 'default' : 'secondary'}

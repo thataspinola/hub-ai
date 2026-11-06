@@ -46,7 +46,7 @@ export function WizardBuilder() {
   }, [saveFormToStorage])
 
   return (
-    <div className="flex h-screen min-w-[1024px] flex-col bg-background">
+    <div className="flex h-screen min-w-5xl flex-col bg-background">
       <Toolbar />
       <div className="flex flex-1 overflow-hidden">
         <div className="w-64 shrink-0 border-r">

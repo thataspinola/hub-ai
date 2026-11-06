@@ -1,9 +1,9 @@
-# Comece aqui — Hub AI
+# Comece aqui
 
 O hub-ai é um painel administrativo Next.js/React. Requer Node.js, Git, dependências e acesso aos serviços corporativos autorizados.
 
 ```bash
-git clone https://github.com/thataspinola/hub-ai.git
+git clone https://gitportoprd.portoseguro.brasil/portocom/hub-vendas/common/code-reviewer-plug-and-play.git
 cd hub-ai
 cp .env.example .env.local
 npm ci

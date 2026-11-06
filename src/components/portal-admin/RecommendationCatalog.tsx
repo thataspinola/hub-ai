@@ -48,9 +48,9 @@ export function RecommendationCatalog() {
     data,
     addProduct,
     updateProduct,
-    deleteProduct,
+    removeProduct,
     addCategory,
-    deleteCategory,
+    removeCategory,
   } = useRecommendationStore()
   const { products, categories } = data.catalog
 
@@ -72,6 +72,7 @@ export function RecommendationCatalog() {
     const matchesSearch =
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.url.toLowerCase().includes(searchQuery.toLowerCase())
+
     const matchesCategory =
       categoryFilter === 'all' || product.category === categoryFilter
     return matchesSearch && matchesCategory
@@ -88,6 +89,7 @@ export function RecommendationCatalog() {
     } else {
       addProduct(product)
     }
+
     setEditingProduct(undefined)
   }
 
@@ -98,9 +100,10 @@ export function RecommendationCatalog() {
 
   const confirmDeleteProduct = () => {
     if (productToDelete) {
-      deleteProduct(productToDelete)
+      removeProduct(productToDelete)
       setProductToDelete(null)
     }
+
     setDeleteConfirmOpen(false)
   }
 
@@ -122,9 +125,10 @@ export function RecommendationCatalog() {
 
   const confirmDeleteCategory = () => {
     if (categoryToDelete) {
-      deleteCategory(categoryToDelete)
+      removeCategory(categoryToDelete)
       setCategoryToDelete(null)
     }
+
     setDeleteCategoryConfirmOpen(false)
   }
 
@@ -140,6 +144,7 @@ export function RecommendationCatalog() {
             <Package className="h-4 w-4" />
             Produtos ({products.length})
           </TabsTrigger>
+
           <TabsTrigger value="categories" className="gap-2">
             <Tags className="h-4 w-4" />
             Categorias ({categories.length})
@@ -152,10 +157,12 @@ export function RecommendationCatalog() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <CardTitle>Produtos</CardTitle>
+
                   <CardDescription>
                     Gerencie o catálogo de produtos para recomendações
                   </CardDescription>
                 </div>
+
                 <Button
                   onClick={() => {
                     setEditingProduct(undefined)
@@ -171,6 +178,7 @@ export function RecommendationCatalog() {
               <div className="flex flex-col gap-3 sm:flex-row mt-4">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+
                   <Input
                     placeholder="Buscar por nome ou URL..."
                     value={searchQuery}
@@ -178,6 +186,7 @@ export function RecommendationCatalog() {
                     className="pl-9"
                   />
                 </div>
+
                 <select
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
@@ -192,6 +201,7 @@ export function RecommendationCatalog() {
                 </select>
               </div>
             </CardHeader>
+
             <CardContent>
               {filteredProducts.length === 0 ? (
                 <Empty
@@ -214,6 +224,7 @@ export function RecommendationCatalog() {
                         <TableHead className="text-right">Ações</TableHead>
                       </TableRow>
                     </TableHeader>
+
                     <TableBody>
                       {filteredProducts.map((product) => (
                         <TableRow key={product.url}>
@@ -233,10 +244,12 @@ export function RecommendationCatalog() {
                                   }}
                                 />
                               )}
+
                               <div className="min-w-0">
                                 <p className="font-medium truncate max-w-xs">
                                   {product.name}
                                 </p>
+
                                 <a
                                   href={product.url}
                                   target="_blank"
@@ -244,6 +257,7 @@ export function RecommendationCatalog() {
                                   className="text-xs text-slate-400 hover:text-indigo-500 truncate max-w-xs flex items-center gap-1"
                                 >
                                   <ExternalLink className="h-3 w-3 shrink-0" />
+
                                   <span className="truncate">
                                     {product.url}
                                   </span>
@@ -251,9 +265,11 @@ export function RecommendationCatalog() {
                               </div>
                             </div>
                           </TableCell>
+
                           <TableCell>
                             <Badge variant="outline">{product.category}</Badge>
                           </TableCell>
+
                           <TableCell>
                             {product.price ? (
                               <span className="text-sm">
@@ -262,6 +278,7 @@ export function RecommendationCatalog() {
                                     {product.price.prefix}{' '}
                                   </span>
                                 )}
+
                                 {product.price.value.toLocaleString('pt-BR', {
                                   style: 'currency',
                                   currency: product.price.currency,
@@ -271,6 +288,7 @@ export function RecommendationCatalog() {
                               <span className="text-slate-400 text-sm">-</span>
                             )}
                           </TableCell>
+
                           <TableCell>
                             <div className="flex flex-wrap gap-1">
                               {product.badges?.map((badge, i) => (
@@ -282,6 +300,7 @@ export function RecommendationCatalog() {
                                   {badge.text}
                                 </Badge>
                               ))}
+
                               {(!product.badges ||
                                 product.badges.length === 0) && (
                                 <span className="text-slate-400 text-sm">
@@ -290,6 +309,7 @@ export function RecommendationCatalog() {
                               )}
                             </div>
                           </TableCell>
+
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-2">
                               <Button
@@ -299,6 +319,7 @@ export function RecommendationCatalog() {
                               >
                                 <Pencil className="h-4 w-4" />
                               </Button>
+
                               <Button
                                 variant="ghost"
                                 size="icon"
@@ -324,10 +345,12 @@ export function RecommendationCatalog() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <CardTitle>Categorias</CardTitle>
+
                   <CardDescription>
                     Gerencie as categorias de produtos
                   </CardDescription>
                 </div>
+
                 <Button
                   onClick={() => setCategoryDialogOpen(true)}
                   className="bg-indigo-600 hover:bg-indigo-700"
@@ -337,6 +360,7 @@ export function RecommendationCatalog() {
                 </Button>
               </div>
             </CardHeader>
+
             <CardContent>
               {categories.length === 0 ? (
                 <Empty
@@ -352,10 +376,12 @@ export function RecommendationCatalog() {
                     >
                       <div>
                         <p className="font-medium">{category}</p>
+
                         <p className="text-sm text-slate-500">
                           {productsInCategory(category)} produto(s)
                         </p>
                       </div>
+
                       <Button
                         variant="ghost"
                         size="icon"
@@ -395,10 +421,12 @@ export function RecommendationCatalog() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Adicionar Categoria</DialogTitle>
+
             <DialogDescription>
               Digite o nome da nova categoria
             </DialogDescription>
           </DialogHeader>
+
           <Input
             value={newCategoryName}
             onChange={(e) => setNewCategoryName(e.target.value)}
@@ -412,6 +440,7 @@ export function RecommendationCatalog() {
             >
               Cancelar
             </Button>
+
             <Button
               onClick={handleAddCategory}
               disabled={!newCategoryName.trim()}
@@ -428,11 +457,13 @@ export function RecommendationCatalog() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirmar Exclusão</DialogTitle>
+
             <DialogDescription>
               Tem certeza que deseja excluir este produto? Esta ação não pode
               ser desfeita.
             </DialogDescription>
           </DialogHeader>
+
           <DialogFooter>
             <Button
               variant="outline"
@@ -440,6 +471,7 @@ export function RecommendationCatalog() {
             >
               Cancelar
             </Button>
+
             <Button variant="destructive" onClick={confirmDeleteProduct}>
               Excluir
             </Button>
@@ -455,11 +487,13 @@ export function RecommendationCatalog() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirmar Exclusão</DialogTitle>
+
             <DialogDescription>
               Tem certeza que deseja excluir a categoria &quot;
               {categoryToDelete}&quot;? Esta ação não pode ser desfeita.
             </DialogDescription>
           </DialogHeader>
+
           <DialogFooter>
             <Button
               variant="outline"
@@ -467,6 +501,7 @@ export function RecommendationCatalog() {
             >
               Cancelar
             </Button>
+
             <Button variant="destructive" onClick={confirmDeleteCategory}>
               Excluir
             </Button>

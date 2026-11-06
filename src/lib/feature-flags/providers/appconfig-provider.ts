@@ -30,13 +30,13 @@ export class AppConfigProvider implements FeatureFlagDataProvider {
 
   constructor(private readonly options: AppConfigProviderOptions) {
     const base = options.endpoint ?? 'http://localhost:2772'
-    this.url = `${base}/applications/${encodeURIComponent(options.applicationId)}/environments/${encodeURIComponent(options.environmentId)}/configurations/${encodeURIComponent(options.configurationProfileId)}`
+    this.url = `${base}/applications/${options.applicationId}/environments/${options.environmentId}/configurations/${options.configurationProfileId}`
     this.timeoutMs = options.timeoutMs ?? 5000
   }
 
   async fetchFlags(): Promise<FlagValueMap> {
     // TODO: Configurar applicationId, environmentId e configurationProfileId
-    // via variáveis de ambiente quando o AppConfig Agent estiver disponível.
+    //       via variáveis de ambiente quando o AppConfig Agent estiver disponível.
     //
     // O Agent retorna o payload no formato:
     // {
@@ -74,8 +74,9 @@ export class AppConfigProvider implements FeatureFlagDataProvider {
             !Array.isArray(entry) &&
             typeof entry.enabled === 'boolean'
         )
-      )
+      ) {
         throw new Error('Invalid AppConfig flag payload')
+      }
 
       return data as FlagValueMap
     } finally {

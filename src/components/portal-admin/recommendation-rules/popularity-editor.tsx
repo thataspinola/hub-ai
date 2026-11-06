@@ -43,6 +43,7 @@ export function PopularityEditor({
             Ranking geral de todos os produtos ordenados por popularidade
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <div className="space-y-4">
             <Select
@@ -54,6 +55,7 @@ export function PopularityEditor({
               <SelectTrigger>
                 <SelectValue placeholder="Adicionar produto ao ranking" />
               </SelectTrigger>
+
               <SelectContent>
                 {products
                   .filter((p) => !globalRanking.includes(p.url))
@@ -64,6 +66,7 @@ export function PopularityEditor({
                   ))}
               </SelectContent>
             </Select>
+
             {globalRanking.length === 0 ? (
               <Empty
                 title="Ranking vazio"
@@ -73,6 +76,7 @@ export function PopularityEditor({
               <div className="space-y-2 max-h-96 overflow-y-auto">
                 {globalRanking.map((url, index) => {
                   const product = products.find((p) => p.url === url)
+
                   return (
                     <div
                       key={url}
@@ -86,13 +90,14 @@ export function PopularityEditor({
                           onClick={() => {
                             if (index > 0)
                               onSetGlobalRanking(
-                                moveItem(globalRanking, index, index - 1),
+                                moveItem(globalRanking, index, index - 1)
                               )
                           }}
                           disabled={index === 0}
                         >
                           <ChevronUp className="h-3 w-3" />
                         </Button>
+
                         <Button
                           variant="ghost"
                           size="icon"
@@ -100,7 +105,7 @@ export function PopularityEditor({
                           onClick={() => {
                             if (index < globalRanking.length - 1)
                               onSetGlobalRanking(
-                                moveItem(globalRanking, index, index + 1),
+                                moveItem(globalRanking, index, index + 1)
                               )
                           }}
                           disabled={index === globalRanking.length - 1}
@@ -108,19 +113,23 @@ export function PopularityEditor({
                           <ChevronDown className="h-3 w-3" />
                         </Button>
                       </div>
+
                       <span className="text-sm font-medium text-slate-500 w-6">
                         {index + 1}.
                       </span>
+
                       <GripVertical className="h-4 w-4 text-slate-400" />
+
                       <span className="flex-1 truncate">
                         {product?.name || url}
                       </span>
+
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() =>
                           onSetGlobalRanking(
-                            globalRanking.filter((u) => u !== url),
+                            globalRanking.filter((u) => u !== url)
                           )
                         }
                       >

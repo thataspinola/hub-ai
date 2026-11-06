@@ -6,9 +6,9 @@ export function createPopularityActions({
   saveChange,
 }: RecommendationActionContext): Pick<RecommendationStore, 'setGlobalRanking'> {
   return {
-    setGlobalRanking: (urls) =>
+    setGlobalRanking: (urls) => {
       set((state) => {
-        const newData = {
+        const newState = {
           ...state.data,
           recommendationRules: {
             ...state.data.recommendationRules,
@@ -26,9 +26,9 @@ export function createPopularityActions({
           },
         }
 
-        saveChange(newData)
-
-        return { data: newData, isDirty: true }
-      }),
+        saveChange(newState)
+        return { data: newState, isDirty: true }
+      })
+    },
   }
 }

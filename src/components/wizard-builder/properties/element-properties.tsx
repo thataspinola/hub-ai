@@ -67,7 +67,7 @@ export function ElementProperties() {
     RADIO: 'Radio',
     CHECKBOX: 'Checkbox',
     SUCCESS_SCREEN: 'Success Screen (Deprecated)',
-    GO_TO_CHECKOUT: 'Go To Checkout (Deprecated)',
+    GO_TO_CHECKOUT: 'Go to Checkout (Deprecated)',
     CONDITIONAL_ROUTE: 'Conditional Route',
     NAVIGATION: 'Navigation',
     SERVICE_CALL: 'Service Call',
@@ -76,9 +76,9 @@ export function ElementProperties() {
     CNPJ_INPUT: 'CNPJ Input',
     PHONE_INPUT: 'Phone Input',
     CEP_INPUT: 'CEP Input',
-    SOCIAL_NAME_INPUT: 'Nome Social Input',
-    PRIVACY_POLICY: 'Política de Privacidade',
-    EMAIL_INPUT: 'E-mail Input',
+    SOCIAL_NAME_INPUT: 'Social Name Input',
+    PRIVACY_POLICY: 'Privacy Policy',
+    EMAIL_INPUT: 'Email Input',
   }
 
   const renderProperties = () => {
@@ -87,7 +87,7 @@ export function ElementProperties() {
         return (
           <TitleProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as TitleConfig}
           />
         )
@@ -95,7 +95,7 @@ export function ElementProperties() {
         return (
           <ParagraphProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as ParagraphConfig}
           />
         )
@@ -103,7 +103,7 @@ export function ElementProperties() {
         return (
           <TextInputProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as TextInputConfig}
           />
         )
@@ -111,7 +111,7 @@ export function ElementProperties() {
         return (
           <SelectProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as SelectConfig}
           />
         )
@@ -119,7 +119,7 @@ export function ElementProperties() {
         return (
           <RadioProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as RadioConfig}
           />
         )
@@ -127,19 +127,27 @@ export function ElementProperties() {
         return (
           <CheckboxProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as CheckboxConfig}
           />
         )
       case 'SUCCESS_SCREEN':
         return <DeprecatedElementNotice elementType="Success Screen" />
       case 'GO_TO_CHECKOUT':
-        return <DeprecatedElementNotice elementType="Go To Checkout" />
+        return <DeprecatedElementNotice elementType="Go to Checkout" />
+      case 'CONDITIONAL_ROUTE':
+        return (
+          <ConditionalRouteProperties
+            stepId={selectedStepId}
+            elementId={selectedElementId}
+            config={element.config as ConditionalRouteConfig}
+          />
+        )
       case 'NAVIGATION':
         return (
           <NavigationProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as NavigationConfig}
           />
         )
@@ -147,23 +155,15 @@ export function ElementProperties() {
         return (
           <ServiceCallProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as ServiceCallConfig}
-          />
-        )
-      case 'CONDITIONAL_ROUTE':
-        return (
-          <ConditionalRouteProperties
-            stepId={selectedStepId}
-            elementId={element.id}
-            config={element.config as ConditionalRouteConfig}
           />
         )
       case 'PLANS':
         return (
           <PlansProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as PlansConfig}
           />
         )
@@ -171,7 +171,7 @@ export function ElementProperties() {
         return (
           <CPFInputProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as CPFInputConfig}
           />
         )
@@ -179,7 +179,7 @@ export function ElementProperties() {
         return (
           <CNPJInputProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as CNPJInputConfig}
           />
         )
@@ -187,7 +187,7 @@ export function ElementProperties() {
         return (
           <PhoneInputProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as PhoneInputConfig}
           />
         )
@@ -195,7 +195,7 @@ export function ElementProperties() {
         return (
           <CEPInputProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as CEPInputConfig}
           />
         )
@@ -203,7 +203,7 @@ export function ElementProperties() {
         return (
           <SocialNameInputProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as SocialNameInputConfig}
           />
         )
@@ -211,7 +211,7 @@ export function ElementProperties() {
         return (
           <PrivacyPolicyProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as PrivacyPolicyConfig}
           />
         )
@@ -219,7 +219,7 @@ export function ElementProperties() {
         return (
           <EmailInputProperties
             stepId={selectedStepId}
-            elementId={element.id}
+            elementId={selectedElementId}
             config={element.config as EmailInputConfig}
           />
         )
@@ -232,16 +232,17 @@ export function ElementProperties() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold">{elementTypeLabels[element.type]}</h3>
+
         <Button
           variant="ghost"
           size="sm"
           className="text-destructive hover:text-destructive"
-          onClick={() => deleteElement(selectedStepId, element.id)}
         >
           <Trash2 className="mr-1 h-3 w-3" />
           Delete
         </Button>
       </div>
+
       {renderProperties()}
     </div>
   )

@@ -1,3 +1,7 @@
 export default function Footer() {
-  return <footer className="border-t border-slate-200 bg-white px-6 py-4 text-center text-xs text-slate-500">Hub AI · Painel administrativo</footer>
+  return (
+    <footer className="border-t border-slate-200 bg-white px-6 py-4 text-center text-xs text-slate-500">
+      Hub Vendas · Painel administrativo
+    </footer>
+  )
 }

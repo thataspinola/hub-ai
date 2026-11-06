@@ -42,7 +42,7 @@ export async function initDB(): Promise<IDBDatabase> {
       }
 
       db.onclose = () => {
-        db = null
+        opening = null
       }
 
       resolve(db)

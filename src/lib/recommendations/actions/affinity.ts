@@ -41,7 +41,6 @@ export function createAffinityActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
@@ -52,7 +51,9 @@ export function createAffinityActions({
             sourceCategory
           ] || []
 
-        const newTargets = currentTargets.filter((_, i) => i !== targetIndex)
+        const newTargets = currentTargets.filter(
+          (_, index) => index !== targetIndex
+        )
 
         const newByCategory = {
           ...state.data.recommendationRules.types.affinity_manual.maps
@@ -83,7 +84,6 @@ export function createAffinityActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
@@ -116,7 +116,6 @@ export function createAffinityActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
@@ -127,7 +126,9 @@ export function createAffinityActions({
             sourceUrl
           ] || []
 
-        const newTargets = currentTargets.filter((_, i) => i !== targetIndex)
+        const newTargets = currentTargets.filter(
+          (_, index) => index !== targetIndex
+        )
 
         const newByUrl = {
           ...state.data.recommendationRules.types.affinity_manual.maps.byUrl,
@@ -157,7 +158,6 @@ export function createAffinityActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
   }

@@ -1,4 +1,5 @@
 import type { RecommendationStore } from '../store-types'
+import { SlotConfig } from '../types'
 import type { RecommendationActionContext } from './types'
 
 export function createSlotsActions({
@@ -6,7 +7,7 @@ export function createSlotsActions({
   saveChange,
 }: RecommendationActionContext): Pick<
   RecommendationStore,
-  'addSlot' | 'updateSlot' | 'deleteSlot'
+  'addSlot' | 'updateSlot' | 'removeSlot'
 > {
   return {
     addSlot: (slotId, config) =>
@@ -29,11 +30,10 @@ export function createSlotsActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
-    updateSlot: (slotId, config) =>
+    updateSlot: (slotId: string, config: SlotConfig) => {
       set((state) => {
         const newData = {
           ...state.data,
@@ -53,17 +53,16 @@ export function createSlotsActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
-      }),
+      })
+    },
 
-    deleteSlot: (slotId) =>
+    removeSlot: (slotId) =>
       set((state) => {
-        const newSlots = {
+        const remainingSlots = {
           ...state.data.recommendationRules.types.context_slot.slots,
         }
-
-        delete newSlots[slotId]
+        delete remainingSlots[slotId]
 
         const newData = {
           ...state.data,
@@ -73,14 +72,13 @@ export function createSlotsActions({
               ...state.data.recommendationRules.types,
               context_slot: {
                 ...state.data.recommendationRules.types.context_slot,
-                slots: newSlots,
+                slots: remainingSlots,
               },
             },
           },
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
   }

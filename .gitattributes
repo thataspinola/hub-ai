@@ -2,6 +2,3 @@
 * text=auto eol=lf
 *.bat text eol=crlf
 *.cmd text eol=crlf
-
-# Git hooks must keep LF on Windows and Unix
-.githooks/* text eol=lf

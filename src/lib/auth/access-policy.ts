@@ -24,14 +24,16 @@ export function canAccessAdministration(
     session.error ||
     typeof session.access_token !== 'string' ||
     !session.access_token
-  )
+  ) {
     return false
+  }
 
   if (
     typeof session.expires_at === 'number' &&
     session.expires_at * 1000 <= now
-  )
+  ) {
     return false
+  }
 
   return !role || (Array.isArray(session.roles) && session.roles.includes(role))
 }

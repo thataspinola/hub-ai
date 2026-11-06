@@ -408,7 +408,7 @@ function StepCard({
         </div>
       </div>
 
-      <div className="p-3 min-h-[80px]">
+      <div className="p-3 min-h-20">
         {step.elements.length === 0 ? (
           <div
             className={cn(

@@ -284,7 +284,7 @@ src/app/feature-flags/
 └── page.tsx                          # Página de administração CRUD
 
 __tests__/lib/feature-flags/
-├── local-storage-provider.spec.ts    # Testes do provider
-├── server.spec.ts                    # Testes server-side
-└── client.spec.tsx                   # Testes dos hooks
+├── local-storage-provider.test.ts    # Testes do provider
+├── server.test.ts                    # Testes server-side
+└── client.test.tsx                   # Testes dos hooks
 ```

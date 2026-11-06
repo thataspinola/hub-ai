@@ -5,21 +5,45 @@ import { Pencil, Plus, Search, Trash2, X } from 'lucide-react'
 import type { Cliente } from '@/types/cliente'
 
 const STORAGE_KEY = 'hub-ai:demo:clientes:v1'
+
 const initialClients: Cliente[] = [
-  { codigo: 1001, nome: 'Cliente Exemplo A', email: 'cliente.a@example.invalid' },
-  { codigo: 1002, nome: 'Cliente Exemplo B', email: 'cliente.b@example.invalid' },
-  { codigo: 1003, nome: 'Cliente Exemplo C', email: 'cliente.c@example.invalid' },
+  {
+    codigo: 1001,
+    nome: 'Cliente Exemplo A',
+    email: 'cliente.a@example.invalid',
+  },
+  {
+    codigo: 1002,
+    nome: 'Cliente Exemplo B',
+    email: 'cliente.b@example.invalid',
+  },
+  {
+    codigo: 1003,
+    nome: 'Cliente Exemplo C',
+    email: 'cliente.c@example.invalid',
+  },
 ]
 
 function validClients(value: unknown): value is Cliente[] {
-  return Array.isArray(value) && value.every(item =>
-    item !== null && typeof item === 'object' &&
-    Number.isSafeInteger(item.codigo) && item.codigo > 0 &&
-    typeof item.nome === 'string' && typeof item.email === 'string'
+  return (
+    Array.isArray(value) &&
+    value.every(
+      (item) =>
+        item !== null &&
+        typeof item === 'object' &&
+        Number.isSafeInteger(item.codigo) &&
+        item.codigo > 0 &&
+        typeof item.nome === 'string' &&
+        typeof item.email === 'string'
+    )
   )
 }
 
-export default function LocalClientes({ mode = 'local' }: { mode?: 'local' | 'api' }) {
+export default function LocalClientes({
+  mode = 'local',
+}: {
+  mode?: 'local' | 'api'
+}) {
   const [clients, setClients] = useState<Cliente[]>([])
   const [ready, setReady] = useState(false)
   const [query, setQuery] = useState('')
@@ -31,15 +55,29 @@ export default function LocalClientes({ mode = 'local' }: { mode?: 'local' | 'ap
 
   useEffect(() => {
     if (mode === 'api') {
-      fetch('/react-ssr-corp-hubv-painel-administrativo/api/clientes', { cache: 'no-store' })
-        .then(async response => { if (!response.ok) throw new Error('Não foi possível consultar clientes'); return response.json() })
-        .then((data: unknown) => { if (!validClients(data)) throw new Error('Formato de clientes inválido'); setClients(data) })
+      fetch('/react-ssr-corp-hubv-painel-administrativo/api/clientes', {
+        cache: 'no-store',
+      })
+        .then(async (response) => {
+          if (!response.ok)
+            throw new Error('Não foi possível consultar clientes')
+
+          return response.json()
+        })
+        .then((data: unknown) => {
+          if (!validClients(data))
+            throw new Error('Formato de clientes inválido')
+
+          setClients(data)
+        })
         .catch(() => setError('Falha ao carregar clientes da API corporativa.'))
         .finally(() => setReady(true))
+
       return
     }
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
+
       if (raw === null) setClients(initialClients)
       else {
         const parsed: unknown = JSON.parse(raw)
@@ -49,13 +87,19 @@ export default function LocalClientes({ mode = 'local' }: { mode?: 'local' | 'ap
       setClients(initialClients)
       setError('Não foi possível ler os dados locais.')
     }
+
     setReady(true)
   }, [mode])
 
-  const filtered = useMemo(() => clients.filter(client =>
-    `${client.codigo} ${client.nome} ${client.email}`.toLocaleLowerCase('pt-BR')
-      .includes(query.toLocaleLowerCase('pt-BR').trim())
-  ), [clients, query])
+  const filtered = useMemo(
+    () =>
+      clients.filter((client) =>
+        `${client.codigo} ${client.nome} ${client.email}`
+          .toLocaleLowerCase('pt-BR')
+          .includes(query.toLocaleLowerCase('pt-BR').trim())
+      ),
+    [clients, query]
+  )
 
   function persist(next: Cliente[]) {
     try {
@@ -89,62 +133,295 @@ export default function LocalClientes({ mode = 'local' }: { mode?: 'local' | 'ap
     event.preventDefault()
     const normalizedName = name.trim()
     const normalizedEmail = email.trim().toLowerCase()
-    if (!normalizedName || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+
+    if (
+      !normalizedName ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)
+    ) {
       setError('Informe um nome e um e-mail válido.')
       return
     }
-    if (clients.some(client => client.email.toLowerCase() === normalizedEmail && client.codigo !== editing)) {
+
+    if (
+      clients.some(
+        (client) =>
+          client.email.toLowerCase() === normalizedEmail &&
+          client.codigo !== editing
+      )
+    ) {
       setError('Já existe um cliente com esse e-mail.')
       return
     }
-    const next = editing !== null
-      ? clients.map(client => client.codigo === editing ? { ...client, nome: normalizedName, email: normalizedEmail } : client)
-      : [...clients, { codigo: Math.max(1000, ...clients.map(client => client.codigo)) + 1, nome: normalizedName, email: normalizedEmail }]
+
+    const next =
+      editing !== null
+        ? clients.map((client) =>
+            client.codigo === editing
+              ? { ...client, nome: normalizedName, email: normalizedEmail }
+              : client
+          )
+        : [
+            ...clients,
+            {
+              codigo:
+                Math.max(1000, ...clients.map((client) => client.codigo)) + 1,
+              nome: normalizedName,
+              email: normalizedEmail,
+            },
+          ]
+
     if (mode === 'api') {
       try {
-        const response = await fetch('/react-ssr-corp-hubv-painel-administrativo/api/clientes' + (editing !== null ? '/' + editing : ''), {
-          method: editing !== null ? 'PUT' : 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nome: normalizedName, email: normalizedEmail }),
-        })
+        const response = await fetch(
+          '/react-ssr-corp-hubv-painel-administrativo/api/clientes' +
+            (editing !== null ? '/' + editing : ''),
+          {
+            method: editing !== null ? 'PUT' : 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              nome: normalizedName,
+              email: normalizedEmail,
+            }),
+          }
+        )
+
         if (!response.ok) throw new Error('Falha ao salvar cliente na API')
-        const refreshed = await fetch('/react-ssr-corp-hubv-painel-administrativo/api/clientes', { cache: 'no-store' })
-        if (!refreshed.ok) throw new Error('Cliente salvo, mas não foi possível atualizar a lista')
+
+        const refreshed = await fetch(
+          '/react-ssr-corp-hubv-painel-administrativo/api/clientes',
+          { cache: 'no-store' }
+        )
+
+        if (!refreshed.ok)
+          throw new Error(
+            'Cliente salvo, mas não foi possível atualizar a lista'
+          )
+
         const data: unknown = await refreshed.json()
         if (!validClients(data)) throw new Error('Formato de clientes inválido')
         setClients(data)
         setOpen(false)
         setError('')
-      } catch (cause) { setError(cause instanceof Error ? cause.message : 'Falha ao salvar cliente') }
+      } catch (cause) {
+        setError(
+          cause instanceof Error ? cause.message : 'Falha ao salvar cliente'
+        )
+      }
     } else if (persist(next)) setOpen(false)
   }
 
   async function remove(client: Cliente) {
-    if (!window.confirm(`Excluir o cliente "${client.nome}"? Esta ação não pode ser desfeita.`)) return
+    if (
+      !window.confirm(
+        `Excluir o cliente "${client.nome}"? Esta ação não pode ser desfeita.`
+      )
+    )
+      return
+
     if (mode === 'api') {
       try {
-        const response = await fetch('/react-ssr-corp-hubv-painel-administrativo/api/clientes/' + client.codigo, { method: 'DELETE' })
+        const response = await fetch(
+          '/react-ssr-corp-hubv-painel-administrativo/api/clientes/' +
+            client.codigo,
+          { method: 'DELETE' }
+        )
+
         if (!response.ok) throw new Error('Falha ao excluir cliente')
-        setClients(clients.filter(item => item.codigo !== client.codigo))
+        setClients(clients.filter((item) => item.codigo !== client.codigo))
         setError('')
-      } catch (cause) { setError(cause instanceof Error ? cause.message : 'Falha ao excluir cliente') }
-    } else persist(clients.filter(item => item.codigo !== client.codigo))
+      } catch (cause) {
+        setError(
+          cause instanceof Error ? cause.message : 'Falha ao excluir cliente'
+        )
+      }
+    } else persist(clients.filter((item) => item.codigo !== client.codigo))
   }
 
-  return <section className="mx-auto max-w-6xl space-y-6 px-4 py-8 sm:px-6">
-    <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"><strong>{mode === 'local' ? 'Ambiente de demonstração' : 'Ambiente corporativo'}</strong><p>{mode === 'local' ? 'Cadastros fictícios armazenados apenas neste navegador. Nenhuma informação é enviada à API corporativa.' : 'As alterações são enviadas à API corporativa autenticada.'}</p></div>
-    <div className="flex flex-wrap items-center justify-between gap-4">
-      <div><h1 className="text-2xl font-bold text-slate-900">Clientes</h1><p className="mt-1 text-sm text-slate-500">{ready ? `${clients.length} cliente(s) cadastrado(s)` : 'Carregando clientes…'}</p></div>
-      <button type="button" onClick={startCreate} className="inline-flex items-center gap-2 rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700"><Plus size={18}/> Novo cliente</button>
-    </div>
-    <label className="flex max-w-lg items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-500"><Search size={18}/><span className="sr-only">Buscar clientes</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Buscar por nome, código ou e-mail" className="w-full bg-transparent text-sm text-slate-900 outline-none"/></label>
-    {error && !open && <p role="alert" className="text-sm text-red-700">{error}</p>}
-    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <table className="w-full min-w-[600px] text-left text-sm"><thead className="bg-slate-50 text-slate-600"><tr><th className="px-5 py-4">Código</th><th className="px-5 py-4">Nome</th><th className="px-5 py-4">E-mail</th><th className="px-5 py-4 text-right">Ações</th></tr></thead>
-      <tbody className="divide-y divide-slate-100">{filtered.map(client => <tr key={client.codigo}><td className="px-5 py-4 text-slate-500">{client.codigo}</td><td className="px-5 py-4 font-medium text-slate-900">{client.nome}</td><td className="px-5 py-4 text-slate-600">{client.email}</td><td className="px-5 py-4"><div className="flex justify-end gap-2"><button type="button" onClick={() => startEdit(client)} aria-label={`Editar ${client.nome}`} className="rounded-lg p-2 text-sky-700 hover:bg-sky-50"><Pencil size={18}/></button><button type="button" onClick={() => remove(client)} aria-label={`Excluir ${client.nome}`} className="rounded-lg p-2 text-red-700 hover:bg-red-50"><Trash2 size={18}/></button></div></td></tr>)}</tbody></table>
-      {ready && filtered.length === 0 && <p className="p-8 text-center text-sm text-slate-500">Nenhum cliente encontrado.</p>}
-    </div>
-    {open && <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4"><div role="dialog" aria-modal="true" aria-labelledby="client-dialog-title" className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"><div className="mb-5 flex items-center justify-between"><h2 id="client-dialog-title" className="text-xl font-semibold text-slate-900">{editing === null ? 'Novo cliente' : 'Editar cliente'}</h2><button type="button" aria-label="Fechar" onClick={() => setOpen(false)} className="rounded-lg p-2 hover:bg-slate-100"><X size={20}/></button></div>
-      <form onSubmit={save} className="space-y-4"><label className="block text-sm font-medium text-slate-700">Nome<input required maxLength={120} value={name} onChange={event => setName(event.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"/></label><label className="block text-sm font-medium text-slate-700">E-mail<input required type="email" maxLength={254} value={email} onChange={event => setEmail(event.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"/></label>{error && <p role="alert" className="text-sm text-red-700">{error}</p>}<div className="flex justify-end gap-3 pt-2"><button type="button" onClick={() => setOpen(false)} className="rounded-lg border border-slate-300 px-4 py-2 text-sm">Cancelar</button><button type="submit" className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700">Salvar cliente</button></div></form></div></div>}
-  </section>
+  return (
+    <section className="mx-auto max-w-6xl space-y-6 px-4 py-8 sm:px-6">
+      <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        <strong>
+          {mode === 'local'
+            ? 'Ambiente de demonstração'
+            : 'Ambiente corporativo'}
+        </strong>
+
+        <p>
+          {mode === 'local'
+            ? 'Cadastros fictícios armazenados apenas neste navegador. Nenhuma informação é enviada à API corporativa.'
+            : 'As alterações são enviadas à API corporativa autenticada.'}
+        </p>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Clientes</h1>
+
+          <p className="mt-1 text-sm text-slate-500">
+            {ready
+              ? `${clients.length} cliente(s) cadastrado(s)`
+              : 'Carregando clientes…'}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={startCreate}
+          className="inline-flex items-center gap-2 rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700"
+        >
+          <Plus size={18} /> Novo cliente
+        </button>
+      </div>
+
+      <label className="flex max-w-lg items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-500">
+        <Search size={18} />
+        <span className="sr-only">Buscar clientes</span>
+
+        <input
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Buscar por nome, código ou e-mail"
+          className="w-full bg-transparent text-sm text-slate-900 outline-none"
+        />
+      </label>
+
+      {error && !open && (
+        <p role="alert" className="text-sm text-red-700">
+          {error}
+        </p>
+      )}
+
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <table className="w-full min-w-150 text-left text-sm">
+          <thead className="bg-slate-50 text-slate-600">
+            <tr>
+              <th className="px-5 py-4">Código</th>
+              <th className="px-5 py-4">Nome</th>
+              <th className="px-5 py-4">E-mail</th>
+              <th className="px-5 py-4 text-right">Ações</th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y divide-slate-100">
+            {filtered.map((client) => (
+              <tr key={client.codigo}>
+                <td className="px-5 py-4 text-slate-500">{client.codigo}</td>
+
+                <td className="px-5 py-4 font-medium text-slate-900">
+                  {client.nome}
+                </td>
+
+                <td className="px-5 py-4 text-slate-600">{client.email}</td>
+
+                <td className="px-5 py-4">
+                  <div className="flex justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => startEdit(client)}
+                      aria-label={`Editar ${client.nome}`}
+                      className="rounded-lg p-2 text-sky-700 hover:bg-sky-50"
+                    >
+                      <Pencil size={18} />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => remove(client)}
+                      aria-label={`Excluir ${client.nome}`}
+                      className="rounded-lg p-2 text-red-700 hover:bg-red-50"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {ready && filtered.length === 0 && (
+          <p className="p-8 text-center text-sm text-slate-500">
+            Nenhum cliente encontrado.
+          </p>
+        )}
+      </div>
+
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="client-dialog-title"
+            className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+          >
+            <div className="mb-5 flex items-center justify-between">
+              <h2
+                id="client-dialog-title"
+                className="text-xl font-semibold text-slate-900"
+              >
+                {editing === null ? 'Novo cliente' : 'Editar cliente'}
+              </h2>
+
+              <button
+                type="button"
+                aria-label="Fechar"
+                onClick={() => setOpen(false)}
+                className="rounded-lg p-2 hover:bg-slate-100"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <form onSubmit={save} className="space-y-4">
+              <label className="block text-sm font-medium text-slate-700">
+                Nome
+                <input
+                  required
+                  maxLength={120}
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
+                />
+              </label>
+
+              <label className="block text-sm font-medium text-slate-700">
+                E-mail
+                <input
+                  required
+                  type="email"
+                  maxLength={254}
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
+                />
+              </label>
+
+              {error && (
+                <p role="alert" className="text-sm text-red-700">
+                  {error}
+                </p>
+              )}
+
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg border border-slate-300 px-4 py-2 text-sm"
+                >
+                  Cancelar
+                </button>
+
+                <button
+                  type="submit"
+                  className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700"
+                >
+                  Salvar cliente
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </section>
+  )
 }

@@ -10,7 +10,7 @@ export function BooleanModal({
   onClose,
   onSave,
 }: {
-  editing: BooleanFlag | null
+  editing?: BooleanFlag | null
   onClose: () => void
   onSave: (flag: BooleanFlag) => void
 }) {
@@ -22,6 +22,7 @@ export function BooleanModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
     if (editing) {
       onSave({
         ...editing,
@@ -53,16 +54,17 @@ export function BooleanModal({
             placeholder="Ex: Checkout V2"
           />
         </Field>
+
         <Field label="Chave">
           <TextInput
             required
             value={key}
             onChange={setKey}
             placeholder="Ex: checkout_v2"
-            mono
           />
         </Field>
       </div>
+
       <Field label="Descrição">
         <textarea
           required
@@ -72,6 +74,7 @@ export function BooleanModal({
           className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm h-20 resize-none"
         />
       </Field>
+
       <Field label="Responsável">
         <TextInput
           value={owner}
@@ -79,6 +82,7 @@ export function BooleanModal({
           placeholder="Ex: Engenharia"
         />
       </Field>
+
       <EnabledToggle enabled={enabled} onToggle={() => setEnabled(!enabled)} />
     </ModalShell>
   )

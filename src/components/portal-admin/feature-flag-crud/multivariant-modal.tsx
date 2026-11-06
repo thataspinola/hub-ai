@@ -20,26 +20,36 @@ export function MultivariantModal({
   const [description, setDescription] = useState(editing?.description ?? '')
   const [owner, setOwner] = useState(editing?.owner ?? 'Engenharia')
   const [enabled, setEnabled] = useState(editing?.enabled ?? false)
+
   const [valueType, setValueType] = useState<'string' | 'number' | 'json'>(
-    editing?.valueType ?? 'string',
-  )
-  const [value, setValue] = useState(editing?.value ?? '')
-  const [variants, setVariants] = useState(
-    editing?.variants ?? [{ label: '', value: '', weight: 100 }],
+    editing?.valueType ?? 'string'
   )
 
-  const addVariant = () =>
+  const [value, setValue] = useState(editing?.value ?? '')
+
+  const [variants, setVariants] = useState(
+    editing?.variants ?? [{ label: '', value: '', weight: 100 }]
+  )
+
+  const addVariant = () => {
     setVariants([...variants, { label: '', value: '', weight: 0 }])
-  const removeVariant = (i: number) =>
-    setVariants(variants.filter((_, idx) => idx !== i))
+  }
+
+  const removeVariant = (i: number) => {
+    setVariants(variants.filter((_, index) => index !== i))
+  }
+
   const updateVariant = (i: number, field: string, val: string | number) => {
     setVariants(
-      variants.map((v, idx) => (idx === i ? { ...v, [field]: val } : v)),
+      variants.map((variant, index) =>
+        index === i ? { ...variant, [field]: val } : variant
+      )
     )
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
     if (editing) {
       onSave({
         ...editing,
@@ -64,14 +74,14 @@ export function MultivariantModal({
           valueType,
           value,
           variants,
-        }),
+        })
       )
     }
   }
 
   return (
     <ModalShell
-      title={editing ? 'Editar Flag Multivariante' : 'Nova Flag Multivariante'}
+      title={editing ? 'Editar Flag Multivariant' : 'Criar Flag Multivariant'}
       onClose={onClose}
       onSubmit={handleSubmit}
       submitLabel={editing ? 'Salvar' : 'Criar'}
@@ -82,19 +92,20 @@ export function MultivariantModal({
             required
             value={name}
             onChange={setName}
-            placeholder="Ex: Dark Mode"
+            placeholder="Ex: ui_dark_mode"
           />
         </Field>
+
         <Field label="Chave">
           <TextInput
             required
             value={key}
             onChange={setKey}
             placeholder="Ex: ui_dark_mode"
-            mono
           />
         </Field>
       </div>
+
       <Field label="Descrição">
         <textarea
           required
@@ -104,18 +115,20 @@ export function MultivariantModal({
           className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm h-20 resize-none"
         />
       </Field>
+
       <div className="grid grid-cols-2 gap-4">
         <Field label="Tipo do Valor">
           <select
             value={valueType}
             onChange={(e) => setValueType(e.target.value as typeof valueType)}
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm bg-white"
+            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm h-20 resize-none"
           >
             <option value="string">String</option>
             <option value="number">Number</option>
             <option value="json">JSON</option>
           </select>
         </Field>
+
         <Field label="Valor Atual">
           <TextInput
             required
@@ -128,10 +141,10 @@ export function MultivariantModal({
                   ? '{"key": "value"}'
                   : 'beta'
             }
-            mono
           />
         </Field>
       </div>
+
       <Field label="Responsável">
         <TextInput
           value={owner}
@@ -140,20 +153,23 @@ export function MultivariantModal({
         />
       </Field>
 
-      {/* Variants */}
+      {/* Variantes */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
             Variantes
           </label>
+
           <button
             type="button"
             onClick={addVariant}
             className="text-xs text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-1"
           >
-            <Plus size={14} /> Adicionar
+            <Plus size={14} />
+            Adicionar
           </button>
         </div>
+
         {variants.map((v, i) => (
           <div key={i} className="flex items-center gap-2">
             <input
@@ -161,15 +177,17 @@ export function MultivariantModal({
               value={v.label}
               onChange={(e) => updateVariant(i, 'label', e.target.value)}
               placeholder="Label"
-              className="flex-1 px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+              className="flex-1 px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo 500 outline-none"
             />
+
             <input
               type="text"
               value={v.value}
               onChange={(e) => updateVariant(i, 'value', e.target.value)}
-              placeholder="Valor"
-              className="flex-1 px-3 py-2 rounded-lg border border-slate-200 text-sm font-mono focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+              placeholder="Value"
+              className="flex-1 px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo 500 outline-none"
             />
+
             <input
               type="number"
               value={v.weight}
@@ -179,8 +197,9 @@ export function MultivariantModal({
               placeholder="%"
               min={0}
               max={100}
-              className="w-16 px-3 py-2 rounded-lg border border-slate-200 text-sm text-center focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+              className="flex-1 px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo 500 outline-none"
             />
+
             {variants.length > 1 && (
               <button
                 type="button"

@@ -16,9 +16,13 @@ function prepare(root = path.resolve(__dirname, '..')) {
       'Standalone server/static artifacts missing; run a successful Next build first'
     )
 
-  fs.cpSync(path.join(dist, 'static'), path.join(standalone, '.next', 'static'), {
-    recursive: true,
-  })
+  fs.cpSync(
+    path.join(dist, 'static'),
+    path.join(standalone, '.next', 'static'),
+    {
+      recursive: true,
+    }
+  )
 
   if (fs.existsSync(path.join(root, 'public')))
     fs.cpSync(path.join(root, 'public'), path.join(standalone, 'public'), {

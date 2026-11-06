@@ -23,16 +23,19 @@ export function HistoryEditor({
     <Card className="border-slate-200 shadow-sm">
       <CardHeader>
         <CardTitle>Configurações do Histórico Recente</CardTitle>
+
         <CardDescription>
           Ajuste os parâmetros para recomendações baseadas no histórico do
           usuário
         </CardDescription>
       </CardHeader>
+
       <CardContent>
         <div className="grid gap-6 md:grid-cols-2">
           <FieldGroup className="gap-4">
             <Field>
               <FieldLabel>Máximo de URLs armazenadas</FieldLabel>
+
               <Input
                 type="number"
                 value={params.maxRecentUrlsStored}
@@ -44,12 +47,15 @@ export function HistoryEditor({
                 }
                 min={1}
               />
+
               <p className="text-xs text-slate-500 mt-1">
                 Quantidade máxima de URLs recentes a manter
               </p>
             </Field>
+
             <Field>
               <FieldLabel>URLs recentes a usar</FieldLabel>
+
               <Input
                 type="number"
                 value={params.takeFromRecentUrls}
@@ -61,12 +67,15 @@ export function HistoryEditor({
                 }
                 min={1}
               />
+
               <p className="text-xs text-slate-500 mt-1">
                 Quantas URLs recentes usar para recomendações
               </p>
             </Field>
+
             <Field>
               <FieldLabel>Categorias recentes a usar</FieldLabel>
+
               <Input
                 type="number"
                 value={params.takeFromRecentCategories}
@@ -78,14 +87,17 @@ export function HistoryEditor({
                 }
                 min={1}
               />
+
               <p className="text-xs text-slate-500 mt-1">
                 Quantas categorias recentes usar como fallback
               </p>
             </Field>
           </FieldGroup>
+
           <FieldGroup className="gap-4">
             <Field>
               <FieldLabel>URLs por categoria expandida</FieldLabel>
+
               <Input
                 type="number"
                 value={params.expandCategoryToUrlsTake}
@@ -97,17 +109,21 @@ export function HistoryEditor({
                 }
                 min={1}
               />
+
               <p className="text-xs text-slate-500 mt-1">
                 Quantas URLs pegar ao expandir uma categoria
               </p>
             </Field>
+
             <div className="flex items-center justify-between p-4 rounded-lg border border-slate-200">
               <div>
                 <p className="font-medium">Usar categorias se vazio</p>
+
                 <p className="text-sm text-slate-500">
                   Se não houver URLs recentes, usar categorias recentes
                 </p>
               </div>
+
               <Switch
                 checked={params.ifEmptyThenUseRecentCategories}
                 onCheckedChange={(checked) =>

@@ -19,8 +19,9 @@ export function configuredFlagProvider(
     !APPCONFIG_APPLICATION_ID ||
     !APPCONFIG_ENVIRONMENT_ID ||
     !APPCONFIG_CONFIGURATION_PROFILE_ID
-  )
+  ) {
     throw new Error('AppConfig identifiers are required')
+  }
 
   return new AppConfigProvider({
     applicationId: APPCONFIG_APPLICATION_ID,

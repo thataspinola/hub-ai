@@ -4,7 +4,7 @@ import authOptions from '@/app/api/auth/[...nextauth]/auth-options'
 import { getFeatureFlags } from '@/lib/feature-flags/server'
 import {
   canAccessAdministration,
-  requiresAdministrativeAuth
+  requiresAdministrativeAuth,
 } from '@/lib/auth/access-policy'
 import type { ClientSession } from '@/types/client-session'
 
@@ -21,7 +21,7 @@ export async function GET() {
 
   try {
     return Response.json(await getFeatureFlags(), {
-      headers: { 'Cache-Control': 'no-store' }
+      headers: { 'Cache-Control': 'no-store' },
     })
   } catch {
     return Response.json(

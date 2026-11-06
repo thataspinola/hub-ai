@@ -34,6 +34,7 @@ export function ModalShell({
       >
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-bold text-slate-900">{title}</h3>
+
           <button
             onClick={onClose}
             className="text-slate-400 hover:text-slate-600"
@@ -41,8 +42,10 @@ export function ModalShell({
             <X size={24} />
           </button>
         </div>
+
         <form onSubmit={onSubmit} className="space-y-5">
           {children}
+
           <div className="flex gap-3 pt-2">
             <button
               type="button"
@@ -51,6 +54,7 @@ export function ModalShell({
             >
               Cancelar
             </button>
+
             <button
               type="submit"
               className="flex-1 min-w-0 h-12 bg-indigo-600 text-white px-6 rounded-2xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all"
@@ -76,6 +80,7 @@ export function Field({
       <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
         {label}
       </label>
+
       {children}
     </div>
   )
@@ -121,6 +126,7 @@ export function EnabledToggle({
         >
           <Check size={18} />
         </div>
+
         <div>
           <p className="text-sm font-bold text-slate-900">Estado</p>
           <p className="text-xs text-slate-500">
@@ -128,6 +134,7 @@ export function EnabledToggle({
           </p>
         </div>
       </div>
+
       <button
         type="button"
         onClick={onToggle}

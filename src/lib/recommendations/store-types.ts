@@ -25,19 +25,19 @@ export interface RecommendationStore {
   // Catalog actions
   addProduct: (product: Product) => void
   updateProduct: (url: string, product: Product) => void
-  deleteProduct: (url: string) => void
+  removeProduct: (url: string) => void
   addCategory: (category: string) => void
-  deleteCategory: (category: string) => void
+  removeCategory: (category: string) => void
 
   // Affinity actions
   addAffinityByCategory: (
     sourceCategory: string,
-    target: AffinityTarget,
+    target: AffinityTarget
   ) => void
 
   removeAffinityByCategory: (
     sourceCategory: string,
-    targetIndex: number,
+    targetIndex: number
   ) => void
 
   addAffinityByUrl: (sourceUrl: string, target: AffinityTarget) => void
@@ -48,7 +48,7 @@ export interface RecommendationStore {
 
   // Campaign actions
   addCampaign: (campaignId: string, description?: string) => void
-  deleteCampaign: (campaignId: string) => void
+  removeCampaign: (campaignId: string) => void
   addCampaignTarget: (campaignId: string, target: CampaignTarget) => void
   removeCampaignTarget: (campaignId: string, targetIndex: number) => void
   updateCampaignDescription: (campaignId: string, description: string) => void
@@ -56,21 +56,21 @@ export interface RecommendationStore {
   // Slot actions
   addSlot: (slotId: string, config: SlotConfig) => void
   updateSlot: (slotId: string, config: SlotConfig) => void
-  deleteSlot: (slotId: string) => void
+  removeSlot: (slotId: string) => void
 
   // Defaults actions
   updateDefaults: (
-    defaults: RecommendationData['recommendationRules']['defaults'],
+    params: RecommendationData['recommendationRules']['defaults']
   ) => void
 
-  // History Recent params
-  updateHistoryRecentParams: (
-    params: RecommendationData['recommendationRules']['types']['history_recent']['params'],
+  // History Recent Params
+  updateHistoryRecentsParams: (
+    params: RecommendationData['recommendationRules']['types']['history_recent']['params']
   ) => void
 
   // Same Category params
   updateSameCategoryParams: (
-    params: RecommendationData['recommendationRules']['types']['same_category']['params'],
+    params: RecommendationData['recommendationRules']['types']['same_category']['params']
   ) => void
 
   // Internal

@@ -6,7 +6,7 @@ export function createDefaultsActions({
   saveChange,
 }: RecommendationActionContext): Pick<
   RecommendationStore,
-  'updateDefaults' | 'updateHistoryRecentParams' | 'updateSameCategoryParams'
+  'updateDefaults' | 'updateHistoryRecentsParams' | 'updateSameCategoryParams'
 > {
   return {
     updateDefaults: (defaults) =>
@@ -20,11 +20,10 @@ export function createDefaultsActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
-    updateHistoryRecentParams: (params) =>
+    updateHistoryRecentsParams: (params) =>
       set((state) => {
         const newData = {
           ...state.data,
@@ -41,7 +40,6 @@ export function createDefaultsActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
 
@@ -62,7 +60,6 @@ export function createDefaultsActions({
         }
 
         saveChange(newData)
-
         return { data: newData, isDirty: true }
       }),
   }

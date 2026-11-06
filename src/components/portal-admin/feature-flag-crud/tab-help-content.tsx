@@ -31,32 +31,33 @@ export const TAB_HELP: Record<
           'Habilitar uma feature para teste interno antes de liberar para todos os usuários.',
       },
       {
-        title: 'Modo Manutenção',
+        title: 'Modo manutenção',
         description:
           'Colocar o sistema inteiro ou módulos específicos em modo de manutenção.',
       },
       {
         title: 'Feature Gate',
         description:
-          'Esconder uma funcionalidade em desenvolvimento que já foi deployed mas não está pronta para uso.',
+          'Esconder uma funcionalidade em desenvolvimento que já foi deployada mas não está pronta para uso.',
       },
     ],
     codeExample: `// Server-side (RSC)
-const showCheckout = await isEnabled('new_checkout_v2');
-return showCheckout ? <NewCheckout /> : <LegacyCheckout />;
+    const showCheckout = await isEnabled('new_checkout_v2');
+    return showCheckout ? <NewCheckout /> : <LegacyCheckout />;
 
-// Client-side (Hook)
-const showCheckout = useIsEnabled('new_checkout_v2');`,
+    // Client-side (Hook)
+    const showCheckout = useIsEnabled('new_checkout_v2');
+    `,
   },
   multivariant: {
     title: 'Flags Multivariantes',
     description:
-      'Retornam valores dinâmicos (string, number ou JSON) ao invés de apenas true/false. Ideais para testes A/B e configurações ajustáveis.',
+      'Retornan valores dinâmicos (string, number ou JSON) ao invés de apenas true/false. Ideais para testes A/B e configurações ajustáveis.',
     howItWorks:
       'Uma flag multivariante possui um valor atual e uma lista de variantes possíveis com pesos de distribuição. O tipo do valor pode ser string, number ou JSON. No código, use getFlagValue<T>() no servidor ou useFlagValue<T>() no cliente para obter o valor tipado com um fallback seguro.',
     useCases: [
       {
-        title: 'Teste A/B',
+        title: 'Testes A/B',
         description:
           'Distribuir usuários entre variantes ("controle" vs "tratamento") com pesos configuráveis (50%/50%).',
       },
@@ -68,32 +69,34 @@ const showCheckout = useIsEnabled('new_checkout_v2');`,
       {
         title: 'Limites Configuráveis',
         description:
-          'Ajustar rate limits, número máximo de itens, timeouts — tudo via flag numérica.',
+          'Ajustar rate limits, número máximo de itens, timeouts - tudo via flag numérica.',
       },
       {
         title: 'Configuração JSON',
         description:
-          'Passar objetos de configuração complexos (ex: { theme: "dark", density: "compact" }) como valor da flag.',
+          'Passar objetos de configuração complexos (ex: { theme: "dark", density: "compact"}) como valor da flag.',
       },
     ],
     codeExample: `// Server-side (RSC)
-const theme = await getFlagValue<string>('ui_theme', 'light');
-const limit = await getFlagValue<number>('rate_limit', 100);
+    const theme = await getFlagValue<string>('ui_theme', 'light');
+    const limit = await getFlagValue<number>('rate_limit', 100);
 
-// Client-side (Hook)
-const theme = useFlagValue<string>('ui_theme', 'light');`,
+    // Client-side (Hook)
+    const theme = useFlagValue<string>('ui_theme', 'light');
+    const limit = useFlagValue<number>('rate_limit', 100);
+    `,
   },
   attributes: {
     title: 'Flags com Atributos',
     description:
       'Carregam metadados e configurações adicionais em pares chave-valor. Ideais para features com múltiplos parâmetros configuráveis.',
     howItWorks:
-      'Uma flag com atributos possui um estado habilitado/desabilitado e um mapa de atributos (chave → valor). Os valores são auto-detectados como string, number ou boolean. No código, use getFlagAttributes() no servidor ou useFlagAttributes() no cliente para obter todos os atributos como um objeto.',
+      'Uma flag com atributos possui um estado habilitado/desabilitado e um mapa de atributos (chave → valor). Os valores são auto-detectados como string, number ou boolean. No código, use getFlagAttributes<T>() no servidor ou useFlagAttributes<T>() no cliente para obter todos os atributos como um objeto.  ',
     useCases: [
       {
         title: 'Motor de ML',
         description:
-          'Configurar modelo, número máximo de resultados, grupo de teste e percentual de rollout — tudo vinculado a uma flag.',
+          'Configurar modelo, número máximo de resultados, grupo de teste e percentual de rollout - tudo vinculado a uma flag.',
       },
       {
         title: 'Regras de Negócio',
@@ -108,15 +111,16 @@ const theme = useFlagValue<string>('ui_theme', 'light');`,
       {
         title: 'Rollout Detalhado',
         description:
-          'Combinar percentual de rollout, região, plano do usuário e outros critérios como atributos da flag.',
+          'Combinar percentual de rollout, região, plano de usuário e outros critérios como atributos da flag.',
       },
     ],
     codeExample: `// Server-side (RSC)
-const config = await getFlagAttributes('ml_rec_engine');
-// → { rolloutPercentage: 50, model: "v3", maxResults: 12 }
+    const config = await getFlagAttributes('ml_rec_engine')
+    // → { rolloutPercentage: 50, model: 'v3', maxResults: 12}
 
-// Client-side (Hook)
-const config = useFlagAttributes('ml_rec_engine');`,
+    // Client-side (Hook)
+    const config = useFlagAttributes('ml_rec_engine')
+    `,
   },
 }
 
@@ -137,11 +141,13 @@ export function TabHelpContent({
           <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
             <HelpCircle size={20} />
           </div>
+
           <div>
-            <h3 className="text-sm font-bold text-slate-900">{help.title}</h3>
-            <p className="text-xs text-slate-500 mt-0.5">{help.description}</p>
+            <h3 className="text-sm font-bold text-slate-900">{help?.title}</h3>
+            <p className="text-xs text-slate-500 mt-0.5">{help?.description}</p>
           </div>
         </div>
+
         <button
           onClick={onClose}
           className="p-1 text-slate-300 hover:text-slate-500 transition-colors"
@@ -151,32 +157,36 @@ export function TabHelpContent({
       </div>
 
       <div className="p-5 grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Como funciona */}
+        {/* Como Funciona */}
         <div className="space-y-2">
           <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-            Como funciona
+            Como Funciona
           </h4>
+
           <p className="text-sm text-slate-600 leading-relaxed">
-            {help.howItWorks}
+            {help?.howItWorks}
           </p>
         </div>
 
         {/* Casos de uso */}
         <div className="space-y-2">
           <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-            Casos de Uso
+            Casos de uso
           </h4>
+
           <ul className="space-y-2">
-            {help.useCases.map((uc, i) => (
+            {help?.useCases?.map((uc, i) => (
               <li key={i} className="flex gap-2">
-                <span className="flex-shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                <span className="shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-indigo-400" />
+
                 <div>
                   <span className="text-sm font-semibold text-slate-700">
                     {uc.title}
                   </span>
+
                   <span className="text-sm text-slate-500">
                     {' '}
-                    — {uc.description}
+                    - {uc.description}
                   </span>
                 </div>
               </li>
@@ -187,10 +197,11 @@ export function TabHelpContent({
         {/* Exemplo de código */}
         <div className="space-y-2">
           <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-            Exemplo de Código
+            Exemplo de código
           </h4>
+
           <pre className="p-3 bg-slate-900 text-[11px] text-indigo-300 font-mono rounded-lg overflow-x-auto leading-relaxed">
-            {help.codeExample}
+            {help?.codeExample}
           </pre>
         </div>
       </div>

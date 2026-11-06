@@ -1,16 +1,16 @@
 import type { RecommendationData } from './types'
 
 export const migrateData = (
-  data: Partial<RecommendationData>,
+  data: Partial<RecommendationData>
 ): RecommendationData => {
   const defaults = createEmptyData()
 
   const catalog = {
-    products: data.catalog?.products || [],
-    categories: data.catalog?.categories || [],
+    products: data.catalog?.products ?? [],
+    categories: data.catalog?.categories ?? [],
   }
 
-  const types = (data.recommendationRules?.types || {}) as Partial<
+  const types = (data.recommendationRules?.types ?? {}) as Partial<
     RecommendationData['recommendationRules']['types']
   >
 
@@ -33,8 +33,8 @@ export const migrateData = (
           ...defaults.recommendationRules.types.affinity_manual,
           ...types.affinity_manual,
           maps: {
-            byCategory: types.affinity_manual?.maps?.byCategory || {},
-            byUrl: types.affinity_manual?.maps?.byUrl || {},
+            byCategory: types.affinity_manual?.maps?.byCategory ?? {},
+            byUrl: types.affinity_manual?.maps?.byUrl ?? {},
           },
         },
         history_recent: {
@@ -46,14 +46,14 @@ export const migrateData = (
           ...types.popularity_global,
           ranking: {
             ...defaults.recommendationRules.types.popularity_global.ranking,
-            ...types.popularity_global?.ranking,
+            ...(types.popularity_global?.ranking ?? {}),
           },
         },
         campaign: {
           description:
             types.campaign?.description ||
-            'Recomenda produtos baseados no ID da campanha (utm_campaign).',
-          campaigns: types.campaign?.campaigns || {},
+            'Recomenda produtos baseados no ID da campanha (utm_campaign)',
+          campaigns: types.campaign?.campaigns ?? {},
           params: {
             expandCategoryToUrlsTake:
               types.campaign?.params?.expandCategoryToUrlsTake || 10,
@@ -102,13 +102,11 @@ export const createEmptyData = (): RecommendationData => ({
     types: {
       same_category: {
         description:
-          'Recomenda produtos da mesma categoria do item atual (via catálogo).',
-        params: {
-          maxCandidates: 50,
-        },
+          'Recomenda produtos da mesma categoria do item atual (via catálogo)',
+        params: { maxCandidates: 50 },
       },
       affinity_manual: {
-        description: 'Afinidade curada entre categorias e/ou URLs específicas.',
+        description: 'Afinidade curada entre categorias e/ou URLs específicas',
         maps: {
           byCategory: {},
           byUrl: {},
@@ -124,7 +122,7 @@ export const createEmptyData = (): RecommendationData => ({
       },
       history_recent: {
         description:
-          'Recomenda baseado no histórico do usuário (URLs vistas recentemente).',
+          'Recomenda baseado no histórico recente do usuário (URLs vistas recentemente)',
         params: {
           maxRecentUrlsStored: 20,
           takeFromRecentUrls: 6,
@@ -155,7 +153,7 @@ export const createEmptyData = (): RecommendationData => ({
         },
       },
       context_slot: {
-        description: 'Config por slot/página: define cascata e limites.',
+        description: 'Config por slot/página: define cascata e limites',
         slots: {
           pdp_related: {
             limit: 8,

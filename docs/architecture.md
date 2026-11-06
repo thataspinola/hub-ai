@@ -2,13 +2,13 @@
 
 A arquitetura usa composição e contratos pequenos. Os caminhos públicos dos componentes e `useRecommendationStore` foram preservados; telas, schemas JSON, chaves de armazenamento e protocolo de preview continuam compatíveis.
 
-| Área | Composição/apresentação | Comportamento e regras |
-| --- | --- | --- |
-| Propriedades de formulário | properties-panel.tsx escolhe o editor | properties/ agrupa editores de etapa, conteúdo, campos, documentos, ações e planos |
-| CRUD de flags | FeatureFlagCrud.tsx e feature-flag-crud/ compõem tabelas/modais | use-flag-crud.ts concentra estado, filtros e operações; recebe storage e sincronização por parâmetro |
-| Regras de recomendações | RecommendationRules.tsx e recommendation-rules/ | Editores separados por defaults, afinidade, popularidade, campanhas, slots e histórico |
-| Estado de recomendações | store.ts compõe a instância Zustand | actions/ separa operações por capacidade; data-model.ts contém defaults e migração |
-| Persistência e preview | browser-adapters.ts integra IndexedDB, localStorage e BroadcastChannel | persistence.ts define contratos e coordena gravação; não conhece o browser |
+| Área                       | Composição/apresentação                                                | Comportamento e regras                                                                               |
+| -------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Propriedades de formulário | properties-panel.tsx escolhe o editor                                  | properties/ agrupa editores de etapa, conteúdo, campos, documentos, ações e planos                   |
+| CRUD de flags              | FeatureFlagCrud.tsx e feature-flag-crud/ compõem tabelas/modais        | use-flag-crud.ts concentra estado, filtros e operações; recebe storage e sincronização por parâmetro |
+| Regras de recomendações    | RecommendationRules.tsx e recommendation-rules/                        | Editores separados por defaults, afinidade, popularidade, campanhas, slots e histórico               |
+| Estado de recomendações    | store.ts compõe a instância Zustand                                    | actions/ separa operações por capacidade; data-model.ts contém defaults e migração                   |
+| Persistência e preview     | browser-adapters.ts integra IndexedDB, localStorage e BroadcastChannel | persistence.ts define contratos e coordena gravação; não conhece o browser                           |
 
 ## SOLID aplicado ao projeto
 

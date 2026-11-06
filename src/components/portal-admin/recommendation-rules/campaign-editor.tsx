@@ -69,8 +69,9 @@ export function CampaignEditor({
     if (newCampaignId.trim()) {
       onAddCampaign(
         newCampaignId.trim(),
-        newCampaignDescription.trim() || undefined,
+        newCampaignDescription.trim() || undefined
       )
+
       setAddCampaignOpen(false)
       setNewCampaignId('')
       setNewCampaignDescription('')
@@ -84,6 +85,7 @@ export function CampaignEditor({
         targetId: targetValue,
         weight: targetWeight,
       })
+
       setAddTargetDialogOpen(false)
       setTargetValue('')
       setTargetWeight(80)
@@ -97,11 +99,13 @@ export function CampaignEditor({
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <CardTitle>Campanhas de Recomendação</CardTitle>
+
               <CardDescription>
                 Configure recomendações personalizadas por campanha
                 (utm_campaign).
               </CardDescription>
             </div>
+
             <Button
               onClick={() => setAddCampaignOpen(true)}
               className="bg-indigo-600 hover:bg-indigo-700"
@@ -111,6 +115,7 @@ export function CampaignEditor({
             </Button>
           </div>
         </CardHeader>
+
         <CardContent>
           {Object.keys(campaigns).length === 0 ? (
             <Empty
@@ -126,12 +131,14 @@ export function CampaignEditor({
                       <Badge variant="outline" className="font-mono">
                         {campaignId}
                       </Badge>
+
                       <span className="text-slate-500 text-sm">
                         ({campaign.targets.length}{' '}
                         {campaign.targets.length === 1 ? 'regra' : 'regras'})
                       </span>
                     </div>
                   </AccordionTrigger>
+
                   <AccordionContent>
                     <div className="space-y-4 pl-4">
                       <div className="flex items-center gap-2">
@@ -140,12 +147,13 @@ export function CampaignEditor({
                           onChange={(e) =>
                             onUpdateCampaignDescription(
                               campaignId,
-                              e.target.value,
+                              e.target.value
                             )
                           }
                           placeholder="Descrição da campanha..."
                           className="max-w-md text-sm"
                         />
+
                         <Button
                           variant="outline"
                           size="sm"
@@ -157,6 +165,7 @@ export function CampaignEditor({
                           <Plus className="h-4 w-4 mr-1" />
                           Adicionar Regra
                         </Button>
+
                         <Button
                           variant="ghost"
                           size="sm"
@@ -166,6 +175,7 @@ export function CampaignEditor({
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
+
                       {campaign.targets.length === 0 ? (
                         <p className="text-sm text-slate-500 py-2">
                           Nenhuma regra configurada.
@@ -176,9 +186,10 @@ export function CampaignEditor({
                             const product =
                               target.targetType === 'url'
                                 ? products.find(
-                                    (p) => p.url === target.targetId,
+                                    (p) => p.url === target.targetId
                                   )
                                 : null
+
                             return (
                               <div
                                 key={index}
@@ -196,15 +207,18 @@ export function CampaignEditor({
                                       ? 'Categoria'
                                       : 'URL'}
                                   </Badge>
+
                                   <span className="font-medium">
                                     {target.targetType === 'url'
                                       ? product?.name || target.targetId
                                       : target.targetId}
                                   </span>
+
                                   <Badge variant="outline">
                                     peso: {target.weight}
                                   </Badge>
                                 </div>
+
                                 <Button
                                   variant="ghost"
                                   size="icon"
@@ -233,22 +247,27 @@ export function CampaignEditor({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Nova Campanha</DialogTitle>
+
             <DialogDescription>
               Crie uma nova campanha de recomendação. O ID será usado para
               corresponder ao valor de utm_campaign.
             </DialogDescription>
           </DialogHeader>
+
           <FieldGroup className="gap-4">
             <Field>
               <FieldLabel>ID da Campanha (utm_campaign)</FieldLabel>
+
               <Input
                 value={newCampaignId}
                 onChange={(e) => setNewCampaignId(e.target.value)}
                 placeholder="ex: black-friday-2024"
               />
             </Field>
+
             <Field>
               <FieldLabel>Descrição (opcional)</FieldLabel>
+
               <Input
                 value={newCampaignDescription}
                 onChange={(e) => setNewCampaignDescription(e.target.value)}
@@ -256,10 +275,12 @@ export function CampaignEditor({
               />
             </Field>
           </FieldGroup>
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setAddCampaignOpen(false)}>
               Cancelar
             </Button>
+
             <Button
               onClick={handleAddCampaign}
               disabled={!newCampaignId.trim()}
@@ -276,14 +297,17 @@ export function CampaignEditor({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Adicionar Regra à Campanha</DialogTitle>
+
             <DialogDescription>
               Adicione uma categoria ou URL específica para recomendar nesta
               campanha
             </DialogDescription>
           </DialogHeader>
+
           <FieldGroup className="gap-4">
             <Field>
               <FieldLabel>Tipo de Destino</FieldLabel>
+
               <Select
                 value={targetType}
                 onValueChange={(v) => setTargetType(v as 'url' | 'category')}
@@ -291,19 +315,23 @@ export function CampaignEditor({
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
+
                 <SelectContent>
                   <SelectItem value="category">Categoria</SelectItem>
                   <SelectItem value="url">URL/SKU</SelectItem>
                 </SelectContent>
               </Select>
             </Field>
+
             <Field>
               <FieldLabel>Destino</FieldLabel>
+
               {targetType === 'category' ? (
                 <Select value={targetValue} onValueChange={setTargetValue}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione a categoria" />
                   </SelectTrigger>
+
                   <SelectContent>
                     {categories.map((cat) => (
                       <SelectItem key={cat} value={cat}>
@@ -317,6 +345,7 @@ export function CampaignEditor({
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione o produto" />
                   </SelectTrigger>
+
                   <SelectContent>
                     {products.map((p) => (
                       <SelectItem key={p.url} value={p.url}>
@@ -327,8 +356,10 @@ export function CampaignEditor({
                 </Select>
               )}
             </Field>
+
             <Field>
               <FieldLabel>Peso (0-100)</FieldLabel>
+
               <Input
                 type="number"
                 value={targetWeight}
@@ -338,6 +369,7 @@ export function CampaignEditor({
               />
             </Field>
           </FieldGroup>
+
           <DialogFooter>
             <Button
               variant="outline"
@@ -345,6 +377,7 @@ export function CampaignEditor({
             >
               Cancelar
             </Button>
+
             <Button
               onClick={handleAddTarget}
               disabled={!targetValue}

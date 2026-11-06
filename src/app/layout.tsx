@@ -23,10 +23,15 @@ export default function RootLayout({
       <head>
         <PublicEnvScript />
       </head>
+
       <body>
         <SessionProviderWrapper>
           <FeatureFlagProvider
-            providerName={process.env.FEATURE_FLAGS_PROVIDER === 'appconfig' ? 'appconfig' : 'localStorage'}
+            providerName={
+              process.env.FEATURE_FLAGS_PROVIDER === 'appconfig'
+                ? 'appconfig'
+                : 'localStorage'
+            }
           >
             <Navbar />
             <main>{children}</main>

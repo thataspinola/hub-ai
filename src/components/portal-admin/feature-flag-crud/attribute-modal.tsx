@@ -11,7 +11,7 @@ export function AttributeModal({
   onClose,
   onSave,
 }: {
-  editing: AttributeFlag | null
+  editing?: AttributeFlag | null
   onClose: () => void
   onSave: (flag: AttributeFlag) => void
 }) {
@@ -22,26 +22,31 @@ export function AttributeModal({
   const [enabled, setEnabled] = useState(editing?.enabled ?? false)
   const [attrs, setAttrs] = useState<{ key: string; value: string }[]>(() => {
     if (editing) {
-      return Object.entries(editing.attributes).map(([k, v]) => ({
-        key: k,
-        value: String(v),
+      return Object.entries(editing?.attributes ?? {}).map(([key, value]) => ({
+        key,
+        value: String(value),
       }))
     }
+
     return [{ key: '', value: '' }]
   })
 
   const addAttr = () => setAttrs([...attrs, { key: '', value: '' }])
-  const removeAttr = (i: number) =>
-    setAttrs(attrs.filter((_, idx) => idx !== i))
-  const updateAttr = (i: number, field: 'key' | 'value', val: string) => {
-    setAttrs(attrs.map((a, idx) => (idx === i ? { ...a, [field]: val } : a)))
+  const removeAttr = (index: number) =>
+    setAttrs(attrs.filter((_, i) => i !== index))
+  const updateAttr = (index: number, key: 'key' | 'value', value: string) => {
+    setAttrs(
+      attrs.map((attr, i) => (i === index ? { ...attr, [key]: value } : attr))
+    )
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const attributes: Record<string, string | number | boolean> = {}
+
     for (const a of attrs) {
       if (!a.key.trim()) continue
+
       // Auto-detect type
       if (a.value === 'true' || a.value === 'false') {
         attributes[a.key] = a.value === 'true'
@@ -51,6 +56,7 @@ export function AttributeModal({
         attributes[a.key] = a.value
       }
     }
+
     if (editing) {
       onSave({
         ...editing,
@@ -71,14 +77,14 @@ export function AttributeModal({
           owner,
           enabled,
           attributes,
-        }),
+        })
       )
     }
   }
 
   return (
     <ModalShell
-      title={editing ? 'Editar Flag com Atributos' : 'Nova Flag com Atributos'}
+      title={editing ? 'Editar flag com Atributos' : 'Nova flag com Atributos'}
       onClose={onClose}
       onSubmit={handleSubmit}
       submitLabel={editing ? 'Salvar' : 'Criar'}
@@ -89,28 +95,30 @@ export function AttributeModal({
             required
             value={name}
             onChange={setName}
-            placeholder="Ex: ML Rec Engine"
+            placeholder="Ex: ML Rec Engineering"
           />
         </Field>
+
         <Field label="Chave">
           <TextInput
             required
             value={key}
             onChange={setKey}
-            placeholder="Ex: ml_rec_engine"
-            mono
+            placeholder="Ex: ml_rec_engineering"
           />
         </Field>
       </div>
+
       <Field label="Descrição">
         <textarea
           required
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Para que serve esta flag?"
-          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm h-20 resize-none"
+          placeholder="Para que serve essa flag?"
+          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-indigo-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm h-20 resize-none"
         />
       </Field>
+
       <Field label="Responsável">
         <TextInput
           value={owner}
@@ -125,6 +133,7 @@ export function AttributeModal({
           <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
             Atributos
           </label>
+
           <button
             type="button"
             onClick={addAttr}
@@ -133,22 +142,24 @@ export function AttributeModal({
             <Plus size={14} /> Adicionar
           </button>
         </div>
+
         {attrs.map((a, i) => (
           <div key={i} className="flex items-center gap-2">
             <input
-              type="text"
               value={a.key}
               onChange={(e) => updateAttr(i, 'key', e.target.value)}
               placeholder="Chave"
               className="flex-1 px-3 py-2 rounded-lg border border-slate-200 text-sm font-mono focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
             />
+
             <input
-              type="text"
+              required
               value={a.value}
               onChange={(e) => updateAttr(i, 'value', e.target.value)}
               placeholder="Valor"
               className="flex-1 px-3 py-2 rounded-lg border border-slate-200 text-sm font-mono focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
             />
+
             {attrs.length > 1 && (
               <button
                 type="button"
@@ -160,6 +171,7 @@ export function AttributeModal({
             )}
           </div>
         ))}
+
         <p className="text-[10px] text-slate-400">
           Valores numéricos e booleanos (true/false) são detectados
           automaticamente.

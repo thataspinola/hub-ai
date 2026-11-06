@@ -28,14 +28,17 @@ export function DefaultsEditor({
       <Card className="border-slate-200 shadow-sm">
         <CardHeader>
           <CardTitle>Configurações Padrão</CardTitle>
+
           <CardDescription>
             Valores padrão aplicados a todas as recomendações
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <FieldGroup className="gap-4">
             <Field>
               <FieldLabel>Limite de itens</FieldLabel>
+
               <Input
                 type="number"
                 value={defaults.limit}
@@ -47,12 +50,15 @@ export function DefaultsEditor({
                 }
                 min={1}
               />
+
               <p className="text-xs text-slate-500 mt-1">
                 Número máximo de recomendações
               </p>
             </Field>
+
             <Field>
               <FieldLabel>Mínimo de itens</FieldLabel>
+
               <Input
                 type="number"
                 value={defaults.minItems}
@@ -75,19 +81,23 @@ export function DefaultsEditor({
       <Card className="border-slate-200 shadow-sm">
         <CardHeader>
           <CardTitle>Filtros</CardTitle>
+
           <CardDescription>
             Regras de filtragem das recomendações
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <FieldGroup className="gap-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium">Excluir URL atual</p>
+
                 <p className="text-sm text-slate-500">
                   Remove o produto atual das recomendações
                 </p>
               </div>
+
               <Switch
                 checked={defaults.filters.excludeCurrentUrl}
                 onCheckedChange={(checked) =>
@@ -101,13 +111,16 @@ export function DefaultsEditor({
                 }
               />
             </div>
+
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium">Deduplicar</p>
+
                 <p className="text-sm text-slate-500">
                   Evita produtos repetidos
                 </p>
               </div>
+
               <Switch
                 checked={defaults.filters.deduplicate}
                 onCheckedChange={(checked) =>
@@ -125,13 +138,16 @@ export function DefaultsEditor({
       <Card className="border-slate-200 shadow-sm">
         <CardHeader>
           <CardTitle>Mesma Categoria</CardTitle>
+
           <CardDescription>
             Configurações da regra de mesma categoria
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <Field>
             <FieldLabel>Máximo de candidatos</FieldLabel>
+
             <Input
               type="number"
               value={sameCategoryParams.maxCandidates}
@@ -142,6 +158,7 @@ export function DefaultsEditor({
               }
               min={1}
             />
+
             <p className="text-xs text-slate-500 mt-1">
               Número máximo de produtos a considerar
             </p>

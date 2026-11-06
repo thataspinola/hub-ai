@@ -3,22 +3,24 @@
  */
 
 import {
+  ApiFeatureFlagStorage,
   LocalStorageCrudStorage,
+  SEED_PROJECT_STORE,
   SEED_STORE,
+  createFeatureFlag,
   storeToFlagValueMap,
   syncProviderStorage,
   generateId,
-  createBooleanFlag,
-  createMultivariantFlag,
-  createAttributeFlag,
+  normalizeFeatureFlagProjectStore,
 } from '@/lib/feature-flags/crud-storage';
 
-const CRUD_KEY = 'feature_flags_crud';
+const CRUD_KEY = 'feature_flags_v1_projects';
 const PROVIDER_KEY = 'appconfig_feature_flags';
 
 describe('crud-storage', () => {
   beforeEach(() => {
     localStorage.clear();
+    jest.restoreAllMocks();
   });
 
   // ── LocalStorageCrudStorage ────────────────────────────
@@ -28,12 +30,12 @@ describe('crud-storage', () => {
       const storage = new LocalStorageCrudStorage();
       const result = storage.load();
 
-      expect(result).toEqual(SEED_STORE);
-      expect(JSON.parse(localStorage.getItem(CRUD_KEY)!)).toEqual(SEED_STORE);
+      expect(result).toEqual(SEED_PROJECT_STORE);
+      expect(JSON.parse(localStorage.getItem(CRUD_KEY)!)).toEqual(SEED_PROJECT_STORE);
     });
 
     it('retorna dados do localStorage quando disponíveis', () => {
-      const custom = { booleanFlags: [], multivariantFlags: [], attributeFlags: [] };
+      const custom = { projects: [{ version: '1.0.0', name: 'custom-project', flags: [] }] };
       localStorage.setItem(CRUD_KEY, JSON.stringify(custom));
 
       const storage = new LocalStorageCrudStorage();
@@ -44,51 +46,58 @@ describe('crud-storage', () => {
       localStorage.setItem(CRUD_KEY, '{broken');
 
       const storage = new LocalStorageCrudStorage();
-      expect(storage.load()).toEqual(SEED_STORE);
+      expect(storage.load()).toEqual(SEED_PROJECT_STORE);
     });
 
     it('persiste store no localStorage via save()', () => {
       const storage = new LocalStorageCrudStorage();
-      const store = { ...SEED_STORE, booleanFlags: [] };
+      const store = { projects: [{ ...SEED_STORE, flags: [] }] };
       storage.save(store);
 
       expect(JSON.parse(localStorage.getItem(CRUD_KEY)!)).toEqual(store);
     });
   });
 
+  describe('ApiFeatureFlagStorage', () => {
+    it('carrega projetos usando o basePath da aplicação', async () => {
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        json: async () => SEED_PROJECT_STORE,
+      }) as jest.Mock;
+
+      await new ApiFeatureFlagStorage().load();
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        '/react-ssr-corp-hubv-painel-administrativo/api/feature-flags',
+        expect.objectContaining({ method: 'GET' }),
+      );
+    });
+
+    it('salva projeto usando o basePath da aplicação', async () => {
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ project: SEED_STORE }),
+      }) as jest.Mock;
+
+      await new ApiFeatureFlagStorage().saveProject(SEED_STORE);
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        '/react-ssr-corp-hubv-painel-administrativo/api/feature-flags/consorcio-widget',
+        expect.objectContaining({ method: 'PUT' }),
+      );
+    });
+  });
+
   // ── storeToFlagValueMap ────────────────────────────────
 
   describe('storeToFlagValueMap()', () => {
-    it('converte booleanFlags para FlagValueMap', () => {
+    it('converte flags da V1 para FlagValueMap', () => {
       const map = storeToFlagValueMap(SEED_STORE);
 
-      expect(map['new_checkout_v2']).toBeDefined();
-      expect(map['new_checkout_v2'].enabled).toBe(true);
-    });
-
-    it('converte multivariantFlags com variant e valueType', () => {
-      const map = storeToFlagValueMap(SEED_STORE);
-
-      expect(map['ui_dark_mode']).toBeDefined();
-      expect(map['ui_dark_mode'].enabled).toBe(true);
-      expect(map['ui_dark_mode'].variant).toBe('beta');
-      expect(map['ui_dark_mode'].valueType).toBe('string');
-    });
-
-    it('converte multivariantFlags number corretamente', () => {
-      const map = storeToFlagValueMap(SEED_STORE);
-
-      expect(map['rate_limit']).toBeDefined();
-      expect(map['rate_limit'].variant).toBe(100);
-    });
-
-    it('converte attributeFlags espalhando atributos', () => {
-      const map = storeToFlagValueMap(SEED_STORE);
-
-      expect(map['ml_rec_engine']).toBeDefined();
-      expect(map['ml_rec_engine'].enabled).toBe(false);
-      expect(map['ml_rec_engine']).toHaveProperty('rolloutPercentage', 50);
-      expect(map['ml_rec_engine']).toHaveProperty('model', 'v3-collaborative');
+      expect(map['ifood']).toBeDefined();
+      expect(map['ifood'].enabled).toBe(true);
+      expect(map['ifood']).toHaveProperty('allowedCategories', ['AUTOMOVEL', 'IMOVEL']);
+      expect(map['ifood']).toHaveProperty('condition', SEED_STORE.flags[0].condition);
     });
   });
 
@@ -99,9 +108,27 @@ describe('crud-storage', () => {
       syncProviderStorage(SEED_STORE);
 
       const map = JSON.parse(localStorage.getItem(PROVIDER_KEY)!);
-      expect(map).toHaveProperty('new_checkout_v2');
-      expect(map).toHaveProperty('ui_dark_mode');
-      expect(map).toHaveProperty('ml_rec_engine');
+      expect(map).toHaveProperty('ifood');
+    });
+  });
+
+  describe('normalizeFeatureFlagProjectStore()', () => {
+    it('normaliza múltiplos projetos', () => {
+      const store = normalizeFeatureFlagProjectStore({
+        projects: [
+          { version: '1.0.0', name: 'app-a', flags: [] },
+          { version: '1.0.0', name: 'app-b', flags: [] },
+        ],
+      });
+
+      expect(store.projects.map(project => project.name)).toEqual(['app-a', 'app-b']);
+    });
+
+    it('mantém compatibilidade com documento único legado', () => {
+      const store = normalizeFeatureFlagProjectStore(SEED_STORE);
+
+      expect(store.projects).toHaveLength(1);
+      expect(store.projects[0].name).toBe('consorcio-widget');
     });
   });
 
@@ -117,35 +144,16 @@ describe('crud-storage', () => {
   // ── create helpers ────────────────────────────────────
 
   describe('create helpers', () => {
-    it('createBooleanFlag gera flag com id, createdAt e updatedAt', () => {
-      const flag = createBooleanFlag({
-        key: 'test', name: 'Test', description: 'Desc', enabled: true, owner: 'Dev',
+    it('createFeatureFlag retorna uma flag V1', () => {
+      const flag = createFeatureFlag({
+        name: 'test',
+        active: true,
+        condition: { type: 'url', key: 'test', source: 'utm_source', value: 'true' },
+        properties: { color: 'red' },
       });
 
-      expect(flag.id).toBeTruthy();
-      expect(flag.createdAt).toBeTruthy();
-      expect(flag.updatedAt).toBeTruthy();
-      expect(flag.key).toBe('test');
-    });
-
-    it('createMultivariantFlag gera flag com campos corretos', () => {
-      const flag = createMultivariantFlag({
-        key: 'mv', name: 'MV', description: 'D', enabled: false, owner: 'Dev',
-        valueType: 'string', value: 'a', variants: [],
-      });
-
-      expect(flag.id).toBeTruthy();
-      expect(flag.valueType).toBe('string');
-    });
-
-    it('createAttributeFlag gera flag com campos corretos', () => {
-      const flag = createAttributeFlag({
-        key: 'attr', name: 'Attr', description: 'D', enabled: true, owner: 'Dev',
-        attributes: { color: 'red' },
-      });
-
-      expect(flag.id).toBeTruthy();
-      expect(flag.attributes).toEqual({ color: 'red' });
+      expect(flag.name).toBe('test');
+      expect(flag.properties).toEqual({ color: 'red' });
     });
   });
 
@@ -159,7 +167,7 @@ describe('crud-storage', () => {
 
       try {
         const storage = new LocalStorageCrudStorage();
-        expect(storage.load()).toEqual(SEED_STORE);
+        expect(storage.load()).toEqual(SEED_PROJECT_STORE);
       } finally {
         globalThis.window = originalWindow;
       }
