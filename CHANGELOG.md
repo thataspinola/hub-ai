@@ -32,3 +32,11 @@ O formato segue [Conventional Commits](https://www.conventionalcommits.org/pt-br
 - Documenta o fluxo backend create/doctor do code-reviewer-plug-and-play, com geração offline em destino novo/vazio.
 - Define app-skeleton como referência e separa seus comandos de validação da distribuição central do CLI.
 - Preserva o painel, instalador pessoal, contratos e projetos já gerados.
+
+## 2026-11-23 — Limpeza de contextos
+
+- Remove duplicação do runtime/testes Carbon no painel após conferir os 39 arquivos do manifesto do CLI.
+- Preserva guias/modelos originais na referência backend do CLI e move o npmrc original, sem alteração, para config/backend/npmrc.reference.
+- Retira comandos/exclusões do pacote removido; documenta substituições no guia de migração.
+- Corrige hooks com caminhos inexistentes; preserva Conventional Commits e diário gerado sem sobrescrever notas manuais.
+- Mantém código funcional, contratos, autenticação e configuração ativa do painel.

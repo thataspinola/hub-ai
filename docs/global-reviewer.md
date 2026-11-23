@@ -20,7 +20,7 @@ O painel apresenta um catálogo informativo de áreas de revisão na rota `/code
 
 ## Gerar backend Carbon
 
-O mesmo checkout central do reviewer oferece agora a geração da app-skeleton como novo backend Node/CommonJS. Atualize o reviewer para uma revisão que inclua tools/cli.cjs e consulte docs/backend.md nesse checkout. Não copie a pasta app-skeleton manualmente nem instale outro CLI no hub-ai.
+O mesmo checkout central do reviewer oferece agora a geração do template Carbon como novo backend Node/CommonJS. Atualize o reviewer para uma revisão que inclua tools/cli.cjs e consulte docs/backend.md nesse checkout. O backend não fica mais neste repositório. Não copie pastas manualmente nem instale outro CLI no hub-ai.
 
 ```sh
 # Execute no checkout central do code-reviewer-plug-and-play

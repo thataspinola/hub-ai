@@ -1,2 +1,2 @@
 #!/bin/sh
-node tools/automation/cli.cjs changelog
+node scripts/change-journal.cjs

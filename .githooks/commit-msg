@@ -1,2 +1,2 @@
 #!/bin/sh
-node tools/automation/cli.cjs commit-file "$1"
+node scripts/commit-message.cjs "$1"

@@ -1,0 +1,25 @@
+const test = require('node:test')
+const assert = require('node:assert/strict')
+const fs = require('node:fs')
+const os = require('node:os')
+const path = require('node:path')
+const cp = require('node:child_process')
+const { valid } = require('../../scripts/commit-message.cjs')
+const { generate } = require('../../scripts/change-journal.cjs')
+
+test('commit hook accepts Conventional Commits and rejects malformed messages', () => {
+  for (const message of ['feat(api): adicionar contrato', 'fix!: corrigir retorno\n\nBREAKING CHANGE: contrato novo', 'docs: atualizar guia']) assert.equal(valid(message), true)
+  for (const message of ['', 'ajustes', 'fix: ', 'fix: assunto\ncorpo sem separador']) assert.equal(valid(message), false)
+})
+
+test('generated diary preserves the manual changelog and handles legacy commits', t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'hub-journal-'))
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }))
+  const git = args => cp.execFileSync('git', args, { cwd: root, stdio: 'pipe' })
+  git(['init', '-q'])
+  git(['-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '--allow-empty', '-qm', 'legacy <note>'])
+  fs.writeFileSync(path.join(root, 'CHANGELOG.md'), '# Manual notes\n')
+  const output = generate(root)
+  assert.match(fs.readFileSync(output, 'utf8'), /legacy &lt;note&gt;/)
+  assert.equal(fs.readFileSync(path.join(root, 'CHANGELOG.md'), 'utf8'), '# Manual notes\n')
+})

@@ -34,8 +34,6 @@ Novos tipos de editor ficam no agrupamento correspondente; alterações de schem
 
 Os testes de interface existentes protegem os contratos públicos. Testes do store cobrem migração, debounce, isolamento de instâncias, ordem de gravação, falhas, campanhas e export/import. Build e testes locais não substituem homologação no editor, navegadores, VDI ou serviços corporativos reais.
 
-## Pacote Node App Skeleton
+## Backend e ferramentas externas
 
-`app-skeleton/` mantém runtime CommonJS, package/lockfile, lint, Jest Node e cobertura próprios. O painel não o importa; seu bundle, rotas, stores e contratos permanecem independentes. O handler HTTP compõe controller → activity → service/factory; I/O futuro deve ser explícito e injetável. `scripts/localRunner.js` adapta somente HTTP localhost para testes. Os exemplos originais não executáveis foram preservados em `templates/`. Consulte [o guia do pacote](../app-skeleton/README.md).
-
-A distribuição para novos backends ocorre pelo CLI central code-reviewer-plug-and-play, comando backend create. O template é fixado por revisão/manifesto; a geração não importa o painel nem acessa este repositório em runtime. Projetos já gerados não são atualizados automaticamente.
+O painel não contém runtime, templates ou testes do backend Carbon. Geração e validação ficam no code-reviewer-plug-and-play, com fonte única em back/templates/carbon-node. Os guias originais e modelos não executáveis ficam separados em back/reference/carbon-node. O CLI não é dependência do bundle nem de build/test do painel. Consulte [a migração](backend-migration.md).

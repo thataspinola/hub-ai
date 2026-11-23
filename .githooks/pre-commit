@@ -1,2 +1,2 @@
 #!/bin/sh
-node tools/automation/cli.cjs docs --check
+npm run lint && npm run typecheck
