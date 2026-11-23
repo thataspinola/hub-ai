@@ -7,7 +7,7 @@ export default async function Clientes() {
     process.env.NODE_ENV === 'development' &&
     process.env.HUB_AI_LOCAL_DEMO_AUTH === 'true'
   )
-    return <LocalClientes />
+    return <LocalClientes mode="local" />
 
   const session = await getServerSession(authOptions)
   if (
@@ -21,5 +21,5 @@ export default async function Clientes() {
       </p>
     )
 
-  return <LocalClientes />
+  return <LocalClientes mode="api" />
 }
