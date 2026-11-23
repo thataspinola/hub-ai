@@ -1,0 +1,31 @@
+{
+  "name": "@hub-ai/app-skeleton",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Isolated Node/Lambda starter included in hub-ai",
+  "type": "commonjs",
+  "main": "index.js",
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "scripts": {
+    "test": "jest --runInBand",
+    "tdd": "jest --watch",
+    "coverage": "jest --runInBand --coverage",
+    "lint": "eslint .",
+    "check": "npm run lint && npm run coverage && npm run test:smoke",
+    "start": "node scripts/localRunner.js",
+    "test:smoke": "node scripts/smoke.js"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "pino": "10.4.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.4",
+    "eslint": "9.39.4",
+    "globals": "16.4.0",
+    "jest": "30.3.0"
+  }
+}

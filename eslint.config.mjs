@@ -29,6 +29,7 @@ export default defineConfig([
     'test-results/**',
     'next-env.d.ts',
     'examples/**',
+    'app-skeleton/**',
     '.github/**',
   ]),
 ])

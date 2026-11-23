@@ -134,7 +134,7 @@ const lambdaHandler = async (event) => {
 			parsedInputFormData = parsedInput
 		} catch (err) {
 			logger.error(`Body JSON parse error: ${err.message}`)
-			logger.info(`data: ${event.body}`)
+			// Never log the request body or raw JSON parse errors.
 			const httpBadRequestErrorData = factory.response.badRequestError(
 				err.message
 			)

@@ -1,4 +1,4 @@
-const { define, devices } = require('@playwright/test')
+const { defineConfig, devices } = require('@playwright/test')
 
 const basePath = '/react-ssr-corp-hubv-painel-administrativo'
 const baseUrl = `http://localhost:3100${basePath}/`

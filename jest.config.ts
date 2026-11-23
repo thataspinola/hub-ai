@@ -42,6 +42,7 @@ const config: Config = {
   // Ignore dist/
   testPathIgnorePatterns: [
     '<rootDir>/dist/',
+    '<rootDir>/app-skeleton/',
     '<rootDir>/__tests__/e2e/',
     '<rootDir>/__tests__/config/',
   ],

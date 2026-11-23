@@ -31,9 +31,9 @@ module.exports = logger; // singleton instance (Pino)
 
 - A custom serializer strips sensitive data from Axios errors before logging.
 - Preserved fields:
-  - Root: `name`, `message`, `code`, `isAxiosError`
-  - `config`: only `method`, `url`, `timeout`
-  - `response`: only `status`, `statusText`, `data`
+  - Only `name`, `code` and upstream status; no error message/stack
+  - No request config, URLs or headers
+  - No response data or status text; upstream status only
 - Any new serializer must follow the same principle: **never log credentials, headers with tokens, or request bodies**.
 
 ### Logging Conventions Used Across the App

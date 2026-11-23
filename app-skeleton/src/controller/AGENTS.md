@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Orchestrates the business flow by composing activities into a sequential processing pipeline. The controller receives a parsed SQS message body from the Lambda handler and either completes successfully or throws to trigger SQS retry. All orchestration logic lives here — never in the handler, API, or service layers.
+Orchestrates the business flow by composing activities into a sequential processing pipeline. The current request controller receives a parsed HTTP body, validates it through an activity and returns a response factory result. ValidationError is preserved for HTTP 400. The SQS patterns below are future transport examples, not active handlers. All orchestration logic lives here — never in the handler, API, or service layers.
 
 ## Folder Structure
 

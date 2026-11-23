@@ -1,2 +1,2 @@
-exports.inputValidation = require("./inputValidationActivity")
-exports.build{name}ControllerReturn = require('./build{name}ControllerReturnActivity')
+exports.inputValidation = require('./inputValidationActivity')
+exports.buildRequestReturn = require('./buildRequestReturnActivity')

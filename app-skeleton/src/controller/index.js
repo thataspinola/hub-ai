@@ -1,1 +1,1 @@
-exports.{name} = require('./{name}Controller');
+exports.request = require('./requestController')

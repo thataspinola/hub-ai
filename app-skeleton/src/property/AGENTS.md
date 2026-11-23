@@ -74,7 +74,7 @@ exports.TOKEN_LIBRARY_LOCATION = ["local", "test"].includes(NODE_ENV)
 ### JSON Schema (inputSchema.js)
 
 - Uses AJV JSON Schema format.
-- Simple object schema with `required: ['leadId', 'protocol']`.
+- Generic object schema with no required domain fields; consumers must define their own contracts.
 - Properties are string types only — no enum values, no conditional validation, no custom formats.
 
 ## Categories of Constants

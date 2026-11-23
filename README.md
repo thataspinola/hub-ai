@@ -73,3 +73,15 @@ Reinicie `npm run dev`. Em **Clientes**, a tela usa três registros explicitamen
 - **Local**: `npm run dev`, `HUB_AI_LOCAL_DEMO_AUTH=true` e `HUB_AI_REQUIRE_AUTH=false` usam dados fictícios no `localStorage`, com cadastro, edição, exclusão e pesquisa.
 - **Integração corporativa**: configure `CLIENTES_API_URL=https://backend-aprovado` (ou `NEXT_PUBLIC_API` existente), `NEXTAUTH_SECRET` e credenciais Keycloak. O servidor usa o token da sessão para consultar `GET /cliente`, criar `POST /cliente`, atualizar `PUT /cliente/{codigo}` e excluir `DELETE /cliente/{codigo}`. Nunca exponha tokens no navegador.
 - **Atenção**: os métodos, URLs, códigos HTTP e formato `{ codigo: number, nome: string, email: string }` são hipóteses baseadas na consulta existente; confirme o contrato real antes de liberar operações de escrita em produção. Teste em homologação com conta autorizada e dados de teste. A aplicação não executa alterações na API corporativa no modo demo.
+
+## App Skeleton (Carbon / Node)
+
+A pasta [app-skeleton](app-skeleton/README.md) é um pacote Node/CommonJS independente, com handler HTTP Lambda, validação, logger e execução localhost. Não substitui as APIs nem o runtime Next.js do painel. Requer Node >= 22.14.0.
+
+```sh
+npm run skeleton:install
+npm run skeleton:check
+npm run skeleton:start
+```
+
+O runner escuta em `127.0.0.1:3101`, com `GET /health` e `POST /validate`. O fluxo padrão apenas valida um objeto JSON e confirma o recebimento; não implementa integrações comerciais. `npm run verify:all` executa os checks do painel e do pacote após a instalação de ambos. Instalação, testes, extensão e limites de produção estão no README do skeleton.

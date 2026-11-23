@@ -33,3 +33,7 @@ A criação de campanha é idempotente: cria uma campanha ausente e preserva cam
 Novos tipos de editor ficam no agrupamento correspondente; alterações de schema exigem migração e testes. Evitar adicionar I/O diretamente aos editores ou duplicar a coordenação de gravação em cada ação.
 
 Os testes de interface existentes protegem os contratos públicos. Testes do store cobrem migração, debounce, isolamento de instâncias, ordem de gravação, falhas, campanhas e export/import. Build e testes locais não substituem homologação no editor, navegadores, VDI ou serviços corporativos reais.
+
+## Pacote Node App Skeleton
+
+`app-skeleton/` mantém runtime CommonJS, package/lockfile, lint, Jest Node e cobertura próprios. O painel não o importa; seu bundle, rotas, stores e contratos permanecem independentes. O handler HTTP compõe controller → activity → service/factory; I/O futuro deve ser explícito e injetável. `scripts/localRunner.js` adapta somente HTTP localhost para testes. Os exemplos originais não executáveis foram preservados em `templates/`. Consulte [o guia do pacote](../app-skeleton/README.md).

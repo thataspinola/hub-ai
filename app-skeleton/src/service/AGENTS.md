@@ -62,8 +62,8 @@ exports.validate = (payload, schema) => {
 };
 ```
 
-- AJV without `allErrors` — collects validation failures via iteration.
-- No custom formats (no CPF) — simpler than `app`.
+- AJV with allErrors and a reusable instance; compiled schemas are cached by AJV.
+- Standard ajv-formats plus the received CPF format; CNPJ values are only strings unless a consumer explicitly adds another format.
 - Throws `ValidationError` with concatenated error messages.
 
 ### Key Conventions

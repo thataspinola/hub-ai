@@ -55,7 +55,7 @@ Defined in `jest.config.js` at project root:
 - **Test match**: `**/__tests__/**/*.(mjs|js|ts)?`, `**/?(*.)+(spec|test).(mjs|js|ts)?`
 - **Ignored from test discovery**: `__test__/mocks`, `__test__/utils`
 - **Ignored from coverage**: `__test__/`, config files, `localRunner.js`
-- **Coverage thresholds**: 85% statements, 85% lines, 70% functions, 55% branches
+- **Coverage thresholds**: 90% statements, lines, functions and branches
 - **Commands**: `npm test` | `npm run tdd` | `npm run coverage`
 
 ## Handler Test (`index.test.js`)

@@ -1,36 +1,13 @@
 /** @type {import('jest').Config} */
-const config = {
-  verbose: true,
-  testEnvironment: "node",
-  collectCoverage: false,
-  coverageThreshold: {
-    global: {
-      statements: 85,
-      branches: 85,
-      functions: 85,
-      lines: 85,
-    },
-  },
-  coverageReporters: ["text", "lcov"],
-  collectCoverageFrom: [
-    "**/*.{js,jsx}",
-    "!**/localRunner.js",
-    "!**/node_modules/**",
-    "!**/vendor/**",
-    "!**/coverage/**",
-  ],
-  coveragePathIgnorePatterns: [
-    "<rootDir>/__test__/",
-    "<rootDir>/.*.config.js$",
-  ],
-  testPathIgnorePatterns: [
-    "<rootDir>/__test__/mocks",
-    "<rootDir>/__test__/utils",
-  ],
-  testMatch: [
-    "**/__tests__/**/*.(mjs|js|ts)?",
-    "**/?(*.)+(spec|test).(mjs|js|ts)?",
-  ],
-};
-
-module.exports = config;
+module.exports = {
+  rootDir: __dirname,
+  testEnvironment: 'node',
+  testMatch: ['<rootDir>/__test__/**/*.test.js', '<rootDir>/__test__/**/*.spec.js'],
+  testPathIgnorePatterns: ['/node_modules/', '/__test__/mocks/', '/__test__/utils/'],
+  clearMocks: true,
+  restoreMocks: true,
+  collectCoverageFrom: ['index.js', 'src/**/*.js', 'logger/**/*.js'],
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov', 'json-summary'],
+  coverageThreshold: { global: { statements: 90, branches: 90, functions: 90, lines: 90 } },
+}

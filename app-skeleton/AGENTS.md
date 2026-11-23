@@ -1,6 +1,6 @@
 # Project Root — Architecture & Development Guidelines
 
-AWS Lambda function for processing request-for-proposal flows (Carbon Acquisition). Built with Node.js >= 22.14.0, CommonJS modules, and a layered architecture.
+Reusable Carbon Node starter, integrated as an isolated hub-ai package. Read README.md for the implemented HTTP handler/local runner and commands. It validates a generic object and acknowledges validation; no proposal API, AWS messaging or commercial integration is configured. Built with Node.js >= 22.14.0, CommonJS modules, and a layered architecture.
 
 ## Layer Documentation
 
@@ -68,7 +68,7 @@ module.exports.handler = async (event) => {
 - **Logging**: Pino with custom formatters
 - **Messaging**: AWS SDK v3 (SNS, SQS)
 - **Data Conversion**: json2xml / xml-js for Dynamics
-- **Testing**: Jest (85% statement/line, 70% function, 55% branch coverage)
+- **Testing**: Jest (90% statements, lines, functions and branches)
 - **Module System**: CommonJS (`require`/`exports`)
 
 ## Development Conventions
@@ -118,5 +118,9 @@ Destructuring is reserved for third-party packages (e.g., `const { Client } = re
 
 - Tests live in `__test__/` mirroring `src/` structure.
 - Mocks in `__test__/mocks/` — one mock file per external dependency.
-- Coverage thresholds: 85% statements, 85% lines, 70% functions, 55% branches.
+- Coverage thresholds: 90% statements, lines, functions and branches.
 - Run: `npm test` | Watch: `npm run tdd` | Coverage: `npm run coverage`.
+
+## Current executable flow
+
+The concrete export is controller.request.process; placeholder controllers/activities are retained only as .js.template files under templates/. The default input schema requires an object without imposing domain fields. HTTP validation failures remain ValidationError (400); internal errors return sanitized 500. Never log input bodies or raw error messages. SQS/SNS/EventBridge patterns below are design references, not registered handlers.
