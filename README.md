@@ -85,3 +85,7 @@ npm run skeleton:start
 ```
 
 O runner escuta em `127.0.0.1:3101`, com `GET /health` e `POST /validate`. O fluxo padrão apenas valida um objeto JSON e confirma o recebimento; não implementa integrações comerciais. `npm run verify:all` executa os checks do painel e do pacote após a instalação de ambos. Instalação, testes, extensão e limites de produção estão no README do skeleton.
+
+### Criar um projeto backend pelo CLI
+
+A app-skeleton é a referência do backend Carbon. A geração para novos projetos está integrada ao CLI central **code-reviewer-plug-and-play**, sem copiar pastas manualmente. No checkout do reviewer, execute `node tools/cli.cjs backend create ../minha-api --name minha-api --dry-run`; revise e repita sem --dry-run. O destino precisa ser novo/vazio. Consulte [o fluxo completo](docs/global-reviewer.md#gerar-backend-carbon). Os comandos skeleton:* deste repositório continuam validando a base de referência; dev/build/test continuam pertencendo ao painel.

@@ -37,3 +37,5 @@ Os testes de interface existentes protegem os contratos públicos. Testes do sto
 ## Pacote Node App Skeleton
 
 `app-skeleton/` mantém runtime CommonJS, package/lockfile, lint, Jest Node e cobertura próprios. O painel não o importa; seu bundle, rotas, stores e contratos permanecem independentes. O handler HTTP compõe controller → activity → service/factory; I/O futuro deve ser explícito e injetável. `scripts/localRunner.js` adapta somente HTTP localhost para testes. Os exemplos originais não executáveis foram preservados em `templates/`. Consulte [o guia do pacote](../app-skeleton/README.md).
+
+A distribuição para novos backends ocorre pelo CLI central code-reviewer-plug-and-play, comando backend create. O template é fixado por revisão/manifesto; a geração não importa o painel nem acessa este repositório em runtime. Projetos já gerados não são atualizados automaticamente.

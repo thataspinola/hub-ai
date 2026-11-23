@@ -26,3 +26,9 @@ O formato segue [Conventional Commits](https://www.conventionalcommits.org/pt-br
 - Adiciona lint, lockfile, testes unitários/HTTP e gate de cobertura de 90% próprios; verify:all valida painel e pacote.
 - Mantém rotas, contratos, dependências e configuração corporativa do painel.
 - Corrige o import defineConfig do Playwright para restaurar a descoberta dos E2E; execução em navegadores permanece pendente.
+
+## 2026-11-23 — Geração de backend pelo CLI
+
+- Documenta o fluxo backend create/doctor do code-reviewer-plug-and-play, com geração offline em destino novo/vazio.
+- Define app-skeleton como referência e separa seus comandos de validação da distribuição central do CLI.
+- Preserva o painel, instalador pessoal, contratos e projetos já gerados.
